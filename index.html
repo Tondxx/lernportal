@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tonda Beutler &bull; Oberstufen-Hub (Jahrgang 12)</title>
+  <!-- KaTeX for crisp formulas without raw dollar signs -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Global Portal Navigation Bar -->
+  <nav class="portal-nav">
+    <div class="nav-left">
+      <div class="portal-brand">
+        <span class="portal-logo-icon">🚀</span>
+        <div>
+          <div class="portal-title">Tonda Beutler &bull; Oberstufen-Hub</div>
+          <div class="portal-subtitle">Jahrgang 12 &bull; Schuljahr 2026/2027</div>
+        </div>
+      </div>
+      <div class="nav-tabs">
+        <button class="nav-tab active" data-tab="kalender" onclick="switchMainTab('kalender')">
+          📅 1. Klausuren &amp; Kalender
+        </button>
+        <button class="nav-tab" data-tab="politik" onclick="switchMainTab('politik')">
+          🏛️ 2. Politik (pw25)
+        </button>
+        <button class="nav-tab" data-tab="mathe" onclick="switchMainTab('mathe')">
+          📐 3. Mathe-Archiv (MA11)
+        </button>
+        <button class="nav-tab" data-tab="stundenplan" onclick="switchMainTab('stundenplan')">
+          📋 4. Stundenplan
+        </button>
+      </div>
+    </div>
+    <div class="nav-right">
+      <span class="student-badge">Tutor: J. Hildebrandt</span>
+      <div class="exam-pill-urgent" onclick="switchMainTab('politik')">
+        <span class="pulse-dot"></span>
+        <strong>Morgen: Politik (pw25-Hf)</strong>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 1: KLAUSUREN-KALENDER                                                -->
+  <!-- ========================================================================= -->
+  <div id="view-kalender" class="portal-view active-view">
+    
+    <!-- Hero Box for the Next Urgent Klausur -->
+    <div id="urgentKlausurHero"></div>
+
+    <!-- Filter & Header Bar -->
+    <div class="cal-header-bar">
+      <div class="cal-title-box">
+        <h2>Gesamter Klausurplan 2026/2027 (Dein persönlicher Filter)</h2>
+        <p>Automatisch gefiltert aus Klausurplan12.pdf für all deine Kurse</p>
+      </div>
+      <div class="cal-filter-group">
+        <button class="cal-filter-btn active" onclick="filterCalendar('pending', this)">🚨 Nur offene</button>
+        <button class="cal-filter-btn" onclick="filterCalendar('12.1', this)">📅 12.1 (1. Halbjahr)</button>
+        <button class="cal-filter-btn" onclick="filterCalendar('12.2', this)">🎓 12.2 (Vor-Abi)</button>
+        <button class="cal-filter-btn" onclick="filterCalendar('all', this)">Alle 23 Termine</button>
+      </div>
+    </div>
+
+    <!-- Timeline List -->
+    <div id="calendarTimeline" class="cal-timeline-list"></div>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 2: POLITIK-WIRTSCHAFT (pw25-Hf) • KLAUSUR AM 15.09.2026           -->
+  <!-- ========================================================================= -->
+  <div id="view-politik" class="portal-view">
+    
+    <!-- Klausur Alert Card -->
+    <div class="urgent-hero-box" style="margin-bottom: 1.5rem; background: linear-gradient(135deg, rgba(52, 211, 153, 0.18), rgba(15, 23, 42, 0.95)), #0f172a; border-color: rgba(52, 211, 153, 0.5); box-shadow: 0 4px 25px rgba(52, 211, 153, 0.15);">
+      <div class="urgent-left">
+        <div class="urgent-alert-pill" style="background: rgba(52, 211, 153, 0.25); color: #34d399;">
+          <span class="pulse-dot" style="background: #34d399;"></span>
+          <strong>KLAUSUR AM DIENSTAG, 15.09.2026 &bull; 1. STUNDE &bull; RAUM R1</strong>
+        </div>
+        <h2 class="urgent-title">🏛️ Politik-Wirtschaft: Partizipation &amp; Wahlen</h2>
+        <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.45;">
+          Deine 3 Klausuraufgaben: <strong>1. Zusammenfassen</strong> (AFB I) &bull; <strong>2. Erläutern</strong> (AFB II) &bull; <strong>3. Sich auseinandersetzen mit...</strong> (AFB III)<br>
+          Themenschwerpunkte: <em>Formen von Partizipation (konventionell vs. unkonventionell, ziviler Ungehorsam)</em>, <em>Wahlen &amp; Wahlrechtsgrundsätze</em> sowie <em>Funktionen von Partizipation</em>.
+        </p>
+      </div>
+      <div class="urgent-right">
+        <button class="btn-hero-study" onclick="flipFlashcard()">
+          🃏 Karteikarte umdrehen
+        </button>
+      </div>
+    </div>
+
+    <div class="politik-grid">
+      
+      <!-- LEFT COLUMN: DIE 3 OPERATOREN FÜR MORGEN -->
+      <section class="p-card">
+        <div class="p-card-header">
+          <h3><span>📝</span> Deine 3 Klausuraufgaben &amp; Operatoren</h3>
+          <span class="p-badge">Punkteschlüssel</span>
+        </div>
+
+        <div class="schema-step-list">
+          
+          <!-- AUFGABE 1 -->
+          <div class="schema-box" style="border-left: 3px solid #38bdf8;">
+            <div class="sb-head">
+              <strong>Aufgabe 1: Zusammenfassen</strong>
+              <span class="sb-badge afb-1">AFB I &bull; ca. 30 %</span>
+            </div>
+            <p><strong>Ziel:</strong> Den Text sachlich, neutral und in eigenen Worten wiedergeben.</p>
+            <ul>
+              <li><strong>Pflicht-Einleitungssatz:</strong> Textsorte (z. B. Kommentar), Titel, Autor, Erscheinungsdatum &amp; -ort, Kernthema &amp; Hauptthese des Autors.</li>
+              <li><strong>Gedankengang strukturieren:</strong> Sinnabschnitte bilden, Thesen &amp; Argumente mit Zeilenangaben (z. B. <em>vgl. Z. 12-15</em>) belegen.</li>
+              <li><strong>Tabu:</strong> Keine eigene Meinung, keine wörtlichen Zitate aneinanderreihen! Im Präsens schreiben.</li>
+            </ul>
+          </div>
+
+          <!-- AUFGABE 2 -->
+          <div class="schema-box" style="border-left: 3px solid #fbbf24;">
+            <div class="sb-head">
+              <strong>Aufgabe 2: Erläutern</strong>
+              <span class="sb-badge afb-2">AFB II &bull; ca. 40 %</span>
+            </div>
+            <p><strong>Ziel:</strong> Einen Sachverhalt, eine Textaussage oder Fachmodelle detailliert und nachvollziehbar veranschaulichen.</p>
+            <ul>
+              <li><strong>Fachbegriffe anwenden:</strong> Verbinde den Text mit deinem Gelernten (z. B. <em>Formen der Partizipation</em>, <em>Wahlfunktionen</em>, <em>Ziviler Ungehorsam</em>).</li>
+              <li><strong>Ursache-Wirkungs-Ketten:</strong> Nutze Überleitungen: <em>„Dies begründet sich darin, dass...“</em>, <em>„Daraus resultiert...“</em>.</li>
+              <li>Immer noch neutral bleiben – die Bewertung kommt erst in Aufgabe 3!</li>
+            </ul>
+          </div>
+
+          <!-- AUFGABE 3 -->
+          <div class="schema-box" style="border-left: 3px solid #34d399;">
+            <div class="sb-head">
+              <strong>Aufgabe 3: Sich auseinandersetzen mit...</strong>
+              <span class="sb-badge afb-3">AFB III &bull; ca. 30 %</span>
+            </div>
+            <p><strong>Ziel:</strong> Kritisches, argumentatives Abwägen von Pro &amp; Contra mit begründetem eigenem Urteil.</p>
+            <ul>
+              <li><strong>These/Forderung aufgreifen:</strong> Was behauptet der Autor? Welche Gegenposition gibt es?</li>
+              <li><strong>Pro &amp; Contra abwägen:</strong> Argumente nach Stärke ordnen (vom schwachen zum stärksten Argument).</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Urteil Formula Box -->
+        <div class="urteil-formula-card">
+          <strong style="color: #34d399; font-size: 0.92rem;">⚖️ Die Urteils-Matrix für Aufgabe 3 (Sach- vs. Werturteil):</strong>
+          <div class="urteil-cols">
+            <div class="u-col">
+              <strong style="color: #38bdf8;">1. Sachurteil (Effizienz &amp; Machbarkeit)</strong>
+              <ul>
+                <li><strong>Wirksamkeit:</strong> Erreicht die Maßnahme (z. B. Wahlalter 16 / mehr Volksentscheide) das Ziel?</li>
+                <li><strong>Realisierbarkeit:</strong> Ist es organisatorisch machbar?</li>
+                <li><strong>Nebenwirkungen:</strong> Droht Populismus oder Überforderung?</li>
+                <li><em>Leitfrage:</em> Funktioniert es in der Praxis?</li>
+              </ul>
+            </div>
+            <div class="u-col">
+              <strong style="color: #fbbf24;">2. Werturteil (Legitimität &amp; Grundwerte)</strong>
+              <ul>
+                <li><strong>Gerechtigkeit:</strong> Werden Generationen fair beteiligt?</li>
+                <li><strong>Demokratieprinzip:</strong> Entspricht es dem Grundgesetz (Art. 20 GG)?</li>
+                <li><strong>Gemeinwohl:</strong> Nützt es allen oder nur einer Minderheit?</li>
+                <li><em>Leitfrage:</em> Ist es ethisch &amp; demokratisch legitim?</li>
+              </ul>
+            </div>
+          </div>
+          <div style="margin-top: 0.6rem; font-size: 0.78rem; color: #cbd5e1;">
+            <strong>Schluss-Synthese:</strong> Klares, abwägendes eigenes Fazit ziehen (<em>„Zusammenfassend überwiegen aus meiner Sicht die Argumente für/gegen... weil...“</em>).
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT COLUMN: INTERACTIVE FLASHCARDS & NOTIZEN -->
+      <section class="p-card">
+        <div class="p-card-header">
+          <h3><span>🃏</span> Begriffstrainer (Partizipation &amp; Wahlen)</h3>
+          <span class="p-badge" id="fcTopic">Prüfungswissen</span>
+        </div>
+
+        <!-- 3D Flashcard -->
+        <div class="flashcard-wrapper" onclick="flipFlashcard()">
+          <div class="flashcard" id="interactiveFlashcard">
+            <div class="fc-header-row">
+              <span class="fc-topic-tag">Klausur 15.09.</span>
+              <span class="fc-counter" id="fcNum">Karte 1 von 8</span>
+            </div>
+            <div class="fc-body">
+              <div class="fc-question" id="fcQuestion">Lädt Frage...</div>
+              <div class="fc-answer" id="fcAnswer">Lädt Antwort...</div>
+              <div class="fc-tip" id="fcTip"></div>
+            </div>
+            <div class="fc-click-hint">Klicke auf die Karte, um die Antwort aufzudecken / zu verdecken</div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="fc-controls">
+          <button class="btn-fc-nav" onclick="prevFlashcard()">&larr; Vorherige</button>
+          <button class="btn-fc-flip" onclick="flipFlashcard()">👁️ Aufdecken / Wenden</button>
+          <button class="btn-fc-nav" onclick="nextFlashcard()">Nächste &rarr;</button>
+        </div>
+
+        <!-- Quick Notes Section -->
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong style="font-size: 0.86rem; color: #ffffff;">📝 Eigene Notizen &amp; Merkzettel für morgen:</strong>
+            <span id="notesSaveStatus" style="font-size: 0.72rem; color: #34d399;"></span>
+          </div>
+          <textarea id="userPolitikNotes" class="notes-textarea" placeholder="Hier letzte Stichworte, Definitionen oder Merksätze aus deinem Heft notieren (speichert automatisch)..." oninput="saveUserPolitikNotes()"></textarea>
+        </div>
+
+      </section>
+
+      <!-- FULL WIDTH CARD: KLAUSUR-SPICKZETTEL INHALTE -->
+      <section class="p-card politik-full-width">
+        <div class="p-card-header">
+          <h3><span>⚡</span> Der große Klausur-Spickzettel: Partizipation &amp; Wahlen</h3>
+          <span class="p-badge">Prüfungsstoff auf einen Blick</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem;">
+          
+          <!-- BOX 1: FORMEN DER PARTIZIPATION -->
+          <div class="schema-box" style="border-top: 3px solid #38bdf8;">
+            <strong style="color: #38bdf8; font-size: 0.95rem;">1. Formen politischer Partizipation:</strong>
+            <ul style="margin-top: 0.4rem; line-height: 1.5;">
+              <li><strong>Konventionell (im System verankert):</strong><br>
+              Wählen, Mitgliedschaft &amp; Mitarbeit in Parteien, Bürgerinitiativen, Gewerkschaften, formelle Petitionen an den Bundestag (Art. 17 GG).</li>
+              <li style="margin-top: 0.4rem;"><strong>Unkonventionell (außerinstitutionell):</strong><br>
+              Demonstrationen, Protestkundgebungen, Konsumboykotte, Streiks, Flashmobs, Online-Kampagnen.</li>
+              <li style="margin-top: 0.4rem;"><strong>Legal vs. Illegal (Ziviler Ungehorsam):</strong><br>
+              Bewusster Regelbruch aus Gewissensgründen. Kriterien: Gewaltfrei, öffentlich, Appell an die Verfassung, Akzeptanz der rechtlichen Strafe.</li>
+            </ul>
+          </div>
+
+          <!-- BOX 2: WAHLEN & WAHLGRUNDSÄTZE -->
+          <div class="schema-box" style="border-top: 3px solid #34d399;">
+            <strong style="color: #34d399; font-size: 0.95rem;">2. Wahlen &amp; die 5 Wahlrechtsgrundsätze (Art. 38 GG):</strong>
+            <ul style="margin-top: 0.4rem; line-height: 1.5;">
+              <li><strong>Allgemein:</strong> Alle wahlberechtigten Staatsbürger unabhängig von Einkommen, Geschlecht oder Religion.</li>
+              <li><strong>Unmittelbar:</strong> Direktwahl der Abgeordneten ohne Zwischeninstanz (keine Wahlmänner wie in den USA).</li>
+              <li><strong>Frei:</strong> Freie Willensbildung ohne Zwang, Druck oder Angst vor Verfolgung.</li>
+              <li><strong>Gleich:</strong> Jede gültige Stimme hat den gleichen Zählwert und gleichen Erfolgswert.</li>
+              <li><strong>Geheim:</strong> Wahlkabine und Wahlurne sichern Anonymität (niemand erfährt das Votum).</li>
+            </ul>
+          </div>
+
+          <!-- BOX 3: FUNKTIONEN VON WAHLEN & PARTIZIPATION -->
+          <div class="schema-box" style="border-top: 3px solid #fbbf24;">
+            <strong style="color: #fbbf24; font-size: 0.95rem;">3. Die 5 Funktionen von Wahlen &amp; Partizipation:</strong>
+            <ul style="margin-top: 0.4rem; line-height: 1.5;">
+              <li><strong>1. Legitimation:</strong> Verleiht den Gewählten das Recht, im Namen des Volkes Gesetze zu erlassen (Art. 20 Abs. 2 GG: <em>„Alle Staatsgewalt geht vom Volke aus“</em>).</li>
+              <li><strong>2. Kontrolle:</strong> Regierende können durch Abwahl abgestraft oder bestätigt werden (Macht auf Zeit).</li>
+              <li><strong>3. Partizipation:</strong> Bürger nehmen Einfluss auf die politische Richtung.</li>
+              <li><strong>4. Repräsentation:</strong> Der gesellschaftliche Pluralismus wird im Parlament abgebildet.</li>
+              <li><strong>5. Integration:</strong> Bündelt Meinungen und sorgt für friedliche Konfliktlösung (auch Wahlverlierer akzeptieren das Votum).</li>
+            </ul>
+          </div>
+
+          <!-- BOX 4: PARTIZIPATIONSPARADOXON -->
+          <div class="schema-box" style="border-top: 3px solid #f43f5e;">
+            <strong style="color: #f43f5e; font-size: 0.95rem;">4. Die soziale Schieflage (Klausur-Highlight für Urteil):</strong>
+            <p style="margin-top: 0.4rem; font-size: 0.8rem; color: #cbd5e1; line-height: 1.45;">
+              <strong>Das Partizipationsparadoxon:</strong> Formal hat jeder Bürger die gleiche Stimme. Empirisch partizipieren aber vor allem gut Gebildete und Wohlhabende an Wahlen und unkonventionellen Protesten. Einkommensschwache und Bildungsferne ziehen sich oft enttäuscht zurück (<em>Politikverdrossenheit</em>).<br>
+              <strong>Folge:</strong> Die Politik richtet sich oft stärker nach den Interessen der aktiven Wähler &rarr; Gefahr einer Spaltung der Gesellschaft.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+  <!-- ========================================================================= -->
+  <!-- VIEW 3: MATHE-ARCHIV (MA11-Mey &bull; THEMA 1: ANALYSIS & STECKBRIEF)     -->
+  <!-- ========================================================================= -->
+  <div id="view-mathe" class="portal-view">
+    
+    <!-- Mathe Archive Header -->
+    <div class="mathe-archive-header">
+      <div class="mah-left">
+        <span class="mah-breadcrumb">Schulfach: Mathematik eA (LK &bull; Kurs: MA11 &bull; Lehrer: Mey)</span>
+        <h2 class="mah-title">Thema 1: Analysis, Kurvenanpassung, Scharen &amp; LGS</h2>
+      </div>
+      <div class="mah-status-badge">
+        ✅ 1. Klausur am 11.09. geschrieben &bull; Vollständiges Nachschlagewerk
+      </div>
+    </div>
+
+    <!-- Sub-Topic Switcher Tabs -->
+    <div class="mathe-sub-nav">
+      <button class="mathe-sub-btn active" data-sub="steckbrief" onclick="switchMatheSubTab('steckbrief')">
+        📝 1. Steckbrief-Bedingungen (S. 18)
+      </button>
+      <button class="mathe-sub-btn" data-sub="schar" onclick="switchMatheSubTab('schar')">
+        📈 2. Funktionsscharen (Parameter d = t &amp; A2)
+      </button>
+      <button class="mathe-sub-btn" data-sub="matrizen" onclick="switchMatheSubTab('matrizen')">
+        🧮 3. LGS &amp; Matrizen (S. 46 &bull; Gauß)
+      </button>
+      <button class="mathe-sub-btn" data-sub="trassierung" onclick="switchMatheSubTab('trassierung')">
+        🛣️ 4. Trassierung (Knickfrei &amp; Sprungfrei)
+      </button>
+    </div>
+
+    <!-- SUBVIEW 1: STECKBRIEF (BUCH S. 18) -->
+    <div id="mathe-view-steckbrief" class="mathe-subview active-subview">
+      <div class="steckbrief-container">
+        
+        <header class="sb-header">
+          <div class="sb-header-left">
+            <span class="page-pill">18</span>
+            <span class="topic-pill">Kurvenanpassung</span>
+            <h1 class="sb-title" id="sb-main-title">Bedingungen bei Steckbriefaufgaben übersetzen</h1>
+            <div class="set-switch-group">
+              <button class="set-btn active" id="btn-sb-set1" onclick="switchSbSet(1)">📖 Set 1: Buch S. 18</button>
+              <button class="set-btn" id="btn-sb-set2" onclick="switchSbSet(2)">🎯 Set 2: Klausur-Training (Neu)</button>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <button class="btn-reveal-all" onclick="toggleAllSolutions()">👁️ Alle aufdecken / verdecken</button>
+          </div>
+        </header>
+
+        <div class="sb-layout-grid">
+          <section class="merkkasten-card">
+            <div class="guide-title">
+              <span class="guide-icon">📌</span>
+              <strong>Regeln &amp; Übersetzungshilfe (Buch S. 18):</strong>
+            </div>
+
+            <table class="merkkasten-table">
+              <thead>
+                <tr>
+                  <th style="width: 52%;">Beschreibung im Aufgabentext</th>
+                  <th style="width: 48%;">Mathematische Gleichung</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>verläuft durch P(3|5)</td>
+                  <td>f(3) = 5 <span class="st-badge">1 Bed.</span></td>
+                </tr>
+                <tr>
+                  <td>berührt die x-Achse an der Stelle 2</td>
+                  <td>f(2) = 0 und f'(2) = 0 <span class="st-badge" style="background:#f59e0b;">2 Bed.</span></td>
+                </tr>
+                <tr>
+                  <td>hat an der Stelle -3 die Steigung 1,5</td>
+                  <td>f'(-3) = 1,5 <span class="st-badge">1 Bed.</span></td>
+                </tr>
+                <tr>
+                  <td>hat einen Hochpunkt H(0,5|-2)</td>
+                  <td>f(0,5) = -2 und f'(0,5) = 0 <span class="st-badge" style="background:#f59e0b;">2 Bed.</span></td>
+                </tr>
+                <tr>
+                  <td>hat einen Wendepunkt W(-1|4)</td>
+                  <td>f(-1) = 4 und f''(-1) = 0 <span class="st-badge" style="background:#f59e0b;">2 Bed.</span></td>
+                </tr>
+                <tr>
+                  <td>hat einen <strong>Sattelpunkt</strong> S(2|3)</td>
+                  <td>
+                    f(2) = 3<br>
+                    f'(2) = 0 und f''(2) = 0
+                    <span class="st-badge" style="background:#ef4444;">3 Bed.!</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>hat Wendetangente an Stelle 3 mit t(x) = -4x + 1</td>
+                  <td>
+                    f''(3) = 0 (Wende)<br>
+                    f'(3) = -4 (Steigung)<br>
+                    f(3) = t(3) = -11 (Punkt)
+                    <span class="st-badge" style="background:#ef4444;">3 Bed.!</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="drill-column">
+            <div class="drill-card">
+              <div class="drill-card-header">
+                <div>
+                  <strong id="task1-title">Aufgabe 1 &bull; Steckbriefbeschreibungen übersetzen:</strong>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem;">Klicke auf eine Zeile, um die mathematische Gleichung aufzudecken!</div>
+                </div>
+              </div>
+
+              <div id="drillItemsList" class="drill-items-container"></div>
+            </div>
+          </section>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SUBVIEW 2: FUNKTIONSSCHAREN -->
+    <div id="mathe-view-schar" class="mathe-subview">
+      <div class="schar-container">
+        
+        <header class="sb-header">
+          <div class="sb-header-left">
+            <span class="page-pill" id="schar-task-pill" style="background:#e11d48;">NEU 2</span>
+            <span class="topic-pill">Funktionsscharen</span>
+            <h1 class="sb-title" id="schar-main-title">Aufgabe 3: Extrema bei 0 &amp; 2 (d = t frei)</h1>
+            <div class="schar-sub-tabs">
+              <button class="sub-tab-btn active" id="btn-schar-task3" onclick="switchScharTask('task3')">
+                🔥 Neue Aufgabe: Extrema bei 0 &amp; 2 (d = t)
+              </button>
+              <button class="sub-tab-btn" id="btn-schar-new-a2" onclick="switchScharTask('new-a2')">
+                🎯 Aufgabe: Extrema bei 1 &amp; 3
+              </button>
+              <button class="sub-tab-btn" id="btn-schar-orig-a2" onclick="switchScharTask('orig-a2')">
+                📋 Original A2 (Wiederholung.pdf)
+              </button>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <span class="anti-leak-badge">🔒 Lösungen verdeckt (Anti-Leak)</span>
+          </div>
+        </header>
+
+        <div class="schar-layout-grid">
+          <section class="schar-guide-col" id="schar-left-col"></section>
+          
+          <section class="schar-visualizer-col">
+            <div class="viz-control-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.4rem;">
+                <strong>Parameter t einstellen:</strong>
+                <span id="paramTValue" style="color:#38bdf8; font-weight:800;">t = 4.0</span>
+              </div>
+              <div style="display:flex; align-items:center; gap: 0.6rem;">
+                <span id="slider-min-lbl" style="font-size:0.75rem; color:var(--text-muted);">-2</span>
+                <input type="range" id="tSlider" min="-2" max="6" step="0.2" value="4" oninput="onSliderChange(this.value)" style="flex:1;">
+                <span id="slider-max-lbl" style="font-size:0.75rem; color:var(--text-muted);">6</span>
+              </div>
+              <div id="schar-quick-btns" style="display:flex; gap:0.4rem; margin-top:0.6rem; flex-wrap:wrap;"></div>
+            </div>
+
+            <div class="canvas-schar-wrapper">
+              <canvas id="scharCanvas" width="560" height="340"></canvas>
+            </div>
+
+            <div class="legend-card" id="scharLegend"></div>
+          </section>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SUBVIEW 3: LGS & MATRIZEN (BUCH S. 46) -->
+    <div id="mathe-view-matrizen" class="mathe-subview">
+      <div class="steckbrief-container">
+        
+        <header class="sb-header">
+          <div class="sb-header-left">
+            <span class="page-pill">46</span>
+            <span class="topic-pill">LGS &amp; Matrizen</span>
+            <h1 class="sb-title">Aufgabe 1 (Buch S. 46) &bull; LGS, Diagonalform &amp; Graphen</h1>
+            <div class="level-switch-group">
+              <button class="level-btn active" id="btn-lvl-1" onclick="switchLevel(1)">📖 Level 1: Buch S. 46</button>
+              <button class="level-btn" id="btn-lvl-2" onclick="switchLevel(2)">🎯 Level 2: Klausur-Set 1</button>
+              <button class="level-btn" id="btn-lvl-3" onclick="switchLevel(3)">⚡ Level 3: Meister-Set</button>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <button class="btn-hint" onclick="resetAll()">🔄 Neustart</button>
+          </div>
+        </header>
+
+        <div class="merkkasten-card" style="margin-bottom: 1rem;">
+          <strong style="color: #38bdf8;">📌 Die 3 Lösungsfälle bei linearen Gleichungssystemen:</strong>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:0.8rem; margin-top:0.5rem; font-size:0.78rem;">
+            <div style="background:#1e293b; padding:0.6rem; border-radius:4px; border-left:3px solid #38bdf8;">
+              <strong>1. Genau eine Lösung (Schnittpunkt):</strong><br>
+              Diagonalform hat eindeutige Werte <code>x = x₀</code> und <code>y = y₀</code>. Geraden schneiden sich in genau einem Punkt.
+            </div>
+            <div style="background:#1e293b; padding:0.6rem; border-radius:4px; border-left:3px solid #34d399;">
+              <strong>2. Unendlich viele Lösungen (Identisch):</strong><br>
+              Nullzeile <code>0 = 0</code> (immer wahr). Beide Geraden liegen exakt aufeinander.
+            </div>
+            <div style="background:#1e293b; padding:0.6rem; border-radius:4px; border-left:3px solid #ef4444;">
+              <strong>3. Keine Lösung (Parallelen):</strong><br>
+              Widerspruchszeile <code>0 = 1</code> (Widerspruch!). Geraden sind echt parallel und berühren sich nie.
+            </div>
+          </div>
+        </div>
+
+        <div class="task-title-group" style="display:none;">
+          <h1 id="page-title"></h1>
+          <p id="page-desc"></p>
+        </div>
+
+        <!-- Matching Board Cards -->
+        <main class="cards-board">
+          <!-- Row 1: LGS -->
+          <div class="cards-row">
+            <div class="textbook-card" id="card-lgs-1" onclick="selectCard('lgs', '1')">
+              <div class="card-badge">①</div>
+              <div class="lgs-formula" id="lgs-text-1"></div>
+              <div class="trio-tag" id="tag-lgs-1"></div>
+            </div>
+            <div class="textbook-card" id="card-lgs-2" onclick="selectCard('lgs', '2')">
+              <div class="card-badge">②</div>
+              <div class="lgs-formula" id="lgs-text-2"></div>
+              <div class="trio-tag" id="tag-lgs-2"></div>
+            </div>
+            <div class="textbook-card" id="card-lgs-3" onclick="selectCard('lgs', '3')">
+              <div class="card-badge">③</div>
+              <div class="lgs-formula" id="lgs-text-3"></div>
+              <div class="trio-tag" id="tag-lgs-3"></div>
+            </div>
+            <div class="textbook-card" id="card-lgs-4" onclick="selectCard('lgs', '4')">
+              <div class="card-badge">④</div>
+              <div class="lgs-formula" id="lgs-text-4"></div>
+              <div class="trio-tag" id="tag-lgs-4"></div>
+            </div>
+          </div>
+
+          <!-- Row 2: Matrices -->
+          <div class="cards-row">
+            <div class="textbook-card" id="card-mat-A" onclick="selectCard('mat', 'A')">
+              <div class="card-badge">Ⓐ</div>
+              <div class="matrix-display" id="mat-katex-A"></div>
+              <div class="trio-tag" id="tag-mat-A"></div>
+            </div>
+            <div class="textbook-card" id="card-mat-B" onclick="selectCard('mat', 'B')">
+              <div class="card-badge">Ⓑ</div>
+              <div class="matrix-display" id="mat-katex-B"></div>
+              <div class="trio-tag" id="tag-mat-B"></div>
+            </div>
+            <div class="textbook-card" id="card-mat-C" onclick="selectCard('mat', 'C')">
+              <div class="card-badge">Ⓒ</div>
+              <div class="matrix-display" id="mat-katex-C"></div>
+              <div class="trio-tag" id="tag-mat-C"></div>
+            </div>
+            <div class="textbook-card" id="card-mat-D" onclick="selectCard('mat', 'D')">
+              <div class="card-badge">Ⓓ</div>
+              <div class="matrix-display" id="mat-katex-D"></div>
+              <div class="trio-tag" id="tag-mat-D"></div>
+            </div>
+          </div>
+
+          <!-- Row 3: Graphs -->
+          <div class="cards-row">
+            <div class="textbook-card card-with-graph" id="card-graph-I" onclick="selectCard('graph', 'I')">
+              <div class="card-badge">Ⅰ</div>
+              <div class="canvas-container">
+                <canvas id="canvasI" width="108" height="108"></canvas>
+              </div>
+              <div class="trio-tag" id="tag-graph-I"></div>
+            </div>
+            <div class="textbook-card card-with-graph" id="card-graph-II" onclick="selectCard('graph', 'II')">
+              <div class="card-badge">Ⅱ</div>
+              <div class="canvas-container">
+                <canvas id="canvasII" width="108" height="108"></canvas>
+              </div>
+              <div class="trio-tag" id="tag-graph-II"></div>
+            </div>
+            <div class="textbook-card card-with-graph" id="card-graph-III" onclick="selectCard('graph', 'III')">
+              <div class="card-badge">Ⅲ</div>
+              <div class="canvas-container">
+                <canvas id="canvasIII" width="108" height="108"></canvas>
+              </div>
+              <div class="trio-tag" id="tag-graph-III"></div>
+            </div>
+            <div class="textbook-card card-with-graph" id="card-graph-IV" onclick="selectCard('graph', 'IV')">
+              <div class="card-badge">Ⅳ</div>
+              <div class="canvas-container">
+                <canvas id="canvasIV" width="108" height="108"></canvas>
+              </div>
+              <div class="trio-tag" id="tag-graph-IV"></div>
+            </div>
+          </div>
+        </main>
+
+        <footer class="book-footer">
+          <div class="matcher-control-bar">
+            <div class="trio-slot" id="slot-1">
+              <div class="slot-badge badge-1">①</div>
+              <span class="slot-arr">➔</span>
+              <select id="sel_m_1" onchange="onDropdownChange(1)">
+                <option value="">Matrix?</option>
+                <option value="A">Matrix A</option>
+                <option value="B">Matrix B</option>
+                <option value="C">Matrix C</option>
+                <option value="D">Matrix D</option>
+              </select>
+              <span class="slot-plus">+</span>
+              <select id="sel_g_1" onchange="onDropdownChange(1)">
+                <option value="">Graph?</option>
+                <option value="I">Graph I</option>
+                <option value="II">Graph II</option>
+                <option value="III">Graph III</option>
+                <option value="IV">Graph IV</option>
+              </select>
+            </div>
+
+            <div class="trio-slot" id="slot-2">
+              <div class="slot-badge badge-2">②</div>
+              <span class="slot-arr">➔</span>
+              <select id="sel_m_2" onchange="onDropdownChange(2)">
+                <option value="">Matrix?</option>
+                <option value="A">Matrix A</option>
+                <option value="B">Matrix B</option>
+                <option value="C">Matrix C</option>
+                <option value="D">Matrix D</option>
+              </select>
+              <span class="slot-plus">+</span>
+              <select id="sel_g_2" onchange="onDropdownChange(2)">
+                <option value="">Graph?</option>
+                <option value="I">Graph I</option>
+                <option value="II">Graph II</option>
+                <option value="III">Graph III</option>
+                <option value="IV">Graph IV</option>
+              </select>
+            </div>
+
+            <div class="trio-slot" id="slot-3">
+              <div class="slot-badge badge-3">③</div>
+              <span class="slot-arr">➔</span>
+              <select id="sel_m_3" onchange="onDropdownChange(3)">
+                <option value="">Matrix?</option>
+                <option value="A">Matrix A</option>
+                <option value="B">Matrix B</option>
+                <option value="C">Matrix C</option>
+                <option value="D">Matrix D</option>
+              </select>
+              <span class="slot-plus">+</span>
+              <select id="sel_g_3" onchange="onDropdownChange(3)">
+                <option value="">Graph?</option>
+                <option value="I">Graph I</option>
+                <option value="II">Graph II</option>
+                <option value="III">Graph III</option>
+                <option value="IV">Graph IV</option>
+              </select>
+            </div>
+
+            <div class="trio-slot" id="slot-4">
+              <div class="slot-badge badge-4">④</div>
+              <span class="slot-arr">➔</span>
+              <select id="sel_m_4" onchange="onDropdownChange(4)">
+                <option value="">Matrix?</option>
+                <option value="A">Matrix A</option>
+                <option value="B">Matrix B</option>
+                <option value="C">Matrix C</option>
+                <option value="D">Matrix D</option>
+              </select>
+              <span class="slot-plus">+</span>
+              <select id="sel_g_4" onchange="onDropdownChange(4)">
+                <option value="">Graph?</option>
+                <option value="I">Graph I</option>
+                <option value="II">Graph II</option>
+                <option value="III">Graph III</option>
+                <option value="IV">Graph IV</option>
+              </select>
+            </div>
+
+            <div class="action-buttons">
+              <button class="btn-action btn-check" onclick="checkAllMatches()">✓ Prüfen</button>
+              <button class="btn-action btn-solve" onclick="solveAllMatches()">Auflösen</button>
+              <button class="btn-action btn-reset" onclick="resetAll()">↺ Reset</button>
+            </div>
+          </div>
+
+          <div id="resultBanner" class="result-banner"></div>
+        </footer>
+
+      </div>
+    </div>
+
+    <!-- SUBVIEW 4: TRASSIERUNG -->
+    <div id="mathe-view-trassierung" class="mathe-subview">
+      <div class="schar-container">
+        
+        <header class="sb-header">
+          <div class="sb-header-left">
+            <span class="page-pill" id="trass-pill" style="background:#16a34a;">NEU</span>
+            <span class="topic-pill">Trassierung</span>
+            <h1 class="sb-title" id="trass-title">Challenge 2: Ansteigende Rampe (g₂ = x)</h1>
+            <div class="schar-sub-tabs">
+              <button class="sub-tab-btn active" id="btn-trass-t2" onclick="switchTrassMode('t2')">
+                🔥 Neue Challenge: Rampe an Steigung (g₂ = x)
+              </button>
+              <button class="sub-tab-btn" id="btn-trass-t1" onclick="switchTrassMode('t1')">
+                🛣️ Challenge 1: Autobahnzubringer (g₂ = 2)
+              </button>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <span class="anti-leak-badge">🔒 Lösungen verdeckt (Anti-Leak)</span>
+          </div>
+        </header>
+
+        <div class="schar-layout-grid">
+          <section class="schar-guide-col" id="trass-left-col"></section>
+
+          <section class="schar-visualizer-col">
+            <div class="viz-control-card" id="trass-viz-card"></div>
+
+            <div class="canvas-schar-wrapper">
+              <canvas id="trassCanvas" width="560" height="340"></canvas>
+            </div>
+
+            <div class="legend-card" id="trassLegend"></div>
+          </section>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 4: STUNDENPLAN                                                       -->
+  <!-- ========================================================================= -->
+  <div id="view-stundenplan" class="portal-view">
+    <div class="tt-container">
+      
+      <div class="tt-header-row">
+        <div class="tt-title-box">
+          <h2>Stundenplan &bull; Tonda Beutler</h2>
+          <p>Jahrgang 12 &bull; Tutor: Jonas Hildebrandt &bull; Schuljahr 2026/2027</p>
+        </div>
+        <div class="tt-filter-group">
+          <button class="tt-filter-btn active" onclick="setTimetableWeek('all', this)">Alle Wochen</button>
+          <button class="tt-filter-btn" onclick="setTimetableWeek('A', this)">Nur A-Woche</button>
+          <button class="tt-filter-btn" onclick="setTimetableWeek('B', this)">Nur B-Woche</button>
+        </div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="timetable-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">Std.</th>
+              <th style="width: 19%;">Montag</th>
+              <th style="width: 19%;">Dienstag</th>
+              <th style="width: 19%;">Mittwoch</th>
+              <th style="width: 19%;">Donnerstag</th>
+              <th style="width: 19%;">Freitag</th>
+            </tr>
+          </thead>
+          <tbody id="timetableBody"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="calendar.js"></script>
+  <script src="politik.js"></script>
+  <script src="timetable.js"></script>
+  <script src="steckbrief.js"></script>
+  <script src="schar.js"></script>
+  <script src="matching.js"></script>
+  <script src="main_hub.js"></script>
+</body>
+</html>
