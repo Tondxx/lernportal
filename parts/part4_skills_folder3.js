@@ -15,7 +15,7 @@ const SKILLS_FOLDER_3 = [
           ⚡ DIE ZENTRALEN FORMELN DES ELEKTRISCHEN FELDES
         </span>
         <div class="formula-math-display">
-          <span class="katex-render" data-display="true" data-latex="E = \frac{F_{\text{el}}}{q} \quad \left[\frac{\text{N}}{\text{C}} = \frac{\text{V}}{\text{m}}\right] \qquad F_C = \frac{1}{4\pi\varepsilon_0\varepsilon_r} \cdot \frac{Q_1 \cdot Q_2}{r^2}"></span>
+          <span class="katex-render" data-display="true" data-latex="E = \\frac{F_{\\text{el}}}{q} \\quad \\left[\\frac{\\text{N}}{\\text{C}} = \\frac{\\text{V}}{\\text{m}}\\right] \\qquad F_C = \\frac{1}{4\\pi\\varepsilon_0\\varepsilon_r} \\cdot \\frac{Q_1 \\cdot Q_2}{r^2}"></span>
         </div>
 
         <div class="variable-pills-grid">
@@ -64,17 +64,17 @@ const SKILLS_FOLDER_3 = [
         `,
         solution: `
           <strong>Gegeben:</strong><br>
-          <span class="katex-render" data-display="false" data-latex="r = 10,0\,\text{cm} = 0,10\,\text{m}">r = 0,10 m</span><br>
-          <span class="katex-render" data-display="false" data-latex="F = 300\,\text{N}">F = 300 N</span><br>
-          <span class="katex-render" data-display="false" data-latex="Q_1 = 5,00 \cdot 10^{-5}\,\text{C}">Q1 = 5,00 • 10⁻⁵ C</span><br>
-          <span class="katex-render" data-display="false" data-latex="\varepsilon_0 = 8,854 \cdot 10^{-12}\,\frac{\text{A}\cdot\text{s}}{\text{V}\cdot\text{m}}">ε0</span>, <span class="katex-render" data-display="false" data-latex="\varepsilon_r = 1">εr = 1</span><br><br>
+          <span class="katex-render" data-display="false" data-latex="r = 10,0\\,\\text{cm} = 0,10\\,\\text{m}">r = 0,10 m</span><br>
+          <span class="katex-render" data-display="false" data-latex="F = 300\\,\\text{N}">F = 300 N</span><br>
+          <span class="katex-render" data-display="false" data-latex="Q_1 = 5,00 \\cdot 10^{-5}\\,\\text{C}">Q1 = 5,00 • 10⁻⁵ C</span><br>
+          <span class="katex-render" data-display="false" data-latex="\\varepsilon_0 = 8,854 \\cdot 10^{-12}\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{V}\\cdot\\text{m}}">ε0</span>, <span class="katex-render" data-display="false" data-latex="\\varepsilon_r = 1">εr = 1</span><br><br>
 
           <strong>Formel &amp; Umstellung:</strong><br>
-          <div class="katex-render" data-display="true" data-latex="F = \frac{1}{4\pi\varepsilon_0} \cdot \frac{Q_1 \cdot Q_2}{r^2} \iff Q_2 = \frac{F \cdot 4\pi\varepsilon_0 \cdot r^2}{Q_1}"></div><br>
+          <div class="katex-render" data-display="true" data-latex="F = \\frac{1}{4\\pi\\varepsilon_0} \\cdot \\frac{Q_1 \\cdot Q_2}{r^2} \\iff Q_2 = \\frac{F \\cdot 4\\pi\\varepsilon_0 \\cdot r^2}{Q_1}"></div><br>
 
           <strong>Einsetzen:</strong><br>
-          <div class="katex-render" data-display="true" data-latex="Q_2 = \frac{300\,\text{N} \cdot 4\pi \cdot 8,854 \cdot 10^{-12}\,\frac{\text{A}\cdot\text{s}}{\text{V}\cdot\text{m}} \cdot (0,10\,\text{m})^2}{5,00 \cdot 10^{-5}\,\text{C}} = \frac{3,338 \cdot 10^{-10}}{5,00 \cdot 10^{-5}} = 6,68 \cdot 10^{-7}\,\text{C} = 0,668\,\mu\text{C}"></div><br>
-          <strong>Ergebnis:</strong> Die zweite Ladung beträgt <span class="katex-render" data-display="false" data-latex="Q_2 = 6,68 \cdot 10^{-7}\,\text{C}">Q2 = 0,668 µC</span>.
+          <div class="katex-render" data-display="true" data-latex="Q_2 = \\frac{300\\,\\text{N} \\cdot 4\\pi \\cdot 8,854 \\cdot 10^{-12}\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{V}\\cdot\\text{m}} \\cdot (0,10\\,\\text{m})^2}{5,00 \\cdot 10^{-5}\\,\\text{C}} = \\frac{3,338 \\cdot 10^{-10}}{5,00 \\cdot 10^{-5}} = 6,68 \\cdot 10^{-7}\\,\\text{C} = 0,668\\,\\mu\\text{C}"></div><br>
+          <strong>Ergebnis:</strong> Die zweite Ladung beträgt <span class="katex-render" data-display="false" data-latex="Q_2 = 6,68 \\cdot 10^{-7}\\,\\text{C}">Q2 = 0,668 µC</span>.
         `
       },
       {
@@ -86,10 +86,10 @@ const SKILLS_FOLDER_3 = [
         `,
         solution: `
           <strong>a) Elektrische Feldstärke E:</strong><br>
-          <div class="katex-render" data-display="true" data-latex="E = \frac{F_1}{Q_1} = \frac{2,1 \cdot 10^{-5}\,\text{N}}{3,5 \cdot 10^{-8}\,\text{C}} = 600\,\frac{\text{N}}{\text{C}} = 600\,\frac{\text{V}}{\text{m}}"></div><br>
+          <div class="katex-render" data-display="true" data-latex="E = \\frac{F_1}{Q_1} = \\frac{2,1 \\cdot 10^{-5}\\,\\text{N}}{3,5 \\cdot 10^{-8}\\,\\text{C}} = 600\\,\\frac{\\text{N}}{\\text{C}} = 600\\,\\frac{\\text{V}}{\\text{m}}"></div><br>
 
           <strong>b) Kraft auf den zweiten Probekörper:</strong><br>
-          <div class="katex-render" data-display="true" data-latex="F_2 = E \cdot Q_2 = 600\,\frac{\text{N}}{\text{C}} \cdot 5,2 \cdot 10^{-9}\,\text{C} = 3,12 \cdot 10^{-6}\,\text{N} = 3,12\,\mu\text{N}"></div>
+          <div class="katex-render" data-display="true" data-latex="F_2 = E \\cdot Q_2 = 600\\,\\frac{\\text{N}}{\\text{C}} \\cdot 5,2 \\cdot 10^{-9}\\,\\text{C} = 3,12 \\cdot 10^{-6}\\,\\text{N} = 3,12\\,\\mu\\text{N}"></div>
         `
       }
     ]
@@ -125,7 +125,7 @@ const SKILLS_FOLDER_3 = [
             <strong>1. Behauptung:</strong> Zwei elektrische Feldlinien schneiden sich niemals.<br>
             <strong>2. Annahme zum Widerspruch:</strong> Angenommen, zwei Feldlinien würden sich in einem Punkt <span class="katex-render" data-display="false" data-latex="P">P</span> schneiden.<br>
             <strong>3. Folgerung:</strong> Dann gäbe es im Punkt <span class="katex-render" data-display="false" data-latex="P">P</span> zwei verschiedene Tangenten. Auf eine dort platzierte positive Probeladung <span class="katex-render" data-display="false" data-latex="q">q</span> müssten somit <strong>gleichzeitig zwei Kräfte in unterschiedliche Richtungen</strong> wirken.<br>
-            <strong>4. Widerspruch:</strong> Die Gesamtkraft <span class="katex-render" data-display="false" data-latex="\vec{F}_{\text{ges}} = q \cdot \vec{E}">F = q • E</span> an einem festen Ort im Raum ist jedoch ein <em>eindeutiger Vektor</em>. Eine Ladung kann nicht gleichzeitig in zwei verschiedene Richtungen beschleunigt werden.<br>
+            <strong>4. Widerspruch:</strong> Die Gesamtkraft <span class="katex-render" data-display="false" data-latex="\\vec{F}_{\\text{ges}} = q \\cdot \\vec{E}">F = q • E</span> an einem festen Ort im Raum ist jedoch ein <em>eindeutiger Vektor</em>. Eine Ladung kann nicht gleichzeitig in zwei verschiedene Richtungen beschleunigt werden.<br>
             <strong>5. Schlussfolgerung:</strong> Die Annahme ist falsch. Feldlinien können sich niemals schneiden! &squ;
           </div>
         </div>
@@ -148,13 +148,13 @@ const SKILLS_FOLDER_3 = [
         `,
         solution: `
           <strong>a) Verschiebung entlang einer Äquipotentiallinie:</strong><br>
-          Da jeder Punkt auf der Äquipotentiallinie dasselbe Potential hat, ist die Potentialdifferenz <span class="katex-render" data-display="false" data-latex="\Delta\varphi = 0\,\text{V}">Δφ = 0</span>.<br>
-          <div class="katex-render" data-display="true" data-latex="W = q \cdot \Delta\varphi = 5,0\,\mu\text{C} \cdot 0\,\text{V} = 0\,\text{J}"></div>
+          Da jeder Punkt auf der Äquipotentiallinie dasselbe Potential hat, ist die Potentialdifferenz <span class="katex-render" data-display="false" data-latex="\\Delta\\varphi = 0\\,\\text{V}">Δφ = 0</span>.<br>
+          <div class="katex-render" data-display="true" data-latex="W = q \\cdot \\Delta\\varphi = 5,0\\,\\mu\\text{C} \\cdot 0\\,\\text{V} = 0\\,\\text{J}"></div>
           <em>Ergebnis:</em> Es wird keine Arbeit verrichtet (<span class="katex-render" data-display="false" data-latex="W = 0">W = 0</span>), da die Bewegung senkrecht zu den Feldlinien (senkrecht zur elektrischen Kraft) erfolgt.<br><br>
 
           <strong>b) Verschiebung zwischen zwei Potentialen:</strong><br>
-          <div class="katex-render" data-display="true" data-latex="\Delta\varphi = \varphi_1 - \varphi_2 = 400\,\text{V} - 150\,\text{V} = 250\,\text{V}"></div>
-          <div class="katex-render" data-display="true" data-latex="W = q \cdot \Delta\varphi = 5,0 \cdot 10^{-6}\,\text{C} \cdot 250\,\text{V} = 1,25 \cdot 10^{-3}\,\text{J} = 1,25\,\text{mJ}"></div>
+          <div class="katex-render" data-display="true" data-latex="\\Delta\\varphi = \\varphi_1 - \\varphi_2 = 400\\,\\text{V} - 150\\,\\text{V} = 250\\,\\text{V}"></div>
+          <div class="katex-render" data-display="true" data-latex="W = q \\cdot \\Delta\\varphi = 5,0 \\cdot 10^{-6}\\,\\text{C} \\cdot 250\\,\\text{V} = 1,25 \\cdot 10^{-3}\\,\\text{J} = 1,25\\,\\text{mJ}"></div>
         `
       }
     ]
@@ -175,12 +175,12 @@ const SKILLS_FOLDER_3 = [
           📐 FLÄCHENLADUNGSDICHTE &amp; HOMOGENES FELD (MEDS.PDF S. 26/27)
         </span>
         <div class="formula-math-display">
-          <span class="katex-render" data-display="true" data-latex="\sigma = \frac{Q}{A} = \varepsilon_0 \cdot \varepsilon_r \cdot E \iff E = \frac{\sigma}{\varepsilon_0 \cdot \varepsilon_r} = \frac{Q}{\varepsilon_0 \cdot \varepsilon_r \cdot A}"></span>
+          <span class="katex-render" data-display="true" data-latex="\\sigma = \\frac{Q}{A} = \\varepsilon_0 \\cdot \\varepsilon_r \\cdot E \\iff E = \\frac{\\sigma}{\\varepsilon_0 \\cdot \\varepsilon_r} = \\frac{Q}{\\varepsilon_0 \\cdot \\varepsilon_r \\cdot A}"></span>
         </div>
         <div style="font-size:0.86rem; color:var(--text-secondary); line-height:1.5; margin-top:0.8rem;">
-          • <span class="katex-render" data-display="false" data-latex="\sigma">σ</span> (Sigma): Flächenladungsdichte in <span class="katex-render" data-display="false" data-latex="\left[\frac{\text{C}}{\text{m}^2} = \frac{\text{A}\cdot\text{s}}{\text{m}^2}\right]">C/m²</span>.<br>
-          • <span class="katex-render" data-display="false" data-latex="A">A</span>: Fläche der Kondensatorplatte in <span class="katex-render" data-display="false" data-latex="\text{m}^2">m²</span>.<br>
-          • <span class="katex-render" data-display="false" data-latex="\varepsilon_0 = 8,854 \cdot 10^{-12}\,\frac{\text{A}\cdot\text{s}}{\text{V}\cdot\text{m}}">ε0</span>: Elektrische Feldkonstante.
+          • <span class="katex-render" data-display="false" data-latex="\\sigma">σ</span> (Sigma): Flächenladungsdichte in <span class="katex-render" data-display="false" data-latex="\\left[\\frac{\\text{C}}{\\text{m}^2} = \\frac{\\text{A}\\cdot\\text{s}}{\\text{m}^2}\\right]">C/m²</span>.<br>
+          • <span class="katex-render" data-display="false" data-latex="A">A</span>: Fläche der Kondensatorplatte in <span class="katex-render" data-display="false" data-latex="\\text{m}^2">m²</span>.<br>
+          • <span class="katex-render" data-display="false" data-latex="\\varepsilon_0 = 8,854 \\cdot 10^{-12}\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{V}\\cdot\\text{m}}">ε0</span>: Elektrische Feldkonstante.
         </div>
       </div>
     `,
@@ -200,15 +200,15 @@ const SKILLS_FOLDER_3 = [
         `,
         solution: `
           <strong>Gegeben:</strong><br>
-          <span class="katex-render" data-display="false" data-latex="A = 600\,\text{cm}^2 = 600 \cdot 10^{-4}\,\text{m}^2 = 0,060\,\text{m}^2">A = 0,06 m²</span><br>
-          <span class="katex-render" data-display="false" data-latex="Q = 3,0 \cdot 10^{-8}\,\text{C}">Q = 3,0 • 10⁻⁸ C</span><br>
-          <span class="katex-render" data-display="false" data-latex="\varepsilon_0 = 8,854 \cdot 10^{-12}\,\frac{\text{A}\cdot\text{s}}{\text{V}\cdot\text{m}}">ε0</span>, <span class="katex-render" data-display="false" data-latex="\varepsilon_r = 1">εr = 1</span><br><br>
+          <span class="katex-render" data-display="false" data-latex="A = 600\\,\\text{cm}^2 = 600 \\cdot 10^{-4}\\,\\text{m}^2 = 0,060\\,\\text{m}^2">A = 0,06 m²</span><br>
+          <span class="katex-render" data-display="false" data-latex="Q = 3,0 \\cdot 10^{-8}\\,\\text{C}">Q = 3,0 • 10⁻⁸ C</span><br>
+          <span class="katex-render" data-display="false" data-latex="\\varepsilon_0 = 8,854 \\cdot 10^{-12}\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{V}\\cdot\\text{m}}">ε0</span>, <span class="katex-render" data-display="false" data-latex="\\varepsilon_r = 1">εr = 1</span><br><br>
 
           <strong>a) Flächenladungsdichte σ:</strong><br>
-          <div class="katex-render" data-display="true" data-latex="\sigma = \frac{Q}{A} = \frac{3,0 \cdot 10^{-8}\,\text{C}}{0,060\,\text{m}^2} = 5,0 \cdot 10^{-7}\,\frac{\text{C}}{\text{m}^2} = 0,50\,\frac{\mu\text{C}}{\text{m}^2}"></div><br>
+          <div class="katex-render" data-display="true" data-latex="\\sigma = \\frac{Q}{A} = \\frac{3,0 \\cdot 10^{-8}\\,\\text{C}}{0,060\\,\\text{m}^2} = 5,0 \\cdot 10^{-7}\\,\\frac{\\text{C}}{\\text{m}^2} = 0,50\\,\\frac{\\mu\\text{C}}{\\text{m}^2}"></div><br>
 
           <strong>b) Elektrische Feldstärke E:</strong><br>
-          <div class="katex-render" data-display="true" data-latex="E = \frac{\sigma}{\varepsilon_0} = \frac{5,0 \cdot 10^{-7}\,\frac{\text{A}\cdot\text{s}}{\text{m}^2}}{8,854 \cdot 10^{-12}\,\frac{\text{A}\cdot\text{s}}{\text{V}\cdot\text{m}}} \approx 56\,471\,\frac{\text{V}}{\text{m}} \approx 56,5\,\frac{\text{kV}}{\text{m}}"></div><br>
+          <div class="katex-render" data-display="true" data-latex="E = \\frac{\\sigma}{\\varepsilon_0} = \\frac{5,0 \\cdot 10^{-7}\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{m}^2}}{8,854 \\cdot 10^{-12}\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{V}\\cdot\\text{m}}} \\approx 56\\,471\\,\\frac{\\text{V}}{\\text{m}} \\approx 56,5\\,\\frac{\\text{kV}}{\\text{m}}"></div><br>
           <em>Hinweis zur Mitschrift S. 27:</em> In der handschriftlichen Mitschrift stand 565... durch Rundung & Kommastellen &ndash; die exakte physikalische Feldstärke beträgt 56,5 kV/m!
         `
       }

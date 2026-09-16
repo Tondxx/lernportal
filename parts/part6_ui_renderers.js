@@ -49,7 +49,7 @@ const KOMBI_AUFGABEN = [
       <strong>b) Coulomb-Kraft F_C:</strong><br>
       <div class="katex-render" data-display="true" data-latex="F_C = \\frac{1}{4\\pi\\varepsilon_0} \\cdot \\frac{Q'^2}{r^2} = 8,988 \\cdot 10^9 \\cdot \\frac{(6,0 \\cdot 10^{-9})^2}{(0,06)^2} \\approx 8,99 \\cdot 10^{-5}\\,\\text{N} = 0,090\\,\\text{mN}"></div>
       <strong>c) Auslenkungswinkel &alpha;:</strong><br>
-      <div class="katex-render" data-display="true" data-latex="\\tan\\alpha = \\frac{F_C}{F_g} = \\frac{8,99 \\cdot 10^{-5}\\,\\text{N}}{0,0012\\,\\text{kg} \\cdot 9,81\\,\\text{m/s}^2} = \\frac{8,99 \\cdot 10^{-5}}{0,01177} \\approx 0,007636 \\implies \\alpha \\approx 0,44^\\circ"></div>
+      <div class="katex-render" data-display="true" data-latex="\\tan\\alpha = \\frac{F_C}{F_g} = \\frac{8,99 \\cdot 10^{-5}\\,\\text{N}}{0,0012\\,\\text{kg} \\cdot 9,81\\,\\text{m/s}^2} = \\frac{8,99 \\cdot 10^{-5}}{0,01177} \\approx 0,007636 \\implies \\alpha \\approx 0,44^{\circ}"></div>
     `
   },
   {
@@ -664,6 +664,55 @@ function renderFunktionenViewHtml() {
           </div>
         </div>
 
+        <!-- TI-NSPIRE CAS WORKFLOW GUIDE -->
+        <div class="cas-guide-card" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95)); border: 1px solid #38bdf8; border-radius: 10px; padding: 1.2rem; margin: 1.2rem 0; color: #f8fafc; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 0.6rem; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="font-weight: 800; color: #38bdf8; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <span>📟</span><span>TI-Nspire CAS: Der perfekte Workflow für Messwertauswertung &amp; Regression</span>
+            </div>
+            <span style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; font-size: 0.76rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px;">Klausur-Werkzeug</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; font-size: 0.84rem; line-height: 1.5;">
+            <!-- Schritt 1 -->
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 0.85rem; border-radius: 8px; border-left: 3px solid #38bdf8;">
+              <strong style="color: #38bdf8; font-size: 0.9rem;">1. Lists &amp; Spreadsheet anlegen &amp; benennen</strong><br>
+              • Taste <code style="color:#fde047;">[doc]</code> &rarr; <code>4: Einfügen</code> &rarr; <code>6: Lists &amp; Spreadsheet</code>.<br>
+              • <strong>Kopfzeile (oberste weiße Zelle):</strong> Gib Kurznamen ein, z. B.:<br>
+              Spalte A: <code style="color:#a7f3d0;">u</code> (Spannung) | Spalte B: <code style="color:#a7f3d0;">f</code> (Kraft).<br>
+              <span style="color: #f87171; font-size: 0.78rem;">⚠️ WICHTIG: Niemals x oder y als Spaltenkopf wählen! (Sind geschützte Systemvariablen).</span>
+            </div>
+
+            <!-- Schritt 2 -->
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 0.85rem; border-radius: 8px; border-left: 3px solid #10b981;">
+              <strong style="color: #10b981; font-size: 0.9rem;">2. Formelspalte zur k-Prüfung anlegen</strong><br>
+              • Klicke in Spalte C in die <strong>graue Zeile mit dem fettgedruckten =</strong>.<br>
+              • Für <span class="katex-render" data-display="false" data-latex="F \\sim U^2">F ~ U²</span>: Formel <code style="color:#fde047;">=f / (u^2)</code> eintippen &rarr; <code style="color:#fde047;">[enter]</code>.<br>
+              • Für <span class="katex-render" data-display="false" data-latex="F \\sim 1/r^2">F ~ 1/r²</span>: Formel <code style="color:#fde047;">=f * (r^2)</code> eintippen &rarr; <code style="color:#fde047;">[enter]</code>.<br>
+              • Bei der Rückfrage stets <strong>„Spaltenreferenz“</strong> wählen.<br>
+              &rarr; Der CAS berechnet die gesamte Spalte C automatisch!
+            </div>
+
+            <!-- Schritt 3 -->
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 0.85rem; border-radius: 8px; border-left: 3px solid #f59e0b;">
+              <strong style="color: #f59e0b; font-size: 0.9rem;">3. Mittelwert k̄ &amp; Standardabweichung</strong><br>
+              • <strong>Im Calculator-Fenster:</strong> Taste <code style="color:#fde047;">[ctrl]</code>+<code style="color:#fde047;">[doc]</code> &rarr; <code>1: Calculator</code>.<br>
+              Befehl: <code style="color:#fde047;">mean(c[])</code> oder <code style="color:#fde047;">mean(k)</code> &rarr; liefert exakten Mittelwert <span class="katex-render" data-display="false" data-latex="\\bar{k}">k̄</span>.<br>
+              Befehl: <code style="color:#fde047;">stDevSamp(c[])</code> &rarr; Standardabweichung (Messfehler).<br>
+              • <strong>In Lists &amp; Spreadsheet:</strong> Taste <code style="color:#fde047;">[menu]</code> &rarr; <code>4: Statistik</code> &rarr; <code>1: Statistische Berechnungen</code> &rarr; <code>1: Statistik mit einer Variable</code>.
+            </div>
+
+            <!-- Schritt 4 -->
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 0.85rem; border-radius: 8px; border-left: 3px solid #c084fc;">
+              <strong style="color: #c084fc; font-size: 0.9rem;">4. Lineare Regression &amp; Bestimmtheitsmaß R²</strong><br>
+              • Erstelle Spalte mit linearisierter Größe, z. B. <code style="color:#a7f3d0;">u2</code> mit Formel <code style="color:#fde047;">=u^2</code>.<br>
+              • Taste <code style="color:#fde047;">[menu]</code> &rarr; <code>4: Statistik</code> &rarr; <code>1: Statistische Berechnungen</code> &rarr; <code>3: Lineare Regression (mx+b)</code>.<br>
+              • X-Liste: <code style="color:#a7f3d0;">u2</code> | Y-Liste: <code style="color:#a7f3d0;">f</code>.<br>
+              &rarr; Steigung <span class="katex-render" data-display="false" data-latex="m = \\bar{k}">m = k̄</span>, Achsenabschnitt <span class="katex-render" data-display="false" data-latex="b \\approx 0">b ≈ 0</span> und Bestimmtheitsmaß <span class="katex-render" data-display="false" data-latex="r^2 > 0{,}99">r² > 0,99</span>!
+            </div>
+          </div>
+        </div>
+
         <!-- 4-Schritte-Methode -->
         <div style="background: rgba(99, 102, 241, 0.08); border-left: 4px solid #6366f1; border-radius: 8px; padding: 1rem; margin-bottom: 1.2rem;">
           <strong style="color: #6366f1; font-size: 0.95rem;">🎯 Die 4-Schritte-Methode für die Klausur:</strong>
@@ -1054,10 +1103,16 @@ function showQuizTask(containerId, taskIdx) {
 function renderPhysikKaTeX() {
   if (typeof katex === 'undefined') return;
   document.querySelectorAll('.katex-render').forEach(el => {
-    const latex = el.getAttribute('data-latex');
+    let latex = el.getAttribute('data-latex');
     const isDisplay = el.getAttribute('data-display') !== 'false';
     if (latex) {
       try {
+        latex = latex
+          .replace(/\x0c/g, '\\f')
+          .replace(/\t/g, '\\t')
+          .replace(/\r/g, '\\r')
+          .replace(/\x08/g, '\\b')
+          .replace(/\v/g, '\\v');
         katex.render(latex, el, { displayMode: isDisplay, throwOnError: false });
       } catch (e) {
         console.log('[KaTeX Render error]:', e);
