@@ -471,11 +471,22 @@ function updateScharPlot() {
   }
 }
 
+function getCanvasThemeColors() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  return {
+    bg: isDark ? "#18181b" : "#ffffff",
+    grid: isDark ? "rgba(255, 255, 255, 0.08)" : "#e5e5ea",
+    axes: isDark ? "#71717a" : "#8e8e93",
+    ticks: isDark ? "#a1a1aa" : "#48484a"
+  };
+}
+
 // Draw Canvas for Task 3: Extrema at 0 and 2, W(1|2), d = t
 function drawTask3Canvas(a, b, c, d, t) {
   const canvas = document.getElementById('scharCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const tc = getCanvasThemeColors();
 
   const w = canvas.width;
   const h = canvas.height;
@@ -485,12 +496,12 @@ function drawTask3Canvas(a, b, c, d, t) {
   const scaleX = 48;
   const scaleY = 25;
 
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = tc.bg;
   ctx.fillRect(0, 0, w, h);
 
   // Grid
   ctx.lineWidth = 1;
-  ctx.strokeStyle = "#e2e8f0";
+  ctx.strokeStyle = tc.grid;
   ctx.beginPath();
   for (let x = -4; x <= 8; x++) {
     const sx = originX + x * scaleX;
@@ -504,14 +515,14 @@ function drawTask3Canvas(a, b, c, d, t) {
 
   // Axes
   ctx.lineWidth = 1.4;
-  ctx.strokeStyle = "#334155";
+  ctx.strokeStyle = tc.axes;
   ctx.beginPath();
   ctx.moveTo(10, originY); ctx.lineTo(w - 10, originY);
   ctx.moveTo(originX, h - 10); ctx.lineTo(originX, 10);
   ctx.stroke();
 
   // Ticks
-  ctx.fillStyle = "#334155";
+  ctx.fillStyle = tc.ticks;
   ctx.font = "9px sans-serif";
   for (let x = -3; x <= 6; x++) {
     if (x === 0) continue;
@@ -588,6 +599,7 @@ function drawNewA2Canvas(a, b, c, d, t) {
   const canvas = document.getElementById('scharCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const tc = getCanvasThemeColors();
 
   const w = canvas.width;
   const h = canvas.height;
@@ -597,12 +609,12 @@ function drawNewA2Canvas(a, b, c, d, t) {
   const scaleX = 42;
   const scaleY = 22;
 
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = tc.bg;
   ctx.fillRect(0, 0, w, h);
 
   // Grid
   ctx.lineWidth = 1;
-  ctx.strokeStyle = "#e2e8f0";
+  ctx.strokeStyle = tc.grid;
   ctx.beginPath();
   for (let x = -4; x <= 8; x++) {
     const sx = originX + x * scaleX;
@@ -616,14 +628,14 @@ function drawNewA2Canvas(a, b, c, d, t) {
 
   // Axes
   ctx.lineWidth = 1.4;
-  ctx.strokeStyle = "#334155";
+  ctx.strokeStyle = tc.axes;
   ctx.beginPath();
   ctx.moveTo(10, originY); ctx.lineTo(w - 10, originY);
   ctx.moveTo(originX, h - 10); ctx.lineTo(originX, 10);
   ctx.stroke();
 
   // Ticks
-  ctx.fillStyle = "#334155";
+  ctx.fillStyle = tc.ticks;
   ctx.font = "9px sans-serif";
   for (let x = -3; x <= 6; x++) {
     if (x === 0) continue;
@@ -679,6 +691,7 @@ function drawOrigA2Canvas(a, b, c, d, t) {
   const canvas = document.getElementById('scharCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const tc = getCanvasThemeColors();
   
   const w = canvas.width;
   const h = canvas.height;
@@ -688,11 +701,11 @@ function drawOrigA2Canvas(a, b, c, d, t) {
   const scaleX = 35;
   const scaleY = 16;
 
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = tc.bg;
   ctx.fillRect(0, 0, w, h);
 
   ctx.lineWidth = 1;
-  ctx.strokeStyle = "#e2e8f0";
+  ctx.strokeStyle = tc.grid;
   ctx.beginPath();
   for (let x = -6; x <= 8; x++) {
     const sx = originX + x * scaleX;
@@ -705,7 +718,7 @@ function drawOrigA2Canvas(a, b, c, d, t) {
   ctx.stroke();
 
   ctx.lineWidth = 1.4;
-  ctx.strokeStyle = "#334155";
+  ctx.strokeStyle = tc.axes;
   ctx.beginPath();
   ctx.moveTo(10, originY); ctx.lineTo(w - 10, originY);
   ctx.moveTo(originX, h - 10); ctx.lineTo(originX, 10);
@@ -1035,11 +1048,12 @@ function drawTrassierungCanvas() {
   const canvas = document.getElementById('trassCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const tc = getCanvasThemeColors();
 
   const w = canvas.width;
   const h = canvas.height;
 
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = tc.bg;
   ctx.fillRect(0, 0, w, h);
 
   if (currentTrassMode === 't2') {
@@ -1053,7 +1067,7 @@ function drawTrassierungCanvas() {
 
     // Grid
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "#e2e8f0";
+    ctx.strokeStyle = tc.grid;
     ctx.beginPath();
     for (let x = -2; x <= 6; x++) {
       const sx = originX + x * scaleX;
@@ -1067,14 +1081,14 @@ function drawTrassierungCanvas() {
 
     // Axes
     ctx.lineWidth = 1.4;
-    ctx.strokeStyle = "#334155";
+    ctx.strokeStyle = tc.axes;
     ctx.beginPath();
     ctx.moveTo(10, originY); ctx.lineTo(w - 10, originY);
     ctx.moveTo(originX, h - 10); ctx.lineTo(originX, 10);
     ctx.stroke();
 
     // Labels
-    ctx.fillStyle = "#334155";
+    ctx.fillStyle = tc.ticks;
     ctx.font = "9px sans-serif";
     for (let x = -1; x <= 5; x++) {
       if (x === 0) continue;
@@ -1145,7 +1159,7 @@ function drawTrassierungCanvas() {
 
     // Grid
     ctx.lineWidth = 1;
-    ctx.strokeStyle = "#e2e8f0";
+    ctx.strokeStyle = tc.grid;
     ctx.beginPath();
     for (let x = -3; x <= 8; x++) {
       const sx = originX + x * scaleX;
@@ -1159,14 +1173,14 @@ function drawTrassierungCanvas() {
 
     // Axes
     ctx.lineWidth = 1.4;
-    ctx.strokeStyle = "#334155";
+    ctx.strokeStyle = tc.axes;
     ctx.beginPath();
     ctx.moveTo(10, originY); ctx.lineTo(w - 10, originY);
     ctx.moveTo(originX, h - 10); ctx.lineTo(originX, 10);
     ctx.stroke();
 
     // Labels & ticks
-    ctx.fillStyle = "#334155";
+    ctx.fillStyle = tc.ticks;
     ctx.font = "9px sans-serif";
     for (let x = -2; x <= 6; x++) {
       if (x === 0) continue;

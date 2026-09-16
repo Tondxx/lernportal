@@ -382,10 +382,10 @@ function renderCalendarView() {
       statusBadge = '<span class="k-badge k-badge-done">✅ Geschrieben (11.09.)</span>';
       cardClass += ' cal-card-done';
     } else if (k.status === 'urgent') {
-      statusBadge = '<span class="k-badge k-badge-urgent glow-red">🚨 MORGEN (15.09.)</span>';
+      statusBadge = '<span class="k-badge k-badge-urgent">🚨 Morgen (15.09.)</span>';
       cardClass += ' cal-card-urgent';
     } else if (k.status === 'soon') {
-      statusBadge = '<span class="k-badge k-badge-soon glow-yellow">⚡ DIESEN FREITAG (18.09.)</span>';
+      statusBadge = '<span class="k-badge k-badge-soon">⚡ Diesen Freitag (18.09.)</span>';
       cardClass += ' cal-card-soon';
     } else {
       statusBadge = `<span class="k-badge k-badge-pending">KW ${k.kw}</span>`;
@@ -402,7 +402,7 @@ function renderCalendarView() {
         </div>
         <div class="cal-card-center">
           <div class="cal-card-header-row">
-            <span class="cal-course-code" style="background: ${k.color}22; color: ${k.color}; border: 1px solid ${k.color}55;">
+            <span class="cal-course-code">
               ${k.course}
             </span>
             <span class="cal-subject-title">${k.subject} <span class="cal-type-badge">${k.type}</span></span>
@@ -440,7 +440,7 @@ function renderUrgentKlausurHero() {
     <div class="urgent-hero-box">
       <div class="urgent-left">
         <div class="urgent-alert-pill">
-          <span class="pulse-dot"></span>
+          <span class="status-dot"></span>
           <strong>NÄCHSTE KLAUSUR: MORGEN!</strong>
         </div>
         <h2 class="urgent-title">🏛️ Politik-Wirtschaft (pw25-Hf)</h2>
@@ -460,7 +460,7 @@ function renderUrgentKlausurHero() {
           </div>
         </div>
         <button class="btn-hero-study" onclick="switchMainTab('politik')">
-          🔥 Jetzt sofort Politik-Klausur vorbereiten &rarr;
+          Jetzt Politik-Klausur vorbereiten &rarr;
         </button>
       </div>
     </div>

@@ -151,10 +151,19 @@ function loadLevelData() {
   });
 }
 
+function renderMatchingGraphs() {
+  const data = DATASETS[currentLevel];
+  if (!data || !data.graphs) return;
+  Object.keys(data.graphs).forEach(k => {
+    drawTextbookGraph('canvas' + k, data.graphs[k]);
+  });
+}
+
 function drawTextbookGraph(canvasId, lines = []) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   
   const w = canvas.width;
   const h = canvas.height;
@@ -165,12 +174,12 @@ function drawTextbookGraph(canvasId, lines = []) {
   const scale = 17; // 17px per unit
 
   // Clear background
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = isDark ? "#202024" : "#ffffff";
   ctx.fillRect(0, 0, w, h);
 
-  // Light blue grid
+  // Grid
   ctx.lineWidth = 1;
-  ctx.strokeStyle = "#b9e2f5";
+  ctx.strokeStyle = isDark ? "rgba(255, 255, 255, 0.08)" : "#b9e2f5";
   ctx.beginPath();
   for (let x = -4; x <= 4; x++) {
     const sx = originX + x * scale;
@@ -188,7 +197,7 @@ function drawTextbookGraph(canvasId, lines = []) {
 
   // Coordinate axes
   ctx.lineWidth = 1.3;
-  ctx.strokeStyle = "#000000";
+  ctx.strokeStyle = isDark ? "#a1a1aa" : "#1d1d1f";
   ctx.beginPath();
   // X-axis
   ctx.moveTo(3, originY); ctx.lineTo(w - 6, originY);
@@ -197,7 +206,7 @@ function drawTextbookGraph(canvasId, lines = []) {
   ctx.stroke();
 
   // Arrowheads
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = isDark ? "#a1a1aa" : "#1d1d1f";
   // X arrow
   ctx.beginPath();
   ctx.moveTo(w - 2, originY);
@@ -219,7 +228,7 @@ function drawTextbookGraph(canvasId, lines = []) {
 
   // Ticks & Numbers
   ctx.font = "8px sans-serif";
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = isDark ? "#a1a1aa" : "#1d1d1f";
   ctx.fillText("-2", originX - 2 * scale - 4, originY + 9);
   ctx.fillText("-1", originX - 1 * scale - 4, originY + 9);
   ctx.fillText("1", originX + 1 * scale - 2, originY + 9);
@@ -230,7 +239,7 @@ function drawTextbookGraph(canvasId, lines = []) {
 
   // Draw lines
   lines.forEach(line => {
-    ctx.strokeStyle = "#1d4ed8"; // Royal blue
+    ctx.strokeStyle = isDark ? "#60a5fa" : "#0071e3";
     ctx.lineWidth = 2.0;
     ctx.beginPath();
 
@@ -347,11 +356,11 @@ function checkAllMatches() {
 
     if (m === sol[i].mat && g === sol[i].graph) {
       correctCount++;
-      slotEl.style.borderColor = "#10b981";
-      slotEl.style.background = "#ecfdf5";
+      slotEl.style.borderColor = "var(--slot-correct-border)";
+      slotEl.style.background = "var(--slot-correct-bg)";
     } else {
-      slotEl.style.borderColor = "#f87171";
-      slotEl.style.background = "#fef2f2";
+      slotEl.style.borderColor = "var(--slot-incorrect-border)";
+      slotEl.style.background = "var(--slot-incorrect-bg)";
     }
   }
 
@@ -373,8 +382,8 @@ function solveAllMatches() {
     document.getElementById('sel_m_' + i).value = sol[i].mat;
     document.getElementById('sel_g_' + i).value = sol[i].graph;
     const slotEl = document.getElementById('slot-' + i);
-    slotEl.style.borderColor = "#10b981";
-    slotEl.style.background = "#ecfdf5";
+    slotEl.style.borderColor = "var(--slot-correct-border)";
+    slotEl.style.background = "var(--slot-correct-bg)";
   }
   updateCardHighlights();
   const banner = document.getElementById('resultBanner');
@@ -388,8 +397,8 @@ function resetAll() {
     document.getElementById('sel_m_' + i).value = "";
     document.getElementById('sel_g_' + i).value = "";
     const slotEl = document.getElementById('slot-' + i);
-    slotEl.style.borderColor = "#cbd5e1";
-    slotEl.style.background = "#ffffff";
+    slotEl.style.borderColor = "var(--border-subtle)";
+    slotEl.style.background = "var(--bg-subtle)";
   }
   updateCardHighlights();
   const banner = document.getElementById('resultBanner');

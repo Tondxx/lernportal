@@ -83,16 +83,16 @@ const SCHEDULE_DATA = {
 };
 
 const COURSE_COLOR_MAP = {
-  'MA11': '#38bdf8', // sky blue
-  'pw25': '#34d399', // emerald
-  'PH12': '#818cf8', // indigo
-  'de48': '#f43f5e', // rose
-  'IF13': '#a78bfa', // purple
-  'ge27': '#fbbf24', // amber
-  'ds26': '#f472b6', // pink
-  'en39': '#fb923c', // orange
-  'sp15Z': '#2dd4bf', // teal
-  'sf4': '#94a3b8'   // slate
+  'MA11': 'var(--accent-math)',
+  'pw25': 'var(--accent-politik)',
+  'PH12': 'var(--accent-physik)',
+  'de48': 'var(--accent-deutsch)',
+  'IF13': 'var(--accent-info)',
+  'ge27': 'var(--accent-history)',
+  'ds26': '#db2777',
+  'en39': 'var(--accent-english)',
+  'sp15Z': '#0d9488',
+  'sf4': '#64748b'
 };
 
 function renderTimetable() {

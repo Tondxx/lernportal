@@ -1,0 +1,28 @@
+﻿# Secrets & Credentials (NEVER COMMIT)
+.env
+.env.*
+!.env.example
+credentials.json
+iserv_config.json
+iserv_session.pkl
+iserv_cache.json
+iserv_tasks.json
+meine_mitschriften.json
+
+# Downloads, Attachments & IServ Files
+downloads/
+attachments/
+iserv_files/
+data/private/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.class
+*.log
+
+# IDE & OS files
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
