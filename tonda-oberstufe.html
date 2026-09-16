@@ -4681,6 +4681,631 @@ input[type=range]::-webkit-slider-thumb:hover {
   box-shadow: var(--card-shadow);
 }
 
+/* ==========================================================================
+   User Content & Upload System (Mitschriften, PDFs, Tafelbilder, Notizen)
+   ========================================================================== */
+
+/* Upload Modal & Category Picker */
+.upload-doc-modal {
+  max-width: 640px;
+  width: 92%;
+}
+
+.doc-viewer-modal {
+  max-width: 880px;
+  width: 95%;
+  max-height: 90vh;
+}
+
+.upload-cat-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.3rem;
+}
+
+.upload-cat-chip {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.18s ease;
+  font-family: inherit;
+}
+
+.upload-cat-chip:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.upload-cat-chip.active {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25);
+}
+
+/* Upload Dropzone */
+.upload-dropzone {
+  border: 2px dashed var(--border-medium);
+  background: var(--bg-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1.2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.upload-dropzone:hover,
+.upload-dropzone.dragover {
+  border-color: var(--accent-primary);
+  background: var(--accent-primary-bg);
+}
+
+.dropzone-prompt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.dropzone-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.dropzone-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.dropzone-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.dropzone-file-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  gap: 0.8rem;
+}
+
+.preview-file-icon {
+  font-size: 1.8rem;
+}
+
+.preview-file-info {
+  text-align: left;
+  flex: 1;
+  overflow: hidden;
+}
+
+.preview-file-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preview-file-size {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.preview-img-thumb {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+}
+
+.btn-remove-file {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius-pill);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-remove-file:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* User Content Section in Subject Views */
+.user-content-section {
+  margin-top: 2rem;
+  padding-top: 1.8rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.user-content-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.user-content-badge-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.user-doc-count-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-primary-bg);
+  color: var(--accent-primary);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.user-content-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0.3rem 0 0 0;
+  line-height: 1.45;
+  max-width: 680px;
+}
+
+.btn-upload-accent {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0.55rem 1.15rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.28);
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btn-upload-accent:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+}
+
+/* User Document Grid & Cards */
+.user-docs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.1rem;
+}
+
+.user-doc-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: var(--card-shadow);
+}
+
+.user-doc-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-medium);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.user-doc-card-body {
+  padding: 1.1rem 1.2rem;
+}
+
+.doc-card-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  gap: 0.5rem;
+}
+
+.user-doc-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.doc-card-date {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.doc-card-thumb-box {
+  width: 100%;
+  height: 140px;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.8rem;
+  background: var(--bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.doc-card-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.user-doc-card:hover .doc-card-thumb-img {
+  transform: scale(1.03);
+}
+
+.doc-card-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.doc-card-type-icon {
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+
+.doc-card-title {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.doc-card-filename {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  word-break: break-all;
+}
+
+.doc-card-notes-snippet {
+  background: var(--bg-subtle);
+  border-radius: 6px;
+  padding: 0.45rem 0.65rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  border-left: 3px solid var(--accent-primary);
+  margin-top: 0.5rem;
+}
+
+.user-doc-card-footer {
+  padding: 0.75rem 1.2rem;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.btn-doc-view {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-doc-view:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.btn-doc-dl {
+  background: var(--accent-primary-bg);
+  border: 1px solid rgba(0, 113, 227, 0.2);
+  color: var(--accent-primary);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-doc-dl:hover {
+  background: var(--accent-primary);
+  color: #ffffff;
+}
+
+.btn-doc-del {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.6rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-doc-del:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.btn-doc-del-modal {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.btn-doc-del-modal:hover {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* Empty State Card */
+.user-docs-empty-card {
+  background: var(--bg-card);
+  border: 2px dashed var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.user-docs-empty-card:hover {
+  border-color: var(--accent-primary);
+  background: var(--bg-subtle);
+}
+
+.user-docs-empty-card .empty-icon {
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.75;
+}
+
+.user-docs-empty-card .empty-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.user-docs-empty-card .empty-desc {
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  max-width: 480px;
+  margin: 0 auto 1.2rem auto;
+  line-height: 1.45;
+}
+
+.btn-empty-upload {
+  background: var(--accent-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0.6rem 1.3rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3);
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.btn-empty-upload:hover {
+  transform: translateY(-1px);
+}
+
+/* Dedicated Physics Uploads View */
+.physik-uploads-hero-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1.6rem;
+  margin-bottom: 1.2rem;
+  box-shadow: var(--card-shadow);
+}
+
+.quick-drop-inline {
+  margin-top: 1.2rem;
+  padding: 0.9rem 1.2rem;
+  background: var(--bg-subtle);
+  border: 1px dashed var(--border-medium);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quick-drop-inline:hover {
+  background: var(--accent-primary-bg);
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+}
+
+.doc-filter-bar {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.4rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.doc-filter-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 0.4rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.doc-filter-pill:hover {
+  background: var(--bg-subtle);
+  color: var(--text-primary);
+}
+
+.doc-filter-pill.active {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: #ffffff;
+}
+
+/* Viewer Modal Content Elements */
+.viewer-img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 65vh;
+  overflow: auto;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+}
+
+.viewer-full-img {
+  max-width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.viewer-pdf-container {
+  width: 100%;
+}
+
+.viewer-pdf-frame {
+  width: 100%;
+  height: 60vh;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background: #ffffff;
+}
+
+.btn-pdf-external-link {
+  font-size: 0.78rem;
+  color: var(--accent-primary);
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  background: var(--accent-primary-bg);
+}
+
+.btn-pdf-external-link:hover {
+  text-decoration: underline;
+}
+
+.viewer-file-generic-box {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  background: var(--bg-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.btn-doc-download-primary {
+  margin-top: 1rem;
+  background: var(--accent-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0.6rem 1.4rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.viewer-notes-callout {
+  margin-top: 1.2rem;
+  padding: 1rem 1.2rem;
+  background: var(--bg-subtle);
+  border-left: 4px solid #10b981;
+  border-radius: 6px;
+}
+
+.btn-upload-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btn-upload-nav:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+}
+
 </style>
 </head>
 <body>
@@ -4861,7 +5486,7 @@ input[type=range]::-webkit-slider-thumb:hover {
       <!-- Populated dynamically by renderFachDetail() -->
     </div>
 
-    <!-- Segmented Tab Bar: Themen vs IServ-Dateien -->
+    <!-- Segmented Tab Bar: Themen vs IServ-Dateien vs Eigene Uploads -->
     <div class="fach-subtabs-nav">
       <button class="fach-subtab-btn active" id="btnSubTabThemen" onclick="switchFachSubTab('themen')">
         <span>📚</span>
@@ -4871,6 +5496,11 @@ input[type=range]::-webkit-slider-thumb:hover {
         <span>📁</span>
         <span>IServ Kursordner &amp; Dokumente</span>
         <span class="subtab-pill" id="fachFilesBadge">IServ</span>
+      </button>
+      <button class="fach-subtab-btn" id="btnSubTabUserDocs" onclick="switchFachSubTab('user-docs')">
+        <span>📤</span>
+        <span>Eigene Uploads &amp; Mitschriften</span>
+        <span class="subtab-pill" id="fachUserDocsBadge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">0</span>
       </button>
     </div>
 
@@ -4940,6 +5570,11 @@ input[type=range]::-webkit-slider-thumb:hover {
           </p>
         </div>
       </div>
+    </div>
+
+    <!-- Panel 3: Eigene Uploads & Mitschriften -->
+    <div id="fachUserDocsPanel" class="fach-user-docs-panel" style="display: none; padding-top: 0.5rem;">
+      <!-- Populated dynamically by renderSubjectUserDocuments() -->
     </div>
   </div>
 
@@ -6624,6 +7259,126 @@ input[type=range]::-webkit-slider-thumb:hover {
       <div id="unlockFeedback" style="display: none; margin-top: 0.6rem; color: var(--accent-urgent); font-size: 0.8rem;"></div>
       <div style="margin-top: 1.2rem; font-size: 0.72rem; color: var(--text-muted);">
         Tipp: Ohne PIN bleiben allgemeine Fächer und Mathe-Tools zugänglich.
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: User Document & Content Upload Modal -->
+  <div class="portal-modal-backdrop" id="uploadDocModal" style="display: none;" onclick="closeUploadModal(event)">
+    <div class="portal-modal-content upload-doc-modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <span class="p-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">📁 Eigene Inhalte &amp; Mitschriften</span>
+          <h3 style="margin-top: 0.45rem; font-size: 1.2rem;">Neues Dokument / Notiz hochladen</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeUploadModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="userDocUploadForm" onsubmit="saveUploadDocument(event)">
+          <!-- Fach Selector -->
+          <div class="form-group">
+            <label class="form-label" for="uploadDocFachSelect">Schulfach zuordnen:</label>
+            <select id="uploadDocFachSelect" class="portal-input" style="font-weight: 600; cursor: pointer;">
+              <!-- dynamically populated -->
+            </select>
+          </div>
+
+          <!-- Document Title -->
+          <div class="form-group">
+            <label class="form-label" for="uploadDocTitle">Titel / Bezeichnung:</label>
+            <input type="text" id="uploadDocTitle" class="portal-input" placeholder="z. B. Zusammenfassung Elektrisches Feld oder AB04 Musterlösung" required>
+          </div>
+
+          <!-- Category Selection Chips -->
+          <div class="form-group">
+            <label class="form-label">Kategorie / Tag:</label>
+            <div class="upload-cat-picker">
+              <button type="button" class="upload-cat-chip active" data-cat="mitschrift" onclick="selectUploadCategory('mitschrift')">
+                📝 Mitschrift
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="zusammenfassung" onclick="selectUploadCategory('zusammenfassung')">
+                📑 Zusammenfassung
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="uebung" onclick="selectUploadCategory('uebung')">
+                🎯 Übungsblatt / Rechnungen
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="klausurtipp" onclick="selectUploadCategory('klausurtipp')">
+                💡 Klausurtipp
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="formeln" onclick="selectUploadCategory('formeln')">
+                📐 Formelsammlung
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="sonstiges" onclick="selectUploadCategory('sonstiges')">
+                📎 Sonstiges
+              </button>
+            </div>
+          </div>
+
+          <!-- Drag and Drop Dropzone -->
+          <div class="form-group">
+            <label class="form-label">Datei anhängen (PDF, Bild, Scan oder Text):</label>
+            <div class="upload-dropzone" id="uploadDocDropzone" onclick="document.getElementById('uploadDocFileInput').click()">
+              <input type="file" id="uploadDocFileInput" style="display: none;" accept=".pdf,image/*,.txt,.md,.doc,.docx">
+              <div id="dropzonePrompt" class="dropzone-prompt">
+                <div class="dropzone-icon">📥</div>
+                <div class="dropzone-title">Dateien hierhin ziehen oder klicken zum Auswählen</div>
+                <div class="dropzone-sub">PDFs, Handyfotos von Tafelbildern, Mitschriften, Word oder Text (max. 45 MB)</div>
+              </div>
+              <div id="dropzoneFilePreview" class="dropzone-file-preview" style="display: none;" onclick="event.stopPropagation()">
+                <div class="preview-file-icon" id="previewFileIcon">📄</div>
+                <div class="preview-file-info">
+                  <div class="preview-file-name" id="previewFileName">datei.pdf</div>
+                  <div class="preview-file-size" id="previewFileSize">1.2 MB</div>
+                </div>
+                <img id="previewImageThumb" class="preview-img-thumb" style="display: none;" alt="Vorschau" />
+                <button type="button" class="btn-remove-file" onclick="removeSelectedFile(event)" title="Datei entfernen">✕ Entfernen</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Personal Notes / Explanation -->
+          <div class="form-group">
+            <label class="form-label" for="uploadDocNotes">Eigene Notizen, Erklärungen &amp; Klausurtipps (optional):</label>
+            <textarea id="uploadDocNotes" class="portal-input" rows="3" placeholder="Schreibe hier wichtige Formeln, Fehlerquellen, Merksätze oder eigene Anmerkungen hinein..."></textarea>
+          </div>
+
+          <div id="uploadDocFeedback" style="display:none; margin-top:0.6rem; font-size:0.85rem; font-weight: 600;"></div>
+
+          <div class="modal-footer" style="padding: 1rem 0 0 0; border-top: 1px solid var(--border-subtle); margin-top: 1rem;">
+            <button type="button" class="btn-back-nav" onclick="closeUploadModal()">Abbrechen</button>
+            <button type="submit" class="btn-cal-action" id="btnSaveUploadDoc">💾 Dokument speichern</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: Document Viewer Modal -->
+  <div class="portal-modal-backdrop" id="userDocViewerModal" style="display: none;" onclick="closeDocViewer(event)">
+    <div class="portal-modal-content doc-viewer-modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <span class="user-doc-badge" id="viewerDocCategory">Mitschrift</span>
+            <span class="p-badge" id="viewerDocFach" style="background: var(--bg-subtle); color: var(--text-secondary);">Fach</span>
+          </div>
+          <h3 id="viewerDocTitle" style="margin-top: 0.45rem; font-size: 1.25rem;">Dokumententitel</h3>
+          <div id="viewerDocMeta" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;"></div>
+        </div>
+        <button class="modal-close-btn" onclick="closeDocViewer()">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 1rem 1.2rem;">
+        <div id="viewerDocContent">
+          <!-- Dynamically filled with image, PDF, or text viewer -->
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cal-action" id="viewerBtnDownload">⬇️ Herunterladen</button>
+        <button class="btn-doc-del-modal" id="viewerBtnDelete">🗑️ Löschen</button>
+        <button class="btn-back-nav" onclick="closeDocViewer()">Schließen</button>
       </div>
     </div>
   </div>
@@ -9421,6 +10176,1038 @@ window.addEventListener('DOMContentLoaded', () => {
 
 </script>
   <script>
+// --- user_content.js ---
+// =========================================================================
+// user_content.js - Persistenter Dokumenten- & Content-Upload für alle Fächer
+// Speichert Mitschriften, Zusammenfassungen, Tafelbilder, PDFs und Notizen
+// 100% Client-Side via IndexedDB (Funktioniert lokal und auf GitHub Pages)
+// =========================================================================
+
+const USER_CONTENT_CATEGORIES = {
+  mitschrift: { id: 'mitschrift', label: '📝 Mitschrift', color: '#0284c7', bg: 'rgba(2, 132, 199, 0.12)' },
+  zusammenfassung: { id: 'zusammenfassung', label: '📑 Zusammenfassung', color: '#10b981', bg: 'rgba(16, 185, 129, 0.12)' },
+  uebung: { id: 'uebung', label: '🎯 Übung / Blatt', color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.12)' },
+  klausurtipp: { id: 'klausurtipp', label: '💡 Klausurtipp', color: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.12)' },
+  formeln: { id: 'formeln', label: '📐 Formelsammlung', color: '#06b6d4', bg: 'rgba(6, 182, 212, 0.12)' },
+  sonstiges: { id: 'sonstiges', label: '📎 Sonstiges', color: '#64748b', bg: 'rgba(100, 116, 139, 0.12)' }
+};
+
+// --- 1. INDEXEDDB DATABASE WRAPPER ---
+class UserContentDB {
+  constructor() {
+    this.dbName = 'LernportalUserDB';
+    this.dbVersion = 1;
+    this.storeName = 'documents';
+    this.db = null;
+    this.isReady = false;
+    this.initPromise = this.init();
+  }
+
+  async init() {
+    if (this.isReady && this.db) return this.db;
+
+    return new Promise((resolve, reject) => {
+      if (!window.indexedDB) {
+        console.warn('IndexedDB nicht unterstützt - Fallback auf LocalStorage');
+        this.isReady = true;
+        resolve(null);
+        return;
+      }
+
+      const request = window.indexedDB.open(this.dbName, this.dbVersion);
+
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains(this.storeName)) {
+          const store = db.createObjectStore(this.storeName, { keyPath: 'id' });
+          store.createIndex('fachId', 'fachId', { unique: false });
+          store.createIndex('category', 'category', { unique: false });
+          store.createIndex('createdAt', 'createdAt', { unique: false });
+        }
+      };
+
+      request.onsuccess = (event) => {
+        this.db = event.target.result;
+        this.isReady = true;
+        resolve(this.db);
+      };
+
+      request.onerror = (event) => {
+        console.error('IndexedDB Fehler beim Öffnen:', event.target.error);
+        this.isReady = true;
+        resolve(null);
+      };
+    });
+  }
+
+  async addDocument(doc) {
+    await this.initPromise;
+    if (!doc.id) {
+      doc.id = 'doc_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
+    }
+    if (!doc.createdAt) {
+      doc.createdAt = new Date().toISOString();
+    }
+    doc.updatedAt = new Date().toISOString();
+
+    if (this.db) {
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction([this.storeName], 'readwrite');
+        const store = tx.objectStore(this.storeName);
+        const req = store.put(doc);
+        req.onsuccess = () => resolve(doc);
+        req.onerror = (e) => reject(e.target.error);
+      });
+    } else {
+      // Fallback
+      const list = this._getFallbackList();
+      list.push(doc);
+      this._saveFallbackList(list);
+      return doc;
+    }
+  }
+
+  async updateDocument(id, updates) {
+    await this.initPromise;
+    const doc = await this.getDocument(id);
+    if (!doc) throw new Error('Dokument nicht gefunden: ' + id);
+
+    const updated = { ...doc, ...updates, updatedAt: new Date().toISOString() };
+    if (this.db) {
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction([this.storeName], 'readwrite');
+        const store = tx.objectStore(this.storeName);
+        const req = store.put(updated);
+        req.onsuccess = () => resolve(updated);
+        req.onerror = (e) => reject(e.target.error);
+      });
+    } else {
+      const list = this._getFallbackList().map(d => d.id === id ? updated : d);
+      this._saveFallbackList(list);
+      return updated;
+    }
+  }
+
+  async deleteDocument(id) {
+    await this.initPromise;
+    if (this.db) {
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction([this.storeName], 'readwrite');
+        const store = tx.objectStore(this.storeName);
+        const req = store.delete(id);
+        req.onsuccess = () => resolve(true);
+        req.onerror = (e) => reject(e.target.error);
+      });
+    } else {
+      const list = this._getFallbackList().filter(d => d.id !== id);
+      this._saveFallbackList(list);
+      return true;
+    }
+  }
+
+  async getDocument(id) {
+    await this.initPromise;
+    if (this.db) {
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction([this.storeName], 'readonly');
+        const store = tx.objectStore(this.storeName);
+        const req = store.get(id);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = (e) => reject(e.target.error);
+      });
+    } else {
+      const list = this._getFallbackList();
+      return list.find(d => d.id === id) || null;
+    }
+  }
+
+  async getDocumentsByFach(fachId) {
+    await this.initPromise;
+    if (this.db) {
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction([this.storeName], 'readonly');
+        const store = tx.objectStore(this.storeName);
+        const index = store.index('fachId');
+        const req = index.getAll(fachId);
+        req.onsuccess = () => {
+          const docs = req.result || [];
+          docs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          resolve(docs);
+        };
+        req.onerror = (e) => reject(e.target.error);
+      });
+    } else {
+      const list = this._getFallbackList();
+      const filtered = list.filter(d => d.fachId === fachId);
+      filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      return filtered;
+    }
+  }
+
+  async getAllDocuments() {
+    await this.initPromise;
+    if (this.db) {
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction([this.storeName], 'readonly');
+        const store = tx.objectStore(this.storeName);
+        const req = store.getAll();
+        req.onsuccess = () => {
+          const docs = req.result || [];
+          docs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+          resolve(docs);
+        };
+        req.onerror = (e) => reject(e.target.error);
+      });
+    } else {
+      const list = this._getFallbackList();
+      list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      return list;
+    }
+  }
+
+  async getCountByFach(fachId) {
+    const docs = await this.getDocumentsByFach(fachId);
+    return docs.length;
+  }
+
+  _getFallbackList() {
+    try {
+      const raw = localStorage.getItem('lernportal_user_docs_fallback');
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  _saveFallbackList(list) {
+    try {
+      localStorage.setItem('lernportal_user_docs_fallback', JSON.stringify(list));
+    } catch (e) {
+      console.warn('LocalStorage voll oder gesperrt:', e);
+    }
+  }
+}
+
+const userDB = new UserContentDB();
+
+// --- 2. UPLOAD STATE & CONTROLLER ---
+let currentUploadFile = null;
+let currentUploadFileDataUrl = null;
+let selectedUploadCategory = 'mitschrift';
+let activeUploadFachId = 'physik';
+let currentActiveViewerDocId = null;
+let currentFachFilterCat = 'all';
+
+// Open Upload Modal
+function openUploadModal(fachId, defaultCategory = 'mitschrift') {
+  activeUploadFachId = fachId || (typeof navState !== 'undefined' && navState.currentFach) || 'physik';
+  selectedUploadCategory = defaultCategory;
+  currentUploadFile = null;
+  currentUploadFileDataUrl = null;
+
+  const modal = document.getElementById('uploadDocModal');
+  if (!modal) return;
+
+  // Populate Fach select
+  const select = document.getElementById('uploadDocFachSelect');
+  if (select) {
+    select.innerHTML = '';
+    const faecherList = (typeof FAECHER_DATA !== 'undefined') ? Object.values(FAECHER_DATA) : [
+      { id: 'physik', name: 'Physik eA (PH11)' },
+      { id: 'mathe', name: 'Mathematik eA (MA11)' },
+      { id: 'politik', name: 'Politik-Wirtschaft (PO11)' },
+      { id: 'geschichte', name: 'Geschichte (GE11)' },
+      { id: 'deutsch', name: 'Deutsch (DE11)' },
+      { id: 'chemie', name: 'Chemie (CH11)' },
+      { id: 'biologie', name: 'Biologie (BI11)' },
+      { id: 'englisch', name: 'Englisch (EN11)' },
+      { id: 'informatik', name: 'Informatik (IF11)' }
+    ];
+
+    faecherList.forEach(f => {
+      const opt = document.createElement('option');
+      opt.value = f.id;
+      opt.textContent = `${f.name || f.id} ${f.courseCode ? '(' + f.courseCode + ')' : ''}`;
+      if (f.id === activeUploadFachId) opt.selected = true;
+      select.appendChild(opt);
+    });
+  }
+
+  // Reset inputs
+  const titleInput = document.getElementById('uploadDocTitle');
+  if (titleInput) titleInput.value = '';
+
+  const notesInput = document.getElementById('uploadDocNotes');
+  if (notesInput) notesInput.value = '';
+
+  const fileInput = document.getElementById('uploadDocFileInput');
+  if (fileInput) fileInput.value = '';
+
+  // Reset dropzone display
+  resetUploadDropzoneUI();
+
+  // Highlight category
+  selectUploadCategory(selectedUploadCategory);
+
+  // Clear feedback
+  const feedback = document.getElementById('uploadDocFeedback');
+  if (feedback) {
+    feedback.style.display = 'none';
+    feedback.textContent = '';
+  }
+
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeUploadModal(event) {
+  if (event && event.target !== event.currentTarget) return;
+  const modal = document.getElementById('uploadDocModal');
+  if (modal) modal.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function selectUploadCategory(catId) {
+  selectedUploadCategory = catId;
+  document.querySelectorAll('.upload-cat-chip').forEach(chip => {
+    if (chip.getAttribute('data-cat') === catId) {
+      chip.classList.add('active');
+    } else {
+      chip.classList.remove('active');
+    }
+  });
+}
+
+function resetUploadDropzoneUI() {
+  const dropPrompt = document.getElementById('dropzonePrompt');
+  const filePreview = document.getElementById('dropzoneFilePreview');
+  if (dropPrompt) dropPrompt.style.display = 'flex';
+  if (filePreview) filePreview.style.display = 'none';
+}
+
+function setupDropzoneEvents() {
+  const dropzone = document.getElementById('uploadDocDropzone');
+  const fileInput = document.getElementById('uploadDocFileInput');
+  if (!dropzone || !fileInput) return;
+
+  ['dragenter', 'dragover'].forEach(name => {
+    dropzone.addEventListener(name, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.add('dragover');
+    });
+  });
+
+  ['dragleave', 'drop'].forEach(name => {
+    dropzone.addEventListener(name, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropzone.classList.remove('dragover');
+    });
+  });
+
+  dropzone.addEventListener('drop', (e) => {
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      handleSelectedFile(files[0]);
+    }
+  });
+
+  fileInput.addEventListener('change', (e) => {
+    if (fileInput.files && fileInput.files.length > 0) {
+      handleSelectedFile(fileInput.files[0]);
+    }
+  });
+}
+
+function handleSelectedFile(file) {
+  if (!file) return;
+
+  // Max 45 MB check
+  if (file.size > 45 * 1024 * 1024) {
+    alert('Die ausgewählte Datei ist sehr groß (> 45 MB). Bitte wähle eine Datei unter 45 MB, um eine optimale Performance zu gewährleisten.');
+    return;
+  }
+
+  currentUploadFile = file;
+
+  // Auto-fill title if empty
+  const titleInput = document.getElementById('uploadDocTitle');
+  if (titleInput && !titleInput.value.trim()) {
+    // Remove extension for title
+    const nameWithoutExt = file.name.replace(/\.[^/.]+$/, '');
+    titleInput.value = nameWithoutExt;
+  }
+
+  const dropPrompt = document.getElementById('dropzonePrompt');
+  const filePreview = document.getElementById('dropzoneFilePreview');
+  const fileNameEl = document.getElementById('previewFileName');
+  const fileSizeEl = document.getElementById('previewFileSize');
+  const fileIconEl = document.getElementById('previewFileIcon');
+  const imgThumbEl = document.getElementById('previewImageThumb');
+
+  if (dropPrompt) dropPrompt.style.display = 'none';
+  if (filePreview) filePreview.style.display = 'flex';
+  if (fileNameEl) fileNameEl.textContent = file.name;
+  if (fileSizeEl) fileSizeEl.textContent = formatBytes(file.size);
+
+  const isImg = file.type.startsWith('image/');
+  const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+
+  if (fileIconEl) {
+    if (isImg) fileIconEl.textContent = '🖼️';
+    else if (isPdf) fileIconEl.textContent = '📄';
+    else fileIconEl.textContent = '📝';
+  }
+
+  // Read as Data URL
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    currentUploadFileDataUrl = e.target.result;
+    if (isImg && imgThumbEl) {
+      imgThumbEl.src = currentUploadFileDataUrl;
+      imgThumbEl.style.display = 'block';
+    } else if (imgThumbEl) {
+      imgThumbEl.style.display = 'none';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeSelectedFile(event) {
+  if (event) event.stopPropagation();
+  currentUploadFile = null;
+  currentUploadFileDataUrl = null;
+  const fileInput = document.getElementById('uploadDocFileInput');
+  if (fileInput) fileInput.value = '';
+  resetUploadDropzoneUI();
+}
+
+async function saveUploadDocument(event) {
+  if (event) event.preventDefault();
+
+  const titleInput = document.getElementById('uploadDocTitle');
+  const notesInput = document.getElementById('uploadDocNotes');
+  const fachSelect = document.getElementById('uploadDocFachSelect');
+  const saveBtn = document.getElementById('btnSaveUploadDoc');
+  const feedback = document.getElementById('uploadDocFeedback');
+
+  const title = (titleInput && titleInput.value.trim()) || (currentUploadFile ? currentUploadFile.name : 'Neues Dokument');
+  const notes = (notesInput && notesInput.value.trim()) || '';
+  const fachId = fachSelect ? fachSelect.value : activeUploadFachId;
+
+  if (!title && !currentUploadFile && !notes) {
+    alert('Bitte gib mindestens einen Titel, eine Notiz oder wähle eine Datei aus!');
+    return;
+  }
+
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '⏳ Speichern...';
+  }
+
+  try {
+    const newDoc = {
+      fachId: fachId,
+      title: title,
+      category: selectedUploadCategory || 'mitschrift',
+      notes: notes,
+      fileName: currentUploadFile ? currentUploadFile.name : null,
+      fileType: currentUploadFile ? currentUploadFile.type : (notes ? 'text/plain' : null),
+      fileSize: currentUploadFile ? currentUploadFile.size : (notes ? new Blob([notes]).size : 0),
+      fileData: currentUploadFileDataUrl || null,
+      createdAt: new Date().toISOString()
+    };
+
+    await userDB.addDocument(newDoc);
+
+    if (feedback) {
+      feedback.style.display = 'block';
+      feedback.style.color = '#10b981';
+      feedback.textContent = '✓ Erfolgreich im Fach gespeichert!';
+    }
+
+    setTimeout(() => {
+      closeUploadModal();
+
+      // Refresh corresponding views
+      if (typeof renderFachDetail === 'function' && typeof navState !== 'undefined' && navState.currentFach === fachId) {
+        renderFachDetail(fachId);
+      } else if (fachId === 'physik' && typeof renderPhysikPortal === 'function') {
+        renderPhysikPortal();
+      }
+
+      // Update badge counts
+      updateSubjectDocumentBadge(fachId);
+    }, 400);
+
+  } catch (err) {
+    console.error('Fehler beim Speichern des Dokuments:', err);
+    if (feedback) {
+      feedback.style.display = 'block';
+      feedback.style.color = '#ef4444';
+      feedback.textContent = 'Fehler beim Speichern: ' + err.message;
+    }
+  } finally {
+    if (saveBtn) {
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = '💾 Dokument speichern';
+    }
+  }
+}
+
+// --- 3. DOCUMENT VIEWER MODAL ---
+async function openDocViewer(docId) {
+  try {
+    const doc = await userDB.getDocument(docId);
+    if (!doc) {
+      alert('Dokument konnte nicht geladen werden.');
+      return;
+    }
+
+    currentActiveViewerDocId = docId;
+    const modal = document.getElementById('userDocViewerModal');
+    if (!modal) return;
+
+    // Header Meta
+    const titleEl = document.getElementById('viewerDocTitle');
+    const catEl = document.getElementById('viewerDocCategory');
+    const fachEl = document.getElementById('viewerDocFach');
+    const metaEl = document.getElementById('viewerDocMeta');
+
+    if (titleEl) titleEl.textContent = doc.title;
+    
+    const catInfo = USER_CONTENT_CATEGORIES[doc.category] || USER_CONTENT_CATEGORIES.sonstiges;
+    if (catEl) {
+      catEl.textContent = catInfo.label;
+      catEl.style.color = catInfo.color;
+      catEl.style.backgroundColor = catInfo.bg;
+      catEl.style.borderColor = catInfo.color + '44';
+    }
+
+    const fachData = (typeof FAECHER_DATA !== 'undefined' && FAECHER_DATA[doc.fachId]) ? FAECHER_DATA[doc.fachId].name : doc.fachId.toUpperCase();
+    if (fachEl) fachEl.textContent = '📚 ' + fachData;
+
+    const dateStr = formatDate(doc.createdAt);
+    const sizeStr = doc.fileSize ? formatBytes(doc.fileSize) : '';
+    if (metaEl) metaEl.textContent = `Hochgeladen: ${dateStr} ${sizeStr ? '• ' + sizeStr : ''}`;
+
+    // Content Display
+    const contentBox = document.getElementById('viewerDocContent');
+    if (contentBox) {
+      contentBox.innerHTML = '';
+
+      const isImg = doc.fileType && doc.fileType.startsWith('image/');
+      const isPdf = doc.fileType === 'application/pdf' || (doc.fileName && doc.fileName.toLowerCase().endsWith('.pdf'));
+
+      if (isImg && doc.fileData) {
+        contentBox.innerHTML = `
+          <div class="viewer-img-container">
+            <img src="${doc.fileData}" alt="${escapeHtml(doc.title)}" class="viewer-full-img" />
+          </div>
+        `;
+      } else if (isPdf && doc.fileData) {
+        contentBox.innerHTML = `
+          <div class="viewer-pdf-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; padding: 0.4rem 0.6rem; background: var(--bg-subtle); border-radius: 6px;">
+              <span style="font-size: 0.82rem; color: var(--text-secondary);">📄 Eingebettetes PDF: <strong>${escapeHtml(doc.fileName || doc.title)}</strong></span>
+              <a href="${doc.fileData}" target="_blank" class="btn-pdf-external-link">↗️ In neuem Tab öffnen</a>
+            </div>
+            <iframe src="${doc.fileData}" class="viewer-pdf-frame" title="${escapeHtml(doc.title)}"></iframe>
+          </div>
+        `;
+      } else if (doc.fileData) {
+        // Other file type
+        contentBox.innerHTML = `
+          <div class="viewer-file-generic-box">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">📎</div>
+            <h3>${escapeHtml(doc.fileName || doc.title)}</h3>
+            <p style="color: var(--text-secondary); font-size: 0.88rem;">${formatBytes(doc.fileSize)} • ${escapeHtml(doc.fileType || 'Datei')}</p>
+            <button class="btn-doc-download-primary" onclick="downloadCurrentViewerDoc()">
+              ⬇️ Datei herunterladen (${escapeHtml(doc.fileName)})
+            </button>
+          </div>
+        `;
+      } else {
+        // Pure text / notes
+        contentBox.innerHTML = `
+          <div class="viewer-text-only-box">
+            <div style="font-size: 1.5rem; margin-bottom: 0.4rem;">📝</div>
+            <p style="color: var(--text-secondary); font-size: 0.85rem;">Persönliche Text-Mitschrift</p>
+          </div>
+        `;
+      }
+
+      // Render Notes Section if exists
+      if (doc.notes && doc.notes.trim()) {
+        const notesBox = document.createElement('div');
+        notesBox.className = 'viewer-notes-callout';
+        notesBox.innerHTML = `
+          <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
+            <span>💬</span><span>Deine persönlichen Notizen &amp; Klausurtipps:</span>
+          </div>
+          <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; white-space: pre-wrap;">${escapeHtml(doc.notes)}</div>
+        `;
+        contentBox.appendChild(notesBox);
+      }
+    }
+
+    // Download Button setup
+    const dlBtn = document.getElementById('viewerBtnDownload');
+    if (dlBtn) {
+      if (doc.fileData) {
+        dlBtn.style.display = 'inline-flex';
+        dlBtn.onclick = () => downloadDoc(doc);
+      } else {
+        dlBtn.style.display = 'none';
+      }
+    }
+
+    // Delete Button setup
+    const delBtn = document.getElementById('viewerBtnDelete');
+    if (delBtn) {
+      delBtn.onclick = () => deleteDocWithConfirm(doc.id, doc.fachId);
+    }
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+  } catch (err) {
+    console.error('Fehler beim Anzeigen:', err);
+    alert('Dokument konnte nicht angezeigt werden: ' + err.message);
+  }
+}
+
+function closeDocViewer(event) {
+  if (event && event.target !== event.currentTarget) return;
+  const modal = document.getElementById('userDocViewerModal');
+  if (modal) modal.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function downloadDoc(doc) {
+  if (!doc || !doc.fileData) {
+    alert('Für dieses Element ist keine Datei zum Herunterladen hinterlegt.');
+    return;
+  }
+  const link = document.createElement('a');
+  link.href = doc.fileData;
+  link.download = doc.fileName || `${doc.title.replace(/[^a-zA-Z0-9_-]/g, '_')}.bin`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function downloadCurrentViewerDoc() {
+  if (!currentActiveViewerDocId) return;
+  userDB.getDocument(currentActiveViewerDocId).then(doc => {
+    if (doc) downloadDoc(doc);
+  });
+}
+
+async function deleteDocWithConfirm(id, fachId) {
+  if (!confirm('Möchtest du dieses Dokument wirklich unwiderruflich löschen?')) {
+    return;
+  }
+
+  try {
+    await userDB.deleteDocument(id);
+    closeDocViewer();
+
+    // Refresh views
+    if (typeof renderFachDetail === 'function' && typeof navState !== 'undefined' && navState.currentFach === fachId) {
+      renderFachDetail(fachId);
+    } else if (fachId === 'physik' && typeof renderPhysikPortal === 'function') {
+      renderPhysikPortal();
+    }
+    updateSubjectDocumentBadge(fachId);
+  } catch (err) {
+    console.error('Fehler beim Löschen:', err);
+    alert('Fehler beim Löschen: ' + err.message);
+  }
+}
+
+// --- 4. SUBJECT VIEW RENDERERS ---
+
+// Render the user documents section inside any subject view (Mathe, Politik, etc.)
+async function renderSubjectUserDocuments(fachId, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  const docs = await userDB.getDocumentsByFach(fachId);
+
+  let html = `
+    <div class="user-content-section">
+      <div class="user-content-header-bar">
+        <div class="user-content-title-box">
+          <div class="user-content-badge-title">
+            <span>📁</span>
+            <span>Meine Dokumente &amp; Mitschriften</span>
+            <span class="user-doc-count-pill">${docs.length}</span>
+          </div>
+          <p class="user-content-subtitle">
+            Hier kannst du deine eigenen Mitschriften, Zusammenfassungen, Tafelbild-Fotos oder Arbeitsblätter hochladen und jederzeit abrufen.
+          </p>
+        </div>
+        <div class="user-content-action-buttons">
+          <button class="btn-upload-accent" onclick="openUploadModal('${fachId}')">
+            <span>➕</span><span>Dokument hochladen</span>
+          </button>
+        </div>
+      </div>
+  `;
+
+  if (docs.length === 0) {
+    html += `
+      <div class="user-docs-empty-card" onclick="openUploadModal('${fachId}')">
+        <div class="empty-icon">📁</div>
+        <div class="empty-title">Noch keine eigenen Dokumente für dieses Fach</div>
+        <p class="empty-desc">
+          Klicke hier oder oben auf „Dokument hochladen“, um deine erste Mitschrift, ein PDF oder ein Foto einzufügen.
+        </p>
+        <button class="btn-empty-upload" onclick="event.stopPropagation(); openUploadModal('${fachId}')">
+          ➕ Jetzt Datei oder Notiz hinzufügen
+        </button>
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="user-docs-grid">
+    `;
+
+    docs.forEach(doc => {
+      html += renderDocCardHtml(doc);
+    });
+
+    html += `
+      </div>
+    `;
+  }
+
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+// Render dedicated Physics Uploads View (Mode 'uploads' in Physik portal)
+async function renderPhysikUploadsView(containerEl) {
+  if (!containerEl) return;
+
+  const allDocs = await userDB.getDocumentsByFach('physik');
+  const filtered = (currentFachFilterCat === 'all') 
+    ? allDocs 
+    : allDocs.filter(d => d.category === currentFachFilterCat);
+
+  let html = `
+    <!-- Top Action & Info Bar -->
+    <div class="physik-uploads-hero-card">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+            <span class="p-badge" style="background: rgba(125, 122, 255, 0.15); color: #7d7aff; border: 1px solid rgba(125, 122, 255, 0.3);">
+              📁 Physik-Archiv
+            </span>
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;">
+              ${allDocs.length} Dokument(e) gesichert
+            </span>
+          </div>
+          <h2 style="font-size: 1.45rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.4rem 0;">
+            Deine persönlichen Physik-Dokumente &amp; Mitschriften
+          </h2>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; max-width: 680px; line-height: 1.45;">
+            Lade deine eigenen Fotos von Tafelbildern, handschriftliche Rechnungen, Zusammenfassungen oder Klausurtipps hoch. Alle Dateien sind 100% lokal und offline verfügbar.
+          </p>
+        </div>
+        <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+          <button class="btn-upload-accent" onclick="openUploadModal('physik')">
+            <span>➕</span><span>Dokument hochladen</span>
+          </button>
+          <button class="btn-cal-action" onclick="exportUserContentBackup()" title="Alle Dokumente als JSON sichern">
+            <span>💾</span><span>Backup sichern</span>
+          </button>
+          <button class="btn-cal-action" onclick="triggerImportUserContentBackup()" title="Gesichertes Backup wiederherstellen">
+            <span>📥</span><span>Wiederherstellen</span>
+          </button>
+          <input type="file" id="importBackupFileInput" style="display:none;" accept=".json" onchange="handleImportBackupFile(event)">
+        </div>
+      </div>
+
+      <!-- Quick Drag & Drop Banner -->
+      <div class="quick-drop-inline" onclick="openUploadModal('physik')">
+        <span style="font-size: 1.4rem;">📥</span>
+        <span>Klicke hier oder ziehe Dateien hinein, um sofort neues Physik-Material hochzuladen.</span>
+      </div>
+    </div>
+
+    <!-- Category Filter Bar -->
+    <div class="doc-filter-bar">
+      <button class="doc-filter-pill ${currentFachFilterCat === 'all' ? 'active' : ''}" onclick="filterUserDocsCategory('all')">
+        Alle anzeigen (${allDocs.length})
+      </button>
+      <button class="doc-filter-pill ${currentFachFilterCat === 'mitschrift' ? 'active' : ''}" onclick="filterUserDocsCategory('mitschrift')">
+        📝 Mitschriften
+      </button>
+      <button class="doc-filter-pill ${currentFachFilterCat === 'zusammenfassung' ? 'active' : ''}" onclick="filterUserDocsCategory('zusammenfassung')">
+        📑 Zusammenfassungen
+      </button>
+      <button class="doc-filter-pill ${currentFachFilterCat === 'uebung' ? 'active' : ''}" onclick="filterUserDocsCategory('uebung')">
+        🎯 Übungen &amp; Rechnungen
+      </button>
+      <button class="doc-filter-pill ${currentFachFilterCat === 'klausurtipp' ? 'active' : ''}" onclick="filterUserDocsCategory('klausurtipp')">
+        💡 Klausurtipps
+      </button>
+      <button class="doc-filter-pill ${currentFachFilterCat === 'formeln' ? 'active' : ''}" onclick="filterUserDocsCategory('formeln')">
+        📐 Formelsammlungen
+      </button>
+    </div>
+  `;
+
+  if (filtered.length === 0) {
+    html += `
+      <div class="user-docs-empty-card" onclick="openUploadModal('physik')">
+        <div class="empty-icon">📁</div>
+        <div class="empty-title">
+          ${currentFachFilterCat === 'all' ? 'Noch keine Physik-Dokumente vorhanden' : 'Keine Dokumente in dieser Kategorie'}
+        </div>
+        <p class="empty-desc">
+          Lade deine erste Physik-Mitschrift, Formelübersicht oder Tafelbild-Aufnahme hoch.
+        </p>
+        <button class="btn-empty-upload" onclick="event.stopPropagation(); openUploadModal('physik', '${currentFachFilterCat !== 'all' ? currentFachFilterCat : 'mitschrift'}')">
+          ➕ Jetzt erstes Dokument hochladen
+        </button>
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="user-docs-grid">
+    `;
+
+    filtered.forEach(doc => {
+      html += renderDocCardHtml(doc);
+    });
+
+    html += `
+      </div>
+    `;
+  }
+
+  containerEl.innerHTML = html;
+}
+
+function filterUserDocsCategory(cat) {
+  currentFachFilterCat = cat;
+  if (typeof renderPhysikPortal === 'function') {
+    renderPhysikPortal();
+  }
+}
+
+// Generates HTML for an individual document card
+function renderDocCardHtml(doc) {
+  const cat = USER_CONTENT_CATEGORIES[doc.category] || USER_CONTENT_CATEGORIES.sonstiges;
+  const isImg = doc.fileType && doc.fileType.startsWith('image/');
+  const isPdf = doc.fileType === 'application/pdf' || (doc.fileName && doc.fileName.toLowerCase().endsWith('.pdf'));
+
+  let icon = '📝';
+  if (isImg) icon = '🖼️';
+  else if (isPdf) icon = '📄';
+
+  const dateStr = formatDate(doc.createdAt);
+  const sizeStr = doc.fileSize ? formatBytes(doc.fileSize) : '';
+
+  let thumbHtml = '';
+  if (isImg && doc.fileData) {
+    thumbHtml = `
+      <div class="doc-card-thumb-box" onclick="openDocViewer('${doc.id}')">
+        <img src="${doc.fileData}" alt="${escapeHtml(doc.title)}" class="doc-card-thumb-img" loading="lazy" />
+      </div>
+    `;
+  }
+
+  const notesSnippet = doc.notes ? escapeHtml(doc.notes.length > 90 ? doc.notes.substring(0, 90) + '...' : doc.notes) : '';
+
+  return `
+    <div class="user-doc-card" onclick="openDocViewer('${doc.id}')">
+      <div class="user-doc-card-body">
+        <div class="doc-card-top-row">
+          <span class="user-doc-badge" style="color: ${cat.color}; background: ${cat.bg}; border: 1px solid ${cat.color}33;">
+            ${cat.label}
+          </span>
+          <span class="doc-card-date">${dateStr}</span>
+        </div>
+
+        ${thumbHtml}
+
+        <div class="doc-card-title-row">
+          <span class="doc-card-type-icon">${icon}</span>
+          <div class="doc-card-title">${escapeHtml(doc.title)}</div>
+        </div>
+
+        ${doc.fileName ? `<div class="doc-card-filename">📎 ${escapeHtml(doc.fileName)} ${sizeStr ? '(' + sizeStr + ')' : ''}</div>` : ''}
+
+        ${notesSnippet ? `
+          <div class="doc-card-notes-snippet">
+            ${notesSnippet}
+          </div>
+        ` : ''}
+      </div>
+
+      <div class="user-doc-card-footer" onclick="event.stopPropagation()">
+        <button class="btn-doc-view" onclick="openDocViewer('${doc.id}')" title="Vorschau &amp; Details anzeigen">
+          👁️ Öffnen
+        </button>
+        ${doc.fileData ? `
+          <button class="btn-doc-dl" onclick="downloadDocById('${doc.id}')" title="Datei herunterladen">
+            ⬇️ Download
+          </button>
+        ` : ''}
+        <button class="btn-doc-del" onclick="deleteDocWithConfirm('${doc.id}', '${doc.fachId}')" title="Dokument löschen">
+          🗑️
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function downloadDocById(id) {
+  userDB.getDocument(id).then(doc => {
+    if (doc) downloadDoc(doc);
+  });
+}
+
+// Update badges in UI if elements exist
+async function updateSubjectDocumentBadge(fachId) {
+  const badge = document.getElementById(`docBadge_${fachId}`);
+  if (badge) {
+    const count = await userDB.getCountByFach(fachId);
+    badge.textContent = count;
+    badge.style.display = count > 0 ? 'inline-block' : 'none';
+  }
+
+  const physikBadge = document.getElementById('physikDocCountBadge');
+  if (physikBadge && fachId === 'physik') {
+    const count = await userDB.getCountByFach('physik');
+    physikBadge.textContent = count > 0 ? `(${count})` : '';
+  }
+}
+
+// --- 5. BACKUP & EXPORT/IMPORT ---
+async function exportUserContentBackup() {
+  try {
+    const allDocs = await userDB.getAllDocuments();
+    if (allDocs.length === 0) {
+      alert('Du hast noch keine eigenen Dokumente hochgeladen, die exportiert werden könnten.');
+      return;
+    }
+
+    const backupData = {
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      source: 'Tonda Oberstufen-Portal',
+      documentCount: allDocs.length,
+      documents: allDocs
+    };
+
+    const jsonStr = JSON.stringify(backupData, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tonda_lernportal_backup_${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    alert(`Backup erfolgreich erstellt! ${allDocs.length} Dokument(e) wurden exportiert.`);
+  } catch (err) {
+    console.error('Fehler beim Export:', err);
+    alert('Fehler beim Exportieren: ' + err.message);
+  }
+}
+
+function triggerImportUserContentBackup() {
+  const fileInput = document.getElementById('importBackupFileInput');
+  if (fileInput) {
+    fileInput.click();
+  }
+}
+
+async function handleImportBackupFile(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+
+  try {
+    const text = await file.text();
+    const data = JSON.parse(text);
+
+    if (!data.documents || !Array.isArray(data.documents)) {
+      alert('Ungültiges Backup-Format: Keine Dokumente gefunden.');
+      return;
+    }
+
+    let importedCount = 0;
+    for (const doc of data.documents) {
+      if (doc && doc.id) {
+        await userDB.addDocument(doc);
+        importedCount++;
+      }
+    }
+
+    alert(`Erfolgreich ${importedCount} Dokument(e) wiederhergestellt!`);
+
+    // Refresh view
+    if (typeof renderFachDetail === 'function' && typeof navState !== 'undefined' && navState.currentFach) {
+      renderFachDetail(navState.currentFach);
+    } else if (typeof renderPhysikPortal === 'function') {
+      renderPhysikPortal();
+    }
+  } catch (err) {
+    console.error('Fehler beim Import:', err);
+    alert('Fehler beim Importieren der Datei: ' + err.message);
+  } finally {
+    event.target.value = '';
+  }
+}
+
+// --- 6. UTILITY FUNCTIONS ---
+function formatBytes(bytes, decimals = 1) {
+  if (!bytes || bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+
+function formatDate(isoStr) {
+  if (!isoStr) return '';
+  try {
+    const d = new Date(isoStr);
+    return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+  } catch (e) {
+    return isoStr;
+  }
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// Auto-initialize dropzone when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', setupDropzoneEvents);
+} else {
+  setupDropzoneEvents();
+}
+
+</script>
+  <script>
 // --- physik.js ---
 // =========================================================================
 // Physik eA: Vollständiges Themen- & Fertigkeiten-Portal (Ph12-Lh)
@@ -10660,6 +12447,9 @@ function renderPhysikPortal() {
       <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'iserv-pool' ? 'active' : ''}" onclick="switchPhysikMode('iserv-pool')">
         <span>🎯</span><span>Aufgabenpool (AB01 - AB11)</span>
       </button>
+      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'uploads' ? 'active' : ''}" onclick="switchPhysikMode('uploads')">
+        <span>📁</span><span>Eigene Dokumente &amp; Uploads</span>
+      </button>
       <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'spickzettel' ? 'active' : ''}" onclick="openTopic('physik', 'physik-spickzettel')">
         <span>📌</span><span>Klausur-Spickzettel</span>
       </button>
@@ -10801,6 +12591,15 @@ function renderPhysikPortal() {
     });
 
     html += `</div>`;
+  } else if (CURRENT_PHYSIK_MODE === 'uploads') {
+    gridEl.innerHTML = html;
+    const uploadsContainer = document.createElement('div');
+    uploadsContainer.id = 'physikUploadsViewWrapper';
+    gridEl.appendChild(uploadsContainer);
+    if (typeof renderPhysikUploadsView === 'function') {
+      renderPhysikUploadsView(uploadsContainer);
+    }
+    return;
   }
 
   gridEl.innerHTML = html;
@@ -11039,6 +12838,12 @@ function renderPhysikSkillDetail(skillId) {
       <textarea class="skill-notes-textarea" id="noteInput_${skill.id}" 
                 placeholder="Schreibe hier deine eigene Zusammenfassung, Eselsbrücken oder Merksätze zu '${skill.title}'..."
                 oninput="saveSkillNote('${skill.id}', this.value)">${savedNote}</textarea>
+      <div style="margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px dashed var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+        <span style="font-size: 0.82rem; color: var(--text-muted);">Möchtest du eine Mitschrift, ein Tafelbild-Foto oder ein PDF hierzu hochladen?</span>
+        <button class="btn-upload-nav" onclick="openUploadModal('physik', 'mitschrift')">
+          <span>➕</span><span>Dokument / Foto hochladen</span>
+        </button>
+      </div>
     </div>
   </div>
   `;
@@ -12701,6 +14506,12 @@ function openFach(fachId, pushHistory = true) {
   renderFachDetail(fachId);
   initFachIservFolder(fachId);
   switchFachSubTab('themen');
+  if (typeof userDB !== 'undefined') {
+    userDB.getCountByFach(fachId).then(cnt => {
+      const b = document.getElementById('fachUserDocsBadge');
+      if (b) b.textContent = cnt;
+    });
+  }
   updateBreadcrumbs();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -13137,6 +14948,9 @@ function renderFachDetail(fachId) {
         <div style="padding: 0.4rem 0.8rem; border-radius: var(--radius-sm); background: var(--bg-subtle); border: 1px solid var(--border-subtle); font-size: 0.8rem; color: var(--text-secondary);">
           ${fach.examStatus}
         </div>
+        <button class="btn-upload-nav" onclick="openUploadModal('${fachId}')">
+          <span>➕</span><span>Dokument hochladen</span>
+        </button>
         <button class="btn-back-nav" onclick="navigateTo('faecher')">
           &larr; Alle F&auml;cher
         </button>
@@ -13306,7 +15120,13 @@ function renderFachDetail(fachId) {
           </div>
         `;
       });
+      html += `
+        <div id="subjectInlineUserDocs_${fach.id}" style="grid-column: 1 / -1; width: 100%;"></div>
+      `;
       gridEl.innerHTML = html;
+      if (typeof renderSubjectUserDocuments === 'function') {
+        renderSubjectUserDocuments(fach.id, `subjectInlineUserDocs_${fach.id}`);
+      }
     }
   }
 }
@@ -13919,19 +15739,29 @@ function switchFachSubTab(tab) {
   CURRENT_FACH_SUBTAB = tab;
   const btnThemen = document.getElementById('btnSubTabThemen');
   const btnFiles = document.getElementById('btnSubTabIservFiles');
+  const btnUserDocs = document.getElementById('btnSubTabUserDocs');
   const gridThemen = document.getElementById('themenGrid');
   const panelFiles = document.getElementById('fachIservFilesPanel');
+  const panelUserDocs = document.getElementById('fachUserDocsPanel');
 
   if (tab === 'themen') {
     if (btnThemen) btnThemen.classList.add('active');
     if (btnFiles) btnFiles.classList.remove('active');
-    if (gridThemen) gridThemen.style.display = 'grid';
+    if (btnUserDocs) btnUserDocs.classList.remove('active');
+    if (gridThemen) {
+      const isPhysik = (navState && navState.currentFach === 'physik');
+      const hasStations = (navState && navState.currentFach && FAECHER_DATA[navState.currentFach] && FAECHER_DATA[navState.currentFach].stations);
+      gridThemen.style.display = (isPhysik || hasStations) ? 'block' : 'grid';
+    }
     if (panelFiles) panelFiles.style.display = 'none';
+    if (panelUserDocs) panelUserDocs.style.display = 'none';
   } else if (tab === 'iserv-files') {
     if (btnThemen) btnThemen.classList.remove('active');
     if (btnFiles) btnFiles.classList.add('active');
+    if (btnUserDocs) btnUserDocs.classList.remove('active');
     if (gridThemen) gridThemen.style.display = 'none';
     if (panelFiles) panelFiles.style.display = 'flex';
+    if (panelUserDocs) panelUserDocs.style.display = 'none';
 
     if (CURRENT_FOLDER_PATH) {
       loadFachFolder(CURRENT_FOLDER_PATH);
@@ -13943,6 +15773,19 @@ function switchFachSubTab(tab) {
       });
     } else {
       loadFachFolder('Groups');
+    }
+  } else if (tab === 'user-docs') {
+    if (btnThemen) btnThemen.classList.remove('active');
+    if (btnFiles) btnFiles.classList.remove('active');
+    if (btnUserDocs) btnUserDocs.classList.add('active');
+    if (gridThemen) gridThemen.style.display = 'none';
+    if (panelFiles) panelFiles.style.display = 'none';
+    if (panelUserDocs) {
+      panelUserDocs.style.display = 'block';
+      const fid = (navState && navState.currentFach) || CURRENT_FACH_ID || 'physik';
+      if (typeof renderSubjectUserDocuments === 'function') {
+        renderSubjectUserDocuments(fid, 'fachUserDocsPanel');
+      }
     }
   }
 }

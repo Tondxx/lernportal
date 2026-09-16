@@ -198,7 +198,7 @@
       <!-- Populated dynamically by renderFachDetail() -->
     </div>
 
-    <!-- Segmented Tab Bar: Themen vs IServ-Dateien -->
+    <!-- Segmented Tab Bar: Themen vs IServ-Dateien vs Eigene Uploads -->
     <div class="fach-subtabs-nav">
       <button class="fach-subtab-btn active" id="btnSubTabThemen" onclick="switchFachSubTab('themen')">
         <span>📚</span>
@@ -208,6 +208,11 @@
         <span>📁</span>
         <span>IServ Kursordner &amp; Dokumente</span>
         <span class="subtab-pill" id="fachFilesBadge">IServ</span>
+      </button>
+      <button class="fach-subtab-btn" id="btnSubTabUserDocs" onclick="switchFachSubTab('user-docs')">
+        <span>📤</span>
+        <span>Eigene Uploads &amp; Mitschriften</span>
+        <span class="subtab-pill" id="fachUserDocsBadge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">0</span>
       </button>
     </div>
 
@@ -277,6 +282,11 @@
           </p>
         </div>
       </div>
+    </div>
+
+    <!-- Panel 3: Eigene Uploads & Mitschriften -->
+    <div id="fachUserDocsPanel" class="fach-user-docs-panel" style="display: none; padding-top: 0.5rem;">
+      <!-- Populated dynamically by renderSubjectUserDocuments() -->
     </div>
   </div>
 
@@ -1965,6 +1975,126 @@
     </div>
   </div>
 
+  <!-- Modal 4: User Document & Content Upload Modal -->
+  <div class="portal-modal-backdrop" id="uploadDocModal" style="display: none;" onclick="closeUploadModal(event)">
+    <div class="portal-modal-content upload-doc-modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <span class="p-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">📁 Eigene Inhalte &amp; Mitschriften</span>
+          <h3 style="margin-top: 0.45rem; font-size: 1.2rem;">Neues Dokument / Notiz hochladen</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeUploadModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="userDocUploadForm" onsubmit="saveUploadDocument(event)">
+          <!-- Fach Selector -->
+          <div class="form-group">
+            <label class="form-label" for="uploadDocFachSelect">Schulfach zuordnen:</label>
+            <select id="uploadDocFachSelect" class="portal-input" style="font-weight: 600; cursor: pointer;">
+              <!-- dynamically populated -->
+            </select>
+          </div>
+
+          <!-- Document Title -->
+          <div class="form-group">
+            <label class="form-label" for="uploadDocTitle">Titel / Bezeichnung:</label>
+            <input type="text" id="uploadDocTitle" class="portal-input" placeholder="z. B. Zusammenfassung Elektrisches Feld oder AB04 Musterlösung" required>
+          </div>
+
+          <!-- Category Selection Chips -->
+          <div class="form-group">
+            <label class="form-label">Kategorie / Tag:</label>
+            <div class="upload-cat-picker">
+              <button type="button" class="upload-cat-chip active" data-cat="mitschrift" onclick="selectUploadCategory('mitschrift')">
+                📝 Mitschrift
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="zusammenfassung" onclick="selectUploadCategory('zusammenfassung')">
+                📑 Zusammenfassung
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="uebung" onclick="selectUploadCategory('uebung')">
+                🎯 Übungsblatt / Rechnungen
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="klausurtipp" onclick="selectUploadCategory('klausurtipp')">
+                💡 Klausurtipp
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="formeln" onclick="selectUploadCategory('formeln')">
+                📐 Formelsammlung
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="sonstiges" onclick="selectUploadCategory('sonstiges')">
+                📎 Sonstiges
+              </button>
+            </div>
+          </div>
+
+          <!-- Drag and Drop Dropzone -->
+          <div class="form-group">
+            <label class="form-label">Datei anhängen (PDF, Bild, Scan oder Text):</label>
+            <div class="upload-dropzone" id="uploadDocDropzone" onclick="document.getElementById('uploadDocFileInput').click()">
+              <input type="file" id="uploadDocFileInput" style="display: none;" accept=".pdf,image/*,.txt,.md,.doc,.docx">
+              <div id="dropzonePrompt" class="dropzone-prompt">
+                <div class="dropzone-icon">📥</div>
+                <div class="dropzone-title">Dateien hierhin ziehen oder klicken zum Auswählen</div>
+                <div class="dropzone-sub">PDFs, Handyfotos von Tafelbildern, Mitschriften, Word oder Text (max. 45 MB)</div>
+              </div>
+              <div id="dropzoneFilePreview" class="dropzone-file-preview" style="display: none;" onclick="event.stopPropagation()">
+                <div class="preview-file-icon" id="previewFileIcon">📄</div>
+                <div class="preview-file-info">
+                  <div class="preview-file-name" id="previewFileName">datei.pdf</div>
+                  <div class="preview-file-size" id="previewFileSize">1.2 MB</div>
+                </div>
+                <img id="previewImageThumb" class="preview-img-thumb" style="display: none;" alt="Vorschau" />
+                <button type="button" class="btn-remove-file" onclick="removeSelectedFile(event)" title="Datei entfernen">✕ Entfernen</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Personal Notes / Explanation -->
+          <div class="form-group">
+            <label class="form-label" for="uploadDocNotes">Eigene Notizen, Erklärungen &amp; Klausurtipps (optional):</label>
+            <textarea id="uploadDocNotes" class="portal-input" rows="3" placeholder="Schreibe hier wichtige Formeln, Fehlerquellen, Merksätze oder eigene Anmerkungen hinein..."></textarea>
+          </div>
+
+          <div id="uploadDocFeedback" style="display:none; margin-top:0.6rem; font-size:0.85rem; font-weight: 600;"></div>
+
+          <div class="modal-footer" style="padding: 1rem 0 0 0; border-top: 1px solid var(--border-subtle); margin-top: 1rem;">
+            <button type="button" class="btn-back-nav" onclick="closeUploadModal()">Abbrechen</button>
+            <button type="submit" class="btn-cal-action" id="btnSaveUploadDoc">💾 Dokument speichern</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: Document Viewer Modal -->
+  <div class="portal-modal-backdrop" id="userDocViewerModal" style="display: none;" onclick="closeDocViewer(event)">
+    <div class="portal-modal-content doc-viewer-modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <span class="user-doc-badge" id="viewerDocCategory">Mitschrift</span>
+            <span class="p-badge" id="viewerDocFach" style="background: var(--bg-subtle); color: var(--text-secondary);">Fach</span>
+          </div>
+          <h3 id="viewerDocTitle" style="margin-top: 0.45rem; font-size: 1.25rem;">Dokumententitel</h3>
+          <div id="viewerDocMeta" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;"></div>
+        </div>
+        <button class="modal-close-btn" onclick="closeDocViewer()">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 1rem 1.2rem;">
+        <div id="viewerDocContent">
+          <!-- Dynamically filled with image, PDF, or text viewer -->
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cal-action" id="viewerBtnDownload">⬇️ Herunterladen</button>
+        <button class="btn-doc-del-modal" id="viewerBtnDelete">🗑️ Löschen</button>
+        <button class="btn-back-nav" onclick="closeDocViewer()">Schließen</button>
+      </div>
+    </div>
+  </div>
+
   <!-- JavaScript Modules -->
   <script src="calendar.js"></script>
   <script src="politik.js"></script>
@@ -1972,6 +2102,7 @@
   <script src="steckbrief.js"></script>
   <script src="schar.js"></script>
   <script src="matching.js"></script>
+  <script src="user_content.js"></script>
   <script src="physik.js"></script>
   <script src="main_hub.js"></script>
 </body>

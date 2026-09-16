@@ -1236,6 +1236,9 @@ function renderPhysikPortal() {
       <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'iserv-pool' ? 'active' : ''}" onclick="switchPhysikMode('iserv-pool')">
         <span>🎯</span><span>Aufgabenpool (AB01 - AB11)</span>
       </button>
+      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'uploads' ? 'active' : ''}" onclick="switchPhysikMode('uploads')">
+        <span>📁</span><span>Eigene Dokumente &amp; Uploads</span>
+      </button>
       <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'spickzettel' ? 'active' : ''}" onclick="openTopic('physik', 'physik-spickzettel')">
         <span>📌</span><span>Klausur-Spickzettel</span>
       </button>
@@ -1377,6 +1380,15 @@ function renderPhysikPortal() {
     });
 
     html += `</div>`;
+  } else if (CURRENT_PHYSIK_MODE === 'uploads') {
+    gridEl.innerHTML = html;
+    const uploadsContainer = document.createElement('div');
+    uploadsContainer.id = 'physikUploadsViewWrapper';
+    gridEl.appendChild(uploadsContainer);
+    if (typeof renderPhysikUploadsView === 'function') {
+      renderPhysikUploadsView(uploadsContainer);
+    }
+    return;
   }
 
   gridEl.innerHTML = html;
@@ -1615,6 +1627,12 @@ function renderPhysikSkillDetail(skillId) {
       <textarea class="skill-notes-textarea" id="noteInput_${skill.id}" 
                 placeholder="Schreibe hier deine eigene Zusammenfassung, Eselsbrücken oder Merksätze zu '${skill.title}'..."
                 oninput="saveSkillNote('${skill.id}', this.value)">${savedNote}</textarea>
+      <div style="margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px dashed var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+        <span style="font-size: 0.82rem; color: var(--text-muted);">Möchtest du eine Mitschrift, ein Tafelbild-Foto oder ein PDF hierzu hochladen?</span>
+        <button class="btn-upload-nav" onclick="openUploadModal('physik', 'mitschrift')">
+          <span>➕</span><span>Dokument / Foto hochladen</span>
+        </button>
+      </div>
     </div>
   </div>
   `;

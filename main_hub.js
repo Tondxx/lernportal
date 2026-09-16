@@ -460,6 +460,12 @@ function openFach(fachId, pushHistory = true) {
   renderFachDetail(fachId);
   initFachIservFolder(fachId);
   switchFachSubTab('themen');
+  if (typeof userDB !== 'undefined') {
+    userDB.getCountByFach(fachId).then(cnt => {
+      const b = document.getElementById('fachUserDocsBadge');
+      if (b) b.textContent = cnt;
+    });
+  }
   updateBreadcrumbs();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -896,6 +902,9 @@ function renderFachDetail(fachId) {
         <div style="padding: 0.4rem 0.8rem; border-radius: var(--radius-sm); background: var(--bg-subtle); border: 1px solid var(--border-subtle); font-size: 0.8rem; color: var(--text-secondary);">
           ${fach.examStatus}
         </div>
+        <button class="btn-upload-nav" onclick="openUploadModal('${fachId}')">
+          <span>➕</span><span>Dokument hochladen</span>
+        </button>
         <button class="btn-back-nav" onclick="navigateTo('faecher')">
           &larr; Alle F&auml;cher
         </button>
@@ -1065,7 +1074,13 @@ function renderFachDetail(fachId) {
           </div>
         `;
       });
+      html += `
+        <div id="subjectInlineUserDocs_${fach.id}" style="grid-column: 1 / -1; width: 100%;"></div>
+      `;
       gridEl.innerHTML = html;
+      if (typeof renderSubjectUserDocuments === 'function') {
+        renderSubjectUserDocuments(fach.id, `subjectInlineUserDocs_${fach.id}`);
+      }
     }
   }
 }
@@ -1678,19 +1693,29 @@ function switchFachSubTab(tab) {
   CURRENT_FACH_SUBTAB = tab;
   const btnThemen = document.getElementById('btnSubTabThemen');
   const btnFiles = document.getElementById('btnSubTabIservFiles');
+  const btnUserDocs = document.getElementById('btnSubTabUserDocs');
   const gridThemen = document.getElementById('themenGrid');
   const panelFiles = document.getElementById('fachIservFilesPanel');
+  const panelUserDocs = document.getElementById('fachUserDocsPanel');
 
   if (tab === 'themen') {
     if (btnThemen) btnThemen.classList.add('active');
     if (btnFiles) btnFiles.classList.remove('active');
-    if (gridThemen) gridThemen.style.display = 'grid';
+    if (btnUserDocs) btnUserDocs.classList.remove('active');
+    if (gridThemen) {
+      const isPhysik = (navState && navState.currentFach === 'physik');
+      const hasStations = (navState && navState.currentFach && FAECHER_DATA[navState.currentFach] && FAECHER_DATA[navState.currentFach].stations);
+      gridThemen.style.display = (isPhysik || hasStations) ? 'block' : 'grid';
+    }
     if (panelFiles) panelFiles.style.display = 'none';
+    if (panelUserDocs) panelUserDocs.style.display = 'none';
   } else if (tab === 'iserv-files') {
     if (btnThemen) btnThemen.classList.remove('active');
     if (btnFiles) btnFiles.classList.add('active');
+    if (btnUserDocs) btnUserDocs.classList.remove('active');
     if (gridThemen) gridThemen.style.display = 'none';
     if (panelFiles) panelFiles.style.display = 'flex';
+    if (panelUserDocs) panelUserDocs.style.display = 'none';
 
     if (CURRENT_FOLDER_PATH) {
       loadFachFolder(CURRENT_FOLDER_PATH);
@@ -1702,6 +1727,19 @@ function switchFachSubTab(tab) {
       });
     } else {
       loadFachFolder('Groups');
+    }
+  } else if (tab === 'user-docs') {
+    if (btnThemen) btnThemen.classList.remove('active');
+    if (btnFiles) btnFiles.classList.remove('active');
+    if (btnUserDocs) btnUserDocs.classList.add('active');
+    if (gridThemen) gridThemen.style.display = 'none';
+    if (panelFiles) panelFiles.style.display = 'none';
+    if (panelUserDocs) {
+      panelUserDocs.style.display = 'block';
+      const fid = (navState && navState.currentFach) || CURRENT_FACH_ID || 'physik';
+      if (typeof renderSubjectUserDocuments === 'function') {
+        renderSubjectUserDocuments(fid, 'fachUserDocsPanel');
+      }
     }
   }
 }
