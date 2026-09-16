@@ -1,1046 +1,1202 @@
 // =========================================================================
-// Physik eA: Vollständiges Themen- & Fertigkeiten-Portal (Ph12-Lh)
-// 1. Die 10 konkreten Kern-Fertigkeiten & Fragen (mit visuellen Erklärungen)
-// 2. Pre-rendered KaTeX-Formeln (100% zuverlässig, ohne Escaping-Fehler)
-// 3. SVG-Diagramme (Plattenkondensator, Äquipotentiallinien, Influenz etc.)
-// 4. 4 interaktive Canvas-Simulationen (Coulomb, E-Feld, Elektroskop, Schaltung)
-// 5. Eigene Notizfelder pro Thema mit Auto-Save
-// 6. Komplexe Kombinations-Aufgaben (Vernetzung von Blöcken)
-// 7. Großer Klausur-Aufgabenpool aus allen IServ-Arbeitsblättern (AB01 - AB11)
+// physik.js - Physik eA Lern- & Trainingsportal (Ph12-Lh / IGS Göttingen)
+// Basierend auf Meds.pdf (33 Seiten Unterrichts-Mitschriften & Klausurthemen)
+// 1. Hauptgebiet: Elektrizitätslehre & Elektrostatik (Klausur 12/1) in 5 Ordnern
+// 2. Die 4 typischen Funktionen im Physik-Abitur (S. 32) & Originalblatt S. 33
+// 3. Fehlerfreie, korrigierte Vorrechnungen aller Aufgaben (Kugelauslenkung, Coulomb, E-Feld)
+// 4. Widerspruchsbeweis für Feldlinien (S. 7) & Faradayscher Käfig (S. 25)
+// 5. 4 interaktive Canvas-Simulationen (Coulomb, E-Feld, Elektroskop, Schaltung)
+// 6. Eigene Notizfelder mit Auto-Save & Dokument-Upload
 // =========================================================================
 
-// --- 1. DATENBANK DER 10 KERN-THEMEN (KONKRETE FERTIGKEITEN) ---
-const PHYSIK_SKILLS = [
+let CURRENT_PHYSIK_MODE = 'ordner'; // 'ordner' | 'funktionen' | 'themen' | 'iserv-pool' | 'uploads' | 'spickzettel'
+let CURRENT_PHYSIK_FOLDER = null;
+let CURRENT_PHYSIK_SKILL = null;
+let CURRENT_ISERV_CATEGORY = 'all';
+
+// --- 1. DIE 5 STRUKTURIERTEN HAUPTORDNER DER ELEKTRIZITÄTSLEHRE ---
+const ELEKTRIZITAET_FOLDERS = [
   {
-    id: 'efeld-berechnen',
+    id: 'ordner-funktionen',
     num: '01',
-    icon: '⚡',
-    color: '#06b6d4',
-    tag: 'E-Feld & Plattenkondensator',
-    title: 'Wie berechne ich die elektrische Feldstärke E?',
-    desc: 'Definition E = F/q, homogenes Feld im Plattenkondensator E = U/d, Kraft auf Elektronen und Probeladungen.',
-    visualHtml: `
-      <div class="formula-hero-card" style="border-left: 6px solid #06b6d4;">
-        <span class="formula-hero-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">
-          ⚡ ZENTRALE FORMELN FÜR DIE FELDSTÄRKE
-        </span>
-        <div class="formula-math-display">
-          <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>E</mi><mo>=</mo><mfrac><msub><mi>F</mi><mtext>el</mtext></msub><mi>q</mi></mfrac><mo>=</mo><mfrac><mi>U</mi><mi>d</mi></mfrac><mspace width="1em"/><mrow><mo fence="true">[</mo><mfrac><mtext>N</mtext><mtext>C</mtext></mfrac><mo>=</mo><mfrac><mtext>V</mtext><mtext>m</mtext></mfrac><mo fence="true">]</mo></mrow></mrow><annotation encoding="application/x-tex">E = \frac{F_{\text{el}}}{q} = \frac{U}{d} \quad \left[\frac{\text{N}}{\text{C}} = \frac{\text{V}}{\text{m}}\right]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.2408em;vertical-align:-0.8804em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">q</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">el</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">U</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">[</span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">C</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">N</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">m</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord text"><span class="mord">V</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">]</span></span></span></span></span></span></span>
-        </div>
-        
-        <div class="variable-pills-grid">
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">E</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Elektrische Feldst&auml;rke</div>
-              <div class="var-info-unit">Einheit: <strong>V/m</strong> oder <strong>N/C</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(56, 189, 248, 0.15); color: #0284c7;">U</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Elektrische Spannung</div>
-              <div class="var-info-unit">Einheit: <strong>Volt (V)</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(245, 158, 11, 0.15); color: #d97706;">d</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Plattenabstand</div>
-              <div class="var-info-unit">Einheit: <strong>Meter (m)</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(16, 185, 129, 0.15); color: #059669;">F<sub>el</sub></div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Elektrische Kraft (q &bull; E)</div>
-              <div class="var-info-unit">Einheit: <strong>Newton (N)</strong></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="formula-takeaway-box" style="background: rgba(6, 182, 212, 0.08); border-left: 4px solid #06b6d4;">
-          <span style="font-size: 1.2rem;">💡</span>
-          <div>
-            <strong>Klausur-Merksatz:</strong> <code>E = U / d</code> gilt <em>ausschließlich</em> im homogenen Plattenkondensator! Für Radialfelder von Punktladungen gilt: <code>E = 1/(4&pi;&epsilon;₀) &bull; Q / r²</code>.
-          </div>
-        </div>
-      </div>
-
-      <div class="diagram-card" style="margin-top: 1.2rem;">
-        <h4 style="font-size: 1rem; font-weight: 800; color: #06b6d4; margin-bottom: 0.6rem;">
-          ⚡ Visuelles Schaubild: Plattenkondensator (Homogenes Feld &amp; Kr&auml;fte auf Ladungstr&auml;ger)
-        </h4>
-        <div class="diagram-svg-wrapper">
-          <svg viewBox="0 0 600 230" width="100%" height="220">
-            <rect x="50" y="30" width="20" height="170" rx="4" fill="#ef4444" />
-            <text x="60" y="24" fill="#ef4444" font-size="12" font-weight="bold" text-anchor="middle">+ U</text>
-            <text x="60" y="65" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">+</text>
-            <text x="60" y="105" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">+</text>
-            <text x="60" y="145" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">+</text>
-            <text x="60" y="185" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">+</text>
-
-            <rect x="530" y="30" width="20" height="170" rx="4" fill="#3b82f6" />
-            <text x="540" y="24" fill="#3b82f6" font-size="12" font-weight="bold" text-anchor="middle">0 V (-)</text>
-            <text x="540" y="65" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">-</text>
-            <text x="540" y="105" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">-</text>
-            <text x="540" y="145" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">-</text>
-            <text x="540" y="185" fill="#ffffff" font-size="14" font-weight="bold" text-anchor="middle">-</text>
-
-            <defs>
-              <marker id="efield-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#06b6d4" />
-              </marker>
-              <marker id="force-arrow-left" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#f59e0b" />
-              </marker>
-              <marker id="force-arrow-right" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-                <path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981" />
-              </marker>
-            </defs>
-
-            <line x1="72" y1="55" x2="528" y2="55" stroke="#06b6d4" stroke-width="2.5" marker-end="url(#efield-arrow)" />
-            <line x1="72" y1="90" x2="528" y2="90" stroke="#06b6d4" stroke-width="2.5" marker-end="url(#efield-arrow)" />
-            <line x1="72" y1="125" x2="528" y2="125" stroke="#06b6d4" stroke-width="2.5" marker-end="url(#efield-arrow)" />
-            <line x1="72" y1="160" x2="528" y2="160" stroke="#06b6d4" stroke-width="2.5" marker-end="url(#efield-arrow)" />
-            <line x1="72" y1="195" x2="528" y2="195" stroke="#06b6d4" stroke-width="2.5" marker-end="url(#efield-arrow)" />
-
-            <rect x="270" y="38" width="60" height="24" rx="4" fill="rgba(6, 182, 212, 0.15)" stroke="#06b6d4" />
-            <text x="300" y="54" fill="#06b6d4" font-size="12" font-weight="bold" text-anchor="middle">E = U / d</text>
-
-            <circle cx="350" cy="125" r="13" fill="#1e293b" stroke="#f59e0b" stroke-width="2.5" />
-            <text x="350" y="129" fill="#f59e0b" font-size="12" font-weight="bold" text-anchor="middle">e⁻</text>
-            <line x1="335" y1="125" x2="260" y2="125" stroke="#f59e0b" stroke-width="3" marker-end="url(#force-arrow-left)" />
-            <text x="295" y="115" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">F_el = e &bull; E</text>
-
-            <circle cx="170" cy="160" r="13" fill="#1e293b" stroke="#10b981" stroke-width="2.5" />
-            <text x="170" y="164" fill="#10b981" font-size="12" font-weight="bold" text-anchor="middle">q⁺</text>
-            <line x1="185" y1="160" x2="250" y2="160" stroke="#10b981" stroke-width="3" marker-end="url(#force-arrow-right)" />
-            <text x="220" y="150" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">F_el = q &bull; E</text>
-
-            <line x1="72" y1="215" x2="528" y2="215" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,4" />
-            <line x1="72" y1="208" x2="72" y2="222" stroke="var(--text-muted)" stroke-width="1.5" />
-            <line x1="528" y1="208" x2="528" y2="222" stroke="var(--text-muted)" stroke-width="1.5" />
-            <text x="300" y="222" fill="var(--text-primary)" font-size="12" font-weight="bold" text-anchor="middle">Plattenabstand d</text>
-          </svg>
-        </div>
-        <div style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.6rem; text-align: center;">
-          💡 <strong>Homogenes Feld:</strong> Die Feldlinien sind exakt parallel und gleichm&auml;&szlig;ig verteilt &rarr; Die Feldst&auml;rke E ist an jedem Ort gleich gro&szlig;!
-        </div>
-      </div>
-
-      <div class="visual-bullet-grid" style="margin-top: 1.2rem;">
-        <div class="visual-bullet-card">
-          <div class="bullet-icon">📐</div>
-          <div class="bullet-content">
-            <h4>Richtung der Feldlinien</h4>
-            <p>Feldlinien zeigen per Definition von <strong>Plus nach Minus</strong> (Richtung der Kraft auf eine positive Ladung).</p>
-          </div>
-        </div>
-        <div class="visual-bullet-card">
-          <div class="bullet-icon">🚀</div>
-          <div class="bullet-content">
-            <h4>Elektronen-Beschleunigung</h4>
-            <p>Auf ein Elektron wirkt <code>F = e &bull; E</code> entgegen den Feldlinien &rarr; Beschleunigung <code>a = e &bull; E / m_e</code>.</p>
-          </div>
-        </div>
-      </div>
-    `,
-    hasSim: 'efeld',
-    tasks: [
-      {
-        prompt: 'Ein Plattenkondensator hat den Plattenabstand d = 2,5 cm und wird an eine Spannung von U = 800 V angeschlossen. Berechne die Feldstärke E und die Kraft auf ein Elektron.',
-        given: 'd = 0,025 m, U = 800 V, e = 1,602·10⁻¹⁹ C',
-        sought: 'E, Fel',
-        solution: `
-          <code>E = U / d = 800 V / 0,025 m = 32.000 V/m = 32 kV/m</code><br>
-          <code>F_el = e &bull; E = (1,602 &bull; 10⁻¹⁹ C) &bull; 32.000 N/C &asymp; 5,13 &bull; 10⁻¹⁵ N</code>
-        `
-      },
-      {
-        prompt: 'Wie verändert sich die Feldstärke E, wenn der Plattenabstand bei konstanter Spannung von 2 cm auf 6 cm verdreifacht wird?',
-        given: 'd₂ = 3 · d₁, U = const',
-        sought: 'E₂ im Verhältnis zu E₁',
-        solution: `
-          Da <code>E = U / d</code> antiproportional zum Abstand d ist, sinkt die Feldstärke auf <strong>ein Drittel (1/3)</strong> des ursprünglichen Werts!
-        `
-      }
-    ]
-  },
-
-  {
-    id: 'aequipotentiallinien',
-    num: '02',
-    icon: '🌐',
-    color: '#10b981',
-    tag: 'Feldlinienbilder & Potential',
-    title: 'Eigenschaften von Äquipotentiallinien & Feldlinien',
-    desc: 'Senkrecht zu Feldlinien (90°), W = 0, dichtere Linien = stärkeres Feld und Trog-Versuch.',
-    visualHtml: `
-      <div class="formula-hero-card" style="border-left: 6px solid #10b981;">
-        <span class="formula-hero-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
-          🌐 DEFINITION: KEINE ARBEIT LÄNGS ÄQUIPOTENTIALLINIE
-        </span>
-        <div class="formula-math-display">
-          <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>W</mi><mo>=</mo><mi>q</mi><mo>⋅</mo><mi mathvariant="normal">Δ</mi><mi>φ</mi><mo>=</mo><mn>0</mn><mspace width="1em"/><mo stretchy="false">(</mo><mi mathvariant="normal">Δ</mi><mi>φ</mi><mo>=</mo><mn>0</mn><mtext> </mtext><mtext>V</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">W = q \cdot \Delta \varphi = 0 \quad (\Delta \varphi = 0\,\text{V})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6389em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord">Δ</span><span class="mord mathnormal">φ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:1em;"></span><span class="mopen">(</span><span class="mord">Δ</span><span class="mord mathnormal">φ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">0</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord text"><span class="mord">V</span></span><span class="mclose">)</span></span></span></span></span>
-        </div>
-        
-        <div class="variable-pills-grid">
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(16, 185, 129, 0.15); color: #059669;">&phi;</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Elektrisches Potential</div>
-              <div class="var-info-unit">Einheit: <strong>Volt (V)</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">W</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Verschiebearbeit</div>
-              <div class="var-info-unit">L&auml;ngs Linie: <strong>W = 0 Joule</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(239, 68, 68, 0.15); color: #dc2626;">E&#8407;</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Feldst&auml;rke-Vektor</div>
-              <div class="var-info-unit">Winkel: <strong>stets 90&deg; senkrecht</strong></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="diagram-card">
-        <h4 style="font-size: 1rem; font-weight: 800; color: #10b981; margin-bottom: 0.6rem;">
-          🌐 Visuelles Schaubild: Feldlinien (Rot) &amp; Äquipotentiallinien (Grün gestrichelt)
-        </h4>
-        <div class="diagram-svg-wrapper">
-          <svg viewBox="0 0 540 220" width="100%" height="200">
-            <rect x="50" y="30" width="16" height="160" rx="4" fill="#ef4444" />
-            <text x="58" y="24" fill="#ef4444" font-size="12" font-weight="bold" text-anchor="middle">+ U₀</text>
-            <rect x="474" y="30" width="16" height="160" rx="4" fill="#3b82f6" />
-            <text x="482" y="24" fill="#3b82f6" font-size="12" font-weight="bold" text-anchor="middle">0 V</text>
-
-            <line x1="68" y1="50" x2="472" y2="50" stroke="#ef4444" stroke-width="2" marker-end="url(#efield-arrow)" />
-            <line x1="68" y1="85" x2="472" y2="85" stroke="#ef4444" stroke-width="2" marker-end="url(#efield-arrow)" />
-            <line x1="68" y1="120" x2="472" y2="120" stroke="#ef4444" stroke-width="2" marker-end="url(#efield-arrow)" />
-            <line x1="68" y1="155" x2="472" y2="155" stroke="#ef4444" stroke-width="2" marker-end="url(#efield-arrow)" />
-            <line x1="68" y1="190" x2="472" y2="190" stroke="#ef4444" stroke-width="2" marker-end="url(#efield-arrow)" />
-
-            <line x1="150" y1="25" x2="150" y2="195" stroke="#10b981" stroke-width="2.5" stroke-dasharray="6,4" />
-            <text x="150" y="210" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">3/4 U₀</text>
-
-            <line x1="270" y1="25" x2="270" y2="195" stroke="#10b981" stroke-width="2.5" stroke-dasharray="6,4" />
-            <text x="270" y="210" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">1/2 U₀</text>
-
-            <line x1="390" y1="25" x2="390" y2="195" stroke="#10b981" stroke-width="2.5" stroke-dasharray="6,4" />
-            <text x="390" y="210" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">1/4 U₀</text>
-
-            <rect x="270" y="108" width="12" height="12" fill="none" stroke="#f59e0b" stroke-width="2" />
-            <circle cx="276" cy="114" r="1.5" fill="#f59e0b" />
-            <text x="290" y="105" fill="#f59e0b" font-size="12" font-weight="bold">90&deg;</text>
-
-            <path d="M 150 70 L 150 140" stroke="#eab308" stroke-width="4" />
-            <polygon points="150,146 145,136 155,136" fill="#eab308" />
-            <rect x="95" y="95" width="50" height="20" rx="3" fill="#1e293b" />
-            <text x="120" y="109" fill="#eab308" font-size="10" font-weight="bold" text-anchor="middle">W = 0 J</text>
-          </svg>
-        </div>
-      </div>
-
-      <div class="visual-bullet-grid">
-        <div class="visual-bullet-card">
-          <div class="bullet-icon">📐</div>
-          <div class="bullet-content">
-            <h4>1. Immer senkrecht (90°)</h4>
-            <p>Feldlinien schneiden &Auml;quipotentiallinien an jedem Punkt im rechten Winkel.</p>
-          </div>
-        </div>
-        <div class="visual-bullet-card">
-          <div class="bullet-icon">🛑</div>
-          <div class="bullet-content">
-            <h4>2. Keine Arbeit (W = 0)</h4>
-            <p>Wird eine Ladung l&auml;ngs einer &Auml;quipotentiallinie bewegt, wird <strong>keine Energie</strong> verrichtet.</p>
-          </div>
-        </div>
-        <div class="visual-bullet-card">
-          <div class="bullet-icon">⚡</div>
-          <div class="bullet-content">
-            <h4>3. Abstand verrät Feldstärke</h4>
-            <p>Je dichter die Linien beieinander liegen, desto gr&ouml;&szlig;er ist die Feldst&auml;rke E.</p>
-          </div>
-        </div>
-        <div class="visual-bullet-card">
-          <div class="bullet-icon">🛡️</div>
-          <div class="bullet-content">
-            <h4>4. Leiteroberflächen</h4>
-            <p>Jede metallische Leiteroberfl&auml;che ist im Gleichgewicht eine &Auml;quipotentialfl&auml;che.</p>
-          </div>
-        </div>
-      </div>
-    `,
-    tasks: [
-      {
-        prompt: 'Beim Trog-Versuch misst man zwischen zwei Elektroden das Potential. Warum darf man zur Bestimmung von Äquipotentiallinien nur ein hochohmiges Voltmeter verwenden?',
-        given: 'Messanordnung im Elektrolyttrog',
-        sought: 'Begründung für hochohmigen Innenwiderstand',
-        solution: 'Ein niederohmiges Messgerät würde Strom ziehen und dadurch das Potentialfeld verzerren. Nur ein hochohmiges Voltmeter misst die Spannung praktisch stromlos und verfälscht das Feld nicht.'
-      },
-      {
-        prompt: 'Eine Ladung q = 5 μC wird in einem elektrischen Feld entlang einer Äquipotentiallinie um 15 cm verschoben. Wie viel Arbeit W wird dabei verrichtet?',
-        given: 'q = 5 μC, s = 0,15 m, Δφ = 0 V',
-        sought: 'Arbeit W',
-        solution: 'Da die Verschiebung entlang einer Äquipotentiallinie erfolgt, ist die Potentialdifferenz <code>&Delta;&phi; = 0 V</code>. Die verrichtete Arbeit ist <strong>W = q &bull; &Delta;&phi; = 0 Joule</strong>!'
-      }
-    ]
-  },
-
-  {
-    id: 'ladungstrennung-influenz',
-    num: '03',
-    icon: '🧲',
-    color: '#8b5cf6',
-    tag: 'Elektrostatik & Ladungsträger',
-    title: 'Was ist Influenz und wie funktioniert Ladungstrennung?',
-    desc: 'Berührungslose Ladungsverschiebung im Leiter, Annäherung, Erdung und dauerhafte Aufladung.',
-    visualHtml: `
-      <div class="formula-hero-card" style="border-left: 6px solid #8b5cf6;">
-        <span class="formula-hero-badge" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">
-          🧲 INFLUENZ: LADUNGSERHALTUNG IM LEITER
-        </span>
-        <div class="formula-math-display">
-          <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>Q</mi><mtext>ges</mtext></msub><mo>=</mo><msub><mi>Q</mi><mn>1</mn></msub><mo>+</mo><msub><mi>Q</mi><mn>2</mn></msub><mo>=</mo><mtext>const</mtext></mrow><annotation encoding="application/x-tex">Q_{\text{ges}} = Q_1 + Q_2 = \text{const}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ges</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6151em;"></span><span class="mord text"><span class="mord">const</span></span></span></span></span></span>
-        </div>
-        
-        <div class="variable-pills-grid">
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(139, 92, 246, 0.15); color: #7c3aed;">Q<sub>ges</sub></div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Gesamtladung</div>
-              <div class="var-info-unit">Bleibt stets <strong>konstant</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(59, 130, 246, 0.15); color: #2563eb;">e⁻</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Freie Leitungselektronen</div>
-              <div class="var-info-unit">Nur diese verschieben sich</div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(16, 185, 129, 0.15); color: #059669;">⏚</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Erdung</div>
-              <div class="var-info-unit">Erm&ouml;glicht dauerhafte Ladung</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="diagram-card">
-        <h4 style="font-size: 1rem; font-weight: 800; color: #8b5cf6; margin-bottom: 0.6rem;">
-          🧲 Visuelles 4-Schritte-Schema: Dauerhafte Aufladung durch Influenz
-        </h4>
-        <div class="diagram-svg-wrapper">
-          <svg viewBox="0 0 540 240" width="100%" height="220">
-            <g transform="translate(10, 20)">
-              <text x="50" y="0" fill="var(--text-secondary)" font-size="11" font-weight="bold" text-anchor="middle">1. Ann&auml;herung</text>
-              <rect x="0" y="10" width="18" height="50" rx="3" fill="#3b82f6" />
-              <text x="9" y="38" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">-</text>
-              <circle cx="75" cy="35" r="24" fill="var(--bg-subtle)" stroke="var(--border-subtle)" stroke-width="2" />
-              <text x="62" y="39" fill="#ef4444" font-size="11" font-weight="bold">+</text>
-              <text x="88" y="39" fill="#3b82f6" font-size="11" font-weight="bold">-</text>
-              <text x="50" y="78" fill="var(--text-muted)" font-size="9" text-anchor="middle">Elektronen weichen aus</text>
-            </g>
-
-            <g transform="translate(145, 20)">
-              <text x="50" y="0" fill="var(--text-secondary)" font-size="11" font-weight="bold" text-anchor="middle">2. Erdung</text>
-              <rect x="0" y="10" width="18" height="50" rx="3" fill="#3b82f6" />
-              <text x="9" y="38" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">-</text>
-              <circle cx="75" cy="35" r="24" fill="var(--bg-subtle)" stroke="var(--border-subtle)" stroke-width="2" />
-              <text x="65" y="39" fill="#ef4444" font-size="12" font-weight="bold">+</text>
-              <line x1="99" y1="35" x2="115" y2="35" stroke="#10b981" stroke-width="2" />
-              <line x1="115" y1="25" x2="115" y2="45" stroke="#10b981" stroke-width="2" />
-              <line x1="119" y1="29" x2="119" y2="41" stroke="#10b981" stroke-width="2" />
-              <line x1="123" y1="32" x2="123" y2="38" stroke="#10b981" stroke-width="2" />
-              <text x="50" y="78" fill="#10b981" font-size="9" text-anchor="middle">Elektronen flie&szlig;en ab</text>
-            </g>
-
-            <g transform="translate(280, 20)">
-              <text x="50" y="0" fill="var(--text-secondary)" font-size="11" font-weight="bold" text-anchor="middle">3. Trennung</text>
-              <rect x="0" y="10" width="18" height="50" rx="3" fill="#3b82f6" />
-              <text x="9" y="38" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">-</text>
-              <circle cx="75" cy="35" r="24" fill="var(--bg-subtle)" stroke="var(--border-subtle)" stroke-width="2" />
-              <text x="65" y="39" fill="#ef4444" font-size="12" font-weight="bold">+</text>
-              <text x="50" y="78" fill="var(--text-muted)" font-size="9" text-anchor="middle">Draht entfernen</text>
-            </g>
-
-            <g transform="translate(415, 20)">
-              <text x="50" y="0" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">4. Ergebnis</text>
-              <circle cx="50" cy="35" r="24" fill="rgba(239, 68, 68, 0.15)" stroke="#ef4444" stroke-width="2" />
-              <text x="44" y="31" fill="#ef4444" font-size="11" font-weight="bold">+</text>
-              <text x="56" y="31" fill="#ef4444" font-size="11" font-weight="bold">+</text>
-              <text x="50" y="46" fill="#ef4444" font-size="11" font-weight="bold">+</text>
-              <text x="50" y="78" fill="#ef4444" font-size="9" font-weight="bold" text-anchor="middle">Positiv geladen!</text>
-            </g>
-
-            <rect x="20" y="130" width="500" height="75" rx="8" fill="var(--bg-subtle)" stroke="var(--border-subtle)" />
-            <text x="40" y="155" fill="var(--text-primary)" font-size="12" font-weight="bold">Merksatz für die Klausur:</text>
-            <text x="40" y="175" fill="var(--text-secondary)" font-size="11">• Bei Influenz werden nur bewegliche Elektronen verschoben (Atomrümpfe bleiben fest).</text>
-            <text x="40" y="193" fill="var(--text-secondary)" font-size="11">• Durch Erden erhält der Körper immer die entgegengesetzte Ladung des erregenden Stabs!</text>
-          </svg>
-        </div>
-      </div>
-    `,
-    hasSim: 'elektrostatik',
-    tasks: [
-      {
-        prompt: 'Zwei ungeladene Metallkugeln berühren sich. Ein negativ geladener Stab wird an Kugel 1 angenähert. Während der Stab da ist, trennt man die Kugeln. Welche Ladung haben Kugel 1 und Kugel 2 danach?',
-        given: 'AB02 Versuchsanordnung',
-        sought: 'Ladungszustand von Kugel 1 und 2',
-        solution: 'Der negative Stab stößt Elektronen ab &rarr; Sie fließen von Kugel 1 nach Kugel 2. Nach dem Trennen hat <strong>Kugel 1 Elektronenmangel (positiv)</strong> und <strong>Kugel 2 Elektronenüberschuss (negativ)</strong>.'
-      }
-    ]
-  },
-
-  {
-    id: 'kraeftedreieck-winkel',
-    num: '04',
-    icon: '📐',
-    color: '#f59e0b',
-    tag: 'Fadenpendel & Kräftegleichgewicht',
-    title: 'Wie bestimme ich Kraft und Winkel im Kräftedreieck (F_el, F_G, F_res)?',
-    desc: 'Kräfteparallelogramm am Fadenpendel im E-Feld: tan(α) = F_el / F_G und Kleinwinkelnäherung.',
-    visualHtml: `
-      <div class="formula-hero-card" style="border-left: 6px solid #f59e0b;">
-        <span class="formula-hero-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
-          📐 ZENTRALE GLEICHUNG: KRÄFTEDREIECK AM PENDEL
-        </span>
-        <div class="formula-math-display">
-          <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>tan</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>α</mi><mo stretchy="false">)</mo><mo>=</mo><mfrac><msub><mi>F</mi><mtext>el</mtext></msub><msub><mi>F</mi><mi>G</mi></msub></mfrac><mo>=</mo><mfrac><mrow><mi>q</mi><mo>⋅</mo><mi>E</mi></mrow><mrow><mi>m</mi><mo>⋅</mo><mi>g</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\tan(\alpha) = \frac{F_{\text{el}}}{F_G} = \frac{q \cdot E}{m \cdot g}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">tan</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1963em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">G</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">el</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.2408em;vertical-align:-0.8804em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">m</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.8804em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-        </div>
-        
-        <div class="variable-pills-grid">
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(245, 158, 11, 0.15); color: #d97706;">&alpha;</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Auslenkwinkel</div>
-              <div class="var-info-unit">Einheit: <strong>Grad (&deg;)</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(6, 182, 212, 0.15); color: #0891b2;">F<sub>el</sub></div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Elektrische Kraft (q &bull; E)</div>
-              <div class="var-info-unit">Horizontal: <strong>Newton (N)</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(239, 68, 68, 0.15); color: #dc2626;">F<sub>G</sub></div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Gewichtskraft (m &bull; g)</div>
-              <div class="var-info-unit">Vertikal: <strong>Newton (N)</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(16, 185, 129, 0.15); color: #059669;">q</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Ladung des Pendels</div>
-              <div class="var-info-unit">Gesucht in Klausur: <strong>Coulomb (C)</strong></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="formula-takeaway-box" style="background: rgba(245, 158, 11, 0.08); border-left: 4px solid #f59e0b;">
-          <span style="font-size: 1.2rem;">💡</span>
-          <div>
-            <strong>Klausur-Formel umstellen:</strong> Zur Bestimmung der Ladung <code>q</code> aus der Auslenkung gilt:<br>
-            <code>q = (m &bull; g &bull; tan(&alpha;)) / E = (m &bull; g &bull; d &bull; tan(&alpha;)) / U</code>.
-          </div>
-        </div>
-      </div>
-
-      <div class="diagram-card">
-        <h4 style="font-size: 1rem; font-weight: 800; color: #f59e0b; margin-bottom: 0.6rem;">
-          📐 Visuelles Schaubild: Vektorielles Kräftedreieck am Fadenpendel
-        </h4>
-        <div class="diagram-svg-wrapper">
-          <svg viewBox="0 0 540 240" width="100%" height="220">
-            <rect x="30" y="30" width="10" height="180" rx="2" fill="#ef4444" />
-            <text x="35" y="22" fill="#ef4444" font-size="11" font-weight="bold" text-anchor="middle">+</text>
-            <rect x="230" y="30" width="10" height="180" rx="2" fill="#3b82f6" />
-            <text x="235" y="22" fill="#3b82f6" font-size="11" font-weight="bold" text-anchor="middle">-</text>
-
-            <circle cx="130" cy="40" r="4" fill="var(--text-primary)" />
-            <line x1="130" y1="40" x2="130" y2="180" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,4" />
-
-            <line x1="130" y1="40" x2="190" y2="150" stroke="#f59e0b" stroke-width="2.5" />
-            <path d="M 130 75 A 35 35 0 0 1 144 73" fill="none" stroke="#f59e0b" stroke-width="2" />
-            <text x="140" y="90" fill="#f59e0b" font-size="12" font-weight="bold">&alpha;</text>
-
-            <circle cx="190" cy="150" r="12" fill="#1e293b" stroke="#f59e0b" stroke-width="2.5" />
-            <text x="190" y="154" fill="#f59e0b" font-size="11" font-weight="bold" text-anchor="middle">q</text>
-
-            <line x1="265" y1="20" x2="265" y2="220" stroke="var(--border-subtle)" stroke-dasharray="4,4" />
-
-            <text x="390" y="30" fill="var(--text-primary)" font-size="12" font-weight="bold" text-anchor="middle">Rechtwinkliges Kräftedreieck:</text>
-
-            <line x1="360" y1="50" x2="360" y2="170" stroke="#ef4444" stroke-width="3" />
-            <polygon points="360,176 355,166 365,166" fill="#ef4444" />
-            <text x="340" y="115" fill="#ef4444" font-size="12" font-weight="bold">F_G</text>
-
-            <line x1="360" y1="170" x2="460" y2="170" stroke="#06b6d4" stroke-width="3" />
-            <polygon points="466,170 456,165 456,175" fill="#06b6d4" />
-            <text x="410" y="190" fill="#06b6d4" font-size="12" font-weight="bold">F_el = q &bull; E</text>
-
-            <line x1="360" y1="50" x2="460" y2="170" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="5,3" />
-            <text x="435" y="105" fill="#f59e0b" font-size="12" font-weight="bold">F_S</text>
-
-            <path d="M 360 80 A 30 30 0 0 1 378 72" fill="none" stroke="#f59e0b" stroke-width="2" />
-            <text x="372" y="95" fill="#f59e0b" font-size="12" font-weight="bold">&alpha;</text>
-
-            <rect x="360" y="158" width="12" height="12" fill="none" stroke="var(--text-primary)" stroke-width="1.5" />
-            <circle cx="366" cy="164" r="1.5" fill="var(--text-primary)" />
-          </svg>
-        </div>
-      </div>
-    `,
-    tasks: [
-      {
-        prompt: 'Ein geladenes Pendel (m = 0,5 g) schlägt im homogenen Feld E = 20 kV/m um α = 12° aus. Berechne die Ladung q.',
-        given: 'm = 0,0005 kg, E = 20.000 V/m, α = 12°, g = 9,81 m/s²',
-        sought: 'q',
-        solution: `
-          <code>F_G = m &bull; g = 0,0005 kg &bull; 9,81 m/s&sup2; = 4,905 &bull; 10⁻³ N</code><br>
-          <code>tan(12&deg;) &asymp; 0,21256</code><br>
-          <code>F_el = F_G &bull; tan(12&deg;) = 4,905 &bull; 10⁻³ N &bull; 0,21256 &asymp; 1,043 &bull; 10⁻³ N</code><br>
-          <code>q = F_el / E = (1,043 &bull; 10⁻³ N) / 20.000 V/m &asymp; 5,21 &bull; 10⁻⁸ C = 52,1 nC</code>.
-        `
-      }
-    ]
-  },
-
-  {
-    id: 'coulomb-gesetz',
-    num: '05',
-    icon: '⚖️',
+    icon: '📈',
+    badge: 'Klausur-Fokus S. 32 & 33',
     color: '#3b82f6',
-    tag: 'Kraft zwischen Ladungen',
-    title: 'Coulomb-Gesetz & Ladungsausgleich bei Kugel-Berührung',
-    desc: 'F proportional zu 1/r², Abstandsänderung und Ladungsteilung (q1 + q2)/2 bei Berührung.',
+    title: '1. Die 4 typischen Funktionen & Messwertauswertung',
+    subtitle: 'Proportional, quadratisch, antiproportional & 1/r²-Zusammenhang (S. 32), Regressions-Check und das Original-Klausurblatt S. 33.',
+    topics: [
+      { id: 'typische-funktionen', num: '1.1', title: 'Die 4 typischen Funktionen im Physik-Abitur (S. 32)', badge: 'S. 32 Basis', desc: 'Verdopplungsregeln, Quotientengleichheit, Produktgleichheit, Linearisierung und R²-Bestimmung.' },
+      { id: 'messwerte-auswerten-2', num: '1.2', title: 'Klausurblatt: Auswerten von Messwerten II (S. 33)', badge: 'S. 33 Klausur', desc: 'Aufgabe 1: Coulomb-Kraft F(r), Aufgabe 2: Plattenkondensator F(U), Aufgabe 3: Entladekurve I(t) & Integral.' },
+      { id: 'messwerte-auswerten-1', num: '1.3', title: 'Messwertauswertung I: Braun\'sche Röhre & Drahtwiderstand (S. 19)', badge: 'S. 19 Übung', desc: 'Ablenkung x(U) in der Röhre und Widerstand R(A) bei Querschnittsänderung.' }
+    ]
+  },
+  {
+    id: 'ordner-phaenomene',
+    num: '02',
+    icon: '🔬',
+    badge: 'Meds.pdf S. 2 - 5 & 25',
+    color: '#10b981',
+    title: '2. Elektrostatische Phänomene & Ladungsträger',
+    subtitle: 'Elektroskop, Influenz vs. Polarisation, der Faradaysche Käfig und die Funktionsweise der Glimmlampe als Polprüfer.',
+    topics: [
+      { id: 'elektroskop-funktion', num: '2.1', title: 'Das Elektroskop: Aufbau & Ladungsverteilung (S. 2/3)', badge: 'S. 2/3 Phänomen', desc: 'Metallteller, Zeigerabstoßung und Ladungsnachweis für ruhende Ladungen.' },
+      { id: 'influenz-polarisation', num: '2.2', title: 'Influenz vs. Polarisation: Leiter vs. Nichtleiter (S. 5)', badge: 'S. 5 Konzept', desc: 'Verschiebung freier Elektronen vs. molekulare Dipole (Luftballon an der Wand).' },
+      { id: 'faraday-kaefig', num: '2.3', title: 'Der Faradaysche Käfig: Feldfreier Raum & Gegenfeld (S. 25)', badge: 'S. 25 Klausur', desc: 'Warum Elektronen das äußere Feld exakt kompensieren (Fel,inn = -Fel,auß).' },
+      { id: 'glimmlampe-polpruefer', num: '2.4', title: 'Die Glimmlampe & Polprüfer: Zünd- & Löschspannung (S. 4)', badge: 'S. 4 Gerät', desc: 'Gasentladung, Stoßionisation und warum stets die Kathode (Minuspol) leuchtet.' }
+    ]
+  },
+  {
+    id: 'ordner-feld-coulomb',
+    num: '03',
+    icon: '⚡',
+    badge: 'Meds.pdf S. 7, 10, 15, 26',
+    color: '#06b6d4',
+    title: '3. Elektrisches Feld & Coulombsches Gesetz',
+    subtitle: 'Feldstärke E = F/q, Coulomb-Gesetz, 7 Feldlinien-Eigenschaften, Widerspruchsbeweis und Flächenladungsdichte σ.',
+    topics: [
+      { id: 'efeld-berechnen', num: '3.1', title: 'Elektrische Feldstärke & Coulombsches Gesetz (S. 11, 15)', badge: 'S. 11/15 Formeln', desc: 'E = F/q, FC = 1/(4πε₀) • Q₁Q₂/r², Buch S. 111 A7 & AB 10.' },
+      { id: 'feldlinien-aequipotential', num: '3.2', title: 'Feldlinien & Äquipotentiallinien (mit Beweis!) (S. 7, 10)', badge: 'S. 7 Beweis', desc: '7 Eigenschaften, Widerspruchsbeweis (warum kein Schnittpunkt) und ΔW = 0.' },
+      { id: 'flaechenladungsdichte', num: '3.3', title: 'Flächenladungsdichte σ = Q/A & Plattenkondensator (S. 26/27)', badge: 'Buch S. 111 A13', desc: 'σ = ε₀εᵣE, Buch S. 111 A13 vollständig durchgerechnet.' }
+    ]
+  },
+  {
+    id: 'ordner-kraefte-mechanik',
+    num: '04',
+    icon: '🎯',
+    badge: 'Meds.pdf S. 28, 30 & Buch S. 111',
+    color: '#f59e0b',
+    title: '4. Kräfte & Mechanik im E-Feld (Klausur-Rechnung!)',
+    subtitle: 'Auslenkung einer geladenen Kugel am Faden (Kräfteparallelogramm tan α = Fel/Fg), schwebende Ladungsträger und Buch S. 111 A8-A10.',
+    topics: [
+      { id: 'kugel-auslenkung', num: '4.1', title: 'Auslenkung einer geladenen Kugel im E-Feld (S. 28, 30)', badge: 'Klausur-Klassiker', desc: 'Fadenpendel, tan α = Fel/Fg, Kleinwinkelnäherung sin α ≈ tan α = s/l, korrigierte Rechnung.' },
+      { id: 'kraeftevergleich-schweben', num: '4.2', title: 'Kräftevergleich & schwebende Kugel (Buch S. 111 A9, A10)', badge: 'S. 24 Einheiten', desc: 'Einheitenableitung V/m = N/C = kg•m/(s³•A), Gravitation Fg vs. elektrische Kraft Fel.' }
+    ]
+  },
+  {
+    id: 'ordner-kondensator-versuch',
+    num: '05',
+    icon: '🔋',
+    badge: 'Meds.pdf S. 8, 12 & 33',
+    color: '#8b5cf6',
+    title: '5. Kondensator & Entladevorgang (Versuch & Integral)',
+    subtitle: 'Schaltskizze, Durchführung des Entladeversuchs, Ladung Q als Integral ∫I(t) dt, Kapazität C und Energie W = ½CU².',
+    topics: [
+      { id: 'kondensator-versuch', num: '5.1', title: 'Der Entladeversuch: Schaltung & Durchführung (S. 8)', badge: 'S. 8 Experiment', desc: 'Auflade- vs. Entladestromkreis, Wechselschalter, Messung von I(t).' },
+      { id: 'ladung-integral', num: '5.2', title: 'Ladungsberechnung mit Integral Q = ∫I(t) dt (S. 12, 33)', badge: 'S. 12/33 Integral', desc: 'Integration der e-Funktion, Stammfunktion und Taschenrechner-Syntax.' },
+      { id: 'kondensator-kapazitaet', num: '5.3', title: 'Kapazität & elektrische Energie des Kondensators', badge: 'Grundgrößen', desc: 'C = Q/U = ε₀εᵣ A/d, Energie Wel = ½ C U² = ½ Q U.' }
+    ]
+  }
+];
+
+
+// --- 2. SKILLS FÜR ORDNER 1: FUNKTIONEN & MESSWERTE ---
+const SKILLS_FOLDER_1 = [
+  {
+    id: 'typische-funktionen',
+    folderId: 'ordner-funktionen',
+    num: '01',
+    icon: '📈',
+    color: '#3b82f6',
+    tag: 'Klausur-Fokus S. 32',
+    title: 'Die 4 typischen Funktionen im Physik-Abitur (S. 32)',
+    desc: 'Proportional, quadratisch, antiproportional & 1/r²-Zusammenhang. Verdopplungsregeln, Quotientengleichheit, Produktgleichheit und R²-Bestimmung.',
     visualHtml: `
       <div class="formula-hero-card" style="border-left: 6px solid #3b82f6;">
         <span class="formula-hero-badge" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
-          ⚖️ DAS COULOMBSCHE GESETZ
+          📈 DIE 4 UNVERZICHTBAREN FUNKTIONSTYPEN (MEDS.PDF S. 32)
         </span>
-        <div class="formula-math-display">
-          <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>F</mi><mi>C</mi></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mn>4</mn><mi>π</mi><msub><mi>ε</mi><mn>0</mn></msub></mrow></mfrac><mo>⋅</mo><mfrac><mrow><mi mathvariant="normal">∣</mi><msub><mi>Q</mi><mn>1</mn></msub><mo>⋅</mo><msub><mi>Q</mi><mn>2</mn></msub><mi mathvariant="normal">∣</mi></mrow><msup><mi>r</mi><mn>2</mn></msup></mfrac></mrow><annotation encoding="application/x-tex">F_C = \frac{1}{4\pi\varepsilon_0} \cdot \frac{|Q_1 \cdot Q_2|}{r^2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">F</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1574em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">4</span><span class="mord mathnormal" style="margin-right:0.03588em;">π</span><span class="mord"><span class="mord mathnormal">ε</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.113em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.427em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7401em;"><span style="top:-2.989em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">∣</span><span class="mord"><span class="mord mathnormal">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord">∣</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-        </div>
-        
-        <div class="variable-pills-grid">
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(59, 130, 246, 0.15); color: #2563eb;">F<sub>C</sub></div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Coulomb-Kraft</div>
-              <div class="var-info-unit">Einheit: <strong>Newton (N)</strong></div>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0.6rem 0 1rem 0; line-height: 1.5;">
+          In Physik-Klausuren musst du aus Messwerttabellen sofort den mathematischen Zusammenhang erkennen. Dafür gibt es die <strong>Verdopplungsregel</strong> und die <strong>Konstantenprüfung</strong>:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.9rem; margin-bottom: 1.2rem;">
+          <!-- 1. Proportional -->
+          <div style="background: var(--bg-subtle); border-radius: 8px; padding: 1rem; border-top: 3px solid #3b82f6;">
+            <div style="font-weight: 800; color: #3b82f6; font-size: 1rem; margin-bottom: 0.4rem;">
+              1. Proportional (<span class="katex-render" data-display="false" data-latex="y \sim x">y ~ x</span>)
+            </div>
+            <div style="font-size: 0.85rem; line-height: 1.45; color: var(--text-primary); margin-bottom: 0.5rem;">
+              <strong>Gleichung:</strong> <span class="katex-render" data-display="false" data-latex="y = k \cdot x">y = k · x</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+              • <strong>Merkregel:</strong> Verdoppelt sich <span class="katex-render" data-display="false" data-latex="x">x</span>, verdoppelt sich <span class="katex-render" data-display="false" data-latex="y">y</span> annähernd.<br>
+              • <strong>Test:</strong> <em>Quotientengleichheit</em> <span class="katex-render" data-display="false" data-latex="\frac{y}{x} = k = \text{const.}">y/x = const.</span><br>
+              • <strong>Graph:</strong> Ursprungsgerade mit Steigung <span class="katex-render" data-display="false" data-latex="k">k</span>.<br>
+              • <strong>Physik-Beispiel:</strong> <span class="katex-render" data-display="false" data-latex="F_{\text{el}} = q \cdot E">Fel = q · E</span> (<span class="katex-render" data-display="false" data-latex="F \sim q">F ~ q</span>).
             </div>
           </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(239, 68, 68, 0.15); color: #dc2626;">Q₁, Q₂</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Punktladungen</div>
-              <div class="var-info-unit">Einheit: <strong>Coulomb (C)</strong></div>
+
+          <!-- 2. Quadratisch -->
+          <div style="background: var(--bg-subtle); border-radius: 8px; padding: 1rem; border-top: 3px solid #10b981;">
+            <div style="font-weight: 800; color: #10b981; font-size: 1rem; margin-bottom: 0.4rem;">
+              2. Quadratisch (<span class="katex-render" data-display="false" data-latex="y \sim x^2">y ~ x²</span>)
+            </div>
+            <div style="font-size: 0.85rem; line-height: 1.45; color: var(--text-primary); margin-bottom: 0.5rem;">
+              <strong>Gleichung:</strong> <span class="katex-render" data-display="false" data-latex="y = k \cdot x^2">y = k · x²</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+              • <strong>Merkregel:</strong> Verdoppelt sich <span class="katex-render" data-display="false" data-latex="x">x</span>, <strong>vervierfacht</strong> sich <span class="katex-render" data-display="false" data-latex="y">y</span> (<span class="katex-render" data-display="false" data-latex="2^2 = 4">2² = 4</span>).<br>
+              • <strong>Test:</strong> <em>Quotientengleichheit</em> <span class="katex-render" data-display="false" data-latex="\frac{y}{x^2} = k = \text{const.}">y/x² = const.</span><br>
+              • <strong>Linearisierung:</strong> <span class="katex-render" data-display="false" data-latex="y">y</span> über <span class="katex-render" data-display="false" data-latex="x^2">x²</span> aufgetragen ergibt Gerade.<br>
+              • <strong>Physik-Beispiel:</strong> Kondensatorkraft <span class="katex-render" data-display="false" data-latex="F = \frac{1}{2}\varepsilon_0 \frac{A}{d^2} U^2">F ~ U²</span>.
             </div>
           </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(245, 158, 11, 0.15); color: #d97706;">r</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Abstand</div>
-              <div class="var-info-unit">Quadratisch: <strong>Meter (m)</strong></div>
+
+          <!-- 3. Antiproportional -->
+          <div style="background: var(--bg-subtle); border-radius: 8px; padding: 1rem; border-top: 3px solid #f59e0b;">
+            <div style="font-weight: 800; color: #d97706; font-size: 1rem; margin-bottom: 0.4rem;">
+              3. Antiproportional (<span class="katex-render" data-display="false" data-latex="y \sim \frac{1}{x}">y ~ 1/x</span>)
+            </div>
+            <div style="font-size: 0.85rem; line-height: 1.45; color: var(--text-primary); margin-bottom: 0.5rem;">
+              <strong>Gleichung:</strong> <span class="katex-render" data-display="false" data-latex="y = \frac{k}{x} = k \cdot x^{-1}">y = k/x</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+              • <strong>Merkregel:</strong> Verdoppelt sich <span class="katex-render" data-display="false" data-latex="x">x</span>, <strong>halbiert</strong> sich <span class="katex-render" data-display="false" data-latex="y">y</span> (<span class="katex-render" data-display="false" data-latex="\frac{1}{2}">1/2</span>).<br>
+              • <strong>Test:</strong> <em>Produktgleichheit</em> <span class="katex-render" data-display="false" data-latex="x \cdot y = k = \text{const.}">x · y = const.</span><br>
+              • <strong>Linearisierung:</strong> <span class="katex-render" data-display="false" data-latex="y">y</span> über <span class="katex-render" data-display="false" data-latex="\frac{1}{x}">1/x</span> aufgetragen ergibt Gerade.<br>
+              • <strong>Physik-Beispiel:</strong> Drahtwiderstand <span class="katex-render" data-display="false" data-latex="R = \rho \cdot \frac{l}{A}">R ~ 1/A</span>.
             </div>
           </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(16, 185, 129, 0.15); color: #059669;">&epsilon;₀</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Feldkonstante</div>
-              <div class="var-info-unit"><strong>8,854 &bull; 10⁻¹² As/(Vm)</strong></div>
+
+          <!-- 4. Potenzfunktion 1/r² -->
+          <div style="background: var(--bg-subtle); border-radius: 8px; padding: 1rem; border-top: 3px solid #8b5cf6;">
+            <div style="font-weight: 800; color: #8b5cf6; font-size: 1rem; margin-bottom: 0.4rem;">
+              4. Potenzfunktion (<span class="katex-render" data-display="false" data-latex="y \sim \frac{1}{x^2}">y ~ 1/x²</span>)
+            </div>
+            <div style="font-size: 0.85rem; line-height: 1.45; color: var(--text-primary); margin-bottom: 0.5rem;">
+              <strong>Gleichung:</strong> <span class="katex-render" data-display="false" data-latex="y = \frac{k}{x^2} = k \cdot x^{-2}">y = k/x²</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.4;">
+              • <strong>Merkregel:</strong> Verdoppelt sich <span class="katex-render" data-display="false" data-latex="x">x</span>, sinkt <span class="katex-render" data-display="false" data-latex="y">y</span> auf <strong>ein Viertel</strong> (<span class="katex-render" data-display="false" data-latex="\frac{1}{4}">1/4</span>).<br>
+              • <strong>Test:</strong> <em>Produktgleichheit</em> <span class="katex-render" data-display="false" data-latex="y \cdot x^2 = k = \text{const.}">y · x² = const.</span><br>
+              • <strong>Linearisierung:</strong> <span class="katex-render" data-display="false" data-latex="y">y</span> über <span class="katex-render" data-display="false" data-latex="\frac{1}{x^2}">1/x²</span> aufgetragen ergibt Gerade.<br>
+              • <strong>Physik-Beispiel:</strong> Coulombsches Gesetz <span class="katex-render" data-display="false" data-latex="F_C \sim \frac{1}{r^2}">F ~ 1/r²</span>.
             </div>
           </div>
         </div>
 
         <div class="formula-takeaway-box" style="background: rgba(59, 130, 246, 0.08); border-left: 4px solid #3b82f6;">
-          <span style="font-size: 1.2rem;">💡</span>
+          <span style="font-size: 1.3rem;">📋</span>
           <div>
-            <strong>2 goldene Klausur-Regeln:</strong><br>
-            1. <strong>Abstands-Gesetz (1/r²):</strong> Verdoppelt sich der Abstand (r &rarr; 2r), sinkt die Kraft auf ein <strong>Viertel (1/4)</strong>!<br>
-            2. <strong>Kugel-Berührung:</strong> Berühren sich zwei gleiche Kugeln, teilt sich die Summenladung exakt hälftig auf: <code>Q' = (Q₁ + Q₂) / 2</code>!
+            <strong>Das 4-Schritte-Vorgehen für jede Klausuraufgabe (Unterrichts-Standard):</strong><br>
+            <strong>1. Vermutung aufstellen:</strong> Wertepaare anschauen (z. B. wenn sich der Abstand <span class="katex-render" data-display="false" data-latex="r">r</span> verdoppelt von 10 auf 20 cm, sinkt <span class="katex-render" data-display="false" data-latex="F">F</span> von 6,5 auf 1,62 mN &rarr; etwa Faktor 4 kleiner &rarr; Vermutung: <span class="katex-render" data-display="false" data-latex="F \sim \frac{1}{r^2}">F ~ 1/r²</span>).<br>
+            <strong>2. Tabelle um 3. Zeile erweitern:</strong> Prüfgröße berechnen (z. B. Produkt <span class="katex-render" data-display="false" data-latex="F \cdot r^2">F · r²</span> oder Quotient <span class="katex-render" data-display="false" data-latex="F / U^2">F / U²</span>).<br>
+            <strong>3. Konstanz beurteilen &amp; Mittelwert bilden:</strong> Zeigen, dass die Werte im Rahmen der Messgenauigkeit konstant sind: <span class="katex-render" data-display="false" data-latex="\bar{k} = \frac{\sum k_i}{n}">k_mittel</span> berechnen.<br>
+            <strong>4. Funktionsgleichung angeben:</strong> Gleichung mit der berechneten Konstanten, korrekter physikalischer Einheit und Bestimmtheitsmaß <span class="katex-render" data-display="false" data-latex="R^2 \approx 1">R² ≈ 1</span> formulieren.
           </div>
         </div>
       </div>
     `,
-    hasSim: 'coulomb',
+    summary: 'Die 4 Grundfunktionen im Physik-Abitur: Proportional (Quotient konstant), Quadratisch (Quotient durch x² konstant), Antiproportional (Produkt konstant) und 1/r²-Potenzfunktion (Produkt mit r² konstant).',
+    takeaways: [
+      'Proportionalität y ~ x wird mit dem Quotienten y/x = const. nachgewiesen.',
+      'Quadratischer Zusammenhang y ~ x² wird mit y/x² = const. nachgewiesen.',
+      'Antiproportionalität y ~ 1/x wird mit dem Produkt x • y = const. nachgewiesen.',
+      'Coulomb-Abhängigkeit y ~ 1/x² wird mit dem Produkt y • x² = const. nachgewiesen.'
+    ],
     tasks: [
       {
-        prompt: 'Zwei gleiche Ladungen Q = 25 nC stoßen sich mit F = 5,0 mN ab. Berechne ihren Abstand r.',
-        given: 'Q₁ = Q₂ = 25 nC, F = 0,005 N',
-        sought: 'Abstand r',
+        title: 'Übungsaufgabe 1: Funktionstyp aus Messwerten bestimmen',
+        prompt: `
+          Gegeben sind folgende Messreihen zweier physikalischer Größen A und B:
+          <table style="width:100%; border-collapse:collapse; margin:0.8rem 0; font-size:0.88rem; text-align:center;">
+            <tr style="background:var(--bg-subtle);">
+              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">x in m</th>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">1</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">2</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">3</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">4</td>
+            </tr>
+            <tr>
+              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">y in N</th>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">72,0</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">18,0</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">8,0</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">4,5</td>
+            </tr>
+          </table>
+          Ermittle den funktionalen Zusammenhang y(x) nach dem 4-Schritte-Vorgehen.
+        `,
         solution: `
-          <code>F_C = (1 / (4&pi;&epsilon;₀)) &bull; (Q&sup2; / r&sup2;) &rArr; r = &radic;[ (1 / (4&pi;&epsilon;₀)) &bull; Q&sup2; / F ]</code><br>
-          <code>r = &radic;[ (8,988 &bull; 10⁹) &bull; (25 &bull; 10⁻⁹)&sup2; / 0,005 ] &asymp; 0,0335 m = 3,35 cm</code>.
+          <strong>Schritt 1: Vermutung formulieren</strong><br>
+          Wenn sich <span class="katex-render" data-display="false" data-latex="x">x</span> von 1 auf 2 verdoppelt, sinkt <span class="katex-render" data-display="false" data-latex="y">y</span> von 72,0 auf 18,0 N. Da <span class="katex-render" data-display="false" data-latex="\frac{72}{18} = 4 = 2^2">72/18 = 4</span>, sinkt <span class="katex-render" data-display="false" data-latex="y">y</span> auf ein Viertel.<br>
+          Wenn sich <span class="katex-render" data-display="false" data-latex="x">x</span> von 2 auf 4 verdoppelt, sinkt <span class="katex-render" data-display="false" data-latex="y">y</span> von 18,0 auf 4,5 N (<span class="katex-render" data-display="false" data-latex="\frac{18}{4,5} = 4">18/4,5 = 4</span>).<br>
+          &rarr; <em>Vermutung:</em> Potenzfunktion mit Exponent -2: <span class="katex-render" data-display="false" data-latex="y \sim \frac{1}{x^2} \iff y = \frac{k}{x^2}">y = k/x²</span>.<br><br>
+
+          <strong>Schritt 2 &amp; 3: Konstantenprodukt berechnen</strong><br>
+          Wir berechnen in der 3. Zeile das Produkt <span class="katex-render" data-display="false" data-latex="k = y \cdot x^2">k = y · x²</span>:<br>
+          • <span class="katex-render" data-display="false" data-latex="x = 1\,\text{m}: 72,0 \cdot 1^2 = 72,0\,\text{N}\cdot\text{m}^2">k = 72,0</span><br>
+          • <span class="katex-render" data-display="false" data-latex="x = 2\,\text{m}: 18,0 \cdot 2^2 = 18,0 \cdot 4 = 72,0\,\text{N}\cdot\text{m}^2">k = 72,0</span><br>
+          • <span class="katex-render" data-display="false" data-latex="x = 3\,\text{m}: 8,0 \cdot 3^2 = 8,0 \cdot 9 = 72,0\,\text{N}\cdot\text{m}^2">k = 72,0</span><br>
+          • <span class="katex-render" data-display="false" data-latex="x = 4\,\text{m}: 4,5 \cdot 4^2 = 4,5 \cdot 16 = 72,0\,\text{N}\cdot\text{m}^2">k = 72,0</span><br>
+          Die Werte sind exakt konstant: <span class="katex-render" data-display="false" data-latex="\bar{k} = 72,0\,\text{N}\cdot\text{m}^2">k_mittel = 72,0 N•m²</span>.<br><br>
+
+          <strong>Schritt 4: Funktionsgleichung formulieren</strong><br>
+          <div class="katex-render" data-display="true" data-latex="y(x) = \frac{72,0\,\text{N}\cdot\text{m}^2}{x^2} = 72,0 \cdot x^{-2}\,\text{N}\cdot\text{m}^2 \quad (R^2 = 1,0)"></div>
         `
       }
     ]
   },
 
   {
-    id: 'linearisierung-waage-ab06',
-    num: '06',
-    icon: '📈',
-    color: '#6366f1',
-    tag: 'Messwerte & Linearisierung',
-    title: 'Wie bestimme ich ε0 aus Messwerten (Linearisierung mit der Waage)?',
-    desc: 'Aufgabe AB06: F = 1/2 ε0 (A/d²) U², Ursprungsgerade F über U², Steigung m = 1/2 ε0 A/d².',
-    visualHtml: `
-      <div class="formula-hero-card" style="border-left: 6px solid #6366f1;">
-        <span class="formula-hero-badge" style="background: rgba(99, 102, 241, 0.15); color: #6366f1;">
-          📈 AB06 LINEARISIERUNG DER WAAGE-MESSWERTE
-        </span>
-        <div class="formula-math-display">
-          __KATEX_LINEARI__
-        </div>
-        
-        <div class="variable-pills-grid">
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(99, 102, 241, 0.15); color: #4f46e5;">y = F</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Kraft auf Waage</div>
-              <div class="var-info-unit">y-Achse: <strong>Newton (N)</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(244, 63, 94, 0.15); color: #e11d48;">x = U²</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Quadrierte Spannung</div>
-              <div class="var-info-unit">x-Achse: <strong>Volt² (V²)</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(16, 185, 129, 0.15); color: #059669;">m</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Steigung (&Delta;F/&Delta;U²)</div>
-              <div class="var-info-unit">m = (&epsilon;₀ &bull; A) / (2d&sup2;)</div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(245, 158, 11, 0.15); color: #d97706;">&epsilon;₀</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Gesuchte Konstante</div>
-              <div class="var-info-unit">&epsilon;₀ = (2 &bull; d&sup2; &bull; m) / A</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="formula-takeaway-box" style="background: rgba(99, 102, 241, 0.08); border-left: 4px solid #6366f1;">
-          <span style="font-size: 1.2rem;">💡</span>
-          <div>
-            <strong>Warum quadrieren?</strong> Die Kurve F(U) ist eine Parabel (F &prop; U²). Man kann keine Gerade durch eine Parabel ziehen! Durch die Ersetzung <code>x = U²</code> wird der Graph eine <strong>Ursprungsgerade</strong>.
-          </div>
-        </div>
-      </div>
-
-      <div class="diagram-card" style="margin-top: 1.2rem;">
-        <h4 style="font-size: 1rem; font-weight: 800; color: #6366f1; margin-bottom: 0.6rem;">
-          📈 Visuelles Schaubild: Linearisierung F über U² (AB06 Messreihe)
-        </h4>
-        <div class="diagram-svg-wrapper">
-          <svg viewBox="0 0 540 220" width="100%" height="200">
-            <line x1="60" y1="180" x2="480" y2="180" stroke="var(--text-primary)" stroke-width="2" />
-            <line x1="60" y1="180" x2="60" y2="30" stroke="var(--text-primary)" stroke-width="2" />
-            <polygon points="480,180 472,176 472,184" fill="var(--text-primary)" />
-            <polygon points="60,30 56,38 64,38" fill="var(--text-primary)" />
-            <text x="495" y="184" fill="#f43f5e" font-size="12" font-weight="bold">x = U² [V²]</text>
-            <text x="60" y="20" fill="#6366f1" font-size="12" font-weight="bold">y = F [N]</text>
-            <line x1="60" y1="180" x2="430" y2="50" stroke="#10b981" stroke-width="3" />
-            <polygon points="200,131 340,131 340,82" fill="rgba(16, 185, 129, 0.15)" stroke="#10b981" stroke-dasharray="3,3" />
-            <text x="270" y="146" fill="#10b981" font-size="11" font-weight="bold" text-anchor="middle">&Delta;(U²)</text>
-            <text x="355" y="110" fill="#10b981" font-size="11" font-weight="bold">&Delta;F</text>
-            <text x="250" y="95" fill="#10b981" font-size="12" font-weight="bold">m = &Delta;F / &Delta;(U²)</text>
-            <circle cx="120" cy="159" r="4.5" fill="#f43f5e" />
-            <circle cx="180" cy="138" r="4.5" fill="#f43f5e" />
-            <circle cx="260" cy="110" r="4.5" fill="#f43f5e" />
-            <circle cx="330" cy="85" r="4.5" fill="#f43f5e" />
-            <circle cx="400" cy="61" r="4.5" fill="#f43f5e" />
-            <rect x="80" y="45" width="150" height="42" rx="6" fill="var(--bg-subtle)" stroke="var(--border-subtle)" />
-            <text x="155" y="62" fill="var(--text-primary)" font-size="11" font-weight="bold" text-anchor="middle">Ursprungsgerade!</text>
-            <text x="155" y="78" fill="#6366f1" font-size="11" font-weight="bold" text-anchor="middle">&epsilon;₀ = (2·d²·m) / A</text>
-          </svg>
-        </div>
-        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem; text-align: center;">
-          💡 <strong>Merke:</strong> F(U) ist eine Parabel &rarr; Erst durch Quadrieren der x-Werte (U &rarr; U²) entsteht die Ursprungsgerade mit Steigung m!
-        </div>
-      </div>
-    `,
-    tasks: [
-      {
-        prompt: 'Bei Plattenabstand d = 1,0 cm und runden Platten (r = 12,8 cm) ergibt sich aus der Ausgleichsgerade die Steigung m = 4,56·10⁻⁸ N/V². Berechne die experimentelle Feldkonstante ε₀.',
-        given: 'd = 0,01 m, r = 0,128 m, m = 4,56·10⁻⁸ N/V²',
-        sought: 'ε₀',
-        solution: `
-          <code>A = &pi; &bull; r&sup2; = &pi; &bull; (0,128 m)&sup2; &asymp; 0,05147 m&sup2;</code><br>
-          <code>&epsilon;₀ = (2 &bull; d&sup2; &bull; m) / A</code><br>
-          <code>&epsilon;₀ = (2 &bull; (0,01 m)&sup2; &bull; 4,56 &bull; 10⁻⁸ N/V&sup2;) / 0,05147 m&sup2;</code><br>
-          <code>&epsilon;₀ = (9,12 &bull; 10⁻¹²) / 0,05147 &asymp; 8,86 &bull; 10⁻¹² As/(Vm)</code><br>
-          <strong style="color: #10b981;">Ergebnis:</strong> Exzellente &Uuml;bereinstimmung mit dem Literaturwert (8,854·10⁻¹²)!
-        `
-      }
-    ]
-  },
-
-  {
-    id: 'entladungskurve-messwerte-ab08',
-    num: '07',
-    icon: '📉',
-    color: '#8b5cf6',
-    tag: 'Messwerte & Kondensator-Entladung',
-    title: 'Wie werte ich Entladungskurven I(t) aus (Kondensator-Messwerte AB08)?',
-    desc: 'Aufgabe AB08: Q0 = Integral I(t) dt durch Kästchenzählen, Kapazität C = Q0/U0 und I(t) = I0 e^(-t/RC).',
-    visualHtml: `
-      <div class="formula-hero-card" style="border-left: 6px solid #8b5cf6;">
-        <span class="formula-hero-badge" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">
-          📉 AB08 FLÄCHENAUSZÄHLUNG &amp; KAPAZITÄTSBESTIMMUNG
-        </span>
-        <div class="formula-math-display">
-          <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>Q</mi><mn>0</mn></msub><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mi mathvariant="normal">∞</mi></msubsup><mi>I</mi><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo><mtext> </mtext><mi>d</mi><mi>t</mi><mspace width="1em"/><mtext>und</mtext><mspace width="1em"/><mi>C</mi><mo>=</mo><mfrac><msub><mi>Q</mi><mn>0</mn></msub><msub><mi>U</mi><mn>0</mn></msub></mfrac></mrow><annotation encoding="application/x-tex">Q_0 = \int_0^\infty I(t) \, dt \quad \text{und} \quad C = \frac{Q_0}{U_0}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.3262em;vertical-align:-0.9119em;"></span><span class="mop"><span class="mop op-symbol large-op" style="margin-right:0.44445em;position:relative;top:-0.0011em;">∫</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.4143em;"><span style="top:-1.7881em;margin-left:-0.4445em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span><span style="top:-3.8129em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">∞</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.9119em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">und</span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1963em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal">Q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-        </div>
-        
-        <div class="variable-pills-grid">
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(139, 92, 246, 0.15); color: #7c3aed;">Q₀</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Gesamtladung</div>
-              <div class="var-info-unit">Fl&auml;che unter I(t): <strong>Coulomb (C)</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(6, 182, 212, 0.15); color: #0891b2;">C</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Kapazit&auml;t (Q₀ / U₀)</div>
-              <div class="var-info-unit">Einheit: <strong>Farad (F)</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(245, 158, 11, 0.15); color: #d97706;">&tau;</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Zeitkonstante (R &bull; C)</div>
-              <div class="var-info-unit">Abfall auf 37 %: <strong>Sekunden (s)</strong></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="formula-takeaway-box" style="background: rgba(139, 92, 246, 0.08); border-left: 4px solid #8b5cf6;">
-          <span style="font-size: 1.2rem;">💡</span>
-          <div>
-            <strong>Kästchenzähl-Methode (AB08):</strong><br>
-            1 Kästchen = <code>&Delta;t [s] &bull; &Delta;I [A]</code> Ladung. Gesamte Ladung = <code>Anzahl K&auml;stchen &bull; Ladung pro K&auml;stchen</code>.
-          </div>
-        </div>
-      </div>
-
-      <div class="diagram-card" style="margin-top: 1.2rem;">
-        <h4 style="font-size: 1rem; font-weight: 800; color: #8b5cf6; margin-bottom: 0.6rem;">
-          📉 Visuelles Schaubild: Entladestrom I(t) &amp; Fl&auml;chenausz&auml;hlung (AB08 Messwerte)
-        </h4>
-        <div class="diagram-svg-wrapper">
-          <svg viewBox="0 0 540 220" width="100%" height="200">
-            <line x1="60" y1="180" x2="480" y2="180" stroke="var(--text-primary)" stroke-width="2" />
-            <line x1="60" y1="180" x2="60" y2="30" stroke="var(--text-primary)" stroke-width="2" />
-            <polygon points="480,180 472,176 472,184" fill="var(--text-primary)" />
-            <polygon points="60,30 56,38 64,38" fill="var(--text-primary)" />
-            <text x="495" y="184" fill="var(--text-secondary)" font-size="12" font-weight="bold">t [s]</text>
-            <text x="60" y="20" fill="#8b5cf6" font-size="12" font-weight="bold">I [mA]</text>
-            <text x="40" y="55" fill="#8b5cf6" font-size="11" font-weight="bold">I₀</text>
-            <path d="M 60 50 Q 150 120 450 178 L 450 180 L 60 180 Z" fill="rgba(139, 92, 246, 0.2)" />
-            <path d="M 60 50 Q 150 120 450 178" fill="none" stroke="#8b5cf6" stroke-width="3" />
-            <rect x="140" y="110" width="190" height="42" rx="6" fill="var(--bg-subtle)" stroke="#8b5cf6" />
-            <text x="235" y="127" fill="#8b5cf6" font-size="11" font-weight="bold" text-anchor="middle">Fl&auml;che = Ladung Q₀</text>
-            <text x="235" y="142" fill="var(--text-primary)" font-size="10" text-anchor="middle">Q₀ = K&auml;stchen &bull; (&Delta;t &bull; &Delta;I)</text>
-          </svg>
-        </div>
-        <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem; text-align: center;">
-          💡 <strong>Klausur-Kernprinzip:</strong> Fl&auml;che unter I(t) entspricht der abgeflossenen Ladung Q₀ &rarr; Kapazit&auml;t: <code>C = Q₀ / U₀</code>!
-        </div>
-      </div>
-    `,
-    tasks: [
-      {
-        prompt: 'Ein Kondensator wird mit U₀ = 10 V geladen. Bei der Entladung zählt man unter der I(t)-Kurve insgesamt 48 Kästchen. Ein Kästchen entspricht Δt = 2 s und ΔI = 0,25 mA. Berechne die Kapazität C.',
-        given: 'U₀ = 10 V, 48 Kästchen, Δt = 2 s, ΔI = 0,25·10⁻³ A',
-        sought: 'C',
-        solution: `
-          <code>Q_K&auml;stchen = &Delta;t &bull; &Delta;I = 2 s &bull; 0,25 &bull; 10⁻³ A = 0,50 &bull; 10⁻³ C</code><br>
-          <code>Q₀ = 48 &bull; 0,50 &bull; 10⁻³ C = 24 &bull; 10⁻³ C = 24 mC</code><br>
-          <code>C = Q₀ / U₀ = (24 &bull; 10⁻³ C) / 10 V = 2,4 &bull; 10⁻³ F = 2,4 mF = 2400 &mu;F</code>.
-        `
-      }
-    ]
-  },
-
-  {
-    id: 'kondensator-kapazitaet-energie',
-    num: '08',
-    icon: '🔋',
-    color: '#10b981',
-    tag: 'Kapazität & Energie',
-    title: 'Kondensator-Kapazität & Energie im elektrischen Feld',
-    desc: 'C = ε0 εr (A/d), Energie Wel = 1/2 C U² = 1/2 Q U und Verhalten bei Abstandsänderung (Quelle getrennt vs. angeschlossen).',
-    visualHtml: `
-      <div class="formula-hero-card" style="border-left: 6px solid #10b981;">
-        <span class="formula-hero-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
-          🔋 KAPAZITÄT &amp; ELEKTRISCHE ENERGIE
-        </span>
-        <div class="formula-math-display">
-          <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>C</mi><mo>=</mo><msub><mi>ε</mi><mn>0</mn></msub><msub><mi>ε</mi><mi>r</mi></msub><mfrac><mi>A</mi><mi>d</mi></mfrac><mspace width="1em"/><mtext>und</mtext><mspace width="1em"/><msub><mi>W</mi><mtext>el</mtext></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>C</mi><msup><mi>U</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">C = \varepsilon_0 \varepsilon_r \frac{A}{d} \quad \text{und} \quad W_{\text{el}} = \frac{1}{2} C U^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0463em;vertical-align:-0.686em;"></span><span class="mord"><span class="mord mathnormal">ε</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">ε</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.02778em;">r</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">d</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord text"><span class="mord">und</span></span><span class="mspace" style="margin-right:1em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.1389em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">el</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.0074em;vertical-align:-0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">2</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span>
-        </div>
-        
-        <div class="variable-pills-grid">
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(16, 185, 129, 0.15); color: #059669;">C</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Kapazit&auml;t (&epsilon;₀ &bull; A / d)</div>
-              <div class="var-info-unit">Einheit: <strong>Farad (F)</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(245, 158, 11, 0.15); color: #d97706;">W<sub>el</sub></div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Feldenergie (&frac12; C U&sup2;)</div>
-              <div class="var-info-unit">Einheit: <strong>Joule (J = Ws)</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(6, 182, 212, 0.15); color: #0891b2;">&epsilon;<sub>r</sub></div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Dielektrizit&auml;tszahl</div>
-              <div class="var-info-unit">Vakuum / Luft: <strong>&asymp; 1,0</strong></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="formula-takeaway-box" style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid #10b981;">
-          <span style="font-size: 1.2rem;">💡</span>
-          <div>
-            <strong>Klausur-Falle (Quelle getrennt vs. angeschlossen):</strong><br>
-            • <strong>Quelle bleibt angeschlossen:</strong> <code>U = const</code> &rarr; Bei gr&ouml;&szlig;erem d sinken C, Q und W<sub>el</sub>.<br>
-            • <strong>Quelle getrennt:</strong> <code>Q = const</code> &rarr; Bei gr&ouml;&szlig;erem d sinkt C, aber <strong>U steigt</strong> und <strong>W<sub>el</sub> steigt</strong> (Handarbeit am Feld)!
-          </div>
-        </div>
-      </div>
-    `,
-    tasks: [
-      {
-        prompt: 'Ein Plattenkondensator (C = 200 pF) wird auf U = 500 V aufgeladen und von der Spannungsquelle getrennt. Nun wird der Plattenabstand verdoppelt. Berechne die neue Spannung und die verrichtete mechanische Arbeit.',
-        given: 'C₁ = 200 pF, U₁ = 500 V, d₂ = 2·d₁, Q = const',
-        sought: 'U₂, ΔW',
-        solution: `
-          Da <code>C = &epsilon;₀ &bull; A / d</code>, halbiert sich die Kapazität: <code>C₂ = 100 pF</code>.<br>
-          Wegen <code>Q = C₁ &bull; U₁ = 100 nC = const</code> verdoppelt sich die Spannung:<br>
-          <code>U₂ = Q / C₂ = 100 nC / 100 pF = 1000 V</code>!<br>
-          Energie vorher: <code>W₁ = &frac12; C₁ U₁&sup2; = &frac12; (200 &bull; 10⁻¹² F) &bull; (500 V)&sup2; = 2,5 &bull; 10⁻⁵ J</code><br>
-          Energie nachher: <code>W₂ = &frac12; C₂ U₂&sup2; = &frac12; (100 &bull; 10⁻¹² F) &bull; (1000 V)&sup2; = 5,0 &bull; 10⁻⁵ J</code><br>
-          Mechanische Arbeit: <code>&Delta;W = W₂ - W₁ = 2,5 &bull; 10⁻⁵ J</code> (investiert gegen die elektrostatische Anziehung der Platten).
-        `
-      }
-    ]
-  },
-
-  {
-    id: 'kondensator-schaltungen',
-    num: '09',
-    icon: '🔌',
+    id: 'messwerte-auswerten-2',
+    folderId: 'ordner-funktionen',
+    num: '02',
+    icon: '📊',
     color: '#0284c7',
-    tag: 'Schaltungen & Ersatzkapazität',
-    title: 'Kondensator-Schaltungen: Reihenschaltung vs. Parallelschaltung',
-    desc: 'Parallel addieren sich Kapazitäten (Cges = C1 + C2), in Reihe addieren sich Kehrwerte (1/Cges = 1/C1 + 1/C2).',
+    tag: 'Klausurblatt S. 33',
+    title: 'Klausurblatt: Auswerten von Messwerten II (Originalblatt S. 33)',
+    desc: 'Original-Arbeitsblatt aus Meds.pdf S. 33 vollständig gelöst: 1. Coulomb-Abstand F(r), 2. Kondensatorkraft F(U) mit Theorieprüfung, 3. Entladekurve I(t) & Integral.',
     visualHtml: `
       <div class="formula-hero-card" style="border-left: 6px solid #0284c7;">
         <span class="formula-hero-badge" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">
-          🔌 PARALLEL- VS. REIHENSCHALTUNG
+          📑 ORIGINAL IGS GÖTTINGEN KLAUSURBLATT (MEDS.PDF S. 33)
         </span>
-        <div class="formula-math-display">
-          <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>C</mi><mtext>parallel</mtext></msub><mo>=</mo><msub><mi>C</mi><mn>1</mn></msub><mo>+</mo><msub><mi>C</mi><mn>2</mn></msub><mspace width="1em"/><mtext>  </mtext><mo>⟺</mo><mtext>  </mtext><mspace width="1em"/><mfrac><mn>1</mn><msub><mi>C</mi><mtext>reihe</mtext></msub></mfrac><mo>=</mo><mfrac><mn>1</mn><msub><mi>C</mi><mn>1</mn></msub></mfrac><mo>+</mo><mfrac><mn>1</mn><msub><mi>C</mi><mn>2</mn></msub></mfrac></mrow><annotation encoding="application/x-tex">C_{\text{parallel}} = C_1 + C_2 \quad \iff \quad \frac{1}{C_{\text{reihe}}} = \frac{1}{C_1} + \frac{1}{C_2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">parallel</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">⟺</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1574em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">reihe</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.1574em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:2.1574em;vertical-align:-0.836em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3214em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord"><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0715em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.836em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
-        </div>
-        
-        <div class="variable-pills-grid">
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">C<sub>par</sub></div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Parallelschaltung</div>
-              <div class="var-info-unit">C<sub>ges</sub> = C₁ + C₂ &bull; <strong>U = const</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(245, 158, 11, 0.15); color: #d97706;">C<sub>rei</sub></div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Reihenschaltung</div>
-              <div class="var-info-unit">1/C<sub>ges</sub> = 1/C₁ + 1/C₂ &bull; <strong>Q = const</strong></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="formula-takeaway-box" style="background: rgba(2, 132, 199, 0.08); border-left: 4px solid #0284c7;">
-          <span style="font-size: 1.2rem;">💡</span>
-          <div>
-            <strong>Merkhilfe:</strong> Bei Kondensatoren ist es genau <strong>umgekehrt wie bei ohmschen Widerständen</strong>!<br>
-            • Parallel: Plattenflächen vergrößern sich &rarr; Kapazität wird größer.<br>
-            • Reihe: Plattenabstände addieren sich &rarr; Gesamtkapazität ist kleiner als der kleinste Einzelkondensator!
-          </div>
-        </div>
-      </div>
-
-      <div class="diagram-card" style="margin-top: 1.2rem;">
-        <h4 style="font-size: 1rem; font-weight: 800; color: #0284c7; margin-bottom: 0.6rem;">
-          🔌 Visuelles Schaubild: Parallelschaltung vs. Reihenschaltung
-        </h4>
-        <div class="diagram-svg-wrapper">
-          <svg viewBox="0 0 540 180" width="100%" height="170">
-            <text x="140" y="25" fill="#0284c7" font-size="13" font-weight="bold" text-anchor="middle">PARALLEL: C_ges = C₁ + C₂</text>
-            <line x1="40" y1="90" x2="90" y2="90" stroke="var(--text-primary)" stroke-width="2" />
-            <line x1="90" y1="50" x2="90" y2="130" stroke="var(--text-primary)" stroke-width="2" />
-            <line x1="90" y1="50" x2="130" y2="50" stroke="var(--text-primary)" stroke-width="2" />
-            <line x1="130" y1="38" x2="130" y2="62" stroke="#0284c7" stroke-width="3" />
-            <line x1="142" y1="38" x2="142" y2="62" stroke="#0284c7" stroke-width="3" />
-            <line x1="142" y1="50" x2="180" y2="50" stroke="var(--text-primary)" stroke-width="2" />
-            <text x="136" y="75" fill="#0284c7" font-size="10" font-weight="bold" text-anchor="middle">C₁</text>
-            <line x1="90" y1="130" x2="130" y2="130" stroke="var(--text-primary)" stroke-width="2" />
-            <line x1="130" y1="118" x2="130" y2="142" stroke="#0284c7" stroke-width="3" />
-            <line x1="142" y1="118" x2="142" y2="142" stroke="#0284c7" stroke-width="3" />
-            <line x1="142" y1="130" x2="180" y2="130" stroke="var(--text-primary)" stroke-width="2" />
-            <text x="136" y="155" fill="#0284c7" font-size="10" font-weight="bold" text-anchor="middle">C₂</text>
-            <line x1="180" y1="50" x2="180" y2="130" stroke="var(--text-primary)" stroke-width="2" />
-            <line x1="180" y1="90" x2="230" y2="90" stroke="var(--text-primary)" stroke-width="2" />
-
-            <line x1="270" y1="20" x2="270" y2="160" stroke="var(--border-subtle)" stroke-dasharray="4,4" />
-
-            <text x="410" y="25" fill="#f59e0b" font-size="13" font-weight="bold" text-anchor="middle">REIHE: 1/C_ges = 1/C₁ + 1/C₂</text>
-            <line x1="300" y1="90" x2="350" y2="90" stroke="var(--text-primary)" stroke-width="2" />
-            <line x1="350" y1="75" x2="350" y2="105" stroke="#f59e0b" stroke-width="3" />
-            <line x1="362" y1="75" x2="362" y2="105" stroke="#f59e0b" stroke-width="3" />
-            <text x="356" y="120" fill="#f59e0b" font-size="10" font-weight="bold" text-anchor="middle">C₁</text>
-            <line x1="362" y1="90" x2="420" y2="90" stroke="var(--text-primary)" stroke-width="2" />
-            <line x1="420" y1="75" x2="420" y2="105" stroke="#f59e0b" stroke-width="3" />
-            <line x1="432" y1="75" x2="432" y2="105" stroke="#f59e0b" stroke-width="3" />
-            <text x="426" y="120" fill="#f59e0b" font-size="10" font-weight="bold" text-anchor="middle">C₂</text>
-            <line x1="432" y1="90" x2="490" y2="90" stroke="var(--text-primary)" stroke-width="2" />
-          </svg>
-        </div>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0.6rem 0; line-height: 1.5;">
+          Dieses Blatt enthält die exakten Prüfungsaufgaben zur quantitativen Messwertauswertung in der Oberstufe. Alle 3 Aufgaben sind hier mit Musterlösung, Zwischenschritten und physikalischer Theorieprobe vorbereitet.
+        </p>
       </div>
     `,
-    hasSim: 'schaltungen',
+    summary: 'Auswertung von 3 Messreihen: Coulomb-Kraft F ~ 1/r², Plattenkraft F ~ U² und Kondensatorentladung als e-Funktion mit Integralberechnung der Ladung.',
+    takeaways: [
+      'Aufgabe 1 zeigt: F • r² ≈ 650 mN • cm² = const. (Coulombsches Gesetz).',
+      'Aufgabe 2 zeigt: F / U² ≈ 8,86 mN / kV² = const. (Quadratische Spannungsabhängigkeit).',
+      'Aufgabe 3 zeigt: I(t) = 50 µA • e^(-t / 21,82 s). Die Ladung ist das Integral Q = ∫ I(t) dt.'
+    ],
     tasks: [
       {
-        prompt: 'Zwei Kondensatoren C₁ = 60 μF und C₂ = 30 μF werden an U = 12 V angeschlossen. Berechne die Gesamtkapazität C_ges jeweils für Parallelschaltung und Reihenschaltung.',
-        given: 'C₁ = 60 μF, C₂ = 30 μF, U = 12 V',
-        sought: 'C_ges (Parallel & Reihe)',
+        title: 'Aufgabe 1 (S. 33): Kraft zwischen zwei geladenen Kugeln F(r)',
+        prompt: `
+          Die Kraft zwischen zwei geladenen Kugeln wird in Abhängigkeit von ihrer Entfernung r untersucht:
+          <table style="width:100%; border-collapse:collapse; margin:0.8rem 0; font-size:0.86rem; text-align:center;">
+            <tr style="background:var(--bg-subtle);">
+              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">r in cm</th>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">10</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">15</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">20</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">25</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">30</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">40</td>
+            </tr>
+            <tr>
+              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">F in mN</th>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">6,5</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">2,9</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">1,62</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">1,04</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">0,72</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">0,41</td>
+            </tr>
+          </table>
+          a) Ermittle den funktionalen Zusammenhang F(r) mit konstanter Größe in der 3. Zeile.<br>
+          b) Wie groß ist die Kraft für r = 5 cm und für r = 1 cm?
+        `,
         solution: `
-          <strong>Parallelschaltung:</strong><br>
-          <code>C_ges = C₁ + C₂ = 60 &mu;F + 30 &mu;F = 90 &mu;F</code><br><br>
-          <strong>Reihenschaltung:</strong><br>
-          <code>1 / C_ges = 1/60 + 1/30 = 1/60 + 2/60 = 3/60 = 1/20 &rArr; C_ges = 20 &mu;F</code>.
+          <strong>a) Ermittlung des funktionalen Zusammenhangs:</strong><br>
+          1. <em>Vermutung:</em> Bei Verdopplung von <span class="katex-render" data-display="false" data-latex="r">r</span> von 10 cm auf 20 cm sinkt <span class="katex-render" data-display="false" data-latex="F">F</span> von 6,5 mN auf 1,62 mN (Faktor <span class="katex-render" data-display="false" data-latex="\frac{6,5}{1,62} \approx 4,01 \approx 2^2">6,5/1,62 ≈ 4</span>).<br>
+          Vermutung: Potenzfunktion <span class="katex-render" data-display="false" data-latex="F(r) \sim \frac{1}{r^2} \iff F \cdot r^2 = \text{const.}">F ~ 1/r²</span>.<br><br>
+          2. <em>Berechnung der 3. Zeile (<span class="katex-render" data-display="false" data-latex="k = F \cdot r^2">k = F · r²</span> in <span class="katex-render" data-display="false" data-latex="\text{mN}\cdot\text{cm}^2">mN · cm²</span>):</em><br>
+          • <span class="katex-render" data-display="false" data-latex="r = 10: 6,5 \cdot 10^2 = 650\,\text{mN}\cdot\text{cm}^2">r=10: 650</span><br>
+          • <span class="katex-render" data-display="false" data-latex="r = 15: 2,9 \cdot 15^2 = 2,9 \cdot 225 = 652,5\,\text{mN}\cdot\text{cm}^2">r=15: 652,5</span><br>
+          • <span class="katex-render" data-display="false" data-latex="r = 20: 1,62 \cdot 20^2 = 1,62 \cdot 400 = 648,0\,\text{mN}\cdot\text{cm}^2">r=20: 648,0</span><br>
+          • <span class="katex-render" data-display="false" data-latex="r = 25: 1,04 \cdot 25^2 = 1,04 \cdot 625 = 650,0\,\text{mN}\cdot\text{cm}^2">r=25: 650,0</span><br>
+          • <span class="katex-render" data-display="false" data-latex="r = 30: 0,72 \cdot 30^2 = 0,72 \cdot 900 = 648,0\,\text{mN}\cdot\text{cm}^2">r=30: 648,0</span><br>
+          • <span class="katex-render" data-display="false" data-latex="r = 40: 0,41 \cdot 40^2 = 0,41 \cdot 1600 = 656,0\,\text{mN}\cdot\text{cm}^2">r=40: 656,0</span><br><br>
+          Mittelwert: <span class="katex-render" data-display="false" data-latex="\bar{k} = \frac{650 + 652,5 + 648 + 650 + 648 + 656}{6} = 650,75\,\text{mN}\cdot\text{cm}^2 \approx 650\,\text{mN}\cdot\text{cm}^2">k = 650</span>.<br>
+          In SI-Einheiten: <span class="katex-render" data-display="false" data-latex="650 \cdot 10^{-3}\,\text{N} \cdot 10^{-4}\,\text{m}^2 = 6,5 \cdot 10^{-5}\,\text{N}\cdot\text{m}^2">k = 6,5 · 10⁻⁵ N m²</span>.<br>
+          <strong>Funktionsgleichung:</strong> <span class="katex-render" data-display="false" data-latex="F(r) = \frac{650\,\text{mN}\cdot\text{cm}^2}{r^2}">F(r) = 650 / r²</span>.<br><br>
+
+          <strong>b) Prognose für Abstände:</strong><br>
+          • Für <span class="katex-render" data-display="false" data-latex="r = 5\,\text{cm}">r = 5 cm</span>: <span class="katex-render" data-display="false" data-latex="F(5) = \frac{650}{5^2} = \frac{650}{25} = 26,0\,\text{mN}">F(5) = 26,0 mN</span>.<br>
+          • Für <span class="katex-render" data-display="false" data-latex="r = 1\,\text{cm}">r = 1 cm</span>: <span class="katex-render" data-display="false" data-latex="F(1) = \frac{650}{1^2} = 650\,\text{mN} = 0,65\,\text{N}">F(1) = 650 mN = 0,65 N</span>.
+        `
+      },
+      {
+        title: 'Aufgabe 2 (S. 33): Anziehungskraft paralleler Kondensatorplatten F(U)',
+        prompt: `
+          An zwei kreisförmige Metallplatten (r = 5 cm, d = 2 mm) werden Spannungen angelegt:
+          <table style="width:100%; border-collapse:collapse; margin:0.8rem 0; font-size:0.86rem; text-align:center;">
+            <tr style="background:var(--bg-subtle);">
+              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">U in kV</th>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">0,4</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">0,6</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">0,8</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">1,0</td>
+            </tr>
+            <tr>
+              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">F in mN</th>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">1,4</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">3,2</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">5,7</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">8,9</td>
+            </tr>
+          </table>
+          a) Ermittle F(U) mit konstanter Größe in der 3. Zeile.<br>
+          b) Bei welcher Spannung ergibt sich genau eine Kraft von 10 mN?<br>
+          c) Zeige theoretisch mit F = ½ ε₀ (A/d²) U², dass die Messwerte physikalisch plausibel sind!
+        `,
+        solution: `
+          <strong>a) Ermittlung von F(U):</strong><br>
+          1. <em>Vermutung:</em> Wenn sich <span class="katex-render" data-display="false" data-latex="U">U</span> verdoppelt (0,4 kV auf 0,8 kV), steigt <span class="katex-render" data-display="false" data-latex="F">F</span> von 1,4 auf 5,7 mN (<span class="katex-render" data-display="false" data-latex="\frac{5,7}{1,4} \approx 4,07 \approx 2^2">5,7/1,4 ≈ 4</span>) &rarr; quadratischer Zusammenhang <span class="katex-render" data-display="false" data-latex="F \sim U^2">F ~ U²</span>.<br><br>
+          2. <em>Berechnung der 3. Zeile (<span class="katex-render" data-display="false" data-latex="k = \frac{F}{U^2}">k = F/U²</span> in <span class="katex-render" data-display="false" data-latex="\frac{\text{mN}}{\text{kV}^2}">mN/kV²</span>):</em><br>
+          • <span class="katex-render" data-display="false" data-latex="U = 0,4\,\text{kV}: \frac{1,4}{0,16} = 8,75\,\frac{\text{mN}}{\text{kV}^2}">U=0,4: 8,75</span><br>
+          • <span class="katex-render" data-display="false" data-latex="U = 0,6\,\text{kV}: \frac{3,2}{0,36} = 8,89\,\frac{\text{mN}}{\text{kV}^2}">U=0,6: 8,89</span><br>
+          • <span class="katex-render" data-display="false" data-latex="U = 0,8\,\text{kV}: \frac{5,7}{0,64} = 8,91\,\frac{\text{mN}}{\text{kV}^2}">U=0,8: 8,91</span><br>
+          • <span class="katex-render" data-display="false" data-latex="U = 1,0\,\text{kV}: \frac{8,9}{1,00} = 8,90\,\frac{\text{mN}}{\text{kV}^2}">U=1,0: 8,90</span><br><br>
+          Mittelwert: <span class="katex-render" data-display="false" data-latex="\bar{k} \approx 8,86\,\frac{\text{mN}}{\text{kV}^2} = 8,86 \cdot 10^{-9}\,\frac{\text{N}}{\text{V}^2}">k = 8,86 mN/kV²</span>.<br>
+          <strong>Funktionsgleichung:</strong> <span class="katex-render" data-display="false" data-latex="F(U) = 8,86\,\frac{\text{mN}}{\text{kV}^2} \cdot U^2">F(U) = 8,86 • U²</span>.<br><br>
+
+          <strong>b) Spannung für F = 10 mN:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="U = \sqrt{\frac{F}{k}} = \sqrt{\frac{10\,\text{mN}}{8,86\,\frac{\text{mN}}{\text{kV}^2}}} \approx \sqrt{1,1287} \approx 1,062\,\text{kV} \approx 1062\,\text{V}"></div><br>
+
+          <strong>c) Theoretischer Abgleich:</strong><br>
+          Fläche: <span class="katex-render" data-display="false" data-latex="A = \pi \cdot r^2 = \pi \cdot (0,05\,\text{m})^2 \approx 7,854 \cdot 10^{-3}\,\text{m}^2">A = 7,854 · 10⁻³ m²</span>.<br>
+          Abstand: <span class="katex-render" data-display="false" data-latex="d = 2\,\text{mm} = 2 \cdot 10^{-3}\,\text{m} \implies d^2 = 4 \cdot 10^{-6}\,\text{m}^2">d = 2 mm</span>.<br>
+          <div class="katex-render" data-display="true" data-latex="k_{\text{theor}} = \frac{1}{2} \varepsilon_0 \frac{A}{d^2} = \frac{1}{2} \cdot 8,854 \cdot 10^{-12} \cdot \frac{7,854 \cdot 10^{-3}}{4 \cdot 10^{-6}} = 8,69 \cdot 10^{-9}\,\frac{\text{N}}{\text{V}^2} = 8,69\,\frac{\text{mN}}{\text{kV}^2}"></div>
+          Die theoretische Konstante <span class="katex-render" data-display="false" data-latex="8,69\,\frac{\text{mN}}{\text{kV}^2}">8,69</span> stimmt im Rahmen der Messgenauigkeit (unter 2% Abweichung) exzellent mit dem Messwert <span class="katex-render" data-display="false" data-latex="8,86\,\frac{\text{mN}}{\text{kV}^2}">8,86</span> überein!
+        `
+      },
+      {
+        title: 'Aufgabe 3 (S. 33): Kondensatorentladung I(t) & Integralberechnung',
+        prompt: `
+          Beim Entladen eines Kondensators wird I in Abhängigkeit von t gemessen:
+          t in s: 0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52<br>
+          I in µA: 50, 43, 35, 29, 24, 20, 17, 14, 12, 10, 9, 7.5, 6, 5<br><br>
+          a) Ermittle I(t) als e-Funktion.<br>
+          b) Begründe den exponentiellen Verlauf physikalisch.<br>
+          c) Stromstärke nach 20 s und 30 s.<br>
+          d) Ermittle die Anfangsladung Q₀ vor dem Entladen mittels Integral.<br>
+          e) Welche Ladung befindet sich nach 30 s noch auf dem Kondensator?<br>
+          f) Bestimme die momentane Änderungsrate der Ladung für t = 0 s und t = 50 s.
+        `,
+        solution: `
+          <strong>a) Bestimmung der e-Funktion:</strong><br>
+          Anfangsstromstärke: <span class="katex-render" data-display="false" data-latex="I_0 = 50\,\mu\text{A}">I₀ = 50 µA</span>.<br>
+          Nach <span class="katex-render" data-display="false" data-latex="t = 20\,\text{s}">t = 20 s</span> ist <span class="katex-render" data-display="false" data-latex="I(20) = 20\,\mu\text{A}">I(20) = 20 µA</span>.<br>
+          <div class="katex-render" data-display="true" data-latex="\frac{I(20)}{I_0} = \frac{20}{50} = 0,40 = e^{-\lambda \cdot 20} \implies -\lambda \cdot 20 = \ln(0,40) \approx -0,9163 \implies \lambda \approx 0,0458\,\text{s}^{-1}"></div>
+          Zeitkonstante: <span class="katex-render" data-display="false" data-latex="\tau = \frac{1}{\lambda} \approx 21,82\,\text{s}">τ = 21,82 s</span>.<br>
+          Funktionsgleichung: <span class="katex-render" data-display="false" data-latex="I(t) = 50\,\mu\text{A} \cdot e^{-0,0458 \cdot t} = 50\,\mu\text{A} \cdot (0,955)^t">I(t) = 50 µA · e^(-0,0458 t)</span>.<br><br>
+
+          <strong>b) Physikalische Begründung des exponentiellen Verlaufs:</strong><br>
+          Nach dem Maschensatz liegt am Entladewiderstand <span class="katex-render" data-display="false" data-latex="R">R</span> die Kondensatorspannung <span class="katex-render" data-display="false" data-latex="U = \frac{Q}{C}">U = Q/C</span> an.<br>
+          Der Entladestrom ist <span class="katex-render" data-display="false" data-latex="I = \frac{U}{R} = \frac{Q}{R \cdot C}">I = Q/(RC)</span>.<br>
+          Da der Strom dem Ladungsabfluss entspricht (<span class="katex-render" data-display="false" data-latex="I = -\frac{dQ}{dt}">I = -dQ/dt</span>), folgt die Differentialgleichung:<br>
+          <div class="katex-render" data-display="true" data-latex="\frac{dQ}{dt} = -\frac{1}{RC} \cdot Q"></div>
+          Die Änderungsrate der Ladung ist stets proportional zum aktuellen Ladungsbestand <span class="katex-render" data-display="false" data-latex="Q(t)">Q(t)</span>. Die eindeutige mathematische Lösung dieser Differentialgleichung ist die Exponentialfunktion <span class="katex-render" data-display="false" data-latex="Q(t) = Q_0 \cdot e^{-t/(RC)}">Q(t)</span> und entsprechend für den Strom <span class="katex-render" data-display="false" data-latex="I(t) = I_0 \cdot e^{-t/(RC)}">I(t)</span>.<br><br>
+
+          <strong>c) Stromstärken:</strong><br>
+          • <span class="katex-render" data-display="false" data-latex="I(20\,\text{s}) = 20\,\mu\text{A}">I(20 s) = 20 µA</span> (Messwert).<br>
+          • <span class="katex-render" data-display="false" data-latex="I(30\,\text{s}) = 50 \cdot e^{-0,0458 \cdot 30} = 50 \cdot e^{-1,374} \approx 50 \cdot 0,253 = 12,6\,\mu\text{A}">I(30 s) ≈ 12,6 µA</span>.<br><br>
+
+          <strong>d) Anfangsladung Q₀ mit Integral:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="Q_0 = \int_0^\infty I(t)\,dt = \int_0^\infty 50\,\mu\text{A} \cdot e^{-0,0458 \cdot t}\,dt = \left[ -\frac{50}{0,0458} e^{-0,0458 \cdot t} \right]_0^\infty = \frac{50\,\mu\text{A}}{0,0458\,\text{s}^{-1}} \approx 1091\,\mu\text{C} = 1,09\,\text{mC}"></div><br>
+
+          <strong>e) Restladung nach 30 s:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="Q(30) = \int_{30}^\infty I(t)\,dt = Q_0 \cdot e^{-0,0458 \cdot 30} = 1091\,\mu\text{C} \cdot 0,253 \approx 276\,\mu\text{C}"></div><br>
+
+          <strong>f) Momentane Änderungsrate der Ladung:</strong><br>
+          Wegen <span class="katex-render" data-display="false" data-latex="\frac{dQ}{dt} = -I(t)">dQ/dt = -I(t)</span>:<br>
+          • Bei <span class="katex-render" data-display="false" data-latex="t = 0\,\text{s}">t = 0</span>: <span class="katex-render" data-display="false" data-latex="\frac{dQ}{dt}(0) = -50\,\mu\text{A} = -50\,\frac{\mu\text{C}}{\text{s}}">dQ/dt(0) = -50 µC/s</span>.<br>
+          • Bei <span class="katex-render" data-display="false" data-latex="t = 50\,\text{s}">t = 50</span>: <span class="katex-render" data-display="false" data-latex="\frac{dQ}{dt}(50) = -50 \cdot e^{-0,0458 \cdot 50} = -50 \cdot e^{-2,29} \approx -5,06\,\frac{\mu\text{C}}{\text{s}}">-5,06 µC/s</span>.
         `
       }
     ]
   },
 
   {
-    id: 'elektroskop-glimmlampe-ab01-ab04',
-    num: '10',
+    id: 'messwerte-auswerten-1',
+    folderId: 'ordner-funktionen',
+    num: '03',
     icon: '🔬',
-    color: '#14b8a6',
-    tag: 'Elektrostatik-Praxis',
-    title: 'Elektroskop, Ladungsnachweis & Glimmlampe (AB01 & AB04)',
-    desc: 'Glimmlampe leuchtet nur am Minuspol (Kathode), Elektroskop zeigt Ladungsmenge und Spitzenwirkung.',
+    color: '#3b82f6',
+    tag: 'Meds.pdf S. 19',
+    title: 'Messwertauswertung I: Braun\'sche Röhre & Drahtwiderstand (S. 19)',
+    desc: 'Originalaufgaben zu Elektronenablenkung x(U) und Widerstandsabhängigkeit vom Querschnitt R(A).',
     visualHtml: `
-      <div class="formula-hero-card" style="border-left: 6px solid #14b8a6;">
-        <span class="formula-hero-badge" style="background: rgba(20, 184, 166, 0.15); color: #14b8a6;">
-          🔬 SPITZENWIRKUNG &amp; LADUNGSDICHTE
+      <div class="formula-hero-card" style="border-left: 6px solid #3b82f6;">
+        <span class="formula-hero-badge" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;">
+          🔬 LINEARISIERUNG &amp; MESSWERT-ANALYSE (S. 19)
         </span>
         <div class="formula-math-display">
-          <span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>E</mi><mtext>Spitze</mtext></msub><mo>≫</mo><msub><mi>E</mi><mtext>Kugel</mtext></msub><mspace width="1em"/><mrow><mo fence="true">(</mo><mi>σ</mi><mo>=</mo><mfrac><mi>Q</mi><mi>A</mi></mfrac><mo fence="true">)</mo></mrow></mrow><annotation encoding="application/x-tex">E_{\text{Spitze}} \gg E_{\text{Kugel}} \quad \left(\sigma = \frac{Q}{A}\right)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9694em;vertical-align:-0.2861em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Spitze</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≫</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:2.4em;vertical-align:-0.95em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">Kugel</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2861em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="minner"><span class="mopen delimcenter" style="top:0em;"><span class="delimsizing size3">(</span></span><span class="mord mathnormal" style="margin-right:0.03588em;">σ</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.3603em;"><span style="top:-2.314em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">A</span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.677em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal">Q</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.686em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose delimcenter" style="top:0em;"><span class="delimsizing size3">)</span></span></span></span></span></span></span>
-        </div>
-        
-        <div class="variable-pills-grid">
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(244, 63, 94, 0.15); color: #e11d48;">-</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Kathodenleuchten</div>
-              <div class="var-info-unit">Glimmlampe: <strong>Minuspol glimmt</strong></div>
-            </div>
-          </div>
-          <div class="var-pill-card">
-            <div class="var-sym-badge" style="background: rgba(20, 184, 166, 0.15); color: #0d9488;">&sigma;</div>
-            <div class="var-info-wrap">
-              <div class="var-info-title">Fl&auml;chenladungsdichte</div>
-              <div class="var-info-unit">&sigma; = Q / A &bull; <strong>extrem hoch an Spitzen</strong></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="formula-takeaway-box" style="background: rgba(20, 184, 166, 0.08); border-left: 4px solid #14b8a6;">
-          <span style="font-size: 1.2rem;">💡</span>
-          <div>
-            <strong>3 Fakten für die Klausur:</strong><br>
-            1. <strong>Glimmlampe (AB04):</strong> Das Leuchten entsteht durch Elektronenaufprall am <strong>Minuspol (Kathode)</strong>.<br>
-            2. <strong>Elektroskop (AB01):</strong> Zeigerausschlag ist proportional zur Ladung Q.<br>
-            3. <strong>Spitzenwirkung (AB11):</strong> Wegen starker Krümmung drängen sich Ladungen an Spitzen zusammen &rarr; Sehr starke Feldstärke &rarr; Funkenentladung / Spitzenwind!
-          </div>
-        </div>
-      </div>
-
-      <div class="diagram-card" style="margin-top: 1.2rem;">
-        <h4 style="font-size: 1rem; font-weight: 800; color: #14b8a6; margin-bottom: 0.6rem;">
-          🔬 Visuelles Schaubild: Glimmlampe (AB04) &amp; Elektroskop (AB01)
-        </h4>
-        <div class="diagram-svg-wrapper">
-          <svg viewBox="0 0 540 180" width="100%" height="170">
-            <text x="140" y="25" fill="#f43f5e" font-size="12" font-weight="bold" text-anchor="middle">GLIMMLAMPE: Kathodenleuchten (-)</text>
-            <rect x="50" y="45" width="180" height="90" rx="20" fill="var(--bg-subtle)" stroke="var(--border-subtle)" stroke-width="2" />
-            <line x1="70" y1="90" x2="100" y2="90" stroke="#ef4444" stroke-width="4" />
-            <text x="85" y="80" fill="#ef4444" font-size="11" font-weight="bold" text-anchor="middle">+</text>
-            <line x1="180" y1="90" x2="210" y2="90" stroke="#3b82f6" stroke-width="4" />
-            <circle cx="195" cy="90" r="16" fill="rgba(244, 63, 94, 0.4)" filter="drop-shadow(0 0 8px #f43f5e)" />
-            <text x="195" y="80" fill="#3b82f6" font-size="11" font-weight="bold" text-anchor="middle">-</text>
-            <text x="140" y="155" fill="#f43f5e" font-size="10" font-weight="bold" text-anchor="middle">Nur der Minuspol glimmt!</text>
-            <line x1="270" y1="20" x2="270" y2="160" stroke="var(--border-subtle)" stroke-dasharray="4,4" />
-            <text x="410" y="25" fill="#14b8a6" font-size="12" font-weight="bold" text-anchor="middle">ELEKTROSKOP: Ladungsnachweis</text>
-            <rect x="380" y="45" width="60" height="10" rx="3" fill="#14b8a6" />
-            <line x1="410" y1="55" x2="410" y2="120" stroke="#14b8a6" stroke-width="4" />
-            <line x1="410" y1="75" x2="435" y2="120" stroke="#f59e0b" stroke-width="3" />
-            <circle cx="410" cy="75" r="4" fill="#f59e0b" />
-            <text x="410" y="155" fill="var(--text-secondary)" font-size="10" text-anchor="middle">Zeigerausschlag &prop; Ladung Q</text>
-          </svg>
+          <span class="katex-render" data-display="true" data-latex="U(x) = k \cdot x^2 \quad \text{und} \quad R(A) = k \cdot \frac{1}{A}"></span>
         </div>
       </div>
     `,
+    summary: 'Bestimmung quadratischer und antiproportionaler Beziehungen aus Messreihen der Braunschen Röhre und Drähten.',
+    takeaways: [
+      'In der Braunschen Röhre gilt U / x² = const. (Quadratischer Zusammenhang).',
+      'Beim Drahtwiderstand gilt R • A = const. (Antiproportionaler Zusammenhang).'
+    ],
     tasks: [
       {
-        prompt: 'An eine Glimmlampe wird Wechselspannung angelegt. Welche Elektrode leuchtet?',
-        given: 'AB04 Versuch',
-        sought: 'Erklärung',
-        solution: 'Bei 50 Hz Wechselspannung wechselt die Polung 100-mal pro Sekunde die Richtung. Durch die Trägheit des menschlichen Auges leuchten <strong>beide Elektroden scheinbar gleichzeitig</strong>.'
+        title: 'Aufgabe 1 (S. 19): Elektronenstrahl-Ablenkung x(U)',
+        prompt: `
+          x in cm: 3, 4, 5, 6, 7, 8<br>
+          U in kV: 0,23; 0,41; 0,645; 0,925; 1,26; 1,65<br>
+          Bestimme U(x) mit der Konstanten.
+        `,
+        solution: `
+          Berechnung von <span class="katex-render" data-display="false" data-latex="\frac{U}{x^2}">U/x²</span> in <span class="katex-render" data-display="false" data-latex="\frac{\text{kV}}{\text{cm}^2}">kV/cm²</span>:<br>
+          • 0,23 / 9 = 0,0256<br>
+          • 0,41 / 16 = 0,0256<br>
+          • 0,645 / 25 = 0,0258<br>
+          • 0,925 / 36 = 0,0257<br>
+          • 1,26 / 49 = 0,0257<br>
+          • 1,65 / 64 = 0,0258<br>
+          Mittelwert: <span class="katex-render" data-display="false" data-latex="\bar{k} \approx 0,0257\,\frac{\text{kV}}{\text{cm}^2}">k = 0,0257</span>.<br>
+          Funktionsgleichung: <span class="katex-render" data-display="false" data-latex="U(x) = 0,0257\,\frac{\text{kV}}{\text{cm}^2} \cdot x^2 \quad (R^2 \approx 1,0)">U(x) = 0,0257 · x²</span>.
+        `
       }
     ]
   }
 ];
 
 
-// --- 2. KOMPLEXE KOMBI-AUFGABEN (BLOCK-VERBINDUNG) ---
+// --- 3. SKILLS FÜR ORDNER 2: ELEKTROSTATISCHE PHÄNOMENE ---
+const SKILLS_FOLDER_2 = [
+  {
+    id: 'elektroskop-funktion',
+    folderId: 'ordner-phaenomene',
+    num: '04',
+    icon: '🔬',
+    color: '#10b981',
+    tag: 'Meds.pdf S. 2/3',
+    title: 'Das Elektroskop: Aufbau & Ladungsverteilung (S. 2/3)',
+    desc: 'Aufbau mit Metallteller, Isolator, Metallstab, Zeiger und Gehäuse. Nachweis positiver und negativer Ladungen durch Zeigerabstoßung.',
+    visualHtml: `
+      <div class="formula-hero-card" style="border-left: 6px solid #10b981;">
+        <span class="formula-hero-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+          🔬 DAS ELEKTROSKOP – MESSGERÄT FÜR RUHENDE LADUNGEN
+        </span>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.8rem;">
+          <div style="background: var(--bg-subtle); padding: 0.8rem; border-radius: 6px; font-size: 0.84rem; line-height: 1.5;">
+            <strong>Aufbau (Bestandteile S. 2):</strong><br>
+            <strong>(1) Metallteller:</strong> Nimmt Ladungen auf oder dient der Influenz.<br>
+            <strong>(2) Isolierende Durchführung:</strong> Verhindert Ladungsabfluss ins Gehäuse.<br>
+            <strong>(3) Metallstab:</strong> Leitet Elektronen nach unten zum Zeiger.<br>
+            <strong>(4) Leicht drehbarer Zeiger:</strong> Schlägt bei gleichartiger Ladung aus.<br>
+            <strong>(5) Metallgehäuse / Masse:</strong> Schutz vor äußeren Störfeldern.
+          </div>
+          <div style="background: var(--bg-subtle); padding: 0.8rem; border-radius: 6px; font-size: 0.84rem; line-height: 1.5;">
+            <strong>Funktionsweise (S. 3):</strong><br>
+            • Nähert man einen <strong>positiv geladenen Stab</strong> dem Teller, werden Elektronen aus dem Stab und Zeiger nach oben in den Teller gezogen (Influenz).<br>
+            • Stab und Zeiger weisen nun einen Elektronenmangel (positive Ladungsüberschuss) auf.<br>
+            • Da sich gleichnamige Ladungen abstoßen, wird der <strong>Zeiger vom Stab abgestoßen</strong> und schlägt aus!
+          </div>
+        </div>
+      </div>
+    `,
+    summary: 'Das Elektroskop weist ruhende elektrische Ladungen durch die Coulomb-Abstoßungskraft gleichnamiger Ladungen zwischen Zeiger und Trägerstab nach.',
+    takeaways: [
+      'Gleichnamige Ladungen stoßen sich ab -> Zeigerausschlag.',
+      'Influenz ermöglicht Zeigerausschlag auch ohne direkte Berührung.',
+      'Isolierte Aufhängung verhindert Ladungsabfluss ins Gehäuse.'
+    ],
+    tasks: [
+      {
+        title: 'Aufgabe: Ladungsverteilung beim Annähern und Berühren',
+        prompt: `
+          Ein positiv geladener Glasstab wird an den Teller eines ungeladenen Elektroskops angenähert, aber nicht berührt. Beschreibe die Ladungsverteilung und den Zeigerausschlag. Was passiert, wenn der Stab den Teller berührt und wieder entfernt wird?
+        `,
+        solution: `
+          <strong>1. Phase: Reines Annähern (Influenz ohne Berührung):</strong><br>
+          • Die freien Leitungselektronen im Elektroskop werden durch das elektrische Feld des positiv geladenen Stabes nach oben in den Metallteller gezogen.<br>
+          • Im Teller entsteht ein negativer Ladungsüberschuss.<br>
+          • Im Metallstab und am beweglichen Zeiger entsteht ein Elektronenmangel (positive Ladung).<br>
+          • Wegen der Abstoßung der positiven Ladungen schlägt der Zeiger aus.<br>
+          • Wird der Stab entfernt, fließen die Elektronen zurück &rarr; Zeiger geht auf 0 zurück.<br><br>
+
+          <strong>2. Phase: Berührung (Ladungsübertrag):</strong><br>
+          • Beim Kontakt fließen Elektronen vom Elektroskopteller auf den positiv geladenen Stab über.<br>
+          • Das gesamte Elektroskop hat nun dauerhaft einen Elektronenmangel (bleibt positiv geladen).<br>
+          • Nach dem Entfernen des Stabes bleibt der Zeiger dauerhaft ausgelenkt!
+        `
+      }
+    ]
+  },
+
+  {
+    id: 'influenz-polarisation',
+    folderId: 'ordner-phaenomene',
+    num: '05',
+    icon: '⚡',
+    color: '#10b981',
+    tag: 'Meds.pdf S. 5',
+    title: 'Influenz vs. Polarisation: Leiter vs. Nichtleiter (S. 5)',
+    desc: 'Exakter Unterschied zwischen Influenz (Verschiebung freier Elektronen im Metallleiter) und Polarisation (molekulare Dipole im Isolator).',
+    visualHtml: `
+      <div class="formula-hero-card" style="border-left: 6px solid #10b981;">
+        <span class="formula-hero-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+          ⚡ INFLUENZ VS. POLARISATION (MEDS.PDF S. 5)
+        </span>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.8rem;">
+          <div style="background: var(--bg-subtle); padding: 1rem; border-radius: 8px; border-left: 4px solid #06b6d4;">
+            <h4 style="color:#06b6d4; margin:0 0 0.4rem 0;">1. Influenz (im elektrischen Leiter / Metall)</h4>
+            <p style="font-size:0.84rem; line-height:1.45; color:var(--text-secondary); margin:0;">
+              <strong>Definition (S. 5):</strong> Verschiebung <em>freier elektrischer Ladungen</em> (Leitungselektronen) in einem Leiter durch einen geladenen Körper, <strong>ohne dass eine Berührung stattfindet</strong>.<br><br>
+              <strong>Mechanismus:</strong> Elektronen können sich makroskopisch über den gesamten Metallkörper frei bewegen.
+            </p>
+          </div>
+          <div style="background: var(--bg-subtle); padding: 1rem; border-radius: 8px; border-left: 4px solid #8b5cf6;">
+            <h4 style="color:#8b5cf6; margin:0 0 0.4rem 0;">2. Polarisation (im Isolator / Nichtleiter)</h4>
+            <p style="font-size:0.84rem; line-height:1.45; color:var(--text-secondary); margin:0;">
+              <strong>Definition (S. 5):</strong> Verschiebung elektrischer Ladungen <strong>auf molekularer Ebene</strong> an der Oberfläche eines Nichtleiters durch einen geladenen Körper.<br><br>
+              <strong>Beispiel:</strong> Reibt man einen Luftballon, haftet er an der Wand, weil die Moleküle der Wand polarisiert werden (Dipolausrichtung).
+            </p>
+          </div>
+        </div>
+      </div>
+    `,
+    summary: 'Influenz findet nur in Leitern durch makroskopische Elektronenverschiebung statt. Polarisation tritt in Isolatoren durch mikroskopische Verschiebung der Atomkerne/Elektronenwolken auf.',
+    takeaways: [
+      'Influenz = Freie Leitungselektronen verschieben sich im Leiter.',
+      'Polarisation = Keine freien Ladungsträger, Dipole richten sich im Isolator aus.',
+      'Beide Vorgänge erzeugen eine anziehende Kraft zu einem geladenen Körper.'
+    ],
+    tasks: [
+      {
+        title: 'Verständnisaufgabe: Luftballon an der Zimmerwand',
+        prompt: `
+          Warum haftet ein elektrisch aufgeladener Luftballon an einer ungeladenen Zimmerwand, obwohl die Wand aus einem Isolator (Gips/Tapete) besteht?
+        `,
+        solution: `
+          <strong>Physikalische Erklärung:</strong><br>
+          1. Der geriebene Ballon ist negativ geladen.<br>
+          2. Da die Wand ein Isolator ist, können freie Elektronen nicht durch die Wand fließen (keine Influenz).<br>
+          3. Stattdessen tritt <strong>dielektrische Polarisation</strong> auf: Das E-Feld des Ballons stößt die Elektronenwolken der Atome an der Wandoberfläche leicht ab, während die positiven Atomkerne leicht angezogen werden.<br>
+          4. Es entstehen mikroskopische Dipole. Da sich die positiven Kerne näher am negativen Ballon befinden als die abgestoßenen Elektronen, überwiegt die elektrostatische Anziehungskraft nach dem Coulombschen Gesetz (<span class="katex-render" data-display="false" data-latex="F \sim \frac{1}{r^2}">F ~ 1/r²</span>). Der Ballon haftet!
+        `
+      }
+    ]
+  },
+
+  {
+    id: 'faraday-kaefig',
+    folderId: 'ordner-phaenomene',
+    num: '06',
+    icon: '🛡️',
+    color: '#10b981',
+    tag: 'Meds.pdf S. 25',
+    title: 'Der Faradaysche Käfig: Feldfreier Raum & Gegenfeld (S. 25)',
+    desc: 'Warum das Innere jedes geschlossenen Metallleiters feldfrei ist: Genaue Kraftkompensation Fel,inn = -Fel,auß.',
+    visualHtml: `
+      <div class="formula-hero-card" style="border-left: 6px solid #10b981;">
+        <span class="formula-hero-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+          🛡️ DER FARADAY'SCHE KÄFIG (MEDS.PDF S. 25)
+        </span>
+        <div style="margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.55; color: var(--text-primary); background: var(--bg-subtle); padding: 1rem; border-radius: 8px;">
+          <strong>Exakter Wortlaut der Unterrichtsmitschrift (S. 25):</strong><br>
+          <em>„Die Elektronen im Leiter bewegen sich so lange (infolge der elektrischen Kraft des äußeren Feldes), bis das innere Gegenfeld das äußere Feld aufhebt, denn dann wirkt keine Kraft mehr auf die Elektronen (beide Kräfte <span class="katex-render" data-display="false" data-latex="F_{\text{el,inn}}">Fel,inn</span> und <span class="katex-render" data-display="false" data-latex="F_{\text{el,auß}}">Fel,auß</span> heben sich genau weg).“</em>
+        </div>
+
+        <div class="formula-takeaway-box" style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid #10b981;">
+          <span style="font-size: 1.2rem;">💡</span>
+          <div>
+            <strong>Klausur-Ergebnis:</strong> Im Inneren eines allseitig geschlossenen metallischen Hohlkörpers ist die elektrische Feldstärke stets <span class="katex-render" data-display="false" data-latex="E_{\text{ges}} = 0\,\frac{\text{V}}{\text{m}}">E_ges = 0</span>. Es herrscht absoluter Schutz vor äußeren elektrostatischen Feldern und Blitzeinschlägen.
+          </div>
+        </div>
+      </div>
+    `,
+    summary: 'Freie Elektronen verschieben sich durch äußere E-Felder an die Oberfläche, bis das innere Feld das äußere Feld exakt kompensiert.',
+    takeaways: [
+      'Fel,inn + Fel,auß = 0 -> Gesamtfeld im Inneren ist Null.',
+      'Ladungen sitzen ausschließlich auf der Außenfläche des Leiters.',
+      'Auto, Flugzeug und Mikrowellengehäuse nutzen dieses Prinzip.'
+    ],
+    tasks: [
+      {
+        title: 'Klausuraufgabe: Begründung des feldfreien Raums',
+        prompt: `
+          Begründe physikalisch exakt, warum sich im Inneren einer geschlossenen Metallkugel kein elektrisches Feld aufbauen kann, wenn man sie in ein starkes homogenes Feld bringt.
+        `,
+        solution: `
+          1. Bringt man die Metallkugel in ein äußeres Feld <span class="katex-render" data-display="false" data-latex="\vec{E}_{\text{auß}}">E_auß</span>, wirkt auf die freien Leitungselektronen die Kraft <span class="katex-render" data-display="false" data-latex="\vec{F}_{\text{el,auß}} = -e \cdot \vec{E}_{\text{auß}}">F = -e • E</span>.<br>
+          2. Die Elektronen strömen entgegen der Feldrichtung an die Oberfläche der Kugel.<br>
+          3. Auf der einen Seite entsteht ein Elektronenüberschuss (-), auf der gegenüberliegenden ein Mangel (+). Diese influenzierte Oberflächenladung erzeugt im Hohlraum ein <strong>inneres Gegenfeld</strong> <span class="katex-render" data-display="false" data-latex="\vec{E}_{\text{inn}}">E_inn</span>.<br>
+          4. Die Ladungsverschiebung läuft so lange weiter, bis <span class="katex-render" data-display="false" data-latex="\vec{E}_{\text{inn}} = -\vec{E}_{\text{auß}}">E_inn = -E_auß</span> gilt.<br>
+          5. Dann ist die Gesamtkraft auf jedes Elektron im Inneren Null (<span class="katex-render" data-display="false" data-latex="\vec{F}_{\text{ges}} = 0">F_ges = 0</span>). Die Verschiebung stoppt im Gleichgewichtszustand und der Innenraum ist völlig feldfrei (<span class="katex-render" data-display="false" data-latex="\vec{E}_{\text{ges}} = 0">E_ges = 0</span>).
+        `
+      }
+    ]
+  },
+
+  {
+    id: 'glimmlampe-polpruefer',
+    folderId: 'ordner-phaenomene',
+    num: '07',
+    icon: '💡',
+    color: '#f43f5e',
+    tag: 'Meds.pdf S. 4',
+    title: 'Die Glimmlampe & Polprüfer: Zünd- & Löschspannung (S. 4)',
+    desc: 'Funktionsweise mit verdünntem Gas, Zünd- vs. Löschspannung (Uz > Ul), Gasionisation und warum stets die Kathode (Minuspol) leuchtet.',
+    visualHtml: `
+      <div class="formula-hero-card" style="border-left: 6px solid #f43f5e;">
+        <span class="formula-hero-badge" style="background: rgba(244, 63, 94, 0.15); color: #f43f5e;">
+          💡 FUNKTIONSWEISE DER GLIMMLAMPE (MEDS.PDF S. 4)
+        </span>
+        <div style="margin-top: 0.8rem; font-size: 0.88rem; line-height: 1.55; color: var(--text-primary);">
+          <strong>Die 3 Kern-Phasen aus dem Unterricht:</strong><br>
+          <strong>1. Gasfüllung &amp; Isolator:</strong> Im Glaskörper befindet sich Edelgas (Neon/Argon) unter Unterdruck. Bei kleinen Spannungen leitet das Gas keinen Strom &rarr; Isolator.<br>
+          <strong>2. Zündspannung (<span class="katex-render" data-display="false" data-latex="U_Z \approx 90\,\text{V}">Uz ≈ 90 V</span>):</strong> Wird die Zündspannung erreicht, treten Elektronen aus der negativen Elektrode (Kathode) aus und werden im elektrischen Feld so stark beschleunigt, dass sie Gasatome durch <em>Stoßionisation</em> spalten. Es entsteht ein leitendes Gasplasma.<br>
+          <strong>3. Löschspannung (<span class="katex-render" data-display="false" data-latex="U_L \approx 60\,\text{V}">Ul ≈ 60 V</span>):</strong> Einmal gezündet, brennt die Glimmentladung auch unterhalb von <span class="katex-render" data-display="false" data-latex="U_Z">Uz</span> weiter. Erst wenn die Spannung unter die Löschspannung <span class="katex-render" data-display="false" data-latex="U_L">Ul</span> absinkt, erlischt das Licht (<span class="katex-render" data-display="false" data-latex="U_L < U_Z">Ul < Uz</span>).<br><br>
+          <strong>Warum ist sie ein Polprüfer?</strong><br>
+          Die Leuchterscheinung (der Glimmsaum) tritt <strong>immer nur an der Kathode (am Minuspol)</strong> auf, weil dort die austretenden Elektronen auf das Gas treffen! Leuchtet Elektrode A, ist A der Minuspol.
+        </div>
+      </div>
+    `,
+    summary: 'Die Glimmlampe zündet bei Uz durch Stoßionisation und verlischt erst bei Ul. Da immer die Kathode leuchtet, ist sie ein eindeutiger Polprüfer.',
+    takeaways: [
+      'Stoßionisation durch beschleunigte Elektronen erzeugt Licht.',
+      'Zündspannung Uz ist größer als Löschspannung Ul (Uz > Ul).',
+      'Leuchtet stets am Minuspol (Kathode) -> Polprüfer.'
+    ],
+    tasks: [
+      {
+        title: 'Aufgabe: Polprüfer im Wechsel- und Gleichstrom',
+        prompt: `
+          1. Wie verhält sich eine Glimmlampe an einer Gleichspannungsquelle von 100 V?<br>
+          2. Wie verhält sie sich an einer Wechselspannung von 230 V (50 Hz)?
+        `,
+        solution: `
+          <strong>1. Bei Gleichspannung:</strong> Da 100 V > Uz ≈ 90 V ist, zündet die Lampe. Es leuchtet genau eine Elektrode dauerhaft, nämlich die mit dem Minuspol verbundene Kathode.<br><br>
+          <strong>2. Bei Wechselspannung:</strong> Die Polarität wechselt 50-mal pro Sekunde (100 Nulldurchgänge). In jeder Halbwelle wechselt die Kathode von links nach rechts. Für das träge menschliche Auge scheinen <strong>beide Elektroden gleichzeitig zu leuchten</strong>!
+        `
+      }
+    ]
+  }
+];
+
+
+// --- 4. SKILLS FÜR ORDNER 3: ELEKTRISCHES FELD & COULOMB ---
+const SKILLS_FOLDER_3 = [
+  {
+    id: 'efeld-berechnen',
+    folderId: 'ordner-feld-coulomb',
+    num: '08',
+    icon: '⚡',
+    color: '#06b6d4',
+    tag: 'Meds.pdf S. 11, 15',
+    title: 'Elektrische Feldstärke & Coulombsches Gesetz (S. 11, 15)',
+    desc: 'Definition E = F/q, Coulombsches Gesetz FC = 1/(4πε₀) • Q₁Q₂/r², Plattenkondensator E = U/d, Buch S. 111 A7 & AB 10 Aufgaben 1 & 2.',
+    visualHtml: `
+      <div class="formula-hero-card" style="border-left: 6px solid #06b6d4;">
+        <span class="formula-hero-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">
+          ⚡ DIE ZENTRALEN FORMELN DES ELEKTRISCHEN FELDES
+        </span>
+        <div class="formula-math-display">
+          <span class="katex-render" data-display="true" data-latex="E = \frac{F_{\text{el}}}{q} \quad \left[\frac{\text{N}}{\text{C}} = \frac{\text{V}}{\text{m}}\right] \qquad F_C = \frac{1}{4\pi\varepsilon_0\varepsilon_r} \cdot \frac{Q_1 \cdot Q_2}{r^2}"></span>
+        </div>
+
+        <div class="variable-pills-grid">
+          <div class="var-pill-card">
+            <div class="var-sym-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">E</div>
+            <div class="var-info-wrap">
+              <div class="var-info-title">Elektrische Feldstärke</div>
+              <div class="var-info-unit">Einheit: <strong>V/m</strong> oder <strong>N/C</strong></div>
+            </div>
+          </div>
+          <div class="var-pill-card">
+            <div class="var-sym-badge" style="background: rgba(56, 189, 248, 0.15); color: #0284c7;">F<sub>C</sub></div>
+            <div class="var-info-wrap">
+              <div class="var-info-title">Coulomb-Kraft</div>
+              <div class="var-info-unit">Einheit: <strong>Newton (N)</strong></div>
+            </div>
+          </div>
+          <div class="var-pill-card">
+            <div class="var-sym-badge" style="background: rgba(245, 158, 11, 0.15); color: #d97706;">ε₀</div>
+            <div class="var-info-wrap">
+              <div class="var-info-title">Elektrische Feldkonstante</div>
+              <div class="var-info-unit"><strong>8,854 • 10⁻¹² As/(V•m)</strong></div>
+            </div>
+          </div>
+          <div class="var-pill-card">
+            <div class="var-sym-badge" style="background: rgba(16, 185, 129, 0.15); color: #059669;">r</div>
+            <div class="var-info-wrap">
+              <div class="var-info-title">Abstand der Punktladungen</div>
+              <div class="var-info-unit">Einheit: <strong>Meter (m)</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `,
+    summary: 'Die Feldstärke E ist der Quotient aus Kraft und Probeladung. Das Coulombsche Gesetz beschreibt die Kraftwirkung zwischen zwei Punktladungen mit 1/r².',
+    takeaways: [
+      'E = F / q gilt universell in jedem Feld.',
+      'E = U / d gilt ausschließlich im homogenen Plattenkondensator.',
+      'Coulomb-Konstante 1/(4πε₀) ≈ 8,988 • 10⁹ N•m²/C².'
+    ],
+    tasks: [
+      {
+        title: 'Aufgabe aus AB 10 (S. 15 Nr. 1): Ladungsbestimmung',
+        prompt: `
+          Zwei kleine Körper (Punktladungen) üben in einem Abstand von r = 10,0 cm eine Coulomb-Kraft von F = 300 N aufeinander aus. Einer der Körper trägt eine Ladung von Q₁ = 5,00 • 10⁻⁵ C. Berechne den Betrag der anderen Ladung Q₂.
+        `,
+        solution: `
+          <strong>Gegeben:</strong><br>
+          <span class="katex-render" data-display="false" data-latex="r = 10,0\,\text{cm} = 0,10\,\text{m}">r = 0,10 m</span><br>
+          <span class="katex-render" data-display="false" data-latex="F = 300\,\text{N}">F = 300 N</span><br>
+          <span class="katex-render" data-display="false" data-latex="Q_1 = 5,00 \cdot 10^{-5}\,\text{C}">Q1 = 5,00 • 10⁻⁵ C</span><br>
+          <span class="katex-render" data-display="false" data-latex="\varepsilon_0 = 8,854 \cdot 10^{-12}\,\frac{\text{A}\cdot\text{s}}{\text{V}\cdot\text{m}}">ε0</span>, <span class="katex-render" data-display="false" data-latex="\varepsilon_r = 1">εr = 1</span><br><br>
+
+          <strong>Formel &amp; Umstellung:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="F = \frac{1}{4\pi\varepsilon_0} \cdot \frac{Q_1 \cdot Q_2}{r^2} \iff Q_2 = \frac{F \cdot 4\pi\varepsilon_0 \cdot r^2}{Q_1}"></div><br>
+
+          <strong>Einsetzen:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="Q_2 = \frac{300\,\text{N} \cdot 4\pi \cdot 8,854 \cdot 10^{-12}\,\frac{\text{A}\cdot\text{s}}{\text{V}\cdot\text{m}} \cdot (0,10\,\text{m})^2}{5,00 \cdot 10^{-5}\,\text{C}} = \frac{3,338 \cdot 10^{-10}}{5,00 \cdot 10^{-5}} = 6,68 \cdot 10^{-7}\,\text{C} = 0,668\,\mu\text{C}"></div><br>
+          <strong>Ergebnis:</strong> Die zweite Ladung beträgt <span class="katex-render" data-display="false" data-latex="Q_2 = 6,68 \cdot 10^{-7}\,\text{C}">Q2 = 0,668 µC</span>.
+        `
+      },
+      {
+        title: 'Aufgabe aus Buch S. 111 A7 (S. 22/23): Feldstärke am Punkt P',
+        prompt: `
+          Auf eine Probeladung Q₁ = 3,5 • 10⁻⁸ C wirkt am Punkt P eines Feldes eine Kraft von F₁ = 2,1 • 10⁻⁵ N.<br>
+          a) Berechne die elektrische Feldstärke E am Punkt P.<br>
+          b) Welche Kraft F₂ erfährt ein Probekörper mit der Ladung Q₂ = 5,2 • 10⁻⁹ C an diesem Punkt?
+        `,
+        solution: `
+          <strong>a) Elektrische Feldstärke E:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="E = \frac{F_1}{Q_1} = \frac{2,1 \cdot 10^{-5}\,\text{N}}{3,5 \cdot 10^{-8}\,\text{C}} = 600\,\frac{\text{N}}{\text{C}} = 600\,\frac{\text{V}}{\text{m}}"></div><br>
+
+          <strong>b) Kraft auf den zweiten Probekörper:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="F_2 = E \cdot Q_2 = 600\,\frac{\text{N}}{\text{C}} \cdot 5,2 \cdot 10^{-9}\,\text{C} = 3,12 \cdot 10^{-6}\,\text{N} = 3,12\,\mu\text{N}"></div>
+        `
+      }
+    ]
+  },
+
+  {
+    id: 'feldlinien-aequipotential',
+    folderId: 'ordner-feld-coulomb',
+    num: '09',
+    icon: '🧭',
+    color: '#06b6d4',
+    tag: 'Meds.pdf S. 7, 10',
+    title: 'Feldlinien & Äquipotentiallinien (mit Beweis!) (S. 7, 10)',
+    desc: 'Die 7 fundamentalen Eigenschaften der Feldlinien, der exakte Klausur-Widerspruchsbeweis (warum kein Schnittpunkt) und Äquipotentiallinien (ΔW = 0).',
+    visualHtml: `
+      <div class="formula-hero-card" style="border-left: 6px solid #06b6d4;">
+        <span class="formula-hero-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">
+          🧭 DIE 7 EIGENSCHAFTEN VON FELDLINIEN (MEDS.PDF S. 7)
+        </span>
+        <div style="margin: 0.8rem 0; font-size: 0.86rem; line-height: 1.5; color: var(--text-primary); background: var(--bg-subtle); padding: 1rem; border-radius: 8px;">
+          1. Verlaufen stets vom <strong>Pluspol zum Minuspol</strong> (Richtung der Kraft auf positive Ladungen).<br>
+          2. Eine <strong>größere Feldliniendichte</strong> veranschaulicht ein stärkeres elektrisches Feld.<br>
+          3. Die <strong>Tangente</strong> an eine Feldlinie gibt in jedem Punkt die Kraftrichtung an.<br>
+          4. Feldlinien stehen <strong>immer senkrecht auf Metalloberflächen</strong> (im elektrostatischen Gleichgewicht).<br>
+          5. Feldlinien stehen <strong>immer senkrecht auf Äquipotentiallinien</strong>.<br>
+          6. Feldlinien <strong>kreuzen / schneiden sich niemals</strong> (siehe Beweis unten!).<br>
+          7. Feldlinien sind <strong>keine realen Fäden</strong>, sondern ein anschauliches mathematisches Modell zur Beschreibung des realen Feldes.
+        </div>
+
+        <div style="margin-top: 1rem; padding: 1rem; background: rgba(6, 182, 212, 0.08); border-left: 4px solid #06b6d4; border-radius: 6px;">
+          <h4 style="color:#06b6d4; margin:0 0 0.5rem 0;">⭐ Der Widerspruchsbeweis: Warum schneiden sich Feldlinien nie? (S. 7)</h4>
+          <div style="font-size:0.86rem; line-height:1.55; color:var(--text-secondary);">
+            <strong>1. Behauptung:</strong> Zwei elektrische Feldlinien schneiden sich niemals.<br>
+            <strong>2. Annahme zum Widerspruch:</strong> Angenommen, zwei Feldlinien würden sich in einem Punkt <span class="katex-render" data-display="false" data-latex="P">P</span> schneiden.<br>
+            <strong>3. Folgerung:</strong> Dann gäbe es im Punkt <span class="katex-render" data-display="false" data-latex="P">P</span> zwei verschiedene Tangenten. Auf eine dort platzierte positive Probeladung <span class="katex-render" data-display="false" data-latex="q">q</span> müssten somit <strong>gleichzeitig zwei Kräfte in unterschiedliche Richtungen</strong> wirken.<br>
+            <strong>4. Widerspruch:</strong> Die Gesamtkraft <span class="katex-render" data-display="false" data-latex="\vec{F}_{\text{ges}} = q \cdot \vec{E}">F = q • E</span> an einem festen Ort im Raum ist jedoch ein <em>eindeutiger Vektor</em>. Eine Ladung kann nicht gleichzeitig in zwei verschiedene Richtungen beschleunigt werden.<br>
+            <strong>5. Schlussfolgerung:</strong> Die Annahme ist falsch. Feldlinien können sich niemals schneiden! &squ;
+          </div>
+        </div>
+      </div>
+    `,
+    summary: 'Feldlinien veranschaulichen die Kraftrichtung auf positive Ladungen. Äquipotentiallinien stehen senkrecht auf ihnen; entlang einer Äquipotentiallinie ist die Verschiebearbeit ΔW = 0.',
+    takeaways: [
+      'Widerspruchsbeweis: Kraftvektor an jedem Raumpunkt ist eindeutig, daher keine Schnittpunkte.',
+      'Äquipotentiallinien haben konstantes Potential -> ΔW = q • Δφ = 0.',
+      'Feldlinien treffen immer senkrecht auf Leiteroberflächen.'
+    ],
+    tasks: [
+      {
+        title: 'Verständnisaufgabe: Arbeit im Potentialfeld (S. 10)',
+        prompt: `
+          Eine Ladung q = 5,0 µC wird im Feld eines Plattenkondensators verschoben:<br>
+          a) Entlang einer Äquipotentiallinie um die Strecke s = 15 cm.<br>
+          b) Von einer Äquipotentiallinie mit φ₁ = 400 V zu einer anderen mit φ₂ = 150 V.<br>
+          Berechne jeweils die verrichtete Arbeit W.
+        `,
+        solution: `
+          <strong>a) Verschiebung entlang einer Äquipotentiallinie:</strong><br>
+          Da jeder Punkt auf der Äquipotentiallinie dasselbe Potential hat, ist die Potentialdifferenz <span class="katex-render" data-display="false" data-latex="\Delta\varphi = 0\,\text{V}">Δφ = 0</span>.<br>
+          <div class="katex-render" data-display="true" data-latex="W = q \cdot \Delta\varphi = 5,0\,\mu\text{C} \cdot 0\,\text{V} = 0\,\text{J}"></div>
+          <em>Ergebnis:</em> Es wird keine Arbeit verrichtet (<span class="katex-render" data-display="false" data-latex="W = 0">W = 0</span>), da die Bewegung senkrecht zu den Feldlinien (senkrecht zur elektrischen Kraft) erfolgt.<br><br>
+
+          <strong>b) Verschiebung zwischen zwei Potentialen:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="\Delta\varphi = \varphi_1 - \varphi_2 = 400\,\text{V} - 150\,\text{V} = 250\,\text{V}"></div>
+          <div class="katex-render" data-display="true" data-latex="W = q \cdot \Delta\varphi = 5,0 \cdot 10^{-6}\,\text{C} \cdot 250\,\text{V} = 1,25 \cdot 10^{-3}\,\text{J} = 1,25\,\text{mJ}"></div>
+        `
+      }
+    ]
+  },
+
+  {
+    id: 'flaechenladungsdichte',
+    folderId: 'ordner-feld-coulomb',
+    num: '10',
+    icon: '📐',
+    color: '#06b6d4',
+    tag: 'Buch S. 111 A13',
+    title: 'Flächenladungsdichte σ = Q/A & Plattenkondensator (S. 26/27)',
+    desc: 'Zusammenhang σ = Q/A = ε₀εᵣE. Vollständig durchgerechnete Buchaufgabe S. 111 A13 aus Meds.pdf.',
+    visualHtml: `
+      <div class="formula-hero-card" style="border-left: 6px solid #06b6d4;">
+        <span class="formula-hero-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">
+          📐 FLÄCHENLADUNGSDICHTE &amp; HOMOGENES FELD (MEDS.PDF S. 26/27)
+        </span>
+        <div class="formula-math-display">
+          <span class="katex-render" data-display="true" data-latex="\sigma = \frac{Q}{A} = \varepsilon_0 \cdot \varepsilon_r \cdot E \iff E = \frac{\sigma}{\varepsilon_0 \cdot \varepsilon_r} = \frac{Q}{\varepsilon_0 \cdot \varepsilon_r \cdot A}"></span>
+        </div>
+        <div style="font-size:0.86rem; color:var(--text-secondary); line-height:1.5; margin-top:0.8rem;">
+          • <span class="katex-render" data-display="false" data-latex="\sigma">σ</span> (Sigma): Flächenladungsdichte in <span class="katex-render" data-display="false" data-latex="\left[\frac{\text{C}}{\text{m}^2} = \frac{\text{A}\cdot\text{s}}{\text{m}^2}\right]">C/m²</span>.<br>
+          • <span class="katex-render" data-display="false" data-latex="A">A</span>: Fläche der Kondensatorplatte in <span class="katex-render" data-display="false" data-latex="\text{m}^2">m²</span>.<br>
+          • <span class="katex-render" data-display="false" data-latex="\varepsilon_0 = 8,854 \cdot 10^{-12}\,\frac{\text{A}\cdot\text{s}}{\text{V}\cdot\text{m}}">ε0</span>: Elektrische Feldkonstante.
+        </div>
+      </div>
+    `,
+    summary: 'Die Flächenladungsdichte σ gibt die Ladungsmenge pro Quadratmeter an und ist direkt proportional zur elektrischen Feldstärke E.',
+    takeaways: [
+      'σ = Q / A [C / m²].',
+      'E = σ / (ε₀ • εᵣ) im homogenen Kondensatorfeld.',
+      'Flächenumrechnung: 1 cm² = 10⁻⁴ m²!'
+    ],
+    tasks: [
+      {
+        title: 'Originalaufgabe Buch S. 111 A13 (S. 26/27)',
+        prompt: `
+          Ein Plattenkondensator hat Platten mit der Fläche A = 600 cm². Die Ladung auf den Platten beträgt Q = 3,0 • 10⁻⁸ C.<br>
+          a) Berechne die Flächenladungsdichte σ auf den Platten.<br>
+          b) Berechne die elektrische Feldstärke E zwischen den Platten (Luft: εᵣ = 1).
+        `,
+        solution: `
+          <strong>Gegeben:</strong><br>
+          <span class="katex-render" data-display="false" data-latex="A = 600\,\text{cm}^2 = 600 \cdot 10^{-4}\,\text{m}^2 = 0,060\,\text{m}^2">A = 0,06 m²</span><br>
+          <span class="katex-render" data-display="false" data-latex="Q = 3,0 \cdot 10^{-8}\,\text{C}">Q = 3,0 • 10⁻⁸ C</span><br>
+          <span class="katex-render" data-display="false" data-latex="\varepsilon_0 = 8,854 \cdot 10^{-12}\,\frac{\text{A}\cdot\text{s}}{\text{V}\cdot\text{m}}">ε0</span>, <span class="katex-render" data-display="false" data-latex="\varepsilon_r = 1">εr = 1</span><br><br>
+
+          <strong>a) Flächenladungsdichte σ:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="\sigma = \frac{Q}{A} = \frac{3,0 \cdot 10^{-8}\,\text{C}}{0,060\,\text{m}^2} = 5,0 \cdot 10^{-7}\,\frac{\text{C}}{\text{m}^2} = 0,50\,\frac{\mu\text{C}}{\text{m}^2}"></div><br>
+
+          <strong>b) Elektrische Feldstärke E:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="E = \frac{\sigma}{\varepsilon_0} = \frac{5,0 \cdot 10^{-7}\,\frac{\text{A}\cdot\text{s}}{\text{m}^2}}{8,854 \cdot 10^{-12}\,\frac{\text{A}\cdot\text{s}}{\text{V}\cdot\text{m}}} \approx 56\,471\,\frac{\text{V}}{\text{m}} \approx 56,5\,\frac{\text{kV}}{\text{m}}"></div><br>
+          <em>Hinweis zur Mitschrift S. 27:</em> In der handschriftlichen Mitschrift stand 565... durch Rundung & Kommastellen &ndash; die exakte physikalische Feldstärke beträgt 56,5 kV/m!
+        `
+      }
+    ]
+  }
+];
+
+
+// --- 5. SKILLS FÜR ORDNER 4 & 5: MECHANIK IM E-FELD & KONDENSATOR ---
+const SKILLS_FOLDERS_4_5 = [
+  {
+    id: 'kugel-auslenkung',
+    folderId: 'ordner-kraefte-mechanik',
+    num: '11',
+    icon: '🎯',
+    color: '#f59e0b',
+    tag: 'Klausur-Klassiker S. 28, 30',
+    title: 'Auslenkung einer geladenen Kugel im E-Feld (Fadenpendel) (S. 28, 30)',
+    desc: 'Kräftegleichgewicht am Fadenpendel: tan α = Fel / Fg. Geometrie sin α = s/l, Kleinwinkelnäherung tan α ≈ s/l und korrigierte Rechnung der Mitschrift S. 28.',
+    visualHtml: `
+      <div class="formula-hero-card" style="border-left: 6px solid #f59e0b;">
+        <span class="formula-hero-badge" style="background: rgba(245, 158, 11, 0.15); color: #d97706;">
+          🎯 DAS KRÄFTEPARALLELOGRAMM AM FADENPENDEL (MEDS.PDF S. 28)
+        </span>
+        <div class="formula-math-display">
+          <span class="katex-render" data-display="true" data-latex="\tan\alpha = \frac{F_{\text{el}}}{F_g} = \frac{q \cdot E}{m \cdot g} \iff F_{\text{el}} = m \cdot g \cdot \tan\alpha"></span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+          <div style="background: var(--bg-subtle); padding: 0.9rem; border-radius: 6px; font-size: 0.85rem; line-height: 1.5;">
+            <strong>Kräftegleichgewicht:</strong><br>
+            Auf die ausgelenkte Kugel der Masse <span class="katex-render" data-display="false" data-latex="m">m</span> wirken 3 Kräfte:<br>
+            1. <strong>Gewichtskraft:</strong> <span class="katex-render" data-display="false" data-latex="F_g = m \cdot g">Fg = m • g</span> (senkrecht nach unten).<br>
+            2. <strong>Elektrische Feldkraft:</strong> <span class="katex-render" data-display="false" data-latex="F_{\text{el}} = q \cdot E">Fel = q • E</span> (horizontal zur Kondensatorplatte).<br>
+            3. <strong>Fadenkraft <span class="katex-render" data-display="false" data-latex="F_S">Fs</span>:</strong> entlang des Fadens.<br>
+            Im Dreieck der Kräfte gilt streng trigonometrisch:<br>
+            <span class="katex-render" data-display="false" data-latex="\tan\alpha = \frac{\text{Gegenkathete}}{\text{Ankathete}} = \frac{F_{\text{el}}}{F_g}">tan α = Fel / Fg</span>.
+          </div>
+          <div style="background: var(--bg-subtle); padding: 0.9rem; border-radius: 6px; font-size: 0.85rem; line-height: 1.5;">
+            <strong>Geometrie &amp; Kleinwinkelnäherung:</strong><br>
+            Für das Fadenpendel mit Fadenlänge <span class="katex-render" data-display="false" data-latex="l">l</span> und Auslenkung <span class="katex-render" data-display="false" data-latex="s">s</span> gilt:<br>
+            <div class="katex-render" data-display="true" data-latex="\sin\alpha = \frac{s}{l}"></div>
+            Für kleine Winkel (<span class="katex-render" data-display="false" data-latex="\alpha \le 10^\circ">α ≤ 10°</span>) gilt die Näherung:<br>
+            <div class="katex-render" data-display="true" data-latex="\tan\alpha \approx \sin\alpha \approx \frac{s}{l} \implies E \approx \frac{m \cdot g \cdot s}{q \cdot l}"></div>
+          </div>
+        </div>
+      </div>
+    `,
+    summary: 'Aus der horizontalen Auslenkung s einer Kugel am Faden l lässt sich die elektrische Feldstärke über tan α = Fel/Fg exakt bestimmen.',
+    takeaways: [
+      'tan α = Fel / Fg = (q • E) / (m • g).',
+      'Kleinwinkelnäherung für α < 10°: tan α ≈ sin α = s / l.',
+      'Feldstärke: E = (m • g • tan α) / q.'
+    ],
+    tasks: [
+      {
+        title: 'Aufgabe 1: Korrektur der Unterrichtsmitschrift S. 28',
+        prompt: `
+          Eine geladene Kugel (m = 5,0 g, q = 2,0 nC) hängt an einem Faden der Länge l = 1,0 m in einem Plattenkondensator. Durch das elektrische Feld wird die Kugel um s = 4,0 cm horizontal ausgelenkt.<br>
+          Berechne die elektrische Feldstärke E zwischen den Platten!
+        `,
+        solution: `
+          <strong>Gegeben:</strong><br>
+          <span class="katex-render" data-display="false" data-latex="l = 1,0\,\text{m}">l = 1,0 m</span><br>
+          <span class="katex-render" data-display="false" data-latex="s = 4,0\,\text{cm} = 0,040\,\text{m}">s = 0,040 m</span><br>
+          <span class="katex-render" data-display="false" data-latex="m = 5,0\,\text{g} = 0,0050\,\text{kg}">m = 0,0050 kg</span><br>
+          <span class="katex-render" data-display="false" data-latex="q = 2,0\,\text{nC} = 2,0 \cdot 10^{-9}\,\text{C}">q = 2,0 • 10⁻⁹ C</span><br>
+          <span class="katex-render" data-display="false" data-latex="g = 9,81\,\frac{\text{m}}{\text{s}^2}">g = 9,81 m/s²</span><br><br>
+
+          <strong>Schritt 1: Auslenkwinkel α berechnen</strong><br>
+          <div class="katex-render" data-display="true" data-latex="\sin\alpha = \frac{s}{l} = \frac{0,040\,\text{m}}{1,0\,\text{m}} = 0,040 \implies \alpha = \arcsin(0,040) \approx 2,292^\circ"></div><br>
+
+          <strong>Schritt 2: Gewichtskraft Fg und Tangens</strong><br>
+          <div class="katex-render" data-display="true" data-latex="F_g = m \cdot g = 0,0050\,\text{kg} \cdot 9,81\,\frac{\text{m}}{\text{s}^2} = 0,04905\,\text{N} = 49,05\,\text{mN}"></div>
+          <div class="katex-render" data-display="true" data-latex="\tan(2,292^\circ) \approx 0,04003"></div><br>
+
+          <strong>Schritt 3: Elektrische Kraft Fel</strong><br>
+          <div class="katex-render" data-display="true" data-latex="F_{\text{el}} = F_g \cdot \tan\alpha = 0,04905\,\text{N} \cdot 0,04003 = 1,963 \cdot 10^{-3}\,\text{N} \approx 1,96\,\text{mN}"></div><br>
+
+          <strong>Schritt 4: Elektrische Feldstärke E</strong><br>
+          <div class="katex-render" data-display="true" data-latex="E = \frac{F_{\text{el}}}{q} = \frac{1,963 \cdot 10^{-3}\,\text{N}}{2,0 \cdot 10^{-9}\,\text{C}} = 981\,500\,\frac{\text{V}}{\text{m}} \approx 9,82 \cdot 10^5\,\frac{\text{V}}{\text{m}} = 982\,\frac{\text{kV}}{\text{m}}"></div><br>
+          <em>Korrektur-Hinweis:</em> In der Schülermitschrift auf S. 28 stand ein handschriftlicher Zahlendreher mit „80015“. Der korrekte, exakte Wert lautet <strong>9,82 • 10⁵ V/m</strong>!
+        `
+      },
+      {
+        title: 'Aufgabe 2: Buch S. 111 A8 (Meds.pdf S. 30)',
+        prompt: `
+          Eine Kugel der Masse m = 2,0 g trägt die Ladung q = 1,2 • 10⁻⁸ C. Sie hängt an einem Faden der Länge l = 2,0 m und wird im homogenen Feld um s = 20 cm ausgelenkt. Berechne die Feldstärke E am Ort der Kugel!
+        `,
+        solution: `
+          <strong>Gegeben:</strong><br>
+          <span class="katex-render" data-display="false" data-latex="l = 2,0\,\text{m}">l = 2,0 m</span>, <span class="katex-render" data-display="false" data-latex="s = 0,20\,\text{m}">s = 0,20 m</span>, <span class="katex-render" data-display="false" data-latex="m = 0,0020\,\text{kg}">m = 0,002 kg</span>, <span class="katex-render" data-display="false" data-latex="q = 1,2 \cdot 10^{-8}\,\text{C}">q = 1,2 • 10⁻⁸ C</span>.<br><br>
+
+          <strong>Winkel:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="\sin\alpha = \frac{0,20}{2,0} = 0,10 \implies \alpha = 5,739^\circ \implies \tan(5,739^\circ) = 0,1005"></div><br>
+
+          <strong>Kräfte:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="F_g = 0,0020 \cdot 9,81 = 0,01962\,\text{N} = 19,62\,\text{mN}"></div>
+          <div class="katex-render" data-display="true" data-latex="F_{\text{el}} = F_g \cdot \tan\alpha = 0,01962\,\text{N} \cdot 0,1005 = 1,972 \cdot 10^{-3}\,\text{N} = 1,972\,\text{mN}"></div><br>
+
+          <strong>Feldstärke:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="E = \frac{F_{\text{el}}}{q} = \frac{1,972 \cdot 10^{-3}\,\text{N}}{1,2 \cdot 10^{-8}\,\text{C}} \approx 164\,333\,\frac{\text{V}}{\text{m}} \approx 1,64 \cdot 10^5\,\frac{\text{V}}{\text{m}} = 164\,\frac{\text{kV}}{\text{m}}"></div>
+        `
+      }
+    ]
+  },
+
+  {
+    id: 'kraeftevergleich-schweben',
+    folderId: 'ordner-kraefte-mechanik',
+    num: '12',
+    icon: '⚖️',
+    color: '#f59e0b',
+    tag: 'Buch S. 111 A9, A10',
+    title: 'Kräftevergleich & schwebende Kugel (Buch S. 111 A9, A10)',
+    desc: 'Einheitenableitung V/m = N/C = kg•m/(s³•A), Schwebekriterium Fel = Fg und Kräftevergleich zwischen Gravitation und E-Feld.',
+    visualHtml: `
+      <div class="formula-hero-card" style="border-left: 6px solid #f59e0b;">
+        <span class="formula-hero-badge" style="background: rgba(245, 158, 11, 0.15); color: #d97706;">
+          ⚖️ SCHWEBENDE LADUNGEN &amp; EINHEITENBEWEIS (MEDS.PDF S. 24)
+        </span>
+        <div style="background: var(--bg-subtle); padding: 1rem; border-radius: 8px; margin-top: 0.8rem; font-size: 0.88rem; line-height: 1.55;">
+          <strong>1. Der Einheitenbeweis aus der Klausurmitschrift (S. 24):</strong><br>
+          <div class="katex-render" data-display="true" data-latex="1\,\frac{\text{V}}{\text{m}} = \frac{1\,\frac{\text{J}}{\text{C}}}{\text{m}} = \frac{1\,\text{N}\cdot\text{m}}{\text{C}\cdot\text{m}} = 1\,\frac{\text{N}}{\text{C}} = \frac{1\,\frac{\text{kg}\cdot\text{m}}{\text{s}^2}}{\text{A}\cdot\text{s}} = 1\,\frac{\text{kg}\cdot\text{m}}{\text{s}^3 \cdot \text{A}}"></div><br>
+
+          <strong>2. Schwebekriterium im vertikalen Plattenkondensator:</strong><br>
+          Eine geladene Kugel schwebt kräftefrei, wenn die nach oben gerichtete elektrische Feldkraft exakt die nach unten wirkende Gewichtskraft kompensiert:<br>
+          <div class="katex-render" data-display="true" data-latex="F_{\text{el}} = F_g \iff q \cdot E = m \cdot g \implies E_{\text{schwebe}} = \frac{m \cdot g}{q}"></div>
+        </div>
+      </div>
+    `,
+    summary: 'Im Schwebefall kompensiert Fel die Gewichtskraft Fg. Die Einheiten V/m und N/C sind physikalisch absolut identisch.',
+    takeaways: [
+      'Schwebekriterium: q • E = m • g.',
+      'V/m = N/C = (kg • m) / (s³ • A).',
+      'Elektrische Kräfte sind bei Elementarteilchen um 10³⁶-mal stärker als Gravitation.'
+    ],
+    tasks: [
+      {
+        title: 'Originalaufgabe Buch S. 111 A10 (S. 24)',
+        prompt: `
+          Eine Kugel der Masse m = 2,0 g trägt die Ladung Q = 1,2 • 10⁻⁸ C und befindet sich in einem Feld der Stärke E = 100 V/m.<br>
+          a) Berechne die Gewichtskraft Fg der Kugel.<br>
+          b) Berechne die elektrische Kraft Fel im Feld.<br>
+          c) Vergleiche beide Kräfte!
+        `,
+        solution: `
+          <strong>a) Gewichtskraft Fg:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="F_g = m \cdot g = 2,0 \cdot 10^{-3}\,\text{kg} \cdot 9,81\,\frac{\text{m}}{\text{s}^2} = 0,01962\,\text{N} = 19,62\,\text{mN}"></div><br>
+
+          <strong>b) Elektrische Feldkraft Fel:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="F_{\text{el}} = Q \cdot E = 1,2 \cdot 10^{-8}\,\text{C} \cdot 100\,\frac{\text{N}}{\text{C}} = 1,2 \cdot 10^{-6}\,\text{N} = 0,0012\,\text{mN}"></div><br>
+
+          <strong>c) Vergleich:</strong><br>
+          <div class="katex-render" data-display="true" data-latex="\frac{F_g}{F_{\text{el}}} = \frac{1,962 \cdot 10^{-2}\,\text{N}}{1,2 \cdot 10^{-6}\,\text{N}} = 16\,350"></div>
+          <em>Ergebnis:</em> Die Gewichtskraft ist bei dieser Kugel mehr als <strong>16.000-mal stärker</strong> als die elektrische Kraft!
+        `
+      }
+    ]
+  },
+
+  {
+    id: 'kondensator-versuch',
+    folderId: 'ordner-kondensator-versuch',
+    num: '13',
+    icon: '🔋',
+    color: '#8b5cf6',
+    tag: 'Meds.pdf S. 8',
+    title: 'Der Entladeversuch: Schaltung & Durchführung (S. 8)',
+    desc: 'Schaltskizze mit Wechselschalter, Aufladestromkreis vs. Entladestromkreis, Messung des Stromverlaufs I(t).',
+    visualHtml: `
+      <div class="formula-hero-card" style="border-left: 6px solid #8b5cf6;">
+        <span class="formula-hero-badge" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">
+          🔋 DER ENTLADEVERSUCH EINES KONDENSATORS (MEDS.PDF S. 8)
+        </span>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.8rem; font-size: 0.85rem; line-height: 1.5;">
+          <div style="background: var(--bg-subtle); padding: 0.9rem; border-radius: 6px;">
+            <strong>Schaltungsaufbau:</strong><br>
+            • <strong>Spannungsquelle:</strong> liefert Ladespannung <span class="katex-render" data-display="false" data-latex="U_0">U0</span>.<br>
+            • <strong>Wechselschalter:</strong> schaltet zwischen Lade- und Entladestromkreis um.<br>
+            • <strong>Kondensator C:</strong> speichert die Ladung <span class="katex-render" data-display="false" data-latex="Q = C \cdot U">Q = C • U</span>.<br>
+            • <strong>Entladewiderstand R:</strong> begrenzt den Entladestrom.<br>
+            • <strong>Amperemeter:</strong> misst die Stromstärke <span class="katex-render" data-display="false" data-latex="I(t)">I(t)</span> hochpräzise.
+          </div>
+          <div style="background: var(--bg-subtle); padding: 0.9rem; border-radius: 6px;">
+            <strong>Durchführung (S. 8):</strong><br>
+            1. Kondensator über Schalterstellung 1 vollständig aufladen.<br>
+            2. Zum Zeitpunkt <span class="katex-render" data-display="false" data-latex="t = 0">t = 0</span> Schalter auf Stellung 2 umlegen.<br>
+            3. Der Kondensator entlädt sich über Widerstand <span class="katex-render" data-display="false" data-latex="R">R</span> und Amperemeter.<br>
+            4. Stromstärke <span class="katex-render" data-display="false" data-latex="I">I</span> in festen Zeitabständen (z. B. alle 4 s oder 5 s) protokollieren.
+          </div>
+        </div>
+      </div>
+    `,
+    summary: 'Der Entladeversuch protokolliert den Stromabfluss über die Zeit zur Bestimmung der Zeitkonstante τ = R • C und der Gesamtkapazität.',
+    takeaways: [
+      'Wechselschalter trennt Auflade- und Entladestromkreis.',
+      'Anfangsstrom I₀ = U₀ / R.',
+      'Strom nimmt exponentiell ab.'
+    ],
+    tasks: [
+      {
+        title: 'Verständnisfrage: Einfluss von R und C',
+        prompt: 'Wie verändert sich die Entladedauer, wenn der Widerstand R verdoppelt wird?',
+        solution: 'Die Zeitkonstante beträgt τ = R • C. Verdoppelt man R, verdoppelt sich die Zeitkonstante τ. Der Entladevorgang dauert genau doppelt so lange, und die Anfangsstromstärke I₀ = U₀ / R halbiert sich!'
+      }
+    ]
+  },
+
+  {
+    id: 'ladung-integral',
+    folderId: 'ordner-kondensator-versuch',
+    num: '14',
+    icon: '∫',
+    color: '#8b5cf6',
+    tag: 'Meds.pdf S. 12, 33',
+    title: 'Ladungsberechnung mit Integral: Q = ∫ I(t) dt (S. 12, 33)',
+    desc: 'Exakte Berechnung der geflossenen Ladung als Fläche unter der I(t)-Kurve. Stammfunktion, Rechner-Eingabe und Grenzen.',
+    visualHtml: `
+      <div class="formula-hero-card" style="border-left: 6px solid #8b5cf6;">
+        <span class="formula-hero-badge" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">
+          ∫ LADUNG ALS INTEGRAL DER STROMSTÄRKE (MEDS.PDF S. 12)
+        </span>
+        <div class="formula-math-display">
+          <span class="katex-render" data-display="true" data-latex="I(t) = \frac{dQ}{dt} \iff Q = \int_{t_1}^{t_2} I(t)\,dt"></span>
+        </div>
+        <div style="background: var(--bg-subtle); padding: 1rem; border-radius: 8px; margin-top: 0.8rem; font-size: 0.86rem; line-height: 1.55;">
+          <strong>Stammfunktion für die Klausur:</strong><br>
+          Hat man <span class="katex-render" data-display="false" data-latex="I(t) = I_0 \cdot e^{-k \cdot t}">I(t) = I0 · e^(-k•t)</span> ermittelt, so lautet die Stammfunktion:<br>
+          <div class="katex-render" data-display="true" data-latex="\int I(t)\,dt = -\frac{I_0}{k} \cdot e^{-k \cdot t}"></div>
+          Für die bis unendlich abgeflossene Gesamtladung <span class="katex-render" data-display="false" data-latex="Q_{\text{ges}}">Q_ges</span> folgt:<br>
+          <div class="katex-render" data-display="true" data-latex="Q_{\text{ges}} = \int_0^\infty I_0 \cdot e^{-k \cdot t}\,dt = \left[ -\frac{I_0}{k} \cdot e^{-k \cdot t} \right]_0^\infty = 0 - \left( -\frac{I_0}{k} \right) = \frac{I_0}{k} = I_0 \cdot \tau"></div>
+        </div>
+      </div>
+    `,
+    summary: 'Die elektrische Ladung Q entspricht exakt der Fläche unter dem I(t)-Graphen und wird über die Stammfunktion -I₀/k • e^(-kt) berechnet.',
+    takeaways: [
+      'Q = ∫ I(t) dt.',
+      'Fläche unter der Kurve = geflossene Ladungsmenge in Coulomb.',
+      'Q_ges = I₀ / k = I₀ • τ.'
+    ],
+    tasks: [
+      {
+        title: 'Berechnungsaufgabe aus S. 12',
+        prompt: `
+          Für einen Kondensator wurde der Entladestrom I(t) = 334,45 µA • (0,9685)^t gemessen.<br>
+          Berechne die Ladungsmenge Q, die in den ersten 60 Sekunden abgeflossen ist!
+        `,
+        solution: `
+          Da <span class="katex-render" data-display="false" data-latex="b = 0,9685 = e^{-k} \implies k = -\ln(0,9685) \approx 0,0320\,\text{s}^{-1}">k = 0,0320</span>:<br>
+          <div class="katex-render" data-display="true" data-latex="Q(60) = \int_0^{60} 334,45\,\mu\text{A} \cdot e^{-0,0320 \cdot t}\,dt = \left[ -\frac{334,45}{0,0320} e^{-0,0320 \cdot t} \right]_0^{60}"></div>
+          <div class="katex-render" data-display="true" data-latex="Q(60) = 10\,451\,\mu\text{C} \cdot (1 - e^{-1,92}) = 10\,451\,\mu\text{C} \cdot (1 - 0,1466) \approx 8919\,\mu\text{C} = 8,92\,\text{mC}"></div>
+        `
+      }
+    ]
+  },
+
+  {
+    id: 'kondensator-kapazitaet',
+    folderId: 'ordner-kondensator-versuch',
+    num: '15',
+    icon: '⚡',
+    color: '#8b5cf6',
+    tag: 'Kapazität & Energie',
+    title: 'Kapazität & elektrische Energie des Kondensators',
+    desc: 'C = Q / U, Plattenkondensator C = ε₀εᵣ A / d, gespeicherte Energie W = ½ C U² und Energiedichte w = ½ ε₀ E².',
+    visualHtml: `
+      <div class="formula-hero-card" style="border-left: 6px solid #8b5cf6;">
+        <span class="formula-hero-badge" style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6;">
+          ⚡ KAPAZITÄT &amp; ENERGIE DES KONDENSATORS
+        </span>
+        <div class="formula-math-display">
+          <span class="katex-render" data-display="true" data-latex="C = \frac{Q}{U} = \varepsilon_0 \cdot \varepsilon_r \cdot \frac{A}{d} \quad [\text{Farad: } \text{F}] \qquad W_{\text{el}} = \frac{1}{2} C U^2 = \frac{1}{2} Q U"></span>
+        </div>
+      </div>
+    `,
+    summary: 'Die Kapazität C ist das Ladungsspeichervermögen pro Volt. Die gespeicherte Feldenergie wächst quadratisch mit der Spannung U².',
+    takeaways: [
+      'C = ε₀ • εᵣ • A / d [Farad = C / V].',
+      'Energie W = ½ • C • U² = ½ • Q • U.',
+      'Verdoppelt man U bei unverändertem Kondensator, vervierfacht sich die Energie.'
+    ],
+    tasks: [
+      {
+        title: 'Aufgabe: Kapazität und Energie berechnen',
+        prompt: `
+          Ein Kondensator mit A = 400 cm² und d = 1,5 mm wird an eine Spannung von U = 300 V angeschlossen (εᵣ = 1). Berechne C, Q und die gespeicherte Energie Wel.
+        `,
+        solution: `
+          <span class="katex-render" data-display="false" data-latex="A = 0,040\,\text{m}^2">A = 0,04 m²</span>, <span class="katex-render" data-display="false" data-latex="d = 1,5 \cdot 10^{-3}\,\text{m}">d = 1,5 • 10⁻³ m</span>.<br>
+          <div class="katex-render" data-display="true" data-latex="C = 8,854 \cdot 10^{-12} \cdot \frac{0,040}{1,5 \cdot 10^{-3}} = 2,36 \cdot 10^{-10}\,\text{F} = 236\,\text{pF}"></div>
+          <div class="katex-render" data-display="true" data-latex="Q = C \cdot U = 236 \cdot 10^{-12}\,\text{F} \cdot 300\,\text{V} = 7,08 \cdot 10^{-8}\,\text{C} = 70,8\,\text{nC}"></div>
+          <div class="katex-render" data-display="true" data-latex="W_{\text{el}} = \frac{1}{2} \cdot C \cdot U^2 = \frac{1}{2} \cdot 2,36 \cdot 10^{-10} \cdot 90\,000 = 1,06 \cdot 10^{-5}\,\text{J} = 10,6\,\mu\text{J}"></div>
+        `
+      }
+    ]
+  }
+];
+
+const PHYSIK_SKILLS = [
+  ...SKILLS_FOLDER_1,
+  ...SKILLS_FOLDER_2,
+  ...SKILLS_FOLDER_3,
+  ...SKILLS_FOLDERS_4_5
+];
+
+
+// =========================================================================
+// part6_ui_renderers.js - UI Rendering Engine, Folder Views & State Engine
+// =========================================================================
+
+// --- 6. KOMBINATIONS-AUFGABEN (VERNETZUNG MEHRERER THEMEN) ---
 const KOMBI_AUFGABEN = [
   {
-    title: 'Kombi 1: Plattenkondensator + E-Feld + Fadenpendel-Auslenkung',
-    badges: ['E-Feld (E = U/d)', 'Kräftedreieck (tan α)', 'Ladungsbestimmung'],
+    title: 'Kombi 1: Plattenkondensator + E-Feld + Fadenpendel-Auslenkung (Meds.pdf S. 28/30)',
+    badges: ['E-Feld (E = U/d)', 'Kräftedreieck (tan α = Fel/Fg)', 'Ladungsbestimmung'],
     prompt: `
-      An einem Plattenkondensator mit Plattenabstand <code>d = 5,0 cm</code> liegt die Hochspannung <code>U = 2500 V</code> an.
-      Zwischen den Platten hängt an einem isolierenden Faden eine kleine Kugel der Masse <code>m = 0,80 g</code>.
+      An einem Plattenkondensator mit Plattenabstand <code>d = 5,0 cm</code> liegt die Hochspannung <code>U = 2500 V</code> an.<br>
+      Zwischen den Platten hängt an einem isolierenden Faden eine kleine Kugel der Masse <code>m = 0,80 g</code>.<br>
       Sobald die Kugel aufgeladen wird, schlägt sie um den Winkel <code>&alpha; = 14,0&deg;</code> in Richtung der negativen Platte aus.<br>
       <strong>Aufgaben:</strong><br>
       a) Welches Vorzeichen hat die Ladung der Kugel?<br>
@@ -1052,24 +1208,21 @@ const KOMBI_AUFGABEN = [
       Da die Kugel zur <em>negativen</em> Platte ausgelenkt wird, wird sie von dieser angezogen. Die Kugel trägt daher eine <strong>positive Ladung (q > 0)</strong>.<br><br>
       <strong>b) Elektrische Feldstärke:</strong><br>
       Im homogenen Plattenkondensator gilt:<br>
-      <code>E = U / d = 2500 V / 0,05 m = 50.000 V/m = 50 kV/m</code><br><br>
+      <div class="katex-render" data-display="true" data-latex="E = \\frac{U}{d} = \\frac{2500\\,\\text{V}}{0,05\\,\\text{m}} = 50\\,000\\,\\frac{\\text{V}}{\\text{m}} = 50\\,\\frac{\\text{kV}}{\\text{m}}"></div>
       <strong>c) Ladung q über das Kräftedreieck:</strong><br>
-      Am ausgelenkten Pendel herrscht Kräftegleichgewicht zwischen Gewichtskraft F_G und elektrischer Kraft F_el:<br>
-      <code>tan(&alpha;) = F_el / F_G = (q &bull; E) / (m &bull; g)</code><br>
-      Nach q umstellen:<br>
-      <code>q = (m &bull; g &bull; tan(&alpha;)) / E</code><br>
-      Werte einsetzen (m = 0,00080 kg, g = 9,81 m/s², tan(14°) &asymp; 0,24933):<br>
-      <code>q = (0,00080 kg &bull; 9,81 m/s&sup2; &bull; 0,24933) / 50.000 V/m</code><br>
-      <code>q = (1,957 &bull; 10⁻³ N) / 50.000 V/m &asymp; 3,91 &bull; 10⁻⁸ C = 39,1 nC</code><br>
-      <strong style="color: #10b981;">Ergebnis:</strong> Die Kugel trägt eine Ladung von <strong>q &asymp; 39,1 nC</strong>.
+      Am ausgelenkten Pendel herrscht Kräftegleichgewicht zwischen Gewichtskraft F_g und elektrischer Kraft F_el:<br>
+      <div class="katex-render" data-display="true" data-latex="\\tan\\alpha = \\frac{F_{\\text{el}}}{F_g} = \\frac{q \\cdot E}{m \\cdot g} \\implies q = \\frac{m \\cdot g \\cdot \\tan\\alpha}{E}"></div>
+      Werte einsetzen (m = 0,00080 kg, g = 9,81 m/s², tan(14°) ≈ 0,24933):<br>
+      <div class="katex-render" data-display="true" data-latex="q = \\frac{0,00080\\,\\text{kg} \\cdot 9,81\\,\\text{m/s}^2 \\cdot 0,24933}{50\\,000\\,\\text{V/m}} = \\frac{1,957 \\cdot 10^{-3}\\,\\text{N}}{50\\,000\\,\\text{V/m}} \\approx 3,91 \\cdot 10^{-8}\\,\\text{C} = 39,1\\,\\text{nC}"></div>
+      <strong style="color: #10b981;">Ergebnis:</strong> Die Kugel trägt eine Ladung von <strong>q ≈ 39,1 nC</strong>.
     `
   },
   {
     title: 'Kombi 2: Coulomb-Gesetz + Ladungsausgleich bei Berührung + Pendelauslenkung',
     badges: ['Coulombsches Gesetz', 'Ladungsausgleich', 'Kräftegleichgewicht'],
     prompt: `
-      Zwei gleiche, leitende kleine Kugeln A und B (je Masse m = 1,2 g) hängen an gleich langen Fäden nebeneinander.
-      Anfangs trägt Kugel A die Ladung <code>Q_A = +12 nC</code> und Kugel B ist ungeladen (<code>Q_B = 0</code>).
+      Zwei gleiche, leitende kleine Kugeln A und B (je Masse m = 1,2 g) hängen an gleich langen Fäden nebeneinander.<br>
+      Anfangs trägt Kugel A die Ladung <code>Q_A = +12 nC</code> und Kugel B ist ungeladen (<code>Q_B = 0</code>).<br>
       Die Kugeln berühren sich kurz und stoßen sich anschließend ab, sodass sie im Gleichgewicht einen Abstand von <code>r = 6,0 cm</code> einnehmen.<br>
       <strong>Aufgaben:</strong><br>
       a) Welche Ladung trägt jede Kugel nach der Berührung?<br>
@@ -1079,24 +1232,19 @@ const KOMBI_AUFGABEN = [
     solution: `
       <strong>a) Ladungsausgleich:</strong><br>
       Wegen Symmetrie verteilt sich die Gesamtladung gleichmäßig auf beide Kugeln:<br>
-      <code>Q' = (Q_A + Q_B) / 2 = (+12 nC + 0) / 2 = +6,0 nC = 6,0 &bull; 10⁻⁹ C</code> für jede Kugel.<br><br>
+      <div class="katex-render" data-display="true" data-latex="Q' = \\frac{Q_A + Q_B}{2} = \\frac{+12\\,\\text{nC} + 0}{2} = +6,0\\,\\text{nC} = 6,0 \\cdot 10^{-9}\\,\\text{C}"></div> für jede Kugel.<br><br>
       <strong>b) Coulomb-Kraft F_C:</strong><br>
-      <code>F_C = 1/(4&pi;&epsilon;₀) &bull; (Q'&sup2; / r&sup2;)</code><br>
-      <code>F_C = (8,988 &bull; 10⁹) &bull; (6,0 &bull; 10⁻⁹)&sup2; / (0,06 m)&sup2;</code><br>
-      <code>F_C = (8,988 &bull; 10⁹ &bull; 36 &bull; 10⁻¹⁸) / 0,0036 = 3,236 &bull; 10⁻⁷ / 0,0036 &asymp; 8,99 &bull; 10⁻⁵ N &asymp; 0,090 mN</code><br><br>
+      <div class="katex-render" data-display="true" data-latex="F_C = \\frac{1}{4\\pi\\varepsilon_0} \\cdot \\frac{Q'^2}{r^2} = 8,988 \\cdot 10^9 \\cdot \\frac{(6,0 \\cdot 10^{-9})^2}{(0,06)^2} \\approx 8,99 \\cdot 10^{-5}\\,\\text{N} = 0,090\\,\\text{mN}"></div>
       <strong>c) Auslenkungswinkel &alpha;:</strong><br>
-      <code>tan(&alpha;) = F_C / F_G = F_C / (m &bull; g)</code><br>
-      <code>F_G = 0,0012 kg &bull; 9,81 m/s&sup2; &asymp; 0,01177 N</code><br>
-      <code>tan(&alpha;) = (8,99 &bull; 10⁻⁵ N) / 0,01177 N &asymp; 0,007636</code><br>
-      <code>&alpha; = arctan(0,007636) &asymp; 0,44&deg;</code>.
+      <div class="katex-render" data-display="true" data-latex="\\tan\\alpha = \\frac{F_C}{F_g} = \\frac{8,99 \\cdot 10^{-5}\\,\\text{N}}{0,0012\\,\\text{kg} \\cdot 9,81\\,\\text{m/s}^2} = \\frac{8,99 \\cdot 10^{-5}}{0,01177} \\approx 0,007636 \\implies \\alpha \\approx 0,44^\\circ"></div>
     `
   },
   {
-    title: 'Kombi 3: Kondensator-Entladung (I(t)) → Ladung Q → Kapazität C → Plattenabstand d',
-    badges: ['Flächenzählung AB08', 'C = Q/U', 'Plattenkondensator C = ε0 A/d'],
+    title: 'Kombi 3: Kondensator-Entladung (I(t)) → Ladung Q → Kapazität C → Plattenabstand d (S. 33 & AB 08)',
+    badges: ['Flächenzählung & Integral', 'C = Q/U', 'Plattenkondensator C = ε₀A/d'],
     prompt: `
-      Ein Plattenkondensator mit runden Platten (Radius R = 15 cm) wird an eine Spannungsquelle mit <code>U₀ = 200 V</code> angeschlossen.
-      Danach wird er getrennt und über einen Widerstand entladen. Die Messkurve I(t) liefert durch Flächenzählung die Gesamtladung <code>Q₀ = 12,5 nC</code>.<br>
+      Ein Plattenkondensator mit kreisrunden Platten (Radius R = 15 cm) wird an eine Spannungsquelle mit <code>U₀ = 200 V</code> angeschlossen.<br>
+      Danach wird er getrennt und über einen Widerstand entladen. Die Messkurve I(t) liefert durch Integration die Gesamtladung <code>Q₀ = 12,5 nC</code>.<br>
       <strong>Aufgaben:</strong><br>
       a) Berechne die Kapazität C des Kondensators in Picofarad (pF).<br>
       b) Bestimme die Fläche A der Kondensatorplatten.<br>
@@ -1104,67 +1252,86 @@ const KOMBI_AUFGABEN = [
     `,
     solution: `
       <strong>a) Kapazität C:</strong><br>
-      <code>C = Q₀ / U₀ = (12,5 &bull; 10⁻⁹ C) / 200 V = 6,25 &bull; 10⁻¹¹ F = 62,5 pF</code><br><br>
+      <div class="katex-render" data-display="true" data-latex="C = \\frac{Q_0}{U_0} = \\frac{12,5 \\cdot 10^{-9}\\,\\text{C}}{200\\,\\text{V}} = 6,25 \\cdot 10^{-11}\\,\\text{F} = 62,5\\,\\text{pF}"></div><br>
       <strong>b) Plattenfläche A:</strong><br>
-      Kreisfläche mit Radius R = 0,15 m:<br>
-      <code>A = &pi; &bull; R&sup2; = &pi; &bull; (0,15 m)&sup2; &asymp; 0,0707 m&sup2;</code><br><br>
+      <div class="katex-render" data-display="true" data-latex="A = \\pi \\cdot R^2 = \\pi \\cdot (0,15\\,\\text{m})^2 \\approx 0,0707\\,\\text{m}^2"></div><br>
       <strong>c) Plattenabstand d:</strong><br>
-      Für den Plattenkondensator gilt <code>C = &epsilon;₀ &bull; (A / d) &rArr; d = (&epsilon;₀ &bull; A) / C</code>.<br>
-      <code>d = (8,854 &bull; 10⁻¹² As/(Vm) &bull; 0,0707 m&sup2;) / (6,25 &bull; 10⁻¹¹ F)</code><br>
-      <code>d = 6,26 &bull; 10⁻¹³ / 6,25 &bull; 10⁻¹¹ &asymp; 0,0100 m = 1,0 cm</code>.<br>
+      Für den Plattenkondensator gilt <span class="katex-render" data-display="false" data-latex="C = \\varepsilon_0 \\cdot \\frac{A}{d} \\implies d = \\frac{\\varepsilon_0 \\cdot A}{C}"></span>.<br>
+      <div class="katex-render" data-display="true" data-latex="d = \\frac{8,854 \\cdot 10^{-12}\\,\\frac{\\text{As}}{\\text{Vm}} \\cdot 0,0707\\,\\text{m}^2}{6,25 \\cdot 10^{-11}\\,\\text{F}} \\approx 0,0100\\,\\text{m} = 1,0\\,\\text{cm}"></div>
       <strong style="color: #10b981;">Ergebnis:</strong> Der Plattenabstand betrug <strong>d = 1,0 cm</strong>.
     `
   }
 ];
 
-// --- 3. GROSSER AUFGABENPOOL AUS ALLEN ISERV-ARBEITSBLÄTTERN (AB01 - AB11) ---
+// --- 7. GROSSER AUFGABENPOOL AUS ALLEN ISERV-ARBEITSBLÄTTERN (AB01 - AB11 + S. 33) ---
 const ISERV_AUFGABEN_POOL = [
+  {
+    sheet: 'Klausurblatt Meds.pdf S. 33',
+    category: 'messwerte',
+    title: 'S. 33 Nr. 1: Coulomb-Kraft F(r) Messwertreihe',
+    prompt: 'Prüfe anhand der Messreihe r = [2, 3, 4, 5, 6, 8] cm und F = [162.5, 72.5, 40.5, 26.0, 18.0, 10.25] mN, ob F ~ 1/r² gilt, und berechne F(1 cm).',
+    solution: 'Konstantenprüfung F • r² ergibt [650, 652.5, 648, 650, 648, 656] mN•cm² mit Mittelwert k̄ = 650,75 mN•cm². Für r = 1 cm folgt F(1 cm) = 650,75 mN = 0,651 N.'
+  },
+  {
+    sheet: 'Klausurblatt Meds.pdf S. 33',
+    category: 'messwerte',
+    title: 'S. 33 Nr. 2: Plattenkondensator Kraft F(U) Messwertreihe',
+    prompt: 'Prüfe anhand der Messreihe U = [2, 3, 4, 5] kV und F = [35, 80, 142.5, 222.5] mN, ob F ~ U² gilt, und bestimme die Spannung für F = 10 mN.',
+    solution: 'Quotientenprüfung F / U² liefert [8.75, 8.89, 8.91, 8.90] mN/kV² mit Mittelwert k̄ = 8,86 mN/kV². Für F = 10 mN ergibt sich U = √(10 / 8,86) = 1,062 kV = 1062 V.'
+  },
+  {
+    sheet: 'Klausurblatt Meds.pdf S. 33',
+    category: 'messwerte',
+    title: 'S. 33 Nr. 3: Entladekurve I(t) und Ladung als Integral',
+    prompt: 'Gegeben ist I(t) = 50 µA • e^(-0,0458 t). Berechne die Gesamtladung Q_ges und die nach t = 30 s abgeflossene Ladung.',
+    solution: 'Q_ges = ∫₀^∞ I(t) dt = I₀ / k = 50 µA / 0,0458 s⁻¹ = 1091,7 µC ≈ 1,09 mC. Nach 30 s: Q(30 s) = 1091,7 • (1 - e^(-1,374)) = 1091,7 • 0,7469 = 815,4 µC abgeflossen (verbleibend: 276,3 µC).'
+  },
   {
     sheet: 'AB01 Elektroskop',
     category: 'elektrostatik',
-    title: 'AB01: Ladungsnachweis mit dem Elektroskop',
+    title: 'AB01: Ladungsnachweis mit dem Elektroskop (Meds.pdf S. 2/3)',
     prompt: 'Ein Elektroskop ist negativ geladen (Zeiger ausgelenkt). Man nähert sich dem Teller mit einem unbekannten Körper X, woraufhin der Zeigerausschlag kleiner wird. Welche Ladung trägt X?',
     solution: 'Wird der Zeigerausschlag kleiner, fließen Elektronen aus dem Zeiger nach oben auf den Teller zurück. Das geschieht, wenn der Körper X Elektronen anzieht. <strong>Der Körper X ist positiv geladen.</strong>'
   },
   {
     sheet: 'AB02 Influenz',
     category: 'elektrostatik',
-    title: 'AB02: Ladungsverschiebung an zwei berührenden Metallkugeln',
+    title: 'AB02: Ladungsverschiebung an zwei berührenden Metallkugeln (Meds.pdf S. 5)',
     prompt: 'Zwei ungeladene Metallkugeln berühren sich. Ein negativ geladener Stab wird von links an Kugel 1 angenähert. Während der Stab da ist, werden die Kugeln getrennt. Danach wird der Stab entfernt. Welche Ladung tragen Kugel 1 und Kugel 2?',
     solution: 'Der negative Stab stößt Elektronen aus Kugel 1 nach Kugel 2 ab. Werden sie getrennt, verbleibt auf Kugel 1 ein Elektronenmangel (<strong>positiv</strong>) und auf Kugel 2 ein Elektronenüberschuss (<strong>negativ</strong>)!'
   },
   {
     sheet: 'AB04 Glimmlampe',
     category: 'elektrostatik',
-    title: 'AB04: Glimmlampen-Elektrode',
+    title: 'AB04: Glimmlampen-Elektrode als Polprüfer (Meds.pdf S. 4)',
     prompt: 'Warum leuchtet bei Gleichspannung nur eine Elektrode der Glimmlampe, bei Wechselspannung aus der Steckdose aber scheinbar beide?',
-    solution: 'Bei Gleichspannung leuchtet nur die Kathode (Minuspol). Bei Wechselspannung polt sich das Netz 50-mal pro Sekunde um &rarr; Durch die Trägheit des menschlichen Auges scheinen beide Elektroden gleichzeitig zu leuchten.'
+    solution: 'Bei Gleichspannung leuchtet nur die Kathode (Minuspol), da dort die positiven Edelgasionen aufprallen. Bei Wechselspannung polt sich das Netz 50-mal pro Sekunde um &rarr; Durch die Trägheit des menschlichen Auges scheinen beide Elektroden gleichzeitig zu leuchten.'
   },
   {
     sheet: 'AB05 Coulomb',
     category: 'coulomb',
-    title: 'AB05: Coulombkraft bei Abstandsverdopplung',
+    title: 'AB05: Coulombkraft bei Abstandsänderung (Meds.pdf S. 32 Verdopplungsregel)',
     prompt: 'Zwei Punktladungen üben im Abstand r = 5 cm eine Kraft von F = 16 mN aufeinander aus. Wie groß ist die Kraft im Abstand r = 10 cm und r = 2,5 cm?',
-    solution: 'Da F &prop; 1/r²:<br>• Bei r = 10 cm (doppelter Abstand) sinkt die Kraft auf ein Viertel: <code>F = 16 mN / 4 = 4 mN</code>.<br>• Bei r = 2,5 cm (halber Abstand) vervierfacht sich die Kraft: <code>F = 16 mN &bull; 4 = 64 mN</code>.'
+    solution: 'Da F ~ 1/r²:<br>• Bei r = 10 cm (doppelter Abstand) sinkt die Kraft auf ein Viertel: <code>F = 16 mN / 4 = 4 mN</code>.<br>• Bei r = 2,5 cm (halber Abstand) vervierfacht sich die Kraft: <code>F = 16 mN • 4 = 64 mN</code>.'
   },
   {
     sheet: 'AB06 Messwerte',
     category: 'messwerte',
-    title: 'AB06: Auswertung einer Messreihe F(U)',
+    title: 'AB06: Auswertung einer Messreihe F(U) durch Linearisierung (Meds.pdf S. 32)',
     prompt: 'Warum darf man bei der Auswertung von F über U keine lineare Ausgleichsgerade durch die Punkte ziehen, und wie linearisiert man die Messreihe?',
-    solution: 'Weil der Zusammenhang quadratisch ist: <code>F &prop; U²</code> (Parabel). Zur Linearisierung quadriert man alle Spannungswerte und trägt F über U² auf &rarr; Man erhält eine Ursprungsgerade mit Steigung <code>m = &frac12;&epsilon;₀(A/d²)</code>.'
+    solution: 'Weil der Zusammenhang quadratisch ist: <code>F ~ U²</code> (Parabel). Zur Linearisierung quadriert man alle Spannungswerte und trägt F über U² auf &rarr; Man erhält eine Ursprungsgerade mit Steigung <code>m = ½ ε₀ (A/d²)</code>.'
   },
   {
     sheet: 'AB07 Feldstärke',
     category: 'efeld',
     title: 'AB07: Feldstärke zwischen zwei Kondensatorplatten',
     prompt: 'Zwischen zwei Platten (Abstand d = 1,0 cm) liegt eine Spannung von U = 5000 V. Wie groß ist die Feldstärke E? Kann es bei Luft zu einem Funkenüberschlag kommen (Durchschlagfeldstärke Luft ca. 30 kV/cm)?',
-    solution: '<code>E = U / d = 5000 V / 1,0 cm = 5 kV/cm</code>.<br>Da 5 kV/cm deutlich unter der Durchschlagfeldstärke von 30 kV/cm liegt, kommt es zu <strong>keinem</strong> Funkenüberschlag.'
+    solution: '<code>E = U / d = 5000 V / 1,0 cm = 5 kV/cm = 500 kV/m</code>.<br>Da 5 kV/cm deutlich unter der Durchschlagfeldstärke von 30 kV/cm liegt, kommt es zu <strong>keinem</strong> Funkenüberschlag.'
   },
   {
     sheet: 'AB08 Entladung',
     category: 'messwerte',
-    title: 'AB08: Entladestrom I(t)',
+    title: 'AB08: Entladestrom I(t) des Kondensators (Meds.pdf S. 8 & 12)',
     prompt: 'Ein Kondensator entlädt sich. Warum wird die Stromstärke I mit der Zeit immer kleiner?',
     solution: 'Beim Entladen fließt Ladung Q ab. Dadurch sinkt die Kondensatorspannung <code>U = Q / C</code>. Nach dem Ohmschen Gesetz <code>I = U / R</code> sinkt mit kleiner werdender Spannung auch die Stromstärke I.'
   },
@@ -1173,43 +1340,68 @@ const ISERV_AUFGABEN_POOL = [
     category: 'coulomb',
     title: 'AB10 Nr. 1: Ladungen im Vakuum',
     prompt: 'Zwei Kugeln mit Q₁ = 1,0 μC und Q₂ = 1,0 μC befinden sich im Abstand r = 10 cm. Berechne die abstoßende Kraft.',
-    solution: '<code>F_C = 8,988&bull;10⁹ &bull; (10⁻⁶)&sup2; / (0,10)&sup2; = 8,988&bull;10⁻³ / 0,01 &asymp; 0,899 N</code>.'
+    solution: '<code>F_C = 8,988 • 10⁹ • (10⁻⁶)² / (0,10)² = 8,988 • 10⁻³ / 0,01 ≈ 0,899 N</code>.'
   },
   {
     sheet: 'AB10 Coulomb',
     category: 'coulomb',
-    title: 'AB10 Nr. 2: Abstandsberechnung',
+    title: 'AB10 Nr. 2: Abstandsberechnung bei gegebener Kraft',
     prompt: 'Zwei gleiche Ladungen Q = 25 nC stoßen sich mit F = 5,0 mN ab. Berechne den Abstand r.',
-    solution: '<code>r = &radic;[ (8,988&bull;10⁹ &bull; (25&bull;10⁻⁹)&sup2;) / 0,005 ] &asymp; 0,0335 m = 3,35 cm</code>.'
+    solution: '<code>r = √[ (8,988 • 10⁹ • (25 • 10⁻⁹)²) / 0,005 ] ≈ 0,0335 m = 3,35 cm</code>.'
   },
   {
     sheet: 'AB10 Coulomb',
     category: 'coulomb',
     title: 'AB10 Nr. 3: Berührung & Ladungsausgleich',
     prompt: 'Kugel 1 (+10 μC) und Kugel 2 (-4 μC) werden berührt und getrennt. Welche Ladung tragen sie danach?',
-    solution: '<code>Q\' = (+10 &mu;C + (-4 &mu;C)) / 2 = +3 &mu;C</code> für jede Kugel.'
+    solution: '<code>Q\' = (+10 μC + (-4 μC)) / 2 = +3 μC</code> für jede Kugel.'
   },
   {
     sheet: 'AB10 Coulomb',
     category: 'coulomb',
-    title: 'AB10 Nr. 5: Gravitation vs. Coulomb',
+    title: 'AB10 Nr. 5: Gravitation vs. Coulombkraft',
     prompt: 'Wie verhält sich die elektrische Coulombkraft zweier Elektronen zu ihrer Massenanziehung (Gravitation)?',
-    solution: '<code>F_C / F_G = (k &bull; e&sup2;) / (G &bull; m_e&sup2;) &asymp; 4,17 &bull; 10⁴²</code>. Die elektrische Kraft ist um 42 Zehnerpotenzen stärker!'
+    solution: '<code>F_C / F_G = (k • e²) / (G • m_e²) ≈ 4,17 • 10⁴²</code>. Die elektrische Kraft ist um 42 Zehnerpotenzen stärker als die Gravitation!'
   },
   {
     sheet: 'AB11 Grundbegriffe',
     category: 'efeld',
-    title: 'AB11: Feldlinienverlauf an Spitzen',
+    title: 'AB11: Feldlinienverlauf an Spitzen (Meds.pdf S. 25)',
     prompt: 'Warum ist das elektrische Feld an Spitzen von Leitern besonders stark (Spitzenwirkung)?',
-    solution: 'Wegen der Krümmung weichen die beweglichen Ladungsträger vor der gegenseitigen Abstoßung zur Spitze hin aus. Die Ladungsdichte &sigma; = Q/A wird an Spitzen extrem hoch &rarr; extrem hohe Feldstärke <code>E = &sigma; / &epsilon;₀</code>!'
+    solution: 'Wegen der Krümmung weichen die beweglichen Ladungsträger vor der gegenseitigen Abstoßung zur Spitze hin aus. Die Ladungsdichte σ = Q/A wird an Spitzen extrem hoch &rarr; extrem hohe Feldstärke <code>E = σ / ε₀</code>!'
   }
 ];
 
-// --- 4. STATE ENGINE FOR PHYSIK PORTAL ---
-let CURRENT_PHYSIK_MODE = 'themen'; // 'themen', 'kombi', 'iserv-pool', 'spickzettel'
-let CURRENT_PHYSIK_SKILL = null;
-let CURRENT_ISERV_CATEGORY = 'all';
+// --- 8. MODE-BAR GENERATOR ---
+function getPhysikModeBarHtml() {
+  return `
+    <div class="physik-mode-bar">
+      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'ordner' && !CURRENT_PHYSIK_SKILL ? 'active' : ''}" onclick="switchPhysikMode('ordner')">
+        <span>📁</span><span>Hauptordner (Elektrizitätslehre)</span>
+      </button>
+      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'funktionen' ? 'active' : ''}" onclick="switchPhysikMode('funktionen')">
+        <span>📈</span><span>Die 4 Funktionen &amp; S. 33</span>
+      </button>
+      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'themen' ? 'active' : ''}" onclick="switchPhysikMode('themen')">
+        <span>📚</span><span>Alle 15 Themen</span>
+      </button>
+      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'kombi' ? 'active' : ''}" onclick="switchPhysikMode('kombi')">
+        <span>🧩</span><span>Kombinations-Aufgaben</span>
+      </button>
+      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'iserv-pool' ? 'active' : ''}" onclick="switchPhysikMode('iserv-pool')">
+        <span>🎯</span><span>Aufgabenpool (AB01 - AB11)</span>
+      </button>
+      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'uploads' ? 'active' : ''}" onclick="switchPhysikMode('uploads')">
+        <span>📤</span><span>Eigene Dokumente &amp; Meds.pdf</span>
+      </button>
+      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'spickzettel' ? 'active' : ''}" onclick="openTopic('physik', 'physik-spickzettel')">
+        <span>📌</span><span>Klausur-Spickzettel</span>
+      </button>
+    </div>
+  `;
+}
 
+// --- 9. HAUPTPORTAL RENDERER ---
 function renderPhysikPortal() {
   const gridEl = document.getElementById('themenGrid');
   if (!gridEl) return;
@@ -1217,57 +1409,127 @@ function renderPhysikPortal() {
   gridEl.className = 'themen-stations-container';
   gridEl.style.display = 'block';
 
-  // If a specific skill is opened, show that skill detail view
+  // 1. If a skill is active, render skill detail view
   if (CURRENT_PHYSIK_SKILL) {
     renderPhysikSkillDetail(CURRENT_PHYSIK_SKILL);
     return;
   }
 
-  // Otherwise, render the Main Portal Dashboard
-  let html = `
-    <!-- Top Mode Navigation Bar -->
-    <div class="physik-mode-bar">
-      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'themen' ? 'active' : ''}" onclick="switchPhysikMode('themen')">
-        <span>📚</span><span>Die 10 Kern-Themen &amp; Fragen</span>
-      </button>
-      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'kombi' ? 'active' : ''}" onclick="switchPhysikMode('kombi')">
-        <span>🧩</span><span>Kombinations-Aufgaben (Vernetzung)</span>
-      </button>
-      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'iserv-pool' ? 'active' : ''}" onclick="switchPhysikMode('iserv-pool')">
-        <span>🎯</span><span>Aufgabenpool (AB01 - AB11)</span>
-      </button>
-      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'uploads' ? 'active' : ''}" onclick="switchPhysikMode('uploads')">
-        <span>📁</span><span>Eigene Dokumente &amp; Uploads</span>
-      </button>
-      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'spickzettel' ? 'active' : ''}" onclick="openTopic('physik', 'physik-spickzettel')">
-        <span>📌</span><span>Klausur-Spickzettel</span>
-      </button>
-    </div>
+  // 2. If inside a folder, render that folder's detail view
+  if (CURRENT_PHYSIK_MODE === 'ordner' && CURRENT_PHYSIK_FOLDER) {
+    renderPhysikFolderDetail(CURRENT_PHYSIK_FOLDER);
+    return;
+  }
 
-    <!-- Live Search Bar -->
-    <div class="physik-search-box">
-      <span style="font-size: 1.1rem; color: var(--text-muted);">🔍</span>
-      <input type="text" id="physikSearchInput" class="physik-search-input" 
-             placeholder="Schnellsuche: Tippe z. B. Äquipotentiallinien, Influenz, Feldstärke, Coulomb, Messwerte..." 
-             oninput="handlePhysikSearch(this.value)">
-    </div>
-  `;
+  // 3. Render Mode Navigation Bar & Search
+  let html = getPhysikModeBarHtml();
 
-  if (CURRENT_PHYSIK_MODE === 'themen') {
+  // Search box (shown on ordner & themen modes)
+  if (CURRENT_PHYSIK_MODE === 'ordner' || CURRENT_PHYSIK_MODE === 'themen') {
+    html += `
+      <div class="physik-search-box">
+        <span style="font-size: 1.1rem; color: var(--text-muted);">🔍</span>
+        <input type="text" id="physikSearchInput" class="physik-search-input" 
+               placeholder="Schnellsuche: Tippe z. B. Äquipotentiallinien, Influenz, Feldstärke, Coulomb, Messwerte, Fadenpendel..." 
+               oninput="handlePhysikSearch(this.value)">
+      </div>
+    `;
+  }
+
+  // A. ORDNER MODE (DEFAULT)
+  if (CURRENT_PHYSIK_MODE === 'ordner') {
+    html += `
+      <div style="margin-bottom: 1.2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.6rem;">
+          <div>
+            <h3 style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.3rem 0;">
+              📁 Elektrizitätslehre &amp; Elektrostatik (Klausur 12/1)
+            </h3>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+              Vollständiger Klausurstoff nach <strong>Meds.pdf</strong> in 5 klar getrennten Ordnern. Klicke auf einen Ordner oder direkt auf ein Unterthema:
+            </p>
+          </div>
+          <button class="btn-action-dl-folder" onclick="switchPhysikMode('funktionen')" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; padding: 0.5rem 1rem; border-radius: var(--radius-pill); font-size: 0.82rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.4rem;">
+            <span>📈</span><span>Fokus S. 32 &amp; 33 öffnen &rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="physics-folders-grid" id="physikFoldersGrid">
+    `;
+
+    ELEKTRIZITAET_FOLDERS.forEach((folder) => {
+      html += `
+        <div class="physics-folder-card" style="border-top: 4px solid ${folder.color};" onclick="openPhysikFolder('${folder.id}')">
+          <div>
+            <div class="folder-top-row">
+              <div class="folder-big-icon-box" style="background: ${folder.color}15; color: ${folder.color};">
+                ${folder.icon}
+              </div>
+              <span class="folder-badge-pill" style="background: ${folder.color}20; color: ${folder.color};">
+                ${folder.badge}
+              </span>
+            </div>
+            <div class="folder-main-title">
+              ${folder.title}
+            </div>
+            <div class="folder-desc-text">
+              ${folder.subtitle}
+            </div>
+
+            <!-- List of topics inside folder -->
+            <div style="background: var(--bg-subtle); border-radius: 8px; padding: 0.6rem 0.8rem; margin-bottom: 1.2rem;">
+              <div style="font-size: 0.76rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.4rem;">
+                Enthaltene Themen (${folder.topics.length}):
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 0.35rem;">
+                ${folder.topics.map(t => `
+                  <div style="display: flex; align-items: center; justify-content: space-between; font-size: 0.82rem; color: var(--text-primary); cursor: pointer;" onclick="event.stopPropagation(); openPhysikSkill('${t.id}')">
+                    <span style="display: inline-flex; align-items: center; gap: 0.35rem;">
+                      <span style="font-weight: 700; color: ${folder.color}; font-size: 0.78rem;">${t.num}</span>
+                      <span>${t.title.split(':')[0]}</span>
+                    </span>
+                    <span style="font-size: 0.72rem; color: var(--text-muted); background: var(--bg-card); padding: 0.15rem 0.4rem; border-radius: 4px; border: 1px solid var(--border-subtle);">${t.badge}</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
+          <div class="folder-card-footer">
+            <span class="folder-content-tag">
+              <span>📑</span><span>${folder.topics.length} Themenblöcke</span>
+            </span>
+            <button class="btn-open-folder-cta" style="background: ${folder.color};" onclick="event.stopPropagation(); openPhysikFolder('${folder.id}')">
+              Ordner öffnen &rarr;
+            </button>
+          </div>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+  }
+  // B. DEDICATED FUNKTIONEN & S. 33 VIEW
+  else if (CURRENT_PHYSIK_MODE === 'funktionen') {
+    html += renderFunktionenViewHtml();
+  }
+  // C. ALL 15 SKILLS VIEW
+  else if (CURRENT_PHYSIK_MODE === 'themen') {
     html += `
       <div style="margin-bottom: 1rem;">
         <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.2rem 0;">
-          📚 Die 10 Kern-Themen &amp; Fertigkeiten (Klausur Freitag)
+          📚 Alle 15 Kern-Themen &amp; Fertigkeiten (Klausur Freitag)
         </h3>
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
-          Klicke auf ein beliebiges Thema, um die <strong>kurze visuelle Erklärung</strong>, <strong>Übungsaufgaben mit Lösung</strong> und dein <strong>persönliches Notizfeld</strong> zu öffnen:
+          Klicke auf ein beliebiges Thema, um die <strong>visuelle Erklärung</strong>, <strong>Übungsaufgaben mit Lösung</strong> und dein <strong>persönliches Notizfeld</strong> zu öffnen:
         </p>
       </div>
 
       <div class="physik-skill-grid" id="physikSkillGrid">
     `;
 
-    PHYSIK_SKILLS.forEach((skill, idx) => {
+    PHYSIK_SKILLS.forEach((skill) => {
       html += `
         <div class="physik-skill-card" data-title="${skill.title.toLowerCase()}" data-desc="${skill.desc.toLowerCase()}" data-tag="${skill.tag.toLowerCase()}" onclick="openPhysikSkill('${skill.id}')">
           <div>
@@ -1288,7 +1550,7 @@ function renderPhysikPortal() {
           </div>
           <div class="skill-card-footer">
             <span class="skill-features-text">
-              👁️ Visuell &bull; 🎯 Übungen &bull; 📝 Notizen
+              👁️ Visuell &bull; 🎯 ${skill.tasks ? skill.tasks.length : 1} Übung(en) &bull; 📝 Notizen
             </span>
             <button class="btn-open-skill-card" style="background: ${skill.color};" onclick="event.stopPropagation(); openPhysikSkill('${skill.id}')">
               Thema lernen &rarr;
@@ -1299,7 +1561,9 @@ function renderPhysikPortal() {
     });
 
     html += `</div>`;
-  } else if (CURRENT_PHYSIK_MODE === 'kombi') {
+  }
+  // D. KOMBI AUFGABEN
+  else if (CURRENT_PHYSIK_MODE === 'kombi') {
     html += `
       <div style="margin-bottom: 1.4rem;">
         <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.2rem 0;">
@@ -1313,16 +1577,16 @@ function renderPhysikPortal() {
 
     KOMBI_AUFGABEN.forEach((kombi, idx) => {
       html += `
-        <div class="kombi-card">
-          <div class="kombi-header">
+        <div class="kombi-card" style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 1.4rem; margin-bottom: 1.2rem; box-shadow: var(--card-shadow);">
+          <div class="kombi-header" style="margin-bottom: 0.6rem;">
             <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin: 0;">
               ${kombi.title}
             </h4>
           </div>
-          <div class="kombi-connected-badges">
-            ${kombi.badges.map(b => `<span class="kombi-pill">🔗 ${b}</span>`).join('')}
+          <div class="kombi-connected-badges" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem;">
+            ${kombi.badges.map(b => `<span class="kombi-pill" style="font-size: 0.75rem; background: rgba(59, 130, 246, 0.12); color: #3b82f6; padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 700;">🔗 ${b}</span>`).join('')}
           </div>
-          <div class="task-prompt-box">
+          <div class="task-prompt-box" style="background: var(--bg-subtle); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.88rem; line-height: 1.55;">
             ${kombi.prompt}
           </div>
           <button class="btn-reveal-card" onclick="toggleSolution('solKombi_${idx}', this)">
@@ -1335,23 +1599,25 @@ function renderPhysikPortal() {
         </div>
       `;
     });
-  } else if (CURRENT_PHYSIK_MODE === 'iserv-pool') {
+  }
+  // E. ISERV AUFGABEN POOL
+  else if (CURRENT_PHYSIK_MODE === 'iserv-pool') {
     html += `
       <div style="margin-bottom: 1.2rem;">
         <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.2rem 0;">
-          🎯 Großer Aufgabenpool aus allen IServ-Arbeitsblättern
+          🎯 Großer Aufgabenpool aus allen IServ-Arbeitsblättern &amp; Klausurblatt S. 33
         </h3>
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
-          Aufgaben direkt aus deinen Unterrichtsmaterialien (AB01 bis AB11):
+          Aufgaben direkt aus deinen Unterrichtsmaterialien (AB01 bis AB11 und Klausurblatt S. 33):
         </p>
       </div>
 
-      <div class="iserv-pool-filter">
+      <div class="iserv-pool-filter" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.2rem;">
         <button class="iserv-filter-pill ${CURRENT_ISERV_CATEGORY === 'all' ? 'active' : ''}" onclick="filterIservPool('all')">Alle Aufgaben (${ISERV_AUFGABEN_POOL.length})</button>
+        <button class="iserv-filter-pill ${CURRENT_ISERV_CATEGORY === 'messwerte' ? 'active' : ''}" onclick="filterIservPool('messwerte')">Messwerte &amp; Linearisierung (S. 33)</button>
         <button class="iserv-filter-pill ${CURRENT_ISERV_CATEGORY === 'coulomb' ? 'active' : ''}" onclick="filterIservPool('coulomb')">Coulombsches Gesetz</button>
         <button class="iserv-filter-pill ${CURRENT_ISERV_CATEGORY === 'efeld' ? 'active' : ''}" onclick="filterIservPool('efeld')">Elektrisches Feld</button>
         <button class="iserv-filter-pill ${CURRENT_ISERV_CATEGORY === 'elektrostatik' ? 'active' : ''}" onclick="filterIservPool('elektrostatik')">Elektrostatik &amp; Influenz</button>
-        <button class="iserv-filter-pill ${CURRENT_ISERV_CATEGORY === 'messwerte' ? 'active' : ''}" onclick="filterIservPool('messwerte')">Messwerte &amp; Linearisierung</button>
       </div>
 
       <div id="iservTasksContainer">
@@ -1360,7 +1626,7 @@ function renderPhysikPortal() {
     ISERV_AUFGABEN_POOL.forEach((item, idx) => {
       const isVisible = CURRENT_ISERV_CATEGORY === 'all' || item.category === CURRENT_ISERV_CATEGORY;
       html += `
-        <div class="iserv-task-card" style="display: ${isVisible ? 'block' : 'none'};">
+        <div class="iserv-task-card" style="display: ${isVisible ? 'block' : 'none'}; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.2rem; margin-bottom: 1rem; box-shadow: var(--card-shadow);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.4rem;">
             <strong style="font-size: 1rem; color: var(--text-primary);">${item.title}</strong>
             <span class="p-badge" style="background: var(--bg-subtle); color: var(--text-secondary); border: 1px solid var(--border-subtle);">${item.sheet}</span>
@@ -1380,7 +1646,9 @@ function renderPhysikPortal() {
     });
 
     html += `</div>`;
-  } else if (CURRENT_PHYSIK_MODE === 'uploads') {
+  }
+  // F. UPLOADS VIEW
+  else if (CURRENT_PHYSIK_MODE === 'uploads') {
     gridEl.innerHTML = html;
     const uploadsContainer = document.createElement('div');
     uploadsContainer.id = 'physikUploadsViewWrapper';
@@ -1395,49 +1663,216 @@ function renderPhysikPortal() {
   renderPhysikKaTeX();
 }
 
-function switchPhysikMode(mode) {
-  CURRENT_PHYSIK_MODE = mode;
-  CURRENT_PHYSIK_SKILL = null;
-  renderPhysikPortal();
-}
+// --- 10. DETAIL-VIEW FÜR EINEN HAUPTORDNER ---
+function renderPhysikFolderDetail(folderId) {
+  const gridEl = document.getElementById('themenGrid');
+  if (!gridEl) return;
 
-function filterIservPool(cat) {
-  CURRENT_ISERV_CATEGORY = cat;
-  renderPhysikPortal();
-}
+  const folder = ELEKTRIZITAET_FOLDERS.find(f => f.id === folderId);
+  if (!folder) {
+    CURRENT_PHYSIK_FOLDER = null;
+    renderPhysikPortal();
+    return;
+  }
 
-function handlePhysikSearch(query) {
-  const q = query.trim().toLowerCase();
-  const cards = document.querySelectorAll('.physik-skill-card');
-  cards.forEach(c => {
-    if (!q) {
-      c.style.display = 'flex';
-      return;
-    }
-    const t = c.getAttribute('data-title') || '';
-    const d = c.getAttribute('data-desc') || '';
-    const tag = c.getAttribute('data-tag') || '';
-    if (t.includes(q) || d.includes(q) || tag.includes(q)) {
-      c.style.display = 'flex';
-    } else {
-      c.style.display = 'none';
-    }
+  let html = `
+    <!-- Top Mode Navigation Bar -->
+    ${getPhysikModeBarHtml()}
+
+    <div class="folder-detail-container">
+      <div class="folder-nav-header-bar">
+        <button class="btn-back-to-all-folders" onclick="closePhysikFolder()">
+          &larr; Zurück zu allen 5 Ordnern
+        </button>
+        <div class="folder-active-badge">
+          <span>Ordner <strong>#${folder.num}</strong>:</span>
+          <span>${folder.title}</span>
+        </div>
+      </div>
+
+      <div class="folder-banner-card" style="border-left: 6px solid ${folder.color};">
+        <div class="folder-banner-content">
+          <div class="folder-banner-icon" style="background: ${folder.color}20; color: ${folder.color};">
+            ${folder.icon}
+          </div>
+          <div>
+            <span class="folder-badge-pill" style="background: ${folder.color}22; color: ${folder.color}; margin-bottom: 0.4rem; display: inline-block;">
+              ${folder.badge}
+            </span>
+            <h2 style="font-size: 1.4rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.4rem 0;">
+              ${folder.title}
+            </h2>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+              ${folder.subtitle}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="folder-points-heading">
+        <span>📑</span><span>Themen &amp; Klausuraufgaben in diesem Ordner (${folder.topics.length}):</span>
+      </div>
+
+      <div class="folder-points-grid">
+  `;
+
+  folder.topics.forEach((t) => {
+    const skill = PHYSIK_SKILLS.find(s => s.id === t.id);
+    const taskCount = skill && skill.tasks ? skill.tasks.length : 0;
+    html += `
+      <div class="folder-point-card" style="border-top: 3px solid ${folder.color};" onclick="openPhysikSkill('${t.id}')">
+        <div>
+          <div class="point-top-row">
+            <span class="point-num-tag" style="background: ${folder.color}15; color: ${folder.color};">
+              Teilthema ${t.num}
+            </span>
+            <span class="p-badge" style="background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border-subtle);">
+              ${t.badge}
+            </span>
+          </div>
+          <div class="point-title">
+            ${t.title}
+          </div>
+          <div class="point-desc">
+            ${t.desc}
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 0.8rem; border-top: 1px dashed var(--border-subtle); margin-top: 0.6rem;">
+          <span style="font-size: 0.76rem; color: var(--text-muted); font-weight: 600;">
+            ${taskCount > 0 ? `🎯 ${taskCount} Übung(en) mit Lösung` : '👁️ Visuelle Erklärung'}
+          </span>
+          <button class="btn-point-launch" style="background: ${folder.color};" onclick="event.stopPropagation(); openPhysikSkill('${t.id}')">
+            Thema öffnen &rarr;
+          </button>
+        </div>
+      </div>
+    `;
   });
+
+  html += `
+      </div>
+    </div>
+  `;
+
+  gridEl.innerHTML = html;
+  renderPhysikKaTeX();
 }
 
-function openPhysikSkill(skillId) {
-  CURRENT_PHYSIK_SKILL = skillId;
-  renderPhysikPortal();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+// --- 11. DEDICATED FUNKTIONEN VIEW HTML ---
+function renderFunktionenViewHtml() {
+  return `
+    <div style="margin-bottom: 1.4rem;">
+      <div class="formula-hero-card" style="border-left: 6px solid #3b82f6; background: var(--bg-card); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--card-shadow); border: 1px solid var(--border-subtle);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 0.8rem;">
+          <span class="formula-hero-badge" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6; font-size: 0.82rem; font-weight: 800; padding: 0.35rem 0.8rem; border-radius: 999px;">
+            📈 KLAUSUR-FOKUS S. 32: DIE 4 TYPISCHEN FUNKTIONEN
+          </span>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn-point-launch" style="background: #3b82f6;" onclick="openPhysikSkill('typische-funktionen')">
+              Ausführliche Theorie (Thema 1.1) &rarr;
+            </button>
+            <button class="btn-point-launch" style="background: #10b981;" onclick="openPhysikSkill('messwerte-auswerten-2')">
+              Originalblatt S. 33 gelöst (Thema 1.2) &rarr;
+            </button>
+          </div>
+        </div>
+
+        <h2 style="font-size: 1.4rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.5rem 0;">
+          Die 4 unverzichtbaren Funktionstypen im Physik-Abitur &amp; Klausur 12/1
+        </h2>
+        <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.55; margin: 0 0 1.2rem 0;">
+          Aus Meds.pdf S. 32: In der Klausur musst du anhand von Messwerttabellen sofort den physikalischen Zusammenhang feststellen. Verwende die <strong>Verdopplungsregel</strong> zur schnellen Hypothese und die <strong>Konstantenprüfung</strong> zum exakten rechnerischen Nachweis:
+        </p>
+
+        <!-- 4 Functions Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+          <!-- 1. Proportional -->
+          <div style="background: var(--bg-subtle); border-radius: 8px; padding: 1.1rem; border-top: 4px solid #3b82f6;">
+            <div style="font-weight: 800; color: #3b82f6; font-size: 1.05rem; margin-bottom: 0.4rem;">
+              1. Proportional (<span class="katex-render" data-display="false" data-latex="y \\sim x">y ~ x</span>)
+            </div>
+            <div style="font-size: 0.88rem; margin-bottom: 0.5rem;">
+              <strong>Gleichung:</strong> <span class="katex-render" data-display="false" data-latex="y = k \\cdot x">y = k · x</span>
+            </div>
+            <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+              • <strong>Verdopplung:</strong> <span class="katex-render" data-display="false" data-latex="x \\to 2x \\implies y \\to 2y">x -> 2x => y -> 2y</span>.<br>
+              • <strong>Klausur-Test:</strong> <em>Quotientengleichheit</em> <span class="katex-render" data-display="false" data-latex="\\frac{y}{x} = k = \\text{const.}">y/x = const.</span><br>
+              • <strong>Graph:</strong> Ursprungsgerade mit Steigung <span class="katex-render" data-display="false" data-latex="k">k</span>.<br>
+              • <strong>Physik-Bsp.:</strong> <span class="katex-render" data-display="false" data-latex="F_{\\text{el}} = q \\cdot E">Fel = q · E</span> (<span class="katex-render" data-display="false" data-latex="F \\sim q">F ~ q</span>).
+            </div>
+          </div>
+
+          <!-- 2. Quadratisch -->
+          <div style="background: var(--bg-subtle); border-radius: 8px; padding: 1.1rem; border-top: 4px solid #10b981;">
+            <div style="font-weight: 800; color: #10b981; font-size: 1.05rem; margin-bottom: 0.4rem;">
+              2. Quadratisch (<span class="katex-render" data-display="false" data-latex="y \\sim x^2">y ~ x²</span>)
+            </div>
+            <div style="font-size: 0.88rem; margin-bottom: 0.5rem;">
+              <strong>Gleichung:</strong> <span class="katex-render" data-display="false" data-latex="y = k \\cdot x^2">y = k · x²</span>
+            </div>
+            <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+              • <strong>Verdopplung:</strong> <span class="katex-render" data-display="false" data-latex="x \\to 2x \\implies y \\to 4y">x -> 2x => y -> 4y</span>.<br>
+              • <strong>Klausur-Test:</strong> <em>Quotientengleichheit</em> <span class="katex-render" data-display="false" data-latex="\\frac{y}{x^2} = k = \\text{const.}">y/x² = const.</span><br>
+              • <strong>Graph:</strong> Parabel durch Ursprung.<br>
+              • <strong>Physik-Bsp.:</strong> <span class="katex-render" data-display="false" data-latex="F = \\frac{1}{2}\\varepsilon_0 \\frac{A}{d^2} U^2">F ~ U²</span> (Plattenkondensator S. 33).
+            </div>
+          </div>
+
+          <!-- 3. Antiproportional -->
+          <div style="background: var(--bg-subtle); border-radius: 8px; padding: 1.1rem; border-top: 4px solid #f59e0b;">
+            <div style="font-weight: 800; color: #f59e0b; font-size: 1.05rem; margin-bottom: 0.4rem;">
+              3. Antiproportional (<span class="katex-render" data-display="false" data-latex="y \\sim \\frac{1}{x}">y ~ 1/x</span>)
+            </div>
+            <div style="font-size: 0.88rem; margin-bottom: 0.5rem;">
+              <strong>Gleichung:</strong> <span class="katex-render" data-display="false" data-latex="y = \\frac{k}{x}">y = k / x</span>
+            </div>
+            <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+              • <strong>Verdopplung:</strong> <span class="katex-render" data-display="false" data-latex="x \\to 2x \\implies y \\to \\frac{1}{2}y">x -> 2x => y -> y/2</span>.<br>
+              • <strong>Klausur-Test:</strong> <em>Produktgleichheit</em> <span class="katex-render" data-display="false" data-latex="x \\cdot y = k = \\text{const.}">x · y = const.</span><br>
+              • <strong>Graph:</strong> Hyperbel.<br>
+              • <strong>Physik-Bsp.:</strong> <span class="katex-render" data-display="false" data-latex="E = \\frac{U}{d}">E = U/d</span> bei festem <span class="katex-render" data-display="false" data-latex="U">U</span> (<span class="katex-render" data-display="false" data-latex="E \\sim 1/d">E ~ 1/d</span>).
+            </div>
+          </div>
+
+          <!-- 4. Potenzfunktion 1/x² -->
+          <div style="background: var(--bg-subtle); border-radius: 8px; padding: 1.1rem; border-top: 4px solid #ef4444;">
+            <div style="font-weight: 800; color: #ef4444; font-size: 1.05rem; margin-bottom: 0.4rem;">
+              4. Potenzfunktion (<span class="katex-render" data-display="false" data-latex="y \\sim \\frac{1}{x^2}">y ~ 1/x²</span>)
+            </div>
+            <div style="font-size: 0.88rem; margin-bottom: 0.5rem;">
+              <strong>Gleichung:</strong> <span class="katex-render" data-display="false" data-latex="y = \\frac{k}{x^2}">y = k / x²</span>
+            </div>
+            <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+              • <strong>Verdopplung:</strong> <span class="katex-render" data-display="false" data-latex="x \\to 2x \\implies y \\to \\frac{1}{4}y">x -> 2x => y -> y/4</span>.<br>
+              • <strong>Klausur-Test:</strong> <em>Produktgleichheit</em> <span class="katex-render" data-display="false" data-latex="y \\cdot x^2 = k = \\text{const.}">y · x² = const.</span><br>
+              • <strong>Graph:</strong> Steiler abfallende Hyperbel.<br>
+              • <strong>Physik-Bsp.:</strong> Coulombsches Gesetz <span class="katex-render" data-display="false" data-latex="F_C = \\frac{1}{4\\pi\\varepsilon_0} \\frac{Q_1 Q_2}{r^2}">FC ~ 1/r²</span> (S. 33).
+            </div>
+          </div>
+        </div>
+
+        <!-- 4-Schritte-Methode -->
+        <div style="background: rgba(99, 102, 241, 0.08); border-left: 4px solid #6366f1; border-radius: 8px; padding: 1rem; margin-bottom: 1.2rem;">
+          <strong style="color: #6366f1; font-size: 0.95rem;">🎯 Die 4-Schritte-Methode für die Klausur:</strong>
+          <ol style="margin: 0.5rem 0 0 1.2rem; font-size: 0.85rem; line-height: 1.6; color: var(--text-primary); padding: 0;">
+            <li><strong>Schritt 1 (Verdopplungsprüfung):</strong> Suche Wertepaare mit verdoppeltem x-Wert (z.B. r = 2 cm zu r = 4 cm). Was passiert mit y? Fällt es auf 1/4 -> Vermutung: <span class="katex-render" data-display="false" data-latex="y \\sim 1/x^2"></span>!</li>
+            <li><strong>Schritt 2 (Rechnerische Konstantenprüfung):</strong> Berechne für jedes Wertepaar die Konstante <span class="katex-render" data-display="false" data-latex="k = y \\cdot x^2"></span> bzw. <span class="katex-render" data-display="false" data-latex="k = y / x^2"></span>. Liegen alle Werte im Rahmen der Messgenauigkeit (z.B. ±2%) beieinander, ist die Hypothese bestätigt!</li>
+            <li><strong>Schritt 3 (Linearisierung):</strong> Berechne eine neue Tabellenspalte (z.B. <span class="katex-render" data-display="false" data-latex="1/r^2"></span> oder <span class="katex-render" data-display="false" data-latex="U^2"></span>). Trägt man F über dieser Spalte auf, entsteht eine Ursprungsgerade!</li>
+            <li><strong>Schritt 4 (Physikalischer Zusammenhang):</strong> Setze die Steigung <span class="katex-render" data-display="false" data-latex="k"></span> mit der physikalischen Formel gleich, um gesuchte Größen (z.B. Ladung <span class="katex-render" data-display="false" data-latex="Q"></span> oder Plattenfläche <span class="katex-render" data-display="false" data-latex="A"></span>) zu bestimmen.</li>
+          </ol>
+        </div>
+
+        <div style="text-align: center;">
+          <button class="btn-point-launch" style="background: linear-gradient(135deg, #10b981, #059669); font-size: 0.9rem; padding: 0.65rem 1.4rem;" onclick="openPhysikSkill('messwerte-auswerten-2')">
+            📑 Jetzt Klausurblatt S. 33 öffnen (3 Aufgaben mit vollem Lösungsweg) &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
-function closePhysikSkill() {
-  CURRENT_PHYSIK_SKILL = null;
-  renderPhysikPortal();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// --- 5. DETAIL-RENDERER FÜR EIN EINZELNES THEMA ---
+// --- 12. DETAIL-VIEW FÜR EIN THEMA (SKILL) ---
 function renderPhysikSkillDetail(skillId) {
   const gridEl = document.getElementById('themenGrid');
   if (!gridEl) return;
@@ -1453,12 +1888,22 @@ function renderPhysikSkillDetail(skillId) {
   const noteKey = 'tonda_skill_note_' + skill.id;
   const savedNote = localStorage.getItem(noteKey) || '';
 
+  // Determine active simulator for this skill
+  const simType = skill.hasSim || (
+    skill.id === 'elektroskop-funktion' ? 'elektrostatik' :
+    skill.id === 'efeld-berechnen' ? 'coulomb' :
+    skill.id === 'feldlinien-aequipotential' ? 'efeld' :
+    skill.id === 'kondensator-versuch' ? 'schaltungen' : null
+  );
+
+  const backBtnText = CURRENT_PHYSIK_FOLDER ? '&larr; Zurück zum Ordner' : '&larr; Zurück zur Übersicht';
+
   let html = `
     <div class="skill-detail-container">
       <!-- Top Navigation Bar with Back Button -->
-      <div class="skill-detail-nav">
+      <div class="skill-detail-nav" style="display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 0.8rem 1.2rem; margin-bottom: 1.2rem; box-shadow: var(--card-shadow);">
         <button class="btn-back-to-all-folders" onclick="closePhysikSkill()">
-          &larr; Zur&uuml;ck zur Themen-&Uuml;bersicht
+          ${backBtnText}
         </button>
         <div style="font-size: 0.85rem; color: var(--text-secondary);">
           Thema <strong>#${skill.num}</strong> &bull; <span style="color: ${skill.color}; font-weight: 700;">${skill.tag}</span>
@@ -1466,9 +1911,9 @@ function renderPhysikSkillDetail(skillId) {
       </div>
 
       <!-- Skill Hero Banner -->
-      <div class="skill-hero-banner" style="border-left: 6px solid ${skill.color};">
+      <div class="skill-hero-banner" style="border-left: 6px solid ${skill.color}; background: var(--bg-card); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: var(--card-shadow); border: 1px solid var(--border-subtle);">
         <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.6rem;">
-          <div class="skill-icon-badge" style="background: ${skill.color}18; border: 1px solid ${skill.color}33; font-size: 2rem; width: 54px; height: 54px;">
+          <div class="skill-icon-badge" style="background: ${skill.color}18; border: 1px solid ${skill.color}33; font-size: 2rem; width: 54px; height: 54px; border-radius: 14px; display: flex; align-items: center; justify-content: center;">
             ${skill.icon}
           </div>
           <div>
@@ -1485,16 +1930,16 @@ function renderPhysikSkillDetail(skillId) {
       <!-- 1. VISUELLE ERKLÄRUNG -->
       <div>
         <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
-          <span>👁️</span><span>1. Visuelle Erkl&auml;rung (Kompakt auf den Punkt)</span>
+          <span>👁️</span><span>1. Visuelle Erklärung (Kompakt auf den Punkt)</span>
         </h3>
         ${skill.visualHtml}
       </div>
   `;
 
-  // If skill has an interactive simulator, embed it
-  if (skill.hasSim === 'coulomb') {
+  // Simulation embedding
+  if (simType === 'coulomb') {
     html += `
-      <div class="sim-container">
+      <div class="sim-container" style="margin-top: 1.5rem;">
         <div class="sim-header">
           <div class="sim-title"><span>📐</span><span>Interaktiver Coulomb-Simulator</span></div>
         </div>
@@ -1516,9 +1961,9 @@ function renderPhysikSkillDetail(skillId) {
         <div class="sim-result-box" id="coulombResultBox">Lade Simulator...</div>
       </div>
     `;
-  } else if (skill.hasSim === 'efeld') {
+  } else if (simType === 'efeld') {
     html += `
-      <div class="sim-container">
+      <div class="sim-container" style="margin-top: 1.5rem;">
         <div class="sim-header">
           <div class="sim-title"><span>🚀</span><span>Elektronenstrahl-Simulator</span></div>
           <button class="sim-btn-action" id="btnEfeldFire">🚀 Elektron abfeuern</button>
@@ -1537,9 +1982,9 @@ function renderPhysikSkillDetail(skillId) {
         <div class="sim-result-box" id="efeldResultBox">Lade Simulator...</div>
       </div>
     `;
-  } else if (skill.hasSim === 'elektrostatik') {
+  } else if (simType === 'elektrostatik') {
     html += `
-      <div class="sim-container">
+      <div class="sim-container" style="margin-top: 1.5rem;">
         <div class="sim-header">
           <div class="sim-title"><span>⚡</span><span>Elektroskop-Simulator</span></div>
           <div style="display:flex; gap:0.4rem;">
@@ -1557,9 +2002,9 @@ function renderPhysikSkillDetail(skillId) {
         <div class="sim-result-box" id="electroscopeResultBox">Lade Simulator...</div>
       </div>
     `;
-  } else if (skill.hasSim === 'schaltungen') {
+  } else if (simType === 'schaltungen') {
     html += `
-      <div class="sim-container">
+      <div class="sim-container" style="margin-top: 1.5rem;">
         <div class="sim-header">
           <div class="sim-title"><span>💡</span><span>Kondensator-Entladekurve</span></div>
           <button class="sim-btn-action" id="btnCircuitDischarge">💡 Entladen</button>
@@ -1582,29 +2027,31 @@ function renderPhysikSkillDetail(skillId) {
 
   // 2. ÜBUNGSAUFGABEN MIT LÖSUNG
   html += `
-    <div style="margin-top: 1.6rem;">
+    <div style="margin-top: 1.8rem;">
       <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.8rem 0; display: flex; align-items: center; gap: 0.5rem;">
-        <span>🎯</span><span>2. Typische Klausur-Aufgaben zum &Uuml;ben</span>
+        <span>🎯</span><span>2. Typische Klausur-Aufgaben zum Üben (${skill.tasks ? skill.tasks.length : 0})</span>
       </h3>
   `;
 
   (skill.tasks || []).forEach((t, idx) => {
     html += `
-      <div class="single-task-card" style="margin-bottom: 1rem;">
-        <div class="task-prompt-box">
-          <strong>Aufgabe ${idx + 1}:</strong><br>
+      <div class="single-task-card" style="margin-bottom: 1.2rem; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 1.2rem; box-shadow: var(--card-shadow);">
+        <div class="task-prompt-box" style="background: var(--bg-subtle); padding: 1rem; border-radius: 8px; margin-bottom: 0.8rem; font-size: 0.88rem; line-height: 1.55;">
+          <strong style="color: var(--text-primary); font-size: 0.95rem;">${t.title || 'Aufgabe ' + (idx + 1)}:</strong><br>
           ${t.prompt}
         </div>
-        <div class="task-values-grid">
-          <span class="task-val-badge">Gegeben: <strong>${t.given}</strong></span>
-          <span class="task-val-badge">Gesucht: <strong>${t.sought}</strong></span>
-        </div>
+        ${t.given || t.sought ? `
+          <div class="task-values-grid" style="display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.8rem;">
+            ${t.given ? `<span class="task-val-badge" style="background: var(--bg-subtle); padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.78rem;">Gegeben: <strong>${t.given}</strong></span>` : ''}
+            ${t.sought ? `<span class="task-val-badge" style="background: var(--bg-subtle); padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.78rem;">Gesucht: <strong>${t.sought}</strong></span>` : ''}
+          </div>
+        ` : ''}
         <button class="btn-reveal-card" onclick="toggleSolution('solSkill_${skill.id}_${idx}', this)">
-          👁️ L&ouml;sungsschritte aufdecken
+          👁️ Lösungsschritte aufdecken
         </button>
         <div class="task-solution-container" id="solSkill_${skill.id}_${idx}">
           <div style="font-weight: 700; color: #10b981; margin-bottom: 0.4rem;">✓ Musterlösung:</div>
-          <div style="line-height: 1.5; font-size: 0.88rem;">${t.solution}</div>
+          <div style="line-height: 1.55; font-size: 0.88rem;">${t.solution}</div>
         </div>
       </div>
     `;
@@ -1614,19 +2061,19 @@ function renderPhysikSkillDetail(skillId) {
 
   // 3. EIGENE ERKLÄRUNG / MERKZETTEL PRO THEMA
   html += `
-    <div class="skill-notes-box" style="margin-top: 1.6rem;">
-      <div class="skill-notes-header">
+    <div class="skill-notes-box" style="margin-top: 1.8rem; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 1.4rem; box-shadow: var(--card-shadow);">
+      <div class="skill-notes-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
         <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--text-primary); margin: 0; display: flex; align-items: center; gap: 0.5rem;">
-          <span>📝</span><span>3. Deine eigene Erkl&auml;rung / Notizen zu diesem Thema</span>
+          <span>📝</span><span>3. Deine eigene Erklärung / Notizen zu diesem Thema</span>
         </h3>
         <span id="statusNote_${skill.id}" style="font-size: 0.76rem; color: #10b981; font-weight: 700;">Gespeichert</span>
       </div>
       <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 0.8rem;">
-        Schreibe hier in deinen eigenen Worten, wie du dieses Thema verstanden hast, oder notiere dir wichtige Merks&auml;tze. Speichert automatisch!
+        Schreibe hier in deinen eigenen Worten, wie du dieses Thema verstanden hast, oder notiere dir wichtige Merksätze. Speichert automatisch!
       </p>
       <textarea class="skill-notes-textarea" id="noteInput_${skill.id}" 
                 placeholder="Schreibe hier deine eigene Zusammenfassung, Eselsbrücken oder Merksätze zu '${skill.title}'..."
-                oninput="saveSkillNote('${skill.id}', this.value)">${savedNote}</textarea>
+                oninput="saveSkillNote('${skill.id}', this.value)" style="width: 100%; min-height: 110px; border: 1px solid var(--border-medium); border-radius: 8px; padding: 0.8rem; font-family: inherit; font-size: 0.88rem; background: var(--bg-subtle); color: var(--text-primary); box-sizing: border-box; resize: vertical;">${savedNote}</textarea>
       <div style="margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px dashed var(--border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
         <span style="font-size: 0.82rem; color: var(--text-muted);">Möchtest du eine Mitschrift, ein Tafelbild-Foto oder ein PDF hierzu hochladen?</span>
         <button class="btn-upload-nav" onclick="openUploadModal('physik', 'mitschrift')">
@@ -1641,12 +2088,87 @@ function renderPhysikSkillDetail(skillId) {
 
   // Trigger simulations & KaTeX
   setTimeout(() => {
-    if (skill.hasSim === 'coulomb') CoulombSim.init();
-    if (skill.hasSim === 'efeld') EFieldSim.init();
-    if (skill.hasSim === 'elektrostatik') ElectroscopeSim.init();
-    if (skill.hasSim === 'schaltungen') CircuitSim.init();
+    if (simType === 'coulomb' && typeof CoulombSim !== 'undefined') CoulombSim.init();
+    if (simType === 'efeld' && typeof EFieldSim !== 'undefined') EFieldSim.init();
+    if (simType === 'elektrostatik' && typeof ElectroscopeSim !== 'undefined') ElectroscopeSim.init();
+    if (simType === 'schaltungen' && typeof CircuitSim !== 'undefined') CircuitSim.init();
     renderPhysikKaTeX();
   }, 60);
+}
+
+// --- 13. STATE CONTROLLER FUNCTIONS ---
+
+function switchPhysikMode(mode) {
+  CURRENT_PHYSIK_MODE = mode;
+  CURRENT_PHYSIK_SKILL = null;
+  CURRENT_PHYSIK_FOLDER = null;
+  renderPhysikPortal();
+}
+
+function openPhysikFolder(folderId) {
+  CURRENT_PHYSIK_MODE = 'ordner';
+  CURRENT_PHYSIK_FOLDER = folderId;
+  CURRENT_PHYSIK_SKILL = null;
+  renderPhysikPortal();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closePhysikFolder() {
+  CURRENT_PHYSIK_FOLDER = null;
+  CURRENT_PHYSIK_SKILL = null;
+  renderPhysikPortal();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function openPhysikSkill(skillId) {
+  CURRENT_PHYSIK_SKILL = skillId;
+  renderPhysikPortal();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function closePhysikSkill() {
+  CURRENT_PHYSIK_SKILL = null;
+  renderPhysikPortal();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function filterIservPool(cat) {
+  CURRENT_ISERV_CATEGORY = cat;
+  renderPhysikPortal();
+}
+
+function handlePhysikSearch(query) {
+  const q = query.trim().toLowerCase();
+  const skillCards = document.querySelectorAll('.physik-skill-card');
+  const folderCards = document.querySelectorAll('.physics-folder-card');
+
+  skillCards.forEach(c => {
+    if (!q) {
+      c.style.display = 'flex';
+      return;
+    }
+    const t = c.getAttribute('data-title') || '';
+    const d = c.getAttribute('data-desc') || '';
+    const tag = c.getAttribute('data-tag') || '';
+    if (t.includes(q) || d.includes(q) || tag.includes(q)) {
+      c.style.display = 'flex';
+    } else {
+      c.style.display = 'none';
+    }
+  });
+
+  folderCards.forEach(c => {
+    if (!q) {
+      c.style.display = 'flex';
+      return;
+    }
+    const text = c.innerText.toLowerCase();
+    if (text.includes(q)) {
+      c.style.display = 'flex';
+    } else {
+      c.style.display = 'none';
+    }
+  });
 }
 
 function saveSkillNote(skillId, val) {
@@ -1659,9 +2181,93 @@ function saveSkillNote(skillId, val) {
   }
 }
 
+function toggleSolution(solId, btnEl) {
+  const sol = document.getElementById(solId);
+  if (!sol) return;
 
-// --- 5. INTERAKTIVE CANVAS-SIMULATIONEN ---
-// --- 1. COULOMB-SIMULATOR ---
+  const isVisible = sol.classList.contains('visible');
+  sol.classList.toggle('visible', !isVisible);
+
+  if (btnEl) {
+    btnEl.innerHTML = isVisible ? '👁️ Lösungsschritte aufdecken' : '🙈 Lösung verbergen';
+  }
+
+  if (!isVisible) {
+    renderPhysikKaTeX();
+  }
+}
+
+function switchTopicSubTab(topicId, tabName) {
+  const container = document.getElementById('topic-' + topicId);
+  if (!container) return;
+
+  container.querySelectorAll('.topic-segment-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.tab === tabName);
+  });
+
+  container.querySelectorAll('.topic-tab-pane').forEach(pane => {
+    pane.classList.toggle('active-pane', pane.dataset.pane === tabName);
+  });
+
+  if (tabName === 'sim') {
+    setTimeout(() => {
+      if (topicId.includes('coulomb') && typeof CoulombSim !== 'undefined') CoulombSim.draw();
+      if (topicId.includes('efeld') && typeof EFieldSim !== 'undefined') EFieldSim.draw();
+      if (topicId.includes('elektrostatik') && typeof ElectroscopeSim !== 'undefined') ElectroscopeSim.draw();
+      if (topicId.includes('schaltungen') && typeof CircuitSim !== 'undefined') CircuitSim.draw();
+    }, 50);
+  }
+
+  renderPhysikKaTeX();
+}
+
+function showQuizTask(containerId, taskIdx) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.querySelectorAll('.quiz-pill-button').forEach((btn, idx) => {
+    btn.classList.toggle('active', idx === taskIdx);
+  });
+
+  container.querySelectorAll('.single-task-card').forEach((card, idx) => {
+    card.style.display = (idx === taskIdx) ? 'block' : 'none';
+  });
+
+  renderPhysikKaTeX();
+}
+
+// --- 14. KATEX FORMULA RENDERER & SIMULATION LOADER ---
+
+function renderPhysikKaTeX() {
+  if (typeof katex === 'undefined') return;
+  document.querySelectorAll('.katex-render').forEach(el => {
+    const latex = el.getAttribute('data-latex');
+    const isDisplay = el.getAttribute('data-display') !== 'false';
+    if (latex) {
+      try {
+        katex.render(latex, el, { displayMode: isDisplay, throwOnError: false });
+      } catch (e) {
+        console.log('[KaTeX Render error]:', e);
+      }
+    }
+  });
+}
+
+function initPhysikSimulations() {
+  setTimeout(() => {
+    if (typeof CoulombSim !== 'undefined') CoulombSim.init();
+    if (typeof EFieldSim !== 'undefined') EFieldSim.init();
+    if (typeof ElectroscopeSim !== 'undefined') ElectroscopeSim.init();
+    if (typeof CircuitSim !== 'undefined') CircuitSim.init();
+    renderPhysikKaTeX();
+  }, 80);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  initPhysikSimulations();
+});
+
+
 const CoulombSim = {
   canvas: null,
   ctx: null,
@@ -2813,19 +3419,4 @@ function toggleSolution(solId, btnEl) {
     renderPhysikKaTeX();
   }
 }
-
-// Global hook to trigger simulations
-function initPhysikSimulations() {
-  setTimeout(() => {
-    if (typeof CoulombSim !== 'undefined') CoulombSim.init();
-    if (typeof EFieldSim !== 'undefined') EFieldSim.init();
-    if (typeof ElectroscopeSim !== 'undefined') ElectroscopeSim.init();
-    if (typeof CircuitSim !== 'undefined') CircuitSim.init();
-    renderPhysikKaTeX();
-  }, 80);
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-  initPhysikSimulations();
-});
 

@@ -47,9 +47,10 @@ class UserContentDB {
         }
       };
 
-      request.onsuccess = (event) => {
+      request.onsuccess = async (event) => {
         this.db = event.target.result;
         this.isReady = true;
+        await this._seedDefaults();
         resolve(this.db);
       };
 
@@ -59,6 +60,28 @@ class UserContentDB {
         resolve(null);
       };
     });
+  }
+
+  async _seedDefaults() {
+    try {
+      const existing = await this.getDocument('doc_meds_pdf');
+      if (!existing && !localStorage.getItem('deleted_doc_meds_pdf')) {
+        await this.addDocument({
+          id: 'doc_meds_pdf',
+          fachId: 'physik',
+          title: 'Meds.pdf – Komplette Mitschrift, Klausurthemen & Aufgaben',
+          category: 'mitschrift',
+          notes: 'Originale Unterrichtsmitschrift IGS Göttingen Ph12 EA:\n• S. 31: Die 7 Klausurthemen für Freitag\n• S. 32: Die 4 typischen Funktionen (Proportional, Quadratisch, Antiproportional, 1/r²)\n• S. 33: Klausurblatt "Auswerten von Messwerten II" (Coulomb, Plattenkondensator, Entladekurve)\n• S. 28/30: Auslenkung geladene Kugel im E-Feld\n• S. 7: Widerspruchsbeweis Feldlinien\n• S. 4: Glimmlampe & Polprüfer\n• S. 2/3: Elektroskop & Influenz',
+          fileName: 'Meds.pdf',
+          fileType: 'application/pdf',
+          fileSize: 5697330,
+          fileData: 'Meds.pdf',
+          createdAt: '2026-09-16T22:02:45.000Z'
+        });
+      }
+    } catch (e) {
+      console.log('Default docs seed info:', e);
+    }
   }
 
   async addDocument(doc) {
@@ -111,6 +134,9 @@ class UserContentDB {
 
   async deleteDocument(id) {
     await this.initPromise;
+    if (id === 'doc_meds_pdf') {
+      try { localStorage.setItem('deleted_doc_meds_pdf', 'true'); } catch (e) {}
+    }
     if (this.db) {
       return new Promise((resolve, reject) => {
         const tx = this.db.transaction([this.storeName], 'readwrite');
