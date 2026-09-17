@@ -11517,49 +11517,72 @@ const SKILLS_FOLDER_1 = [
     ],
     tasks: [
       {
-        title: 'Übungsaufgabe 1: Funktionstyp aus Messwerten bestimmen',
+        title: 'Musteraufgabe mit Erklärung (Schultafel S. 14): Coulomb-Kraft F(Q) im 5-Schritte-Schema',
         prompt: `
-          Gegeben sind folgende Messreihen zweier physikalischer Größen A und B:
+          Im Experiment wird die Coulomb-Kraft <span class="katex-render" data-display="false" data-latex="F">F</span> zwischen zwei geladenen Kugeln bei konstantem Abstand in Abhängigkeit von der Ladung <span class="katex-render" data-display="false" data-latex="Q">Q</span> gemessen (Originalbeispiel von der Schultafel, S. 14):
           <table style="width:100%; border-collapse:collapse; margin:0.8rem 0; font-size:0.88rem; text-align:center;">
             <tr style="background:var(--bg-subtle);">
-              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">x in m</th>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">1</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">2</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">3</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">4</td>
+              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">Q in nC</th>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">10</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">20</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">30</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">40</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">50</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">60</td>
             </tr>
             <tr>
-              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">y in N</th>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">72,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">18,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">8,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">4,5</td>
+              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">F in mN</th>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">0,06</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">0,24</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">0,54</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">0,97</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">1,51</td>
+              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">2,18</td>
             </tr>
           </table>
-          Ermittle den funktionalen Zusammenhang y(x) nach dem 4-Schritte-Vorgehen.
+          Führe die vollständige Messwertauswertung nach dem 5-Schritte-Schema deines Lehrers durch.
         `,
         solution: `
-          <strong>Schritt 1: Vermutung formulieren</strong><br>
-          Wenn sich <span class="katex-render" data-display="false" data-latex="x">x</span> von 1 auf 2 verdoppelt, sinkt <span class="katex-render" data-display="false" data-latex="y">y</span> von 72,0 auf 18,0 N. Da <span class="katex-render" data-display="false" data-latex="\\frac{72}{18} = 4 = 2^2">72/18 = 4</span>, sinkt <span class="katex-render" data-display="false" data-latex="y">y</span> auf ein Viertel.<br>
-          Wenn sich <span class="katex-render" data-display="false" data-latex="x">x</span> von 2 auf 4 verdoppelt, sinkt <span class="katex-render" data-display="false" data-latex="y">y</span> von 18,0 auf 4,5 N (<span class="katex-render" data-display="false" data-latex="\\frac{18}{4,5} = 4">18/4,5 = 4</span>).<br>
-          &rarr; <em>Vermutung:</em> Potenzfunktion mit Exponent -2: <span class="katex-render" data-display="false" data-latex="y \\sim \\frac{1}{x^2} \\iff y = \\frac{k}{x^2}">y = k/x²</span>.<br><br>
+          <div style="display:flex; flex-direction:column; gap:0.8rem; font-size:0.86rem; line-height:1.5;">
+            <div style="background:var(--bg-subtle); padding:0.75rem; border-left:3px solid #38bdf8; border-radius:6px;">
+              <strong style="color:#38bdf8;">1. Vermutung aufstellen (Hypothese formulieren):</strong><br>
+              <em>Wenn sich die Ladungsmenge <span class="katex-render" data-display="false" data-latex="Q">Q</span> verdoppelt (z. B. von 10 nC auf 20 nC bzw. 20 nC auf 40 nC), dann vervierfacht sich annähernd die Kraft <span class="katex-render" data-display="false" data-latex="F">F</span> (von 0,06 auf 0,24 mN bzw. 0,24 auf 0,97 mN; denn <span class="katex-render" data-display="false" data-latex="\\frac{0{,}24}{0{,}06} = 4 = 2^2">0,24/0,06 = 4</span>). Deswegen vermuten wir einen <strong>quadratischen Zusammenhang</strong> der Form <span class="katex-render" data-display="false" data-latex="F \\sim Q^2">F ~ Q²</span> (<span class="katex-render" data-display="false" data-latex="F = k \\cdot Q^2">F = k • Q²</span>).</em>
+            </div>
 
-          <strong>Schritt 2 &amp; 3: Konstantenprodukt berechnen</strong><br>
-          Wir berechnen in der 3. Zeile das Produkt <span class="katex-render" data-display="false" data-latex="k = y \\cdot x^2">k = y · x²</span>:<br>
-          • <span class="katex-render" data-display="false" data-latex="x = 1\\,\\text{m}: 72,0 \\cdot 1^2 = 72,0\\,\\text{N}\\cdot\\text{m}^2">k = 72,0</span><br>
-          • <span class="katex-render" data-display="false" data-latex="x = 2\\,\\text{m}: 18,0 \\cdot 2^2 = 18,0 \\cdot 4 = 72,0\\,\\text{N}\\cdot\\text{m}^2">k = 72,0</span><br>
-          • <span class="katex-render" data-display="false" data-latex="x = 3\\,\\text{m}: 8,0 \\cdot 3^2 = 8,0 \\cdot 9 = 72,0\\,\\text{N}\\cdot\\text{m}^2">k = 72,0</span><br>
-          • <span class="katex-render" data-display="false" data-latex="x = 4\\,\\text{m}: 4,5 \\cdot 4^2 = 4,5 \\cdot 16 = 72,0\\,\\text{N}\\cdot\\text{m}^2">k = 72,0</span><br>
-          Die Werte sind exakt konstant: <span class="katex-render" data-display="false" data-latex="\\bar{k} = 72,0\\,\\text{N}\\cdot\\text{m}^2">k_mittel = 72,0 N•m²</span>.<br><br>
+            <div style="background:var(--bg-subtle); padding:0.75rem; border-left:3px solid #10b981; border-radius:6px;">
+              <strong style="color:#10b981;">2. Beweis durchführen (TI-Nspire Regression &amp; Quotientenbildung):</strong><br>
+              • <strong>Mit TI-Nspire Regression (S. 14):</strong> Unter <code>Lists &amp; Spreadsheet</code> quadratische Regression durchführen:<br>
+              <div class="katex-render" data-display="true" data-latex="y = 0{,}000606 \\cdot x^2 \\quad (R^2 \\approx 0{,}9996)"></div>
+              <em>(Lineare Terme <span class="katex-render" data-display="false" data-latex="+ 0{,}0018x - 0{,}014">+ 0,0018x - 0,014</span> werden wegen vernachlässigbarer Messungenauigkeit durchgestrichen).</em><br>
+              • <strong>Mit Tabellen-Quotienten <span class="katex-render" data-display="false" data-latex="k = \\frac{F}{Q^2}">k = F/Q²</span> in der 3. Zeile:</strong><br>
+              <span class="katex-render" data-display="false" data-latex="k_1 = \\frac{0{,}06}{100} = 0{,}000600">k1 = 0,000600</span> | <span class="katex-render" data-display="false" data-latex="k_2 = \\frac{0{,}24}{400} = 0{,}000600">k2 = 0,000600</span> | <span class="katex-render" data-display="false" data-latex="k_3 = \\frac{0{,}54}{900} = 0{,}000600">k3 = 0,000600</span><br>
+              <span class="katex-render" data-display="false" data-latex="k_4 = \\frac{0{,}97}{1600} = 0{,}000606">k4 = 0,000606</span> | <span class="katex-render" data-display="false" data-latex="k_5 = \\frac{1{,}51}{2500} = 0{,}000604">k5 = 0,000604</span> | <span class="katex-render" data-display="false" data-latex="k_6 = \\frac{2{,}18}{3600} = 0{,}000606">k6 = 0,000606</span>.
+            </div>
 
-          <strong>Schritt 4: Funktionsgleichung formulieren</strong><br>
-          <div class="katex-render" data-display="true" data-latex="y(x) = \\frac{72,0\\,\\text{N}\\cdot\\text{m}^2}{x^2} = 72,0 \\cdot x^{-2}\\,\\text{N}\\cdot\\text{m}^2 \\quad (R^2 = 1,0)"></div>
+            <div style="background:var(--bg-subtle); padding:0.75rem; border-left:3px solid #f59e0b; border-radius:6px;">
+              <strong style="color:#f59e0b;">3. Beurteilung (R² auswerten):</strong><br>
+              <em>Weil das Bestimmtheitsmaß <span class="katex-render" data-display="false" data-latex="R^2 \\approx 0{,}9996">R² ≈ 0,9996</span> sehr dicht an 1 liegt (bzw. die Werte für <span class="katex-render" data-display="false" data-latex="\\frac{F}{Q^2}">F/Q²</span> annähernd konstant sind), ist unsere Vermutung bestätigt.</em>
+            </div>
+
+            <div style="background:var(--bg-subtle); padding:0.75rem; border-left:3px solid #8b5cf6; border-radius:6px;">
+              <strong style="color:#8b5cf6;">4. Mittelwert berechnen &amp; Funktionsgleichung mit Einheit angeben:</strong><br>
+              Mittelwert: <span class="katex-render" data-display="false" data-latex="\\bar{k} = 0{,}000606\\,\\frac{\\text{mN}}{(\\text{nC})^2}">k̄ = 0,000606 mN/(nC)²</span>.<br>
+              Funktionsgleichung:<br>
+              <div class="katex-render" data-display="true" data-latex="F(Q) = 0{,}000606\\,\\frac{\\text{mN}}{(\\text{nC})^2} \\cdot Q^2"></div>
+            </div>
+
+            <div style="background:var(--bg-subtle); padding:0.75rem; border-left:3px solid #ec4899; border-radius:6px;">
+              <strong style="color:#ec4899;">5. Beispiel / Anwendung (Tafelnotiz S. 14):</strong><br>
+              Berechne die Kraft <span class="katex-render" data-display="false" data-latex="F">F</span> für eine Ladung von <span class="katex-render" data-display="false" data-latex="Q = 70\\,\\text{nC}">Q = 70 nC</span>:<br>
+              <div class="katex-render" data-display="true" data-latex="F(70\\,\\text{nC}) = 0{,}000606\\,\\frac{\\text{mN}}{(\\text{nC})^2} \\cdot (70\\,\\text{nC})^2 = 0{,}000606 \\cdot 4900 \\approx 2{,}97\\,\\text{mN}"></div>
+            </div>
+          </div>
         `
       },
       {
-        title: 'Übungsaufgabe 2 (Klausur-Typ): Plattenkondensator F(U) mit CAS-Auswertung & Theorieabgleich',
+        title: 'Übungsaufgabe 1 (Klausur-Typ): Plattenkondensator F(U) mit CAS & 5-Schritte-Schema',
         prompt: `
-          Im Praktikum wird die Kraft F zwischen zwei Kondensatorplatten (Abstand d = 5,0 mm, Radius r = 7,5 cm) in Abhängigkeit von der Hochspannung U gemessen:
+          Im Praktikum wird die Kraft F zwischen zwei Kondensatorplatten in Abhängigkeit von der Hochspannung U gemessen:
           <table style="width:100%; border-collapse:collapse; margin:0.8rem 0; font-size:0.88rem; text-align:center;">
             <tr style="background:var(--bg-subtle);">
               <th style="border:1px solid var(--border-subtle); padding:0.4rem;">U in kV</th>
@@ -11578,40 +11601,32 @@ const SKILLS_FOLDER_1 = [
               <td style="border:1px solid var(--border-subtle); padding:0.4rem;">222,5</td>
             </tr>
           </table>
-          <strong>Aufgaben:</strong><br>
-          a) Begründe anhand der Verdopplung den Funktionstyp.<br>
-          b) Erstelle eine k-Spalte (k = F/U²) und berechne den Mittelwert k̄ mit TI-Nspire CAS.<br>
-          c) Beschreibe die Linearisierung und gib die Steigung m der Ausgleichsgerade an.<br>
-          d) Vergleiche den experimentellen Mittelwert k̄ mit der theoretischen Formel k_theor = ½ ε₀ (A/d²).
+          Führe die Auswertung nach dem 5-Schritte-Schema deines Lehrers durch (inkl. Bestimmung von U bei F = 50 mN).
         `,
         solution: `
-          <strong>a) Verdopplungsprüfung:</strong><br>
-          Bei Verdopplung von <span class="katex-render" data-display="false" data-latex="U = 2{,}0\\,\\text{kV}">U = 2,0 kV</span> auf <span class="katex-render" data-display="false" data-latex="U = 4{,}0\\,\\text{kV}">U = 4,0 kV</span> steigt <span class="katex-render" data-display="false" data-latex="F">F</span> von <span class="katex-render" data-display="false" data-latex="35{,}5\\,\\text{mN}">35,5 mN</span> auf <span class="katex-render" data-display="false" data-latex="142{,}0\\,\\text{mN}">142,0 mN</span>.<br>
-          Wachstumsfaktor: <span class="katex-render" data-display="false" data-latex="\\frac{142{,}0}{35{,}5} = 4{,}0 = 2^2">142/35,5 = 4</span>.<br>
-          &rarr; <em>Hypothese:</em> Quadratischer Zusammenhang <span class="katex-render" data-display="false" data-latex="F \\sim U^2 \\iff \\frac{F}{U^2} = k = \\text{const.}">F ~ U²</span>.<br><br>
+          <strong>1. Vermutung aufstellen:</strong><br>
+          Wenn sich die Spannung <span class="katex-render" data-display="false" data-latex="U">U</span> von 2,0 kV auf 4,0 kV verdoppelt, vervierfacht sich annähernd die Kraft <span class="katex-render" data-display="false" data-latex="F">F</span> von 35,5 mN auf 142,0 mN (<span class="katex-render" data-display="false" data-latex="\\frac{142{,}0}{35{,}5} = 4{,}0 = 2^2">142/35,5 = 4</span>). Deswegen vermuten wir einen quadratischen Zusammenhang der Form <span class="katex-render" data-display="false" data-latex="F \\sim U^2">F ~ U²</span> (<span class="katex-render" data-display="false" data-latex="F = k \\cdot U^2">F = k · U²</span>).<br><br>
 
-          <strong>b) Konstantenprüfung &amp; CAS-Eingabe:</strong><br>
-          Spalte C anlegen mit Formel <code style="color:#fde047;">=f / (u^2)</code>:<br>
-          • <span class="katex-render" data-display="false" data-latex="U = 1{,}0\\,\\text{kV}: k_1 = \\frac{9{,}0}{1^2} = 9{,}00\\,\\frac{\\text{mN}}{\\text{kV}^2}">k1 = 9,00</span><br>
-          • <span class="katex-render" data-display="false" data-latex="U = 2{,}0\\,\\text{kV}: k_2 = \\frac{35{,}5}{4} = 8{,}875\\,\\frac{\\text{mN}}{\\text{kV}^2}">k2 = 8,875</span><br>
-          • <span class="katex-render" data-display="false" data-latex="U = 3{,}0\\,\\text{kV}: k_3 = \\frac{80{,}0}{9} = 8{,}889\\,\\frac{\\text{mN}}{\\text{kV}^2}">k3 = 8,889</span><br>
-          • <span class="katex-render" data-display="false" data-latex="U = 4{,}0\\,\\text{kV}: k_4 = \\frac{142{,}0}{16} = 8{,}875\\,\\frac{\\text{mN}}{\\text{kV}^2}">k4 = 8,875</span><br>
-          • <span class="katex-render" data-display="false" data-latex="U = 5{,}0\\,\\text{kV}: k_5 = \\frac{222{,}5}{25} = 8{,}900\\,\\frac{\\text{mN}}{\\text{kV}^2}">k5 = 8,900</span><br><br>
-          CAS-Befehl: <code style="color:#fde047;">mean(c[])</code> &rarr; <span class="katex-render" data-display="false" data-latex="\\bar{k} = 8{,}908\\,\\frac{\\text{mN}}{\\text{kV}^2} \\approx 8{,}89\\,\\frac{\\text{mN}}{\\text{kV}^2} = 8{,}89 \\cdot 10^{-9}\\,\\frac{\\text{N}}{\\text{V}^2}">k̄ = 8,89 mN/kV²</span>.<br>
-          Die Werte weichen maximal um 1% voneinander ab &rarr; Konstanz bestätigt!<br><br>
+          <strong>2. Beweis durchführen (Quotientenbildung &amp; CAS):</strong><br>
+          Spalte mit <span class="katex-render" data-display="false" data-latex="k = \\frac{F}{U^2}">k = F/U²</span> in Lists &amp; Spreadsheet berechnen (<code style="color:#fde047;">=f / (u^2)</code>):<br>
+          • <span class="katex-render" data-display="false" data-latex="U = 1\\,\\text{kV}: k = 9{,}00\\,\\frac{\\text{mN}}{\\text{kV}^2}">k1 = 9,00</span> | <span class="katex-render" data-display="false" data-latex="U = 2\\,\\text{kV}: k = 8{,}875\\,\\frac{\\text{mN}}{\\text{kV}^2}">k2 = 8,875</span> | <span class="katex-render" data-display="false" data-latex="U = 3\\,\\text{kV}: k = 8{,}889\\,\\frac{\\text{mN}}{\\text{kV}^2}">k3 = 8,889</span><br>
+          • <span class="katex-render" data-display="false" data-latex="U = 4\\,\\text{kV}: k = 8{,}875\\,\\frac{\\text{mN}}{\\text{kV}^2}">k4 = 8,875</span> | <span class="katex-render" data-display="false" data-latex="U = 5\\,\\text{kV}: k = 8{,}900\\,\\frac{\\text{mN}}{\\text{kV}^2}">k5 = 8,900</span>.<br>
+          Regression <code>LinRegMx(u2, f)</code> liefert <span class="katex-render" data-display="false" data-latex="R^2 = 0{,}99998">R² = 0,99998</span>.<br><br>
 
-          <strong>c) Linearisierung &amp; Regression:</strong><br>
-          Man trägt <span class="katex-render" data-display="false" data-latex="F">F</span> über <span class="katex-render" data-display="false" data-latex="U^2">U²</span> auf. Der Graph ist eine Ursprungsgerade mit Steigung <span class="katex-render" data-display="false" data-latex="m = \\bar{k} = 8{,}89\\,\\frac{\\text{mN}}{\\text{kV}^2}">m = 8,89 mN/kV²</span>.<br>
-          Im CAS: <code>LinRegMx(u2, f)</code> liefert <span class="katex-render" data-display="false" data-latex="r^2 = 0{,}99998">r² = 0,99998</span>.<br><br>
+          <strong>3. Beurteilung:</strong><br>
+          <em>Weil das Bestimmtheitsmaß <span class="katex-render" data-display="false" data-latex="R^2">R²</span> sehr dicht an 1 liegt (bzw. die Werte für <span class="katex-render" data-display="false" data-latex="F/U^2">F/U²</span> im Rahmen der Messgenauigkeit konstant sind), ist unsere Vermutung bestätigt.</em><br><br>
 
-          <strong>d) Theoretischer Abgleich:</strong><br>
-          Fläche: <span class="katex-render" data-display="false" data-latex="A = \\pi \\cdot r^2 = \\pi \\cdot (0{,}075\\,\\text{m})^2 = 0{,}01767\\,\\text{m}^2">A = 0,01767 m²</span>.<br>
-          Abstand: <span class="katex-render" data-display="false" data-latex="d = 5{,}0\\,\\text{mm} = 0{,}0050\\,\\text{m} \\implies d^2 = 2{,}5 \\cdot 10^{-5}\\,\\text{m}^2">d = 0,0050 m</span>.<br>
-          <div class="katex-render" data-display="true" data-latex="k_{\\text{theor}} = \\frac{1}{2}\\varepsilon_0 \\frac{A}{d^2} = \\frac{1}{2} \\cdot 8{,}854 \\cdot 10^{-12} \\cdot \\frac{0{,}01767}{2{,}5 \\cdot 10^{-5}} = 3{,}13 \\cdot 10^{-9}\\,\\frac{\\text{N}}{\\text{V}^2} = 3{,}13\\,\\frac{\\text{mN}}{\\text{kV}^2}"></div>
+          <strong>4. Mittelwert &amp; Funktionsgleichung mit Einheit:</strong><br>
+          <span class="katex-render" data-display="false" data-latex="\\bar{k} = 8{,}89\\,\\frac{\\text{mN}}{\\text{kV}^2}">k̄ = 8,89 mN/kV²</span>.<br>
+          <div class="katex-render" data-display="true" data-latex="F(U) = 8{,}89\\,\\frac{\\text{mN}}{\\text{kV}^2} \\cdot U^2"></div><br>
+
+          <strong>5. Anwendung (Extrapolation):</strong><br>
+          Welche Spannung <span class="katex-render" data-display="false" data-latex="U">U</span> erzeugt eine Kraft von <span class="katex-render" data-display="false" data-latex="F = 50\\,\\text{mN}">F = 50 mN</span>?<br>
+          <div class="katex-render" data-display="true" data-latex="50 = 8{,}89 \\cdot U^2 \\implies U = \\sqrt{\\frac{50}{8{,}89}} \\approx 2{,}37\\,\\text{kV} = 2370\\,\\text{V}"></div>
         `
       },
       {
-        title: 'Übungsaufgabe 3 (Klausur-Typ): Coulomb-Kraft F(r) mit CAS-Konstantenprüfung & Ladungsbestimmung',
+        title: 'Übungsaufgabe 2 (Klausur-Typ): Coulomb-Kraft F(r) & Ladungsbestimmung',
         prompt: `
           Zwei gleich große Kugeln mit identischer Ladung Q befinden sich im Abstand r. Die gemessenen Coulomb-Kräfte betragen:
           <table style="width:100%; border-collapse:collapse; margin:0.8rem 0; font-size:0.88rem; text-align:center;">
@@ -11632,34 +11647,34 @@ const SKILLS_FOLDER_1 = [
               <td style="border:1px solid var(--border-subtle); padding:0.4rem;">10,2</td>
             </tr>
           </table>
-          <strong>Aufgaben:</strong><br>
-          a) Bestätige durch Konstantenprüfung mit dem TI-Nspire CAS, dass F ~ 1/r² gilt.<br>
-          b) Ermittle den Mittelwert k̄ in SI-Einheiten (N•m²).<br>
-          c) Berechne die Ladung Q jeder Kugel mittels CAS-Befehl solve.
+          Führe die Auswertung im 5-Schritte-Schema durch und berechne die Ladung Q jeder Kugel.
         `,
         solution: `
-          <strong>a) Konstantenprüfung im CAS:</strong><br>
-          Spalte C mit Formel <code style="color:#fde047;">=f * (r^2)</code> anlegen:<br>
-          • <span class="katex-render" data-display="false" data-latex="r = 2{,}0\\,\\text{cm}: 162{,}5 \\cdot 4 = 650{,}0\\,\\text{mN}\\cdot\\text{cm}^2">k1 = 650,0</span><br>
-          • <span class="katex-render" data-display="false" data-latex="r = 3{,}0\\,\\text{cm}: 72{,}2 \\cdot 9 = 649{,}8\\,\\text{mN}\\cdot\\text{cm}^2">k2 = 649,8</span><br>
-          • <span class="katex-render" data-display="false" data-latex="r = 4{,}0\\,\\text{cm}: 40{,}6 \\cdot 16 = 649{,}6\\,\\text{mN}\\cdot\\text{cm}^2">k3 = 649,6</span><br>
-          • <span class="katex-render" data-display="false" data-latex="r = 5{,}0\\,\\text{cm}: 26{,}0 \\cdot 25 = 650{,}0\\,\\text{mN}\\cdot\\text{cm}^2">k4 = 650,0</span><br>
-          • <span class="katex-render" data-display="false" data-latex="r = 8{,}0\\,\\text{cm}: 10{,}2 \\cdot 64 = 652{,}8\\,\\text{mN}\\cdot\\text{cm}^2">k5 = 652,8</span><br><br>
+          <strong>1. Vermutung aufstellen:</strong><br>
+          Wenn sich der Abstand <span class="katex-render" data-display="false" data-latex="r">r</span> verdoppelt (von 2 auf 4 cm bzw. 4 auf 8 cm), verringert sich die Kraft <span class="katex-render" data-display="false" data-latex="F">F</span> annähernd um den Faktor 4 (von 162,5 auf 40,6 mN; denn <span class="katex-render" data-display="false" data-latex="\\frac{162{,}5}{40{,}6} \\approx 4{,}0">162,5/40,6 ≈ 4</span>). Deswegen vermuten wir einen Zusammenhang der Form <span class="katex-render" data-display="false" data-latex="F \\sim \\frac{1}{r^2}">F ~ 1/r²</span> (<span class="katex-render" data-display="false" data-latex="F = k \\cdot \\frac{1}{r^2}">F = k · 1/r²</span>).<br><br>
 
-          <strong>b) Mittelwert in SI-Einheiten:</strong><br>
-          <span class="katex-render" data-display="false" data-latex="\\bar{k} = 650{,}44\\,\\text{mN}\\cdot\\text{cm}^2 = 650{,}44 \\cdot 10^{-3}\\,\\text{N} \\cdot (10^{-2}\\,\\text{m})^2 = 6{,}504 \\cdot 10^{-5}\\,\\text{N}\\cdot\\text{m}^2">k̄ = 6,504 • 10⁻⁵ N m²</span>.<br><br>
+          <strong>2. Beweis durchführen (Produktprüfung):</strong><br>
+          Konstantenprodukt <span class="katex-render" data-display="false" data-latex="k = F \\cdot r^2">k = F • r²</span> berechnen:<br>
+          • <span class="katex-render" data-display="false" data-latex="r=2\\,\\text{cm}: 162{,}5 \\cdot 4 = 650{,}0\\,\\text{mN}\\cdot\\text{cm}^2">k = 650,0</span> | <span class="katex-render" data-display="false" data-latex="r=3\\,\\text{cm}: 72{,}2 \\cdot 9 = 649{,}8\\,\\text{mN}\\cdot\\text{cm}^2">k = 649,8</span><br>
+          • <span class="katex-render" data-display="false" data-latex="r=4\\,\\text{cm}: 40{,}6 \\cdot 16 = 649{,}6\\,\\text{mN}\\cdot\\text{cm}^2">k = 649,6</span> | <span class="katex-render" data-display="false" data-latex="r=5\\,\\text{cm}: 26{,}0 \\cdot 25 = 650{,}0\\,\\text{mN}\\cdot\\text{cm}^2">k = 650,0</span><br>
+          • <span class="katex-render" data-display="false" data-latex="r=8\\,\\text{cm}: 10{,}2 \\cdot 64 = 652{,}8\\,\\text{mN}\\cdot\\text{cm}^2">k = 652,8</span>.<br><br>
 
-          <strong>c) Ladungsberechnung mit CAS:</strong><br>
-          Nach Coulomb gilt: <span class="katex-render" data-display="false" data-latex="F = \\frac{1}{4\\pi\\varepsilon_0} \\cdot \\frac{Q^2}{r^2} \\implies k = \\frac{1}{4\\pi\\varepsilon_0} \\cdot Q^2">k = 1/(4πε₀) • Q²</span>.<br>
-          CAS-Eingabe: <code style="color:#fde047;">solve(6.504e-5 = 8.988e9 * q^2, q) and q>0</code><br>
-          <div class="katex-render" data-display="true" data-latex="Q = \\sqrt{\\frac{6{,}504 \\cdot 10^{-5}}{8{,}988 \\cdot 10^9}} = \\sqrt{7{,}236 \\cdot 10^{-15}} \\approx 8{,}51 \\cdot 10^{-8}\\,\\text{C} = 85{,}1\\,\\text{nC}"></div>
-          <strong style="color:#10b981;">Ergebnis:</strong> Jede Kugel trägt eine Ladung von <strong>Q ≈ 85,1 nC</strong>.
+          <strong>3. Beurteilung:</strong><br>
+          <em>Weil die Werte für <span class="katex-render" data-display="false" data-latex="F \\cdot r^2">F • r²</span> annähernd konstant sind, ist unsere Vermutung bestätigt.</em><br><br>
+
+          <strong>4. Mittelwert &amp; Funktionsgleichung mit Einheit:</strong><br>
+          <span class="katex-render" data-display="false" data-latex="\\bar{k} = 650{,}4\\,\\text{mN}\\cdot\\text{cm}^2 = 6{,}504 \\cdot 10^{-5}\\,\\text{N}\\cdot\\text{m}^2">k̄ = 6,504 • 10⁻⁵ N m²</span>.<br>
+          <div class="katex-render" data-display="true" data-latex="F(r) = 650{,}4\\,\\text{mN}\\cdot\\text{cm}^2 \\cdot \\frac{1}{r^2}"></div><br>
+
+          <strong>5. Physikalischer Koeffizientenvergleich (Ladungsbestimmung):</strong><br>
+          Nach Coulomb: <span class="katex-render" data-display="false" data-latex="F = \\frac{1}{4\\pi\\varepsilon_0} \\cdot \\frac{Q^2}{r^2} \\implies \\bar{k} = \\frac{1}{4\\pi\\varepsilon_0} \\cdot Q^2">k = 1/(4πε₀) • Q²</span>.<br>
+          <div class="katex-render" data-display="true" data-latex="Q = \\sqrt{4\\pi\\varepsilon_0 \\cdot \\bar{k}} = \\sqrt{\\frac{6{,}504 \\cdot 10^{-5}}{8{,}988 \\cdot 10^9}} \\approx 85{,}1\\,\\text{nC}"></div>
         `
       },
       {
-        title: 'Übungsaufgabe 4 (Klausur-Typ): Drahtwiderstand R(A) & Antiproportionalitätsnachweis',
+        title: 'Übungsaufgabe 3 (Klausur-Typ): Drahtwiderstand R(A) & Antiproportionalitätsnachweis',
         prompt: `
-          Für Konstantandrähte gleicher Länge l = 50 m aber unterschiedlichem Querschnitt A wird der elektrische Widerstand R gemessen:
+          Für Konstantandrähte gleicher Länge l = 50 m aber unterschiedlichem Querschnitt A wird der elektrische Widerstand R gemessen (Meds.pdf S. 19):
           <table style="width:100%; border-collapse:collapse; margin:0.8rem 0; font-size:0.88rem; text-align:center;">
             <tr style="background:var(--bg-subtle);">
               <th style="border:1px solid var(--border-subtle); padding:0.4rem;">A in mm²</th>
@@ -11676,159 +11691,28 @@ const SKILLS_FOLDER_1 = [
               <td style="border:1px solid var(--border-subtle); padding:0.4rem;">24,5</td>
             </tr>
           </table>
-          a) Weise Antiproportionalität R ~ 1/A über Produktgleichheit nach.<br>
-          b) Berechne den spezifischen elektrischen Widerstand ρ des Drahtmaterials.
+          Weise Antiproportionalität im 5-Schritte-Schema nach und berechne den spezifischen Widerstand ρ.
         `,
         solution: `
-          <strong>a) Produktgleichheit k = R • A:</strong><br>
-          • 0,10 mm² • 245,0 Ω = 24,5 Ω•mm²<br>
-          • 0,20 mm² • 122,5 Ω = 24,5 Ω•mm²<br>
-          • 0,50 mm² • 49,0 Ω = 24,5 Ω•mm²<br>
-          • 1,00 mm² • 24,5 Ω = 24,5 Ω•mm²<br>
-          Alle Produkte sind exakt identisch: <span class="katex-render" data-display="false" data-latex="k = 24{,}5\\,\\Omega\\cdot\\text{mm}^2 = \\text{const.}">k = 24,5 Ω mm²</span>.<br><br>
+          <strong>1. Vermutung aufstellen:</strong><br>
+          Wenn sich die Querschnittsfläche <span class="katex-render" data-display="false" data-latex="A">A</span> verdoppelt (von 0,1 auf 0,2 mm² bzw. 0,5 auf 1,0 mm²), dann halbiert sich der Widerstand <span class="katex-render" data-display="false" data-latex="R">R</span> (von 245 auf 122,5 Ω bzw. 49 auf 24,5 Ω). Deswegen vermuten wir einen antiproportionalen Zusammenhang <span class="katex-render" data-display="false" data-latex="R \\sim \\frac{1}{A}">R ~ 1/A</span> (<span class="katex-render" data-display="false" data-latex="R = k \\cdot \\frac{1}{A}">R = k · 1/A</span>).<br><br>
 
-          <strong>b) Spezifischer Widerstand ρ:</strong><br>
-          Formel: <span class="katex-render" data-display="false" data-latex="R = \\rho \\cdot \\frac{l}{A} \\implies \\rho = \\frac{R \\cdot A}{l} = \\frac{k}{l}">ρ = (R • A) / l</span>.<br>
-          <div class="katex-render" data-display="true" data-latex="\\rho = \\frac{24{,}5\\,\\Omega\\cdot\\text{mm}^2}{50\\,\\text{m}} = 0{,}49\\,\\frac{\\Omega\\cdot\\text{mm}^2}{\\text{m}}"></div>
-          <strong style="color:#10b981;">Ergebnis:</strong> Das Material hat einen spezifischen Widerstand von <span class="katex-render" data-display="false" data-latex="\\rho = 0{,}49\\,\\frac{\\Omega\\cdot\\text{mm}^2}{\\text{m}}">ρ = 0,49</span> (typisch für Konstantan).
-        `
-      }
-,
-      {
-        title: 'Übungsaufgabe 2 (Klausur-Typ): Plattenkondensator F(U) mit CAS-Auswertung & Theorieabgleich',
-        prompt: `
-          Im Praktikum wird die Kraft F zwischen zwei Kondensatorplatten (Abstand d = 5,0 mm, Radius r = 7,5 cm) in Abhängigkeit von der Hochspannung U gemessen:
-          <table style="width:100%; border-collapse:collapse; margin:0.8rem 0; font-size:0.88rem; text-align:center;">
-            <tr style="background:var(--bg-subtle);">
-              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">U in kV</th>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">1,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">2,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">3,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">4,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">5,0</td>
-            </tr>
-            <tr>
-              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">F in mN</th>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">9,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">35,5</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">80,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">142,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">222,5</td>
-            </tr>
-          </table>
-          <strong>Aufgaben:</strong><br>
-          a) Begründe anhand der Verdopplung den Funktionstyp.<br>
-          b) Erstelle eine k-Spalte (k = F/U²) und berechne den Mittelwert k̄ mit TI-Nspire CAS.<br>
-          c) Beschreibe die Linearisierung und gib die Steigung m der Ausgleichsgerade an.<br>
-          d) Vergleiche den experimentellen Mittelwert k̄ mit der theoretischen Formel k_theor = ½ ε₀ (A/d²).
-        `,
-        solution: `
-          <strong>a) Verdopplungsprüfung:</strong><br>
-          Bei Verdopplung von <span class="katex-render" data-display="false" data-latex="U = 2{,}0\\,\\text{kV}">U = 2,0 kV</span> auf <span class="katex-render" data-display="false" data-latex="U = 4{,}0\\,\\text{kV}">U = 4,0 kV</span> steigt <span class="katex-render" data-display="false" data-latex="F">F</span> von <span class="katex-render" data-display="false" data-latex="35{,}5\\,\\text{mN}">35,5 mN</span> auf <span class="katex-render" data-display="false" data-latex="142{,}0\\,\\text{mN}">142,0 mN</span>.<br>
-          Wachstumsfaktor: <span class="katex-render" data-display="false" data-latex="\\frac{142{,}0}{35{,}5} = 4{,}0 = 2^2">142/35,5 = 4</span>.<br>
-          &rarr; <em>Hypothese:</em> Quadratischer Zusammenhang <span class="katex-render" data-display="false" data-latex="F \\sim U^2 \\iff \\frac{F}{U^2} = k = \\text{const.}">F ~ U²</span>.<br><br>
+          <strong>2. Beweis durchführen (Produktprüfung):</strong><br>
+          Konstantenprodukt <span class="katex-render" data-display="false" data-latex="k = R \\cdot A">k = R • A</span> berechnen:<br>
+          • <span class="katex-render" data-display="false" data-latex="0{,}10 \\cdot 245{,}0 = 24{,}5\\,\\Omega\\cdot\\text{mm}^2">k = 24,5</span> | <span class="katex-render" data-display="false" data-latex="0{,}20 \\cdot 122{,}5 = 24{,}5\\,\\Omega\\cdot\\text{mm}^2">k = 24,5</span><br>
+          • <span class="katex-render" data-display="false" data-latex="0{,}50 \\cdot 49{,}0 = 24{,}5\\,\\Omega\\cdot\\text{mm}^2">k = 24,5</span> | <span class="katex-render" data-display="false" data-latex="1{,}00 \\cdot 24{,}5 = 24{,}5\\,\\Omega\\cdot\\text{mm}^2">k = 24,5</span>.<br><br>
 
-          <strong>b) Konstantenprüfung &amp; CAS-Eingabe:</strong><br>
-          Spalte C anlegen mit Formel <code style="color:#fde047;">=f / (u^2)</code>:<br>
-          • <span class="katex-render" data-display="false" data-latex="U = 1{,}0\\,\\text{kV}: k_1 = \\frac{9{,}0}{1^2} = 9{,}00\\,\\frac{\\text{mN}}{\\text{kV}^2}">k1 = 9,00</span><br>
-          • <span class="katex-render" data-display="false" data-latex="U = 2{,}0\\,\\text{kV}: k_2 = \\frac{35{,}5}{4} = 8{,}875\\,\\frac{\\text{mN}}{\\text{kV}^2}">k2 = 8,875</span><br>
-          • <span class="katex-render" data-display="false" data-latex="U = 3{,}0\\,\\text{kV}: k_3 = \\frac{80{,}0}{9} = 8{,}889\\,\\frac{\\text{mN}}{\\text{kV}^2}">k3 = 8,889</span><br>
-          • <span class="katex-render" data-display="false" data-latex="U = 4{,}0\\,\\text{kV}: k_4 = \\frac{142{,}0}{16} = 8{,}875\\,\\frac{\\text{mN}}{\\text{kV}^2}">k4 = 8,875</span><br>
-          • <span class="katex-render" data-display="false" data-latex="U = 5{,}0\\,\\text{kV}: k_5 = \\frac{222{,}5}{25} = 8{,}900\\,\\frac{\\text{mN}}{\\text{kV}^2}">k5 = 8,900</span><br><br>
-          CAS-Befehl: <code style="color:#fde047;">mean(c[])</code> &rarr; <span class="katex-render" data-display="false" data-latex="\\bar{k} = 8{,}908\\,\\frac{\\text{mN}}{\\text{kV}^2} \\approx 8{,}89\\,\\frac{\\text{mN}}{\\text{kV}^2} = 8{,}89 \\cdot 10^{-9}\\,\\frac{\\text{N}}{\\text{V}^2}">k̄ = 8,89 mN/kV²</span>.<br>
-          Die Werte weichen maximal um 1% voneinander ab &rarr; Konstanz bestätigt!<br><br>
+          <strong>3. Beurteilung:</strong><br>
+          <em>Weil alle berechneten Produkte exakt konstant <span class="katex-render" data-display="false" data-latex="24{,}5\\,\\Omega\\cdot\\text{mm}^2">24,5 Ω mm²</span> sind, ist unsere Vermutung bestätigt.</em><br><br>
 
-          <strong>c) Linearisierung &amp; Regression:</strong><br>
-          Man trägt <span class="katex-render" data-display="false" data-latex="F">F</span> über <span class="katex-render" data-display="false" data-latex="U^2">U²</span> auf. Der Graph ist eine Ursprungsgerade mit Steigung <span class="katex-render" data-display="false" data-latex="m = \\bar{k} = 8{,}89\\,\\frac{\\text{mN}}{\\text{kV}^2}">m = 8,89 mN/kV²</span>.<br>
-          Im CAS: <code>LinRegMx(u2, f)</code> liefert <span class="katex-render" data-display="false" data-latex="r^2 = 0{,}99998">r² = 0,99998</span>.<br><br>
+          <strong>4. Mittelwert &amp; Funktionsgleichung mit Einheit:</strong><br>
+          <span class="katex-render" data-display="false" data-latex="\\bar{k} = 24{,}5\\,\\Omega\\cdot\\text{mm}^2">k̄ = 24,5 Ω mm²</span>.<br>
+          <div class="katex-render" data-display="true" data-latex="R(A) = 24{,}5\\,\\Omega\\cdot\\text{mm}^2 \\cdot \\frac{1}{A}"></div><br>
 
-          <strong>d) Theoretischer Abgleich:</strong><br>
-          Fläche: <span class="katex-render" data-display="false" data-latex="A = \\pi \\cdot r^2 = \\pi \\cdot (0{,}075\\,\\text{m})^2 = 0{,}01767\\,\\text{m}^2">A = 0,01767 m²</span>.<br>
-          Abstand: <span class="katex-render" data-display="false" data-latex="d = 5{,}0\\,\\text{mm} = 0{,}0050\\,\\text{m} \\implies d^2 = 2{,}5 \\cdot 10^{-5}\\,\\text{m}^2">d = 0,0050 m</span>.<br>
-          <div class="katex-render" data-display="true" data-latex="k_{\\text{theor}} = \\frac{1}{2}\\varepsilon_0 \\frac{A}{d^2} = \\frac{1}{2} \\cdot 8{,}854 \\cdot 10^{-12} \\cdot \\frac{0{,}01767}{2{,}5 \\cdot 10^{-5}} = 3{,}13 \\cdot 10^{-9}\\,\\frac{\\text{N}}{\\text{V}^2} = 3{,}13\\,\\frac{\\text{mN}}{\\text{kV}^2}"></div>
-        `
-      },
-      {
-        title: 'Übungsaufgabe 3 (Klausur-Typ): Coulomb-Kraft F(r) mit CAS-Konstantenprüfung & Ladungsbestimmung',
-        prompt: `
-          Zwei gleich große Kugeln mit identischer Ladung Q befinden sich im Abstand r. Die gemessenen Coulomb-Kräfte betragen:
-          <table style="width:100%; border-collapse:collapse; margin:0.8rem 0; font-size:0.88rem; text-align:center;">
-            <tr style="background:var(--bg-subtle);">
-              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">r in cm</th>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">2,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">3,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">4,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">5,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">8,0</td>
-            </tr>
-            <tr>
-              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">F in mN</th>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">162,5</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">72,2</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">40,6</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">26,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">10,2</td>
-            </tr>
-          </table>
-          <strong>Aufgaben:</strong><br>
-          a) Bestätige durch Konstantenprüfung mit dem TI-Nspire CAS, dass F ~ 1/r² gilt.<br>
-          b) Ermittle den Mittelwert k̄ in SI-Einheiten (N•m²).<br>
-          c) Berechne die Ladung Q jeder Kugel mittels CAS-Befehl solve.
-        `,
-        solution: `
-          <strong>a) Konstantenprüfung im CAS:</strong><br>
-          Spalte C mit Formel <code style="color:#fde047;">=f * (r^2)</code> anlegen:<br>
-          • <span class="katex-render" data-display="false" data-latex="r = 2{,}0\\,\\text{cm}: 162{,}5 \\cdot 4 = 650{,}0\\,\\text{mN}\\cdot\\text{cm}^2">k1 = 650,0</span><br>
-          • <span class="katex-render" data-display="false" data-latex="r = 3{,}0\\,\\text{cm}: 72{,}2 \\cdot 9 = 649{,}8\\,\\text{mN}\\cdot\\text{cm}^2">k2 = 649,8</span><br>
-          • <span class="katex-render" data-display="false" data-latex="r = 4{,}0\\,\\text{cm}: 40{,}6 \\cdot 16 = 649{,}6\\,\\text{mN}\\cdot\\text{cm}^2">k3 = 649,6</span><br>
-          • <span class="katex-render" data-display="false" data-latex="r = 5{,}0\\,\\text{cm}: 26{,}0 \\cdot 25 = 650{,}0\\,\\text{mN}\\cdot\\text{cm}^2">k4 = 650,0</span><br>
-          • <span class="katex-render" data-display="false" data-latex="r = 8{,}0\\,\\text{cm}: 10{,}2 \\cdot 64 = 652{,}8\\,\\text{mN}\\cdot\\text{cm}^2">k5 = 652,8</span><br><br>
-
-          <strong>b) Mittelwert in SI-Einheiten:</strong><br>
-          <span class="katex-render" data-display="false" data-latex="\\bar{k} = 650{,}44\\,\\text{mN}\\cdot\\text{cm}^2 = 650{,}44 \\cdot 10^{-3}\\,\\text{N} \\cdot (10^{-2}\\,\\text{m})^2 = 6{,}504 \\cdot 10^{-5}\\,\\text{N}\\cdot\\text{m}^2">k̄ = 6,504 • 10⁻⁵ N m²</span>.<br><br>
-
-          <strong>c) Ladungsberechnung mit CAS:</strong><br>
-          Nach Coulomb gilt: <span class="katex-render" data-display="false" data-latex="F = \\frac{1}{4\\pi\\varepsilon_0} \\cdot \\frac{Q^2}{r^2} \\implies k = \\frac{1}{4\\pi\\varepsilon_0} \\cdot Q^2">k = 1/(4πε₀) • Q²</span>.<br>
-          CAS-Eingabe: <code style="color:#fde047;">solve(6.504e-5 = 8.988e9 * q^2, q) and q>0</code><br>
-          <div class="katex-render" data-display="true" data-latex="Q = \\sqrt{\\frac{6{,}504 \\cdot 10^{-5}}{8{,}988 \\cdot 10^9}} = \\sqrt{7{,}236 \\cdot 10^{-15}} \\approx 8{,}51 \\cdot 10^{-8}\\,\\text{C} = 85{,}1\\,\\text{nC}"></div>
-          <strong style="color:#10b981;">Ergebnis:</strong> Jede Kugel trägt eine Ladung von <strong>Q ≈ 85,1 nC</strong>.
-        `
-      },
-      {
-        title: 'Übungsaufgabe 4 (Klausur-Typ): Drahtwiderstand R(A) & Antiproportionalitätsnachweis',
-        prompt: `
-          Für Konstantandrähte gleicher Länge l = 50 m aber unterschiedlichem Querschnitt A wird der elektrische Widerstand R gemessen:
-          <table style="width:100%; border-collapse:collapse; margin:0.8rem 0; font-size:0.88rem; text-align:center;">
-            <tr style="background:var(--bg-subtle);">
-              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">A in mm²</th>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">0,10</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">0,20</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">0,50</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">1,00</td>
-            </tr>
-            <tr>
-              <th style="border:1px solid var(--border-subtle); padding:0.4rem;">R in Ω</th>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">245,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">122,5</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">49,0</td>
-              <td style="border:1px solid var(--border-subtle); padding:0.4rem;">24,5</td>
-            </tr>
-          </table>
-          a) Weise Antiproportionalität R ~ 1/A über Produktgleichheit nach.<br>
-          b) Berechne den spezifischen elektrischen Widerstand ρ des Drahtmaterials.
-        `,
-        solution: `
-          <strong>a) Produktgleichheit k = R • A:</strong><br>
-          • 0,10 mm² • 245,0 Ω = 24,5 Ω•mm²<br>
-          • 0,20 mm² • 122,5 Ω = 24,5 Ω•mm²<br>
-          • 0,50 mm² • 49,0 Ω = 24,5 Ω•mm²<br>
-          • 1,00 mm² • 24,5 Ω = 24,5 Ω•mm²<br>
-          Alle Produkte sind exakt identisch: <span class="katex-render" data-display="false" data-latex="k = 24{,}5\\,\\Omega\\cdot\\text{mm}^2 = \\text{const.}">k = 24,5 Ω mm²</span>.<br><br>
-
-          <strong>b) Spezifischer Widerstand ρ:</strong><br>
-          Formel: <span class="katex-render" data-display="false" data-latex="R = \\rho \\cdot \\frac{l}{A} \\implies \\rho = \\frac{R \\cdot A}{l} = \\frac{k}{l}">ρ = (R • A) / l</span>.<br>
-          <div class="katex-render" data-display="true" data-latex="\\rho = \\frac{24{,}5\\,\\Omega\\cdot\\text{mm}^2}{50\\,\\text{m}} = 0{,}49\\,\\frac{\\Omega\\cdot\\text{mm}^2}{\\text{m}}"></div>
-          <strong style="color:#10b981;">Ergebnis:</strong> Das Material hat einen spezifischen Widerstand von <span class="katex-render" data-display="false" data-latex="\\rho = 0{,}49\\,\\frac{\\Omega\\cdot\\text{mm}^2}{\\text{m}}">ρ = 0,49</span> (typisch für Konstantan).
+          <strong>5. Physikalischer Koeffizientenvergleich (spezifischer Widerstand ρ):</strong><br>
+          Nach der physikalischen Widerstandsformel: <span class="katex-render" data-display="false" data-latex="R = \\rho \\cdot \\frac{l}{A} \\implies k = \\rho \\cdot l">R = ρ · l/A => k = ρ · l</span>.<br>
+          <div class="katex-render" data-display="true" data-latex="\\rho = \\frac{k}{l} = \\frac{24{,}5\\,\\Omega\\cdot\\text{mm}^2}{50\\,\\text{m}} = 0{,}49\\,\\frac{\\Omega\\cdot\\text{mm}^2}{\\text{m}}"></div>
+          <strong style="color:#10b981;">Ergebnis:</strong> Das Material besitzt den spezifischen Widerstand <span class="katex-render" data-display="false" data-latex="\\rho = 0{,}49\\,\\frac{\\Omega\\cdot\\text{mm}^2}{\\text{m}}">ρ = 0,49</span> (typisch für Konstantan).
         `
       }
 
