@@ -134,64 +134,48 @@ const SKILLS_FOLDER_1 = [
         </div>
 
 
-        <!-- TI-NSPIRE CAS WORKFLOW GUIDE -->
-        <div class="cas-guide-card" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95)); border: 1px solid #38bdf8; border-radius: 10px; padding: 1.2rem; margin: 1.2rem 0; color: #f8fafc; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 0.6rem; margin-bottom: 0.8rem; flex-wrap: wrap; gap: 0.5rem;">
-            <div style="font-weight: 800; color: #38bdf8; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
-              <span>📟</span><span>TI-Nspire CAS: Der perfekte Workflow für Messwertauswertung &amp; Regression</span>
-            </div>
-            <span style="background: rgba(56, 189, 248, 0.2); color: #38bdf8; font-size: 0.76rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 999px;">Klausur-Werkzeug</span>
+        <!-- 5-SCHRITTE-SCHEMA DES LEHRERS (MEDS.PDF S. 14 & S. 18) -->
+        <div class="formula-takeaway-box" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(56, 189, 248, 0.08)); border-left: 5px solid #10b981; margin: 1.2rem 0; padding: 1.2rem; border-radius: 10px;">
+          <div style="font-weight: 800; color: #10b981; font-size: 1.05rem; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem;">
+            <span>📋</span><span>DAS OFFIZIELLE 5-SCHRITTE-SCHEMA DEINES LEHRERS (MEDS.PDF S. 14 &amp; S. 18)</span>
+          </div>
+          <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.8rem; line-height: 1.45;">
+            Genau diesen formalen Aufbau verlangt dein Lehrer bei <strong>jeder</strong> Messwertauswertung im Unterricht und in der Klausur (siehe Schultafelfoto auf S. 14 und Mitschrift auf S. 18):
           </div>
 
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; font-size: 0.84rem; line-height: 1.5;">
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.84rem; line-height: 1.5;">
             <!-- Schritt 1 -->
-            <div style="background: rgba(255, 255, 255, 0.05); padding: 0.85rem; border-radius: 8px; border-left: 3px solid #38bdf8;">
-              <strong style="color: #38bdf8; font-size: 0.9rem;">1. Lists &amp; Spreadsheet anlegen &amp; benennen</strong><br>
-              • Taste <code style="color:#fde047;">[doc]</code> &rarr; <code>4: Einfügen</code> &rarr; <code>6: Lists &amp; Spreadsheet</code>.<br>
-              • <strong>Kopfzeile (oberste weiße Zelle):</strong> Gib Kurznamen ein, z. B.:<br>
-              Spalte A: <code style="color:#a7f3d0;">u</code> (Spannung) | Spalte B: <code style="color:#a7f3d0;">f</code> (Kraft).<br>
-              <span style="color: #f87171; font-size: 0.78rem;">⚠️ WICHTIG: Niemals x oder y als Spaltenkopf wählen! (Sind geschützte Systemvariablen).</span>
+            <div style="background: var(--bg-subtle); padding: 0.8rem; border-radius: 6px; border-left: 3px solid #38bdf8;">
+              <strong style="color: #38bdf8; font-size: 0.9rem;">1. Vermutung aufstellen (Hypothese formulieren)</strong><br>
+              <em style="color: var(--text-primary);">„Wenn sich die Größe <span class="katex-render" data-display="false" data-latex="x">x</span> (z. B. Ladung <span class="katex-render" data-display="false" data-latex="Q">Q</span> oder Abstand <span class="katex-render" data-display="false" data-latex="r">r</span>) verdoppelt, dann vervierfacht / viertelt / verdoppelt sich annähernd die Größe <span class="katex-render" data-display="false" data-latex="y">y</span> (die Kraft <span class="katex-render" data-display="false" data-latex="F">F</span>). Deswegen vermuten wir einen [quadratischen / umgekehrt-quadratischen] Zusammenhang der Form <span class="katex-render" data-display="false" data-latex="y \\sim x^n">y ~ x^n</span> bzw. <span class="katex-render" data-display="false" data-latex="y = k \\cdot x^n">y = k • x^n</span>.“</em>
             </div>
 
             <!-- Schritt 2 -->
-            <div style="background: rgba(255, 255, 255, 0.05); padding: 0.85rem; border-radius: 8px; border-left: 3px solid #10b981;">
-              <strong style="color: #10b981; font-size: 0.9rem;">2. Formelspalte zur k-Prüfung anlegen</strong><br>
-              • Klicke in Spalte C in die <strong>graue Zeile mit dem fettgedruckten =</strong>.<br>
-              • Für <span class="katex-render" data-display="false" data-latex="F \\sim U^2">F ~ U²</span>: Formel <code style="color:#fde047;">=f / (u^2)</code> eintippen &rarr; <code style="color:#fde047;">[enter]</code>.<br>
-              • Für <span class="katex-render" data-display="false" data-latex="F \\sim 1/r^2">F ~ 1/r²</span>: Formel <code style="color:#fde047;">=f * (r^2)</code> eintippen &rarr; <code style="color:#fde047;">[enter]</code>.<br>
-              • Bei der Rückfrage stets <strong>„Spaltenreferenz“</strong> wählen.<br>
-              &rarr; Der CAS berechnet die gesamte Spalte C automatisch!
+            <div style="background: var(--bg-subtle); padding: 0.8rem; border-radius: 6px; border-left: 3px solid #10b981;">
+              <strong style="color: #10b981; font-size: 0.9rem;">2. Beweis durchführen (Zwei gleichwertige Wege im Unterricht)</strong><br>
+              • <strong>Weg A (TI-Nspire Regression, S. 14):</strong> Potenz- oder quadratische Regression durchführen. Notieren: <span class="katex-render" data-display="false" data-latex="y = a \\cdot x^b">y = a · x^b</span> und Bestimmtheitsmaß <span class="katex-render" data-display="false" data-latex="R^2">R²</span> (z. B. <span class="katex-render" data-display="false" data-latex="y = 0{,}000606 \\cdot x^2">y = 0,000606 · x²</span>, <span class="katex-render" data-display="false" data-latex="R^2 \\approx 0{,}9996">R² ≈ 0,9996</span>; Störterme durchstreichen!).<br>
+              • <strong>Weg B (Tabelle mit Quotienten- / Produktbildung, S. 18):</strong> In der 3. Zeile der Tabelle für jedes Wertepaar die Konstante berechnen (z. B. <span class="katex-render" data-display="false" data-latex="F \\cdot r^2 = k">F · r² = k</span> oder <span class="katex-render" data-display="false" data-latex="F / U^2 = k">F / U² = k</span>).
             </div>
 
             <!-- Schritt 3 -->
-            <div style="background: rgba(255, 255, 255, 0.05); padding: 0.85rem; border-radius: 8px; border-left: 3px solid #f59e0b;">
-              <strong style="color: #f59e0b; font-size: 0.9rem;">3. Mittelwert k̄ &amp; Standardabweichung</strong><br>
-              • <strong>Im Calculator-Fenster:</strong> Taste <code style="color:#fde047;">[ctrl]</code>+<code style="color:#fde047;">[doc]</code> &rarr; <code>1: Calculator</code>.<br>
-              Befehl: <code style="color:#fde047;">mean(c[])</code> oder <code style="color:#fde047;">mean(k)</code> &rarr; liefert exakten Mittelwert <span class="katex-render" data-display="false" data-latex="\\bar{k}">k̄</span>.<br>
-              Befehl: <code style="color:#fde047;">stDevSamp(c[])</code> &rarr; Standardabweichung (Messfehler).<br>
-              • <strong>In Lists &amp; Spreadsheet:</strong> Taste <code style="color:#fde047;">[menu]</code> &rarr; <code>4: Statistik</code> &rarr; <code>1: Statistische Berechnungen</code> &rarr; <code>1: Statistik mit einer Variable</code>.
+            <div style="background: var(--bg-subtle); padding: 0.8rem; border-radius: 6px; border-left: 3px solid #f59e0b;">
+              <strong style="color: #f59e0b; font-size: 0.9rem;">3. Beurteilung (R² bzw. Konstanz auswerten)</strong><br>
+              <em style="color: var(--text-primary);">„Weil das Bestimmtheitsmaß <span class="katex-render" data-display="false" data-latex="R^2">R²</span> sehr dicht an 1 liegt (bzw. weil die Werte für <span class="katex-render" data-display="false" data-latex="F \\cdot r^2">F · r²</span> annähernd konstant sind), ist unsere Vermutung bestätigt.“</em>
             </div>
 
             <!-- Schritt 4 -->
-            <div style="background: rgba(255, 255, 255, 0.05); padding: 0.85rem; border-radius: 8px; border-left: 3px solid #c084fc;">
-              <strong style="color: #c084fc; font-size: 0.9rem;">4. Lineare Regression &amp; Bestimmtheitsmaß R²</strong><br>
-              • Erstelle Spalte mit linearisierter Größe, z. B. <code style="color:#a7f3d0;">u2</code> mit Formel <code style="color:#fde047;">=u^2</code>.<br>
-              • Taste <code style="color:#fde047;">[menu]</code> &rarr; <code>4: Statistik</code> &rarr; <code>1: Statistische Berechnungen</code> &rarr; <code>3: Lineare Regression (mx+b)</code>.<br>
-              • X-Liste: <code style="color:#a7f3d0;">u2</code> | Y-Liste: <code style="color:#a7f3d0;">f</code>.<br>
-              &rarr; Steigung <span class="katex-render" data-display="false" data-latex="m = \\bar{k}">m = k̄</span>, Achsenabschnitt <span class="katex-render" data-display="false" data-latex="b \\approx 0">b ≈ 0</span> und Bestimmtheitsmaß <span class="katex-render" data-display="false" data-latex="r^2 > 0{,}99">r² > 0,99</span>!
+            <div style="background: var(--bg-subtle); padding: 0.8rem; border-radius: 6px; border-left: 3px solid #8b5cf6;">
+              <strong style="color: #8b5cf6; font-size: 0.9rem;">4. Mittelwert k̄ berechnen &amp; Funktionsgleichung mit EINHEIT angeben</strong><br>
+              Mittelwert berechnen: <span class="katex-render" data-display="false" data-latex="\\bar{k} = \\frac{1}{n} \\sum k_i">k̄ = 1/n Σ k_i</span> (z. B. <span class="katex-render" data-display="false" data-latex="\\bar{k} = 883{,}5\\,\\text{cm}^2\\cdot\\text{mN}">k̄ = 883,5 cm² · mN</span>).<br>
+              Gleichung hinschreiben: <span class="katex-render" data-display="false" data-latex="F(r) = 883{,}5\\,\\text{cm}^2\\cdot\\text{mN} \\cdot \\frac{1}{r^2}">F(r) = 883,5 cm²·mN · 1/r²</span> (Achtung: Einheit der Konstanten darf niemals fehlen!).
             </div>
-          </div>
-        </div>
 
-
-        <div class="formula-takeaway-box" style="background: rgba(59, 130, 246, 0.08); border-left: 4px solid #3b82f6;">
-          <span style="font-size: 1.3rem;">📋</span>
-          <div>
-            <strong>Das 4-Schritte-Vorgehen für jede Klausuraufgabe (Unterrichts-Standard):</strong><br>
-            <strong>1. Vermutung aufstellen:</strong> Wertepaare anschauen (z. B. wenn sich der Abstand <span class="katex-render" data-display="false" data-latex="r">r</span> verdoppelt von 10 auf 20 cm, sinkt <span class="katex-render" data-display="false" data-latex="F">F</span> von 6,5 auf 1,62 mN &rarr; etwa Faktor 4 kleiner &rarr; Vermutung: <span class="katex-render" data-display="false" data-latex="F \\sim \\frac{1}{r^2}">F ~ 1/r²</span>).<br>
-            <strong>2. Tabelle um 3. Zeile erweitern:</strong> Prüfgröße berechnen (z. B. Produkt <span class="katex-render" data-display="false" data-latex="F \\cdot r^2">F · r²</span> oder Quotient <span class="katex-render" data-display="false" data-latex="F / U^2">F / U²</span>).<br>
-            <strong>3. Konstanz beurteilen &amp; Mittelwert bilden:</strong> Zeigen, dass die Werte im Rahmen der Messgenauigkeit konstant sind: <span class="katex-render" data-display="false" data-latex="\\bar{k} = \\frac{\\sum k_i}{n}">k_mittel</span> berechnen.<br>
-            <strong>4. Funktionsgleichung angeben:</strong> Gleichung mit der berechneten Konstanten, korrekter physikalischer Einheit und Bestimmtheitsmaß <span class="katex-render" data-display="false" data-latex="R^2 \\approx 1">R² ≈ 1</span> formulieren.
+            <!-- Schritt 5 -->
+            <div style="background: var(--bg-subtle); padding: 0.8rem; border-radius: 6px; border-left: 3px solid #ec4899;">
+              <strong style="color: #ec4899; font-size: 0.9rem;">5. Beispiel / Anwendung / Physikalischer Koeffizientenvergleich</strong><br>
+              • <strong>Extrapolation:</strong> Berechne <span class="katex-render" data-display="false" data-latex="F">F</span> für einen neuen Wert: <span class="katex-render" data-display="false" data-latex="F(70\\,\\text{nC}) = 0{,}000606 \\cdot 70^2 \\approx 2{,}96\\,\\text{mN}">F(70 nC) = 2,96 mN</span>.<br>
+              • <strong>Koeffizientenvergleich:</strong> Verknüpfung mit der theoretischen Formel (z. B. <span class="katex-render" data-display="false" data-latex="k = \\frac{1}{4\\pi\\varepsilon_0}">k = 1/(4πε₀)</span> oder <span class="katex-render" data-display="false" data-latex="k = \\frac{1}{2}\\varepsilon_0 \\frac{A}{d^2}">k = 1/2 ε₀ A/d²</span>), um <span class="katex-render" data-display="false" data-latex="\\varepsilon_0">ε₀</span> oder die Ladung <span class="katex-render" data-display="false" data-latex="Q">Q</span> zu isolieren!
+            </div>
           </div>
         </div>
       </div>
