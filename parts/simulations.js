@@ -1069,12 +1069,320 @@ const CircuitSim = {
       ctx.fillStyle = '#34d399';
       ctx.font = 'bold 11px Segoe UI, sans-serif';
       ctx.textAlign = 'left';
-      ctx.fillText('Fläche = Ladung Q0', originX + 20, originY - 25);
     }
-
     ctx.restore();
   }
 };
 
+// --- 5. FARADAYSCHER KÄFIG & BLITZSCHUTZ SIMULATOR ---
+const FaradaySim = {
+  canvas: null,
+  ctx: null,
+  fieldOn: true,
+  slowMo: false,
+  lightningTimer: 0,
+  isInitialized: false,
+  animId: null,
+  electrons: [],
 
+  init() {
+    this.canvas = document.getElementById('faradayCanvas');
+    if (!this.canvas) return;
+    this.ctx = this.canvas.getContext('2d');
+    this.isInitialized = true;
+    this.initElectrons();
+    this.bindEvents();
+    if (!this.animId) {
+      this.loop = this.loop.bind(this);
+      this.animId = requestAnimationFrame(this.loop);
+    }
+  },
 
+  initElectrons() {
+    this.electrons = [];
+    const NUM = 36;
+    const R_INNER = 65;
+    const R_OUTER = 88;
+    for (let i = 0; i < NUM; i++) {
+      const neutralAngle = (i / NUM) * Math.PI * 2;
+      const radius = R_INNER + 4 + Math.random() * (R_OUTER - R_INNER - 8);
+      this.electrons.push({
+        neutralAngle: neutralAngle,
+        currentAngle: neutralAngle,
+        radius: radius
+      });
+    }
+  },
+
+  bindEvents() {
+    const btnField = document.getElementById('btnFaradayToggleField');
+    const btnLightning = document.getElementById('btnFaradayLightning');
+    const btnSlowMo = document.getElementById('btnFaradaySlowMo');
+    const btnReset = document.getElementById('btnFaradayReset');
+
+    if (btnField) btnField.onclick = () => {
+      this.fieldOn = !this.fieldOn;
+      btnField.textContent = this.fieldOn ? '⚡ Feld: AN' : '⚪ Feld: AUS';
+      btnField.style.background = this.fieldOn ? '#0284c7' : '#475569';
+      this.updateResultBox();
+    };
+
+    if (btnLightning) btnLightning.onclick = () => {
+      this.lightningTimer = 35;
+      this.updateResultBox();
+    };
+
+    if (btnSlowMo) btnSlowMo.onclick = () => {
+      this.slowMo = !this.slowMo;
+      btnSlowMo.textContent = this.slowMo ? '⏱️ Zeitlupe: AN' : '⏱️ Zeitlupe: AUS';
+      btnSlowMo.style.color = this.slowMo ? '#f59e0b' : 'var(--text-primary)';
+    };
+
+    if (btnReset) btnReset.onclick = () => {
+      this.fieldOn = false;
+      this.slowMo = false;
+      this.lightningTimer = 0;
+      if (btnField) {
+        btnField.textContent = '⚪ Feld: AUS';
+        btnField.style.background = '#475569';
+      }
+      if (btnSlowMo) {
+        btnSlowMo.textContent = '⏱️ Zeitlupe: AUS';
+        btnSlowMo.style.color = 'var(--text-primary)';
+      }
+      this.electrons.forEach(e => { e.currentAngle = e.neutralAngle; });
+      this.updateResultBox();
+    };
+  },
+
+  updateResultBox() {
+    const box = document.getElementById('faradayResultBox');
+    if (!box) return;
+    if (this.lightningTimer > 0) {
+      box.innerHTML = '⚡ <strong>BLITZEINSCHLAG!</strong> Strom fließt ausschließlich über die Außenhülle ab &bull; <strong>Innenraum 100% geschützt (0 V)</strong>';
+      box.style.background = 'rgba(245, 158, 11, 0.2)';
+      box.style.borderColor = '#f59e0b';
+    } else if (this.fieldOn) {
+      box.innerHTML = '🛡️ <strong>Äußeres Feld aktiv:</strong> Elektronen wandern nach links &bull; Gegenfeld kompensiert Außenfeld &bull; <strong>E_ges = 0 V/m (Feldfreier Raum)</strong>';
+      box.style.background = 'rgba(16, 185, 129, 0.15)';
+      box.style.borderColor = '#10b981';
+    } else {
+      box.innerHTML = '⚪ <strong>Kein äußeres Feld:</strong> Elektronen gleichmäßig verteilt &bull; Raum ist neutral';
+      box.style.background = 'var(--bg-subtle)';
+      box.style.borderColor = 'var(--border-subtle)';
+    }
+  },
+
+  loop() {
+    this.update();
+    this.draw();
+    this.animId = requestAnimationFrame(this.loop);
+  },
+
+  update() {
+    const step = this.slowMo ? 0.008 : 0.045;
+    this.electrons.forEach(e => {
+      if (this.fieldOn) {
+        const targetAngle = Math.PI + Math.sin(e.neutralAngle) * 0.95;
+        let diff = targetAngle - e.currentAngle;
+        while (diff < -Math.PI) diff += Math.PI * 2;
+        while (diff > Math.PI) diff -= Math.PI * 2;
+        e.currentAngle += diff * step;
+      } else {
+        let diff = e.neutralAngle - e.currentAngle;
+        while (diff < -Math.PI) diff += Math.PI * 2;
+        while (diff > Math.PI) diff -= Math.PI * 2;
+        e.currentAngle += diff * step;
+      }
+    });
+
+    if (this.lightningTimer > 0) {
+      this.lightningTimer--;
+      if (this.lightningTimer === 0) this.updateResultBox();
+    }
+  },
+
+  draw() {
+    if (!this.canvas || !this.ctx) return;
+    const ctx = this.ctx;
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+    const CX = w / 2;
+    const CY = h / 2 + 5;
+    const R_OUTER = 88;
+    const R_INNER = 65;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#0b1120';
+    ctx.fillRect(0, 0, w, h);
+
+    // 1. Outer Plates
+    if (this.fieldOn) {
+      // Left positive
+      ctx.fillStyle = '#ef4444';
+      ctx.fillRect(20, 35, 14, h - 70);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 15px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('+', 27, 70);
+      ctx.fillText('+', 27, CY);
+      ctx.fillText('+', 27, h - 70);
+      ctx.font = '10px sans-serif';
+      ctx.fillStyle = '#fca5a5';
+      ctx.fillText('+ Pol', 27, 22);
+
+      // Right negative
+      ctx.fillStyle = '#3b82f6';
+      ctx.fillRect(w - 34, 35, 14, h - 70);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 18px monospace';
+      ctx.fillText('−', w - 27, 70);
+      ctx.fillText('−', w - 27, CY);
+      ctx.fillText('−', w - 27, h - 70);
+      ctx.font = '10px sans-serif';
+      ctx.fillStyle = '#93c5fd';
+      ctx.fillText('− Pol', w - 27, 22);
+
+      // Curved field lines
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.4)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(34, 60);
+      ctx.quadraticCurveTo(CX, 15, w - 34, 60);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(34, h - 60);
+      ctx.quadraticCurveTo(CX, h - 15, w - 34, h - 60);
+      ctx.stroke();
+
+      ctx.font = 'bold 11px monospace';
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillText('E_auß →', 85, 100);
+      ctx.fillText('E_auß →', w - 85, 100);
+    }
+
+    // 2. Cage Metal Wall
+    ctx.beginPath();
+    ctx.arc(CX, CY, R_OUTER, 0, Math.PI * 2);
+    ctx.fillStyle = '#334155';
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = '#64748b';
+    ctx.stroke();
+
+    // 3. Hollow Cavity (Safe Zone)
+    ctx.beginPath();
+    ctx.arc(CX, CY, R_INNER, 0, Math.PI * 2);
+    ctx.fillStyle = '#050914';
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = '#10b981';
+    ctx.setLineDash([5, 4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // 4. Fixed Positive Atom Trunks
+    for (let i = 0; i < 18; i++) {
+      const a = (i / 18) * Math.PI * 2;
+      const r = (R_OUTER + R_INNER) / 2;
+      const x = CX + Math.cos(a) * r;
+      const y = CY + Math.sin(a) * r;
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(239, 68, 68, 0.6)';
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 8px monospace';
+      ctx.fillText('+', x, y);
+    }
+
+    // 5. Mobile Electrons (-)
+    this.electrons.forEach(e => {
+      const x = CX + Math.cos(e.currentAngle) * e.radius;
+      const y = CY + Math.sin(e.currentAngle) * e.radius;
+      ctx.beginPath();
+      ctx.arc(x, y, 5.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#38bdf8';
+      ctx.shadowColor = '#0284c7';
+      ctx.shadowBlur = 5;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 10px monospace';
+      ctx.fillText('−', x, y);
+    });
+
+    // 6. Vector cancellation in interior
+    if (this.fieldOn) {
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(CX - 35, CY - 20);
+      ctx.lineTo(CX + 35, CY - 20);
+      ctx.stroke();
+      ctx.fillStyle = '#38bdf8';
+      ctx.beginPath();
+      ctx.moveTo(CX + 35, CY - 20);
+      ctx.lineTo(CX + 29, CY - 24);
+      ctx.lineTo(CX + 29, CY - 16);
+      ctx.fill();
+      ctx.font = '9px monospace';
+      ctx.fillText('E_auß (→)', CX, CY - 28);
+
+      ctx.strokeStyle = '#f97316';
+      ctx.beginPath();
+      ctx.moveTo(CX + 35, CY - 7);
+      ctx.lineTo(CX - 35, CY - 7);
+      ctx.stroke();
+      ctx.fillStyle = '#f97316';
+      ctx.beginPath();
+      ctx.moveTo(CX - 35, CY - 7);
+      ctx.lineTo(CX - 29, CY - 11);
+      ctx.lineTo(CX - 29, CY - 3);
+      ctx.fill();
+      ctx.fillText('E_inn (←)', CX, CY + 2);
+    }
+
+    // Stickman inside
+    ctx.beginPath();
+    ctx.arc(CX, CY + 22, 9, 0, Math.PI * 2);
+    ctx.fillStyle = '#34d399';
+    ctx.fill();
+    ctx.strokeStyle = '#34d399';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(CX, CY + 31);
+    ctx.lineTo(CX, CY + 45);
+    ctx.moveTo(CX - 10, CY + 36);
+    ctx.lineTo(CX + 10, CY + 36);
+    ctx.moveTo(CX, CY + 45);
+    ctx.lineTo(CX - 7, CY + 56);
+    ctx.moveTo(CX, CY + 45);
+    ctx.lineTo(CX + 7, CY + 56);
+    ctx.stroke();
+
+    ctx.fillStyle = '#10b981';
+    ctx.font = 'bold 10px sans-serif';
+    ctx.fillText('E = 0', CX, CY + 60);
+
+    // 7. Lightning animation
+    if (this.lightningTimer > 0) {
+      ctx.strokeStyle = '#fef08a';
+      ctx.lineWidth = 5;
+      ctx.shadowColor = '#38bdf8';
+      ctx.shadowBlur = 15;
+      ctx.beginPath();
+      ctx.moveTo(CX + (Math.random() - 0.5) * 30, 0);
+      ctx.lineTo(CX - 12, 35);
+      ctx.lineTo(CX + 12, 65);
+      ctx.lineTo(CX, CY - R_OUTER);
+      ctx.arc(CX, CY, R_OUTER + 2, -Math.PI / 2, Math.PI / 2, false);
+      ctx.lineTo(CX - 10, CY + R_OUTER + 25);
+      ctx.lineTo(CX, h);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+  }
+};

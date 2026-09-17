@@ -755,7 +755,8 @@ function renderPhysikSkillDetail(skillId) {
     skill.id === 'elektroskop-funktion' ? 'elektrostatik' :
     skill.id === 'efeld-berechnen' ? 'coulomb' :
     skill.id === 'feldlinien-aequipotential' ? 'efeld' :
-    skill.id === 'kondensator-versuch' ? 'schaltungen' : null
+    skill.id === 'kondensator-versuch' ? 'schaltungen' :
+    skill.id === 'faraday-kaefig' ? 'faraday' : null
   );
 
   const backBtnText = CURRENT_PHYSIK_FOLDER ? '&larr; Zurück zum Ordner' : '&larr; Zurück zur Übersicht';
@@ -885,6 +886,28 @@ function renderPhysikSkillDetail(skillId) {
         <div class="sim-result-box" id="circuitResultBox">Lade Simulator...</div>
       </div>
     `;
+  } else if (simType === 'faraday') {
+    html += `
+      <div class="sim-container" style="margin-top: 1.5rem;">
+        <div class="sim-header">
+          <div class="sim-title"><span>🛡️</span><span>Interaktiver Faradayscher Käfig &amp; Blitzschutz-Simulator</span></div>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button class="sim-btn-action" id="btnFaradayToggleField" style="background:#0284c7;">⚡ Feld: AN</button>
+            <button class="sim-btn-action" id="btnFaradayLightning" style="background:#d97706;">🌩️ Blitz abfeuern!</button>
+          </div>
+        </div>
+        <div class="sim-canvas-wrapper"><canvas id="faradayCanvas" width="560" height="280"></canvas></div>
+        <div class="sim-controls-grid">
+          <div class="sim-control-group">
+            <button class="sim-btn-action" id="btnFaradaySlowMo" style="width:100%; background:var(--bg-subtle); color:var(--text-primary); border:1px solid var(--border-subtle);">⏱️ Zeitlupe: AUS</button>
+          </div>
+          <div class="sim-control-group">
+            <button class="sim-btn-action" id="btnFaradayReset" style="width:100%; background:var(--bg-subtle); color:var(--text-primary); border:1px solid var(--border-subtle);">🔄 Zurücksetzen</button>
+          </div>
+        </div>
+        <div class="sim-result-box" id="faradayResultBox">🛡️ <strong>Gleichgewicht:</strong> Äußeres Feld wird im Innenraum zu 100% kompensiert &bull; E_ges = 0 V/m</div>
+      </div>
+    `;
   }
 
   // 2. ÜBUNGSAUFGABEN MIT LÖSUNG
@@ -954,6 +977,7 @@ function renderPhysikSkillDetail(skillId) {
     if (simType === 'efeld' && typeof EFieldSim !== 'undefined') EFieldSim.init();
     if (simType === 'elektrostatik' && typeof ElectroscopeSim !== 'undefined') ElectroscopeSim.init();
     if (simType === 'schaltungen' && typeof CircuitSim !== 'undefined') CircuitSim.init();
+    if (simType === 'faraday' && typeof FaradaySim !== 'undefined') FaradaySim.init();
     renderPhysikKaTeX();
   }, 60);
 }
@@ -1077,6 +1101,7 @@ function switchTopicSubTab(topicId, tabName) {
       if (topicId.includes('efeld') && typeof EFieldSim !== 'undefined') EFieldSim.draw();
       if (topicId.includes('elektrostatik') && typeof ElectroscopeSim !== 'undefined') ElectroscopeSim.draw();
       if (topicId.includes('schaltungen') && typeof CircuitSim !== 'undefined') CircuitSim.draw();
+      if (topicId.includes('faraday') && typeof FaradaySim !== 'undefined') FaradaySim.draw();
     }, 50);
   }
 
@@ -1127,6 +1152,7 @@ function initPhysikSimulations() {
     if (typeof EFieldSim !== 'undefined') EFieldSim.init();
     if (typeof ElectroscopeSim !== 'undefined') ElectroscopeSim.init();
     if (typeof CircuitSim !== 'undefined') CircuitSim.init();
+    if (typeof FaradaySim !== 'undefined') FaradaySim.init();
     renderPhysikKaTeX();
   }, 80);
 }

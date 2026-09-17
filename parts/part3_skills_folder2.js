@@ -122,15 +122,35 @@ const SKILLS_FOLDER_2 = [
     num: '06',
     icon: '🛡️',
     color: '#10b981',
+    hasSim: 'faraday',
     tag: 'Meds.pdf S. 25',
     title: 'Der Faradaysche Käfig: Feldfreier Raum & Gegenfeld (S. 25)',
-    desc: 'Warum das Innere jedes geschlossenen Metallleiters feldfrei ist: Genaue Kraftkompensation Fel,inn = -Fel,auß.',
+    desc: 'Warum das Innere jedes metallischen Hohlkörpers feldfrei ist: Genaue Kraftkompensation Fel,inn = -Fel,auß.',
     visualHtml: `
       <div class="formula-hero-card" style="border-left: 6px solid #10b981;">
         <span class="formula-hero-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
-          🛡️ DER FARADAY'SCHE KÄFIG (MEDS.PDF S. 25)
+          🛡️ DER FARADAY'SCHE KÄFIG &amp; BLITZSCHUTZ (MEDS.PDF S. 25)
         </span>
         
+        <!-- KINDERLEICHTE BUS-ANALOGIE (ELI5) -->
+        <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(14, 165, 233, 0.08)); border: 1.5px solid rgba(16, 185, 129, 0.25); border-radius: 12px; padding: 1.2rem; margin: 1.2rem 0;">
+          <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.7rem;">
+            <span style="font-size:1.6rem;">🚌</span>
+            <strong style="font-size:1.05rem; color:#10b981;">Die kinderleichte Bus-Analogie (In 30 Sekunden verstanden!)</strong>
+          </div>
+          <div style="font-size: 0.9rem; line-height: 1.6; color: var(--text-primary);">
+            Stell dir einen gelben Schulbus vor:<br>
+            • 🪑 <strong>Die Sitze = Positive Atomkerne:</strong> Fest im Boden verschraubt. Sie können sich <em>niemals</em> von der Stelle bewegen!<br>
+            • 🛼 <strong>Kinder auf Rollschuhen = Freie Leitungselektronen:</strong> Sie sausen völlig reibungslos im Bus hin und her.<br>
+            • 🌪️ <strong>Riesen-Ventilator draußen = Äußeres E-Feld (<span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{auß}}">E_auß</span>):</strong><br>
+            Pustet Wind von links nach rechts (von <span class="katex-render" data-display="false" data-latex="+">+</span> nach <span class="katex-render" data-display="false" data-latex="-">-</span>). Da Elektronen negativ sind, rollen die Kinder mit voller Wucht <strong>entgegen dem Wind</strong> nach links (oder: die linke Plus-Wand zieht sie magnetisch an).<br>
+            • 😤 <strong>Das Gedränge an der Wand = Ladungsverschiebung (Influenz):</strong><br>
+            Links an der Wand stapeln sich jetzt hunderte Kinder (Minus-Überschuss). Rechts sind alle Sitze leer (Plus-Überschuss). Weil die Kinder links so eng zusammengequetscht sind, stoßen sie sich wütend ab &ndash; sie erzeugen einen Gegen-Wind nach rechts: das <strong>innere Gegenfeld <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{inn}}">E_inn</span></strong>!<br>
+            • 🤫 <strong>Absolute Windstille in der Mitte = Feldfreier Raum (<span class="katex-render" data-display="false" data-latex="E_{\\text{ges}} = 0">E_ges = 0</span>):</strong><br>
+            Wann hören die Kinder auf nach links zu rollen? Genau dann, wenn ihr eigener Gegen-Wind <strong>haargenau so stark</strong> ist wie der Riesen-Ventilator draußen! Mitten im Bus herrscht <em>totale Windstille</em>. Du sitzt gechillt auf deinem Sitz, isst ein Eis und merkst vom Sturm draußen absolut gar nichts!
+          </div>
+        </div>
+
         <!-- Bildliche SVG-Grafik des Faradayschen Käfigs mit Vektoren & Ladungen -->
         <div style="background: #090d16; border: 1px solid #1e293b; border-radius: 12px; padding: 1rem; margin: 1rem 0; text-align: center;">
           <svg viewBox="0 0 600 280" style="width: 100%; max-height: 280px; display: block; margin: 0 auto;" aria-label="Faradayscher Käfig Vektordiagramm">
@@ -183,108 +203,151 @@ const SKILLS_FOLDER_2 = [
             <!-- Linke Seite: Elektronenüberschuss (−) angezogen von + Platte -->
             <circle cx="198" cy="140" r="7" fill="#38bdf8"/>
             <text x="198" y="144" font-size="11" font-weight="bold" fill="#040711" text-anchor="middle">−</text>
-
             <circle cx="205" cy="105" r="7" fill="#38bdf8"/>
             <text x="205" y="109" font-size="11" font-weight="bold" fill="#040711" text-anchor="middle">−</text>
-
             <circle cx="205" cy="175" r="7" fill="#38bdf8"/>
             <text x="205" y="179" font-size="11" font-weight="bold" fill="#040711" text-anchor="middle">−</text>
-
             <circle cx="225" cy="75" r="7" fill="#38bdf8"/>
             <text x="225" y="79" font-size="11" font-weight="bold" fill="#040711" text-anchor="middle">−</text>
-
             <circle cx="225" cy="205" r="7" fill="#38bdf8"/>
             <text x="225" y="209" font-size="11" font-weight="bold" fill="#040711" text-anchor="middle">−</text>
 
-            <!-- Rechte Seite: Elektronenmangel / positive Ladung (+) abgestoßen von − Platte -->
+            <!-- Rechte Seite: Elektronenmangel / positive Ladung (+) -->
             <circle cx="402" cy="140" r="7" fill="#ef4444"/>
             <text x="402" y="144" font-size="11" font-weight="bold" fill="white" text-anchor="middle">+</text>
-
             <circle cx="395" cy="105" r="7" fill="#ef4444"/>
             <text x="395" y="109" font-size="11" font-weight="bold" fill="white" text-anchor="middle">+</text>
-
             <circle cx="395" cy="175" r="7" fill="#ef4444"/>
             <text x="395" y="179" font-size="11" font-weight="bold" fill="white" text-anchor="middle">+</text>
-
             <circle cx="375" cy="75" r="7" fill="#ef4444"/>
             <text x="375" y="79" font-size="11" font-weight="bold" fill="white" text-anchor="middle">+</text>
-
             <circle cx="375" cy="205" r="7" fill="#ef4444"/>
             <text x="375" y="209" font-size="11" font-weight="bold" fill="white" text-anchor="middle">+</text>
 
-            <!-- Vektoren im Innenraum: E_auß und E_inn heben sich weg! -->
+            <!-- Vektoren im Innenraum: E_auß und E_inn heben sich auf! -->
             <line x1="250" y1="108" x2="350" y2="108" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arr-blue)"/>
             <text x="300" y="102" font-size="10" fill="#38bdf8" font-family="monospace" font-weight="bold" text-anchor="middle">E_auß (nach rechts →)</text>
 
             <line x1="350" y1="124" x2="250" y2="124" stroke="#f97316" stroke-width="2.5" marker-end="url(#arr-orange)"/>
             <text x="300" y="136" font-size="10" fill="#f97316" font-family="monospace" font-weight="bold" text-anchor="middle">E_inn (nach links ← Gegenfeld)</text>
 
-            <!-- Innenraum Status -->
-            <rect x="250" y="152" width="100" height="32" rx="6" fill="#064e3b" stroke="#10b981" stroke-width="1.5"/>
-            <text x="300" y="167" font-size="12" fill="#a7f3d0" font-weight="bold" text-anchor="middle">🛡️ E_ges = 0 V/m</text>
-            <text x="300" y="179" font-size="9" fill="#6ee7b7" text-anchor="middle">FELDFREIER RAUM</text>
+            <!-- Entspannter Mensch im geschützten Inneren -->
+            <circle cx="300" cy="170" r="7" fill="#cbd5e1"/>
+            <line x1="300" y1="177" x2="300" y2="195" stroke="#cbd5e1" stroke-width="2"/>
+            <line x1="300" y1="183" x2="290" y2="192" stroke="#cbd5e1" stroke-width="2"/>
+            <line x1="300" y1="183" x2="310" y2="192" stroke="#cbd5e1" stroke-width="2"/>
+            <line x1="300" y1="195" x2="292" y2="208" stroke="#cbd5e1" stroke-width="2"/>
+            <line x1="300" y1="195" x2="308" y2="208" stroke="#cbd5e1" stroke-width="2"/>
+            <text x="300" y="166" font-size="8" fill="#1e293b" text-anchor="middle">🕶️</text>
+
+            <!-- Innenraum Status Badge -->
+            <rect x="235" y="215" width="130" height="26" rx="5" fill="#064e3b" stroke="#10b981" stroke-width="1.5"/>
+            <text x="300" y="232" font-size="11" fill="#a7f3d0" font-weight="bold" text-anchor="middle">🛡️ E_ges = 0 V/m (Feldfrei)</text>
           </svg>
         </div>
 
-        <div style="margin: 0.8rem 0; font-size: 0.9rem; line-height: 1.55; color: var(--text-primary); background: var(--bg-subtle); padding: 1rem; border-radius: 8px;">
-          <strong>Exakter Wortlaut der Unterrichtsmitschrift (S. 25):</strong><br>
-          <em>„Die Elektronen im Leiter bewegen sich so lange (infolge der elektrischen Kraft des äußeren Feldes), bis das innere Gegenfeld das äußere Feld aufhebt, denn dann wirkt keine Kraft mehr auf die Elektronen (beide Kräfte <span class="katex-render" data-display="false" data-latex="F_{\\text{el,inn}}">Fel,inn</span> und <span class="katex-render" data-display="false" data-latex="F_{\\text{el,auß}}">Fel,auß</span> heben sich genau weg).“</em>
+        <!-- KLAUSUR-SPICKZETTEL: DIE 4 SCHRITTE ZUM AUSWENDIGLERNEN -->
+        <div style="background: var(--bg-card); border: 2px solid #10b981; border-radius: 12px; padding: 1.2rem; margin: 1.2rem 0; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);">
+          <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.8rem;">
+            <span style="font-size:1.5rem;">📝</span>
+            <strong style="font-size:1.05rem; color:#10b981;">KLAUSUR-SPICKZETTEL: Was du in der Klausur EXAKT hinschreiben musst (Meds.pdf S. 25)</strong>
+          </div>
+          <div style="font-size: 0.88rem; color: var(--text-primary); line-height: 1.6;">
+            Wenn die Frage kommt: <em>„Erkläre physikalisch exakt, warum das Innere eines metallischen Leiters feldfrei ist“</em>, schreibe diese <strong>4 Schritte</strong> auf:
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 0.8rem;">
+            <div style="background:var(--bg-subtle); padding:0.85rem; border-radius:8px; border-left:4px solid #38bdf8;">
+              <strong style="color:#38bdf8; font-size:0.9rem;">1. Kraftwirkung auf Elektronen:</strong><br>
+              Bringt man einen metallischen Leiter in ein äußeres homogenes elektrisches Feld <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{auß}}">E_auß</span>, wirkt auf die frei beweglichen Leitungselektronen die Kraft <span class="katex-render" data-display="false" data-latex="\\vec{F}_{\\text{el,auß}} = -e \\cdot \\vec{E}_{\\text{auß}}">F = -e • E_auß</span>. Da Elektronen negativ geladen sind (<span class="katex-render" data-display="false" data-latex="-e">-e</span>), wandern sie <strong>entgegen der Richtung des äußeren Feldes</strong> (zur positiven Platte hin).
+            </div>
+
+            <div style="background:var(--bg-subtle); padding:0.85rem; border-radius:8px; border-left:4px solid #f97316;">
+              <strong style="color:#f97316; font-size:0.9rem;">2. Influenz &amp; Ladungstrennung:</strong><br>
+              An der dem Pluspol zugewandten Seite entsteht ein <strong>Elektronenüberschuss</strong> (negative Oberflächenladung), an der gegenüberliegenden Seite ein <strong>Elektronenmangel</strong> (positive Atomrümpfe / Oberflächenladung).
+            </div>
+
+            <div style="background:var(--bg-subtle); padding:0.85rem; border-radius:8px; border-left:4px solid #eab308;">
+              <strong style="color:#eab308; font-size:0.9rem;">3. Aufbau des Gegenfeldes:</strong><br>
+              Diese influenzierte Oberflächenladung erzeugt im Inneren des Leiters ein <strong>inneres Gegenfeld</strong> <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{inn}}">E_inn</span>. Weil Feldlinien immer von Plus nach Minus verlaufen, zeigt dieses innere Feld <strong>genau entgegengesetzt zum äußeren Feld</strong>!
+            </div>
+
+            <div style="background:var(--bg-subtle); padding:0.85rem; border-radius:8px; border-left:4px solid #10b981;">
+              <strong style="color:#10b981; font-size:0.9rem;">4. Kräftegleichgewicht &amp; Feldfreiheit:</strong><br>
+              Die Elektronenverschiebung läuft so lange weiter, bis das innere Gegenfeld das äußere Feld exakt aufhebt:
+              <div style="text-align:center; margin:0.5rem 0;">
+                <span class="katex-render" data-display="true" data-latex="\\vec{E}_{\\text{inn}} = -\\vec{E}_{\\text{auß}} \\iff \\vec{E}_{\\text{ges}} = \\vec{E}_{\\text{auß}} + \\vec{E}_{\\text{inn}} = \\vec{0}">E_inn = -E_auß <=> E_ges = 0</span>
+              </div>
+              In diesem Gleichgewichtszustand ist die Gesamtkraft auf jedes Elektron im Inneren exakt Null:
+              <div style="text-align:center; margin:0.5rem 0;">
+                <span class="katex-render" data-display="true" data-latex="\\vec{F}_{\\text{el,inn}} + \\vec{F}_{\\text{el,auß}} = \\vec{0}">F_inn + F_auß = 0</span>
+              </div>
+              Die Ladungsbewegung stoppt. Der Innenraum jedes allseitig geschlossenen Leiters ist völlig <strong>feldfrei</strong> (<span class="katex-render" data-display="false" data-latex="E_{\\text{ges}} = 0\\,\\frac{\\text{V}}{\\text{m}}">E_ges = 0 V/m</span>).
+            </div>
+          </div>
         </div>
 
-        <!-- 4-Schritte Ablauf Visualisierung -->
-        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.75rem; margin: 1rem 0;">
-          <div style="background:var(--bg-subtle); padding:0.85rem; border-radius:8px; border-top:3px solid #64748b;">
-            <div style="font-weight:bold; color:var(--text-primary); font-size:0.85rem; margin-bottom:0.3rem;">1. Neutraler Leiter</div>
+        <!-- ALLTAGS-ANWENDUNGEN -->
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; margin: 1rem 0;">
+          <div style="background:var(--bg-subtle); padding:0.85rem; border-radius:8px; border-top:3px solid #10b981;">
+            <div style="font-weight:bold; color:#10b981; font-size:0.85rem; margin-bottom:0.3rem;">🚗 Auto &amp; Flugzeug</div>
             <div style="font-size:0.8rem; color:var(--text-secondary); line-height:1.4;">
-              Im ungeladenen Metall bewegen sich Leitungselektronen frei und gleichmäßig. Keine äußeren Kräfte wirken.
+              Schlägt ein Blitz ein, fließen die Ladungen über die Metallaußenhaut in die Erde ab. Der Innenraum bleibt 100% feldfrei &ndash; Insassen passiert nichts!
             </div>
           </div>
           <div style="background:var(--bg-subtle); padding:0.85rem; border-radius:8px; border-top:3px solid #38bdf8;">
-            <div style="font-weight:bold; color:#38bdf8; font-size:0.85rem; margin-bottom:0.3rem;">2. Äußeres Feld <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{auß}}">E_auß</span></div>
+            <div style="font-weight:bold; color:#38bdf8; font-size:0.85rem; margin-bottom:0.3rem;">📱 Handy im Aufzug</div>
             <div style="font-size:0.8rem; color:var(--text-secondary); line-height:1.4;">
-              Das Feld übt eine elektrische Kraft <span class="katex-render" data-display="false" data-latex="\\vec{F}_{\\text{el}} = -e \\cdot \\vec{E}_{\\text{auß}}">F_el = -e • E_auß</span> aus. Elektronen strömen nach links (entgegen der Feldrichtung).
+              Warum hast du im Fahrstuhl keinen Empfang? Die Metallkabine schirmt hochfrequente elektromagnetische Wellen fast vollständig ab (Funkschatten).
             </div>
           </div>
-          <div style="background:var(--bg-subtle); padding:0.85rem; border-radius:8px; border-top:3px solid #f97316;">
-            <div style="font-weight:bold; color:#f97316; font-size:0.85rem; margin-bottom:0.3rem;">3. Das Gegenfeld <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{inn}}">E_inn</span></div>
+          <div style="background:var(--bg-subtle); padding:0.85rem; border-radius:8px; border-top:3px solid #f59e0b;">
+            <div style="font-weight:bold; color:#f59e0b; font-size:0.85rem; margin-bottom:0.3rem;">🍗 Mikrowellengitter</div>
             <div style="font-size:0.8rem; color:var(--text-secondary); line-height:1.4;">
-              Links entsteht ein Minus-Überschuss, rechts ein Plus-Überschuss. Diese Oberflächenladungen bauen ein Gegenfeld von Plus nach Minus (nach links) auf!
-            </div>
-          </div>
-          <div style="background:var(--bg-subtle); padding:0.85rem; border-radius:8px; border-top:3px solid #10b981;">
-            <div style="font-weight:bold; color:#10b981; font-size:0.85rem; margin-bottom:0.3rem;">4. Gleichgewicht (<span class="katex-render" data-display="false" data-latex="E_{\\text{ges}} = 0">E_ges = 0</span>)</div>
-            <div style="font-size:0.8rem; color:var(--text-secondary); line-height:1.4;">
-              In Bruchteilen einer Nanosekunde gilt <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{inn}} = -\\vec{E}_{\\text{auß}}">E_inn = -E_auß</span>. Die Wanderung stoppt; das Innere ist absolut geschützt!
+              Das schwarze Lochgitter im Sichtfenster wirkt als Faradayscher Käfig für die Mikrowellenstrahlung (Wellenlänge ca. 12 cm), lässt aber sichtbares Licht (Nanometer) durch.
             </div>
           </div>
         </div>
 
+        <!-- 1-SATZ MERKSATZ -->
         <div class="formula-takeaway-box" style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid #10b981;">
           <span style="font-size: 1.2rem;">💡</span>
           <div>
-            <strong>Klausur-Ergebnis:</strong> Im Inneren eines allseitig geschlossenen metallischen Hohlkörpers ist die elektrische Feldstärke stets <span class="katex-render" data-display="false" data-latex="E_{\\text{ges}} = 0\\,\\frac{\\text{V}}{\\text{m}}">E_ges = 0</span>. Es herrscht absoluter Schutz vor äußeren elektrostatischen Feldern und Blitzeinschlägen.
+            <strong>1-Satz-Spickzettel:</strong> Freie Elektronen verschieben sich durch die äußere Feldkraft so lange an die Oberfläche des Leiters, bis ihr inneres Gegenfeld das äußere Feld exakt kompensiert (<span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{inn}} = -\\vec{E}_{\\text{auß}}">E_inn = -E_auß</span>) &ndash; der Innenraum ist daher immer feldfrei (<span class="katex-render" data-display="false" data-latex="E_{\\text{ges}} = 0\\,\\frac{\\text{V}}{\\text{m}}">E_ges = 0 V/m</span>).
           </div>
         </div>
       </div>
     `,
-    summary: 'Freie Elektronen verschieben sich durch äußere E-Felder an die Oberfläche, bis das innere Feld das äußere Feld exakt kompensiert.',
+    summary: 'Freie Elektronen verschieben sich durch äußere E-Felder an die Oberfläche, bis das innere Gegenfeld das äußere Feld exakt kompensiert (E_inn = -E_auß).',
     takeaways: [
-      'Fel,inn + Fel,auß = 0 -> Gesamtfeld im Inneren ist Null.',
-      'Ladungen sitzen ausschließlich auf der Außenfläche des Leiters.',
-      'Auto, Flugzeug und Mikrowellengehäuse nutzen dieses Prinzip.'
+      'Fel,inn + Fel,auß = 0 -> Gesamtfeld im Inneren jedes geschlossenen Leiters ist exakt Null.',
+      'Ladungen sitzen im elektrostatischen Gleichgewicht ausschließlich auf der Außenfläche des Leiters.',
+      'Auto, Flugzeug, Koaxialkabel und Mikrowellengehäuse nutzen diesen perfekten Schutz.'
     ],
     tasks: [
       {
-        title: 'Klausuraufgabe: Begründung des feldfreien Raums',
+        title: 'Klausuraufgabe: Der 4-Schritte-Beweis für den feldfreien Raum (Meds.pdf S. 25)',
         prompt: `
-          Begründe physikalisch exakt, warum sich im Inneren einer geschlossenen Metallkugel kein elektrisches Feld aufbauen kann, wenn man sie in ein starkes homogenes Feld bringt.
+          Erkläre physikalisch exakt anhand der mikroskopischen Ladungsträger, warum das Innere einer hohlen Metallkugel feldfrei ist, wenn sie sich zwischen zwei geladenen Kondensatorplatten befindet.
         `,
         solution: `
-          1. Bringt man die Metallkugel in ein äußeres Feld <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{auß}}">E_auß</span>, wirkt auf die freien Leitungselektronen die Kraft <span class="katex-render" data-display="false" data-latex="\\vec{F}_{\\text{el,auß}} = -e \\cdot \\vec{E}_{\\text{auß}}">F = -e • E</span>.<br>
-          2. Die Elektronen strömen entgegen der Feldrichtung an die Oberfläche der Kugel.<br>
-          3. Auf der einen Seite entsteht ein Elektronenüberschuss (-), auf der gegenüberliegenden ein Mangel (+). Diese influenzierte Oberflächenladung erzeugt im Hohlraum ein <strong>inneres Gegenfeld</strong> <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{inn}}">E_inn</span>.<br>
-          4. Die Ladungsverschiebung läuft so lange weiter, bis <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{inn}} = -\\vec{E}_{\\text{auß}}">E_inn = -E_auß</span> gilt.<br>
-          5. Dann ist die Gesamtkraft auf jedes Elektron im Inneren Null (<span class="katex-render" data-display="false" data-latex="\\vec{F}_{\\text{ges}} = 0">F_ges = 0</span>). Die Verschiebung stoppt im Gleichgewichtszustand und der Innenraum ist völlig feldfrei (<span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{ges}} = 0">E_ges = 0</span>).
+          <strong>Die 4 Schritte für die volle Punktzahl:</strong><br><br>
+          1. <strong>Kraftwirkung:</strong> Im homogenen Feld <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{auß}}">E_auß</span> wirkt auf die freien Leitungselektronen die elektrische Kraft <span class="katex-render" data-display="false" data-latex="\\vec{F}_{\\text{el,auß}} = -e \\cdot \\vec{E}_{\\text{auß}}">F = -e • E</span>. Sie driften entgegen der Feldrichtung (zur positiven Platte).<br><br>
+          2. <strong>Ladungsverschiebung (Influenz):</strong> Auf der linken Seite bildet sich ein Elektronenüberschuss (negative Ladung), auf der rechten Seite ein Elektronenmangel (positive Ladung).<br><br>
+          3. <strong>Inneres Gegenfeld:</strong> Diese getrennten Oberflächenladungen bauen im Hohlraum ein Gegenfeld <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{inn}}">E_inn</span> auf, das von Plus nach Minus (nach links) zeigt.<br><br>
+          4. <strong>Kräftegleichgewicht:</strong> Elektronen wandern so lange, bis <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{inn}} = -\\vec{E}_{\\text{auß}}">E_inn = -E_auß</span> ist. Dann ist die resultierende Gesamtkraft auf jedes Elektron Null (<span class="katex-render" data-display="false" data-latex="\\vec{F}_{\\text{ges}} = \\vec{0}">F_ges = 0</span>). Der Innenraum ist vollkommen feldfrei (<span class="katex-render" data-display="false" data-latex="E_{\\text{ges}} = 0\\,\\frac{\\text{V}}{\\text{m}}">E_ges = 0 V/m</span>).
+        `
+      },
+      {
+        title: 'Transferaufgabe: Warum schützt ein Cabrio mit Stoffdach bei Gewitter NICHT?',
+        prompt: `
+          Warum ist man in einem normalen Auto mit Metallkarosserie vor Blitzen geschützt, in einem offenen Cabriolet oder einem Wohnmobil mit reiner Glasfaser-/Kunststoffkarosserie hingegen in Lebensgefahr?
+        `,
+        solution: `
+          <strong>Physikalische Begründung:</strong><br><br>
+          1. <strong>Leitfähigkeit der Hülle:</strong> Der Faradaysche Käfig funktioniert nur, wenn die Hülle aus einem elektrischen Leiter (Metall) besteht, in dem sich freie Elektronen bewegen können.<br><br>
+          2. <strong>Allseitige Geschlossenheit:</strong> Stoffverdecke, Glasfaser oder Kunststoff sind <em>Nichtleiter (Isolatoren)</em>. In ihnen gibt es keine freien Elektronen, die ein Gegenfeld aufbauen könnten.<br><br>
+          3. <strong>Konsequenz beim Blitzeinschlag:</strong> Der Blitz sucht den Weg des geringsten Widerstands. Beim Cabrio kann der Blitz direkt durch das Stoffdach in die Insassen oder den Überrollbügel überschlagen, anstatt über eine geschlossene metallische Außenhaut harmlos außen herum zur Erde abgeleitet zu werden.
         `
       }
     ]
