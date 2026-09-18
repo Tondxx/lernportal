@@ -101,32 +101,74 @@ const SKILLS_FOLDER_3 = [
     num: '09',
     icon: '🧭',
     color: '#06b6d4',
-    tag: 'Meds.pdf S. 7, 10',
+    tag: 'Meds.pdf S. 7, 10, 31',
     title: 'Feldlinien & Äquipotentiallinien (mit Beweis!) (S. 7, 10)',
-    desc: 'Die 7 fundamentalen Eigenschaften der Feldlinien, der exakte Klausur-Widerspruchsbeweis (warum kein Schnittpunkt) und Äquipotentiallinien (ΔW = 0).',
+    desc: 'Die 7 fundamentalen Eigenschaften der Feldlinien, der exakte Klausur-Widerspruchsbeweis und die 7 Eigenschaften von Äquipotentiallinien (Meds.pdf S. 10).',
     visualHtml: `
       <div class="formula-hero-card" style="border-left: 6px solid #06b6d4;">
         <span class="formula-hero-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">
-          🧭 DIE 7 EIGENSCHAFTEN VON FELDLINIEN (MEDS.PDF S. 7)
+          🧭 KLAUSUR-FOKUS (MEDS.PDF S. 7, 10, 31): FELDLINIEN &amp; ÄQUIPOTENTIALLINIEN
         </span>
-        <div style="margin: 0.8rem 0; font-size: 0.86rem; line-height: 1.5; color: var(--text-primary); background: var(--bg-subtle); padding: 1rem; border-radius: 8px;">
-          1. Verlaufen stets vom <strong>Pluspol zum Minuspol</strong> (Richtung der Kraft auf positive Ladungen).<br>
-          2. Eine <strong>größere Feldliniendichte</strong> veranschaulicht ein stärkeres elektrisches Feld.<br>
-          3. Die <strong>Tangente</strong> an eine Feldlinie gibt in jedem Punkt die Kraftrichtung an.<br>
-          4. Feldlinien stehen <strong>immer senkrecht auf Metalloberflächen</strong> (im elektrostatischen Gleichgewicht).<br>
-          5. Feldlinien stehen <strong>immer senkrecht auf Äquipotentiallinien</strong>.<br>
-          6. Feldlinien <strong>kreuzen / schneiden sich niemals</strong> (siehe Beweis unten!).<br>
-          7. Feldlinien sind <strong>keine realen Fäden</strong>, sondern ein anschauliches mathematisches Modell zur Beschreibung des realen Feldes.
+        
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0.6rem 0 1rem 0; line-height: 1.5;">
+          Auf Seite 31 deiner Unterrichtsnotizen steht als festes Klausurthema: <em>„Eigenschaften von Feldlinien (mit Beweis) und Äquipotentiallinien“</em>. Hier sind beide offiziellen 7-Punkte-Listen aus dem Unterricht (S. 7 &amp; S. 10) direkt gegenübergestellt:
+        </p>
+
+        <!-- 2-SPALTEN GRID: FELDLINIEN VS ÄQUIPOTENTIALLINIEN -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; margin-bottom: 1.2rem;">
+          
+          <!-- LINKE SPALTE: EIGENSCHAFTEN VON FELDLINIEN (S. 7) -->
+          <div style="background: var(--bg-subtle); border-radius: 8px; padding: 1rem; border-top: 3px solid #06b6d4;">
+            <div style="font-weight: 800; color: #06b6d4; font-size: 1rem; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>⚡</span><span>Die 7 Eigenschaften von Feldlinien (S. 7)</span>
+            </div>
+            <div style="font-size: 0.84rem; line-height: 1.55; color: var(--text-primary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <div><strong>1. Richtung:</strong> Verlaufen stets vom <strong>Pluspol zum Minuspol</strong> (Richtung der Kraft auf eine positive Probeladung).</div>
+              <div><strong>2. Dichte:</strong> Eine <strong>größere Feldliniendichte</strong> veranschaulicht ein stärkeres elektrisches Feld <span class="katex-render" data-display="false" data-latex="E">E</span>.</div>
+              <div><strong>3. Kraftrichtung:</strong> Die <strong>Tangente</strong> an eine Feldlinie gibt in jedem Punkt exakt die Richtung der elektrischen Kraft an.</div>
+              <div><strong>4. Metalloberflächen:</strong> Feldlinien stehen <strong>immer senkrecht</strong> auf metallischen Leiteroberflächen.</div>
+              <div><strong>5. Orthogonalität:</strong> Feldlinien stehen <strong>immer im 90°-Winkel (senkrecht)</strong> auf Äquipotentiallinien.</div>
+              <div><strong>6. Keine Schnittpunkte:</strong> Feldlinien <strong>schneiden / kreuzen sich niemals</strong> (siehe Widerspruchsbeweis unten!).</div>
+              <div><strong>7. Modellcharakter:</strong> Feldlinien sind <strong>gedachte Modelllinien</strong> zur Veranschaulichung des realen Feldes und seiner Kraftwirkung.</div>
+            </div>
+          </div>
+
+          <!-- RECHTE SPALTE: EIGENSCHAFTEN VON ÄQUIPOTENTIALLINIEN (S. 10) -->
+          <div style="background: var(--bg-subtle); border-radius: 8px; padding: 1rem; border-top: 3px solid #10b981;">
+            <div style="font-weight: 800; color: #10b981; font-size: 1rem; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem;">
+              <span>🌐</span><span>Die 7 Eigenschaften von Äquipotentiallinien (S. 10)</span>
+            </div>
+            <div style="font-size: 0.84rem; line-height: 1.55; color: var(--text-primary); display: flex; flex-direction: column; gap: 0.45rem;">
+              <div><strong>1. Gleiches Potenzial:</strong> Jeder Punkt auf einer Äquipotentiallinie hat <strong>denselben elektrischen Potenzialwert</strong> (<span class="katex-render" data-display="false" data-latex="\\varphi = \\text{const.}">φ = const.</span>).</div>
+              <div><strong>2. Keine Arbeit (<span class="katex-render" data-display="false" data-latex="W = 0">W = 0</span>):</strong> Das Verschieben einer Ladung <span class="katex-render" data-display="false" data-latex="q">q</span> entlang der Linie verrichtet <strong>keine elektrische Arbeit</strong> (<span class="katex-render" data-display="false" data-latex="W = q \\cdot \\Delta\\varphi = 0\\,\\text{J}">W = q • Δφ = 0</span>), da die Kraft senkrecht zum Weg steht.</div>
+              <div><strong>3. 90°-Winkel (Senkrecht):</strong> Äquipotentiallinien stehen <strong>immer im 90°-Winkel</strong> zu den elektrischen Feldlinien.</div>
+              <div><strong>4. Kein Stromfluss:</strong> Zwischen zwei Punkten auf derselben Äquipotentiallinie kann <strong>kein Strom fließen</strong>, da keine Spannung (Potenzialdifferenz <span class="katex-render" data-display="false" data-latex="U = \\Delta\\varphi = 0\\,\\text{V}">U = Δφ = 0</span>) anliegt.</div>
+              <div><strong>5. Niemals schneiden:</strong> Verschiedene Äquipotentiallinien <strong>kreuzen sich niemals</strong> (sonst hätte ein Punkt gleichzeitig zwei verschiedene Potenziale, was physikalisch unmöglich ist!).</div>
+              <div><strong>6. Abstand &amp; Feldstärke:</strong> Eng beieinander liegende Äquipotentiallinien bedeuten eine <strong>hohe Feldstärke</strong> (<span class="katex-render" data-display="false" data-latex="E = \\frac{\\Delta U}{\\Delta s}">E = ΔU/Δs</span>; vgl. Höhenlinien auf einer Wanderkarte: steiler Hang).</div>
+              <div><strong>7. Leiteroberflächen:</strong> Jede metallische Leiteroberfläche im elektrostatischen Gleichgewicht ist selbst eine <strong>zusammenhängende Äquipotentialfläche</strong>.</div>
+            </div>
+          </div>
+
         </div>
 
-        <div style="margin-top: 1rem; padding: 1rem; background: rgba(6, 182, 212, 0.08); border-left: 4px solid #06b6d4; border-radius: 6px;">
-          <h4 style="color:#06b6d4; margin:0 0 0.5rem 0;">⭐ Der Widerspruchsbeweis: Warum schneiden sich Feldlinien nie? (S. 7)</h4>
+        <!-- DER OFFIZIELLE WIDERSPRUCHSBEWEIS (S. 7) -->
+        <div style="padding: 1rem; background: rgba(6, 182, 212, 0.08); border-left: 4px solid #06b6d4; border-radius: 6px; margin-top: 1rem;">
+          <h4 style="color:#06b6d4; margin:0 0 0.5rem 0; font-size: 0.95rem;">⭐ Klausur-Beweis: Warum können sich zwei Feldlinien niemals schneiden? (Meds.pdf S. 7)</h4>
           <div style="font-size:0.86rem; line-height:1.55; color:var(--text-secondary);">
             <strong>1. Behauptung:</strong> Zwei elektrische Feldlinien schneiden sich niemals.<br>
             <strong>2. Annahme zum Widerspruch:</strong> Angenommen, zwei Feldlinien würden sich in einem Punkt <span class="katex-render" data-display="false" data-latex="P">P</span> schneiden.<br>
-            <strong>3. Folgerung:</strong> Dann gäbe es im Punkt <span class="katex-render" data-display="false" data-latex="P">P</span> zwei verschiedene Tangenten. Auf eine dort platzierte positive Probeladung <span class="katex-render" data-display="false" data-latex="q">q</span> müssten somit <strong>gleichzeitig zwei Kräfte in unterschiedliche Richtungen</strong> wirken.<br>
-            <strong>4. Widerspruch:</strong> Die Gesamtkraft <span class="katex-render" data-display="false" data-latex="\\vec{F}_{\\text{ges}} = q \\cdot \\vec{E}">F = q • E</span> an einem festen Ort im Raum ist jedoch ein <em>eindeutiger Vektor</em>. Eine Ladung kann nicht gleichzeitig in zwei verschiedene Richtungen beschleunigt werden.<br>
-            <strong>5. Schlussfolgerung:</strong> Die Annahme ist falsch. Feldlinien können sich niemals schneiden! &squ;
+            <strong>3. Folgerung:</strong> Dann gäbe es im Punkt <span class="katex-render" data-display="false" data-latex="P">P</span> zwei verschiedene Tangenten. Auf eine dort platzierte positive Probeladung <span class="katex-render" data-display="false" data-latex="q">q</span> müssten somit <strong>gleichzeitig zwei elektrische Kräfte in unterschiedliche Richtungen</strong> wirken.<br>
+            <strong>4. Widerspruch:</strong> Die Gesamtkraft <span class="katex-render" data-display="false" data-latex="\\vec{F}_{\\text{ges}} = q \\cdot \\vec{E}">F = q • E</span> an einem festen Ort im Raum ist jedoch ein <em>eindeutiger Vektor</em>. Eine Ladung kann an einem Ort nur in genau eine resultierende Richtung beschleunigt werden.<br>
+            <strong>5. Schlussfolgerung:</strong> Die Annahme ist falsch. Feldlinien schneiden sich niemals! &squ;
+          </div>
+        </div>
+
+        <!-- VERGLEICHS-MERKKASTEN HÖHENLINIEN -->
+        <div class="formula-takeaway-box" style="background: rgba(16, 185, 129, 0.08); border-left: 4px solid #10b981; margin-top: 1rem;">
+          <span style="font-size: 1.2rem;">💡</span>
+          <div>
+            <strong>Die Wanderkarten-Analogie (Höhenlinien):</strong><br>
+            Äquipotentiallinien sind exakt wie <strong>Höhenlinien auf einer Wanderkarte</strong>! Wenn du entlang einer Höhenlinie läufst, machst du keine Höhenmeter (keine Arbeit verrichtet, <span class="katex-render" data-display="false" data-latex="W = 0">W = 0</span>). Die Feldlinie ist der Weg, den eine Kugel rollt: immer im 90°-Winkel steil bergab zur Höhenlinie! Liegen die Linien ganz eng, ist der Berg extrem steil (große Feldstärke <span class="katex-render" data-display="false" data-latex="E">E</span>).
           </div>
         </div>
       </div>
