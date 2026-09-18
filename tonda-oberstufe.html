@@ -12600,8 +12600,15 @@ const SKILLS_FOLDER_3 = [
           <div class="katex-render" data-display="true" data-latex="\\sigma = \\frac{Q}{A} = \\frac{3,0 \\cdot 10^{-8}\\,\\text{C}}{0,060\\,\\text{m}^2} = 5,0 \\cdot 10^{-7}\\,\\frac{\\text{C}}{\\text{m}^2} = 0,50\\,\\frac{\\mu\\text{C}}{\\text{m}^2}"></div><br>
 
           <strong>b) Elektrische Feldstärke E:</strong><br>
-          <div class="katex-render" data-display="true" data-latex="E = \\frac{\\sigma}{\\varepsilon_0} = \\frac{5,0 \\cdot 10^{-7}\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{m}^2}}{8,854 \\cdot 10^{-12}\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{V}\\cdot\\text{m}}} \\approx 56\\,471\\,\\frac{\\text{V}}{\\text{m}} \\approx 56,5\\,\\frac{\\text{kV}}{\\text{m}}"></div><br>
-          <em>Hinweis zur Mitschrift S. 27:</em> In der handschriftlichen Mitschrift stand 565... durch Rundung & Kommastellen &ndash; die exakte physikalische Feldstärke beträgt 56,5 kV/m!
+          <div class="katex-render" data-display="true" data-latex="E = \\frac{\\sigma}{\\varepsilon_0} = \\frac{5,0 \\cdot 10^{-7}\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{m}^2}}{8,854 \\cdot 10^{-12}\\,\\frac{\\text{A}\\cdot\\text{s}}{\\text{V}\\cdot\\text{m}}} = 56\\,471\\,\\frac{\\text{V}}{\\text{m}}"></div><br>
+          <div style="background:var(--bg-subtle); padding:0.8rem; border-radius:6px; border-left:3px solid #10b981; font-size:0.84rem; line-height:1.55; margin-top:0.4rem;">
+            <strong>1. Warum ist <span class="katex-render" data-display="false" data-latex="1\\,\\text{C} = 1\\,\\text{A}\\cdot\\text{s}">1 C = 1 A•s</span>?</strong><br>
+            Aus der Definition der Stromstärke <span class="katex-render" data-display="false" data-latex="I = \\frac{Q}{t}">I = Q/t</span> folgt <span class="katex-render" data-display="false" data-latex="Q = I \\cdot t">Q = I • t</span>. Die Einheit der Ladung ist also <span class="katex-render" data-display="false" data-latex="1\\,\\text{Coulomb} = 1\\,\\text{Ampere}\\cdot\\text{Sekunde}">1 C = 1 A•s</span>. Der Vorteil von <span class="katex-render" data-display="false" data-latex="\\text{A}\\cdot\\text{s}">A•s</span>: Es kürzt sich direkt gegen das <span class="katex-render" data-display="false" data-latex="\\text{A}\\cdot\\text{s}">A•s</span> von <span class="katex-render" data-display="false" data-latex="\\varepsilon_0">ε0</span> weg, und es bleibt sauber <span class="katex-render" data-display="false" data-latex="\\frac{\\text{V}}{\\text{m}}">V/m</span> stehen!<br><br>
+            <strong>2. Signifikante Stellen (Rundung für die Klausur):</strong><br>
+            Der Taschenrechner liefert <span class="katex-render" data-display="false" data-latex="56\\,471\\,\\frac{\\text{V}}{\\text{m}}">56 471 V/m</span>. Das ist viel zu genau für das Endergebnis! Da die Messwerte 2 bzw. 3 Stellen haben, rundet man sinnvoll:<br>
+            • Auf 2 Stellen: <strong style="color:#10b981;"><span class="katex-render" data-display="false" data-latex="E \\approx 56\\,\\frac{\\text{kV}}{\\text{m}} = 56\\,000\\,\\frac{\\text{V}}{\\text{m}} = 5{,}6 \\cdot 10^4\\,\\frac{\\text{V}}{\\text{m}}">E ≈ 56 kV/m</span></strong><br>
+            • Auf 3 Stellen: <strong style="color:#06b6d4;"><span class="katex-render" data-display="false" data-latex="E \\approx 56{,}5\\,\\frac{\\text{kV}}{\\text{m}} = 56\\,500\\,\\frac{\\text{V}}{\\text{m}}">E ≈ 56,5 kV/m</span></strong> (exakt so steht <code style="color:#fde047;">565...</code> in deiner Mitschrift S. 27).
+          </div>
         `
       }
     ]
