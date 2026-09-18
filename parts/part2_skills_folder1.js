@@ -252,9 +252,9 @@ const SKILLS_FOLDER_1 = [
         `
       },
       {
-        title: 'Übungsaufgabe 1 (Klausur-Typ): Plattenkondensator F(U) mit CAS & 5-Schritte-Schema',
+        title: 'Übungsaufgabe 1 (Klausur-Original): Anziehungskraft paralleler Kondensatorplatten F(U)',
         prompt: `
-          Im Praktikum wird die Kraft F zwischen zwei Kondensatorplatten in Abhängigkeit von der Hochspannung U gemessen:
+          In einem physikalischen Experiment wird die Kraft <span class="katex-render" data-display="false" data-latex="F">F</span> zwischen zwei parallelen Kondensatorplatten in Abhängigkeit von der anliegenden Hochspannung <span class="katex-render" data-display="false" data-latex="U">U</span> gemessen:
           <table style="width:100%; border-collapse:collapse; margin:0.8rem 0; font-size:0.88rem; text-align:center;">
             <tr style="background:var(--bg-subtle);">
               <th style="border:1px solid var(--border-subtle); padding:0.4rem;">U in kV</th>
@@ -273,28 +273,44 @@ const SKILLS_FOLDER_1 = [
               <td style="border:1px solid var(--border-subtle); padding:0.4rem;">222,5</td>
             </tr>
           </table>
-          Führe die Auswertung nach dem 5-Schritte-Schema deines Lehrers durch (inkl. Bestimmung von U bei F = 50 mN).
+          <strong>Typische Klausur-Aufgabenstellung:</strong><br>
+          a) Ermittle aus den Messwerten den funktionalen Zusammenhang <span class="katex-render" data-display="false" data-latex="F(U)">F(U)</span>. Bestätige deine Vermutung rechnerisch oder mithilfe einer geeigneten Regression und gib die Funktionsgleichung mit der Proportionalitätskonstanten und deren Einheit an.<br>
+          b) Berechne diejenige Spannung <span class="katex-render" data-display="false" data-latex="U">U</span>, bei der eine Kraft von genau <span class="katex-render" data-display="false" data-latex="F = 50\\,\\text{mN}">F = 50 mN</span> auf die Platten wirkt. Achte auf eine physikalisch sinnvolle Rundung (signifikante Stellen)!
         `,
         solution: `
-          <strong>1. Vermutung aufstellen:</strong><br>
-          Wenn sich die Spannung <span class="katex-render" data-display="false" data-latex="U">U</span> von 2,0 kV auf 4,0 kV verdoppelt, vervierfacht sich annähernd die Kraft <span class="katex-render" data-display="false" data-latex="F">F</span> von 35,5 mN auf 142,0 mN (<span class="katex-render" data-display="false" data-latex="\\frac{142{,}0}{35{,}5} = 4{,}0 = 2^2">142/35,5 = 4</span>). Deswegen vermuten wir einen quadratischen Zusammenhang der Form <span class="katex-render" data-display="false" data-latex="F \\sim U^2">F ~ U²</span> (<span class="katex-render" data-display="false" data-latex="F = k \\cdot U^2">F = k · U²</span>).<br><br>
+          <div style="margin-bottom:0.8rem; background:rgba(56,189,248,0.08); border-left:3px solid #38bdf8; padding:0.6rem; border-radius:4px; font-size:0.82rem; color:var(--text-secondary);">
+            💡 <strong>Klausur-Tipp:</strong> Auch wenn der Lehrer in der Aufgabenstellung nur <em>„Ermittle den Zusammenhang F(U)“</em> schreibt, wendest du für Teil a) die Schritte 1 bis 4 und für Teil b) den Schritt 5 an!
+          </div>
 
-          <strong>2. Beweis durchführen (Quotientenbildung &amp; CAS):</strong><br>
-          Spalte mit <span class="katex-render" data-display="false" data-latex="k = \\frac{F}{U^2}">k = F/U²</span> in Lists &amp; Spreadsheet berechnen (<code style="color:#fde047;">=f / (u^2)</code>):<br>
-          • <span class="katex-render" data-display="false" data-latex="U = 1\\,\\text{kV}: k = 9{,}00\\,\\frac{\\text{mN}}{\\text{kV}^2}">k1 = 9,00</span> | <span class="katex-render" data-display="false" data-latex="U = 2\\,\\text{kV}: k = 8{,}875\\,\\frac{\\text{mN}}{\\text{kV}^2}">k2 = 8,875</span> | <span class="katex-render" data-display="false" data-latex="U = 3\\,\\text{kV}: k = 8{,}889\\,\\frac{\\text{mN}}{\\text{kV}^2}">k3 = 8,889</span><br>
-          • <span class="katex-render" data-display="false" data-latex="U = 4\\,\\text{kV}: k = 8{,}875\\,\\frac{\\text{mN}}{\\text{kV}^2}">k4 = 8,875</span> | <span class="katex-render" data-display="false" data-latex="U = 5\\,\\text{kV}: k = 8{,}900\\,\\frac{\\text{mN}}{\\text{kV}^2}">k5 = 8,900</span>.<br>
-          Regression <code>LinRegMx(u2, f)</code> liefert <span class="katex-render" data-display="false" data-latex="R^2 = 0{,}99998">R² = 0,99998</span>.<br><br>
+          <strong>Zu Teil a) Ermittlung des Zusammenhangs F(U) [Schritte 1 bis 4]:</strong><br><br>
+
+          <strong>1. Vermutung formulieren:</strong><br>
+          Verdoppelt sich die Spannung <span class="katex-render" data-display="false" data-latex="U">U</span> (z. B. von 2,0 kV auf 4,0 kV), dann vervierfacht sich annähernd die Kraft <span class="katex-render" data-display="false" data-latex="F">F</span> von 35,5 mN auf 142,0 mN (<span class="katex-render" data-display="false" data-latex="\\frac{142{,}0}{35{,}5} = 4{,}0 = 2^2">142/35,5 = 4</span>).<br>
+          Vermutung: Quadratischer Zusammenhang der Form <span class="katex-render" data-display="false" data-latex="F \\sim U^2">F ~ U²</span> bzw. <span class="katex-render" data-display="false" data-latex="F = k \\cdot U^2">F = k · U²</span>.<br><br>
+
+          <strong>2. Beweis durchführen (CAS-Regression oder Quotientenbildung):</strong><br>
+          • <em>Weg 1 (CAS-Regression):</em> Quadratische Regression <code>QuadReg(u, f)</code> liefert:<br>
+          <div class="katex-render" data-display="true" data-latex="y = 8{,}89 \\cdot x^2 \\quad (R^2 = 0{,}99998)"></div>
+          • <em>Weg 2 (Tabellenzeile mit Quotienten <span class="katex-render" data-display="false" data-latex="k = \\frac{F}{U^2}">k = F/U²</span> in <span class="katex-render" data-display="false" data-latex="\\frac{\\text{mN}}{\\text{kV}^2}">mN/kV²</span>):</em><br>
+          <span class="katex-render" data-display="false" data-latex="k_1 = \\frac{9{,}0}{1^2} = 9{,}00">k1 = 9,00</span> | <span class="katex-render" data-display="false" data-latex="k_2 = \\frac{35{,}5}{4} = 8{,}875">k2 = 8,875</span> | <span class="katex-render" data-display="false" data-latex="k_3 = \\frac{80{,}0}{9} = 8{,}889">k3 = 8,889</span><br>
+          <span class="katex-render" data-display="false" data-latex="k_4 = \\frac{142{,}0}{16} = 8{,}875">k4 = 8,875</span> | <span class="katex-render" data-display="false" data-latex="k_5 = \\frac{222{,}5}{25} = 8{,}900">k5 = 8,900</span>.<br><br>
 
           <strong>3. Beurteilung:</strong><br>
-          <em>Weil das Bestimmtheitsmaß <span class="katex-render" data-display="false" data-latex="R^2">R²</span> sehr dicht an 1 liegt (bzw. die Werte für <span class="katex-render" data-display="false" data-latex="F/U^2">F/U²</span> im Rahmen der Messgenauigkeit konstant sind), ist unsere Vermutung bestätigt.</em><br><br>
+          <em>Weil das Bestimmtheitsmaß <span class="katex-render" data-display="false" data-latex="R^2 \\approx 1{,}0">R² ≈ 1,0</span> sehr dicht an 1 liegt (bzw. die Werte für <span class="katex-render" data-display="false" data-latex="F/U^2">F/U²</span> im Rahmen der Messgenauigkeit konstant sind), ist die Vermutung bestätigt.</em><br><br>
 
           <strong>4. Mittelwert &amp; Funktionsgleichung mit Einheit:</strong><br>
-          <span class="katex-render" data-display="false" data-latex="\\bar{k} = 8{,}89\\,\\frac{\\text{mN}}{\\text{kV}^2}">k̄ = 8,89 mN/kV²</span>.<br>
+          Mittelwert: <span class="katex-render" data-display="false" data-latex="\\bar{k} = 8{,}89\\,\\frac{\\text{mN}}{\\text{kV}^2}">k̄ = 8,89 mN/kV²</span> (auf 3 signifikante Stellen gerundet).<br>
           <div class="katex-render" data-display="true" data-latex="F(U) = 8{,}89\\,\\frac{\\text{mN}}{\\text{kV}^2} \\cdot U^2"></div><br>
 
-          <strong>5. Anwendung (Extrapolation):</strong><br>
-          Welche Spannung <span class="katex-render" data-display="false" data-latex="U">U</span> erzeugt eine Kraft von <span class="katex-render" data-display="false" data-latex="F = 50\\,\\text{mN}">F = 50 mN</span>?<br>
-          <div class="katex-render" data-display="true" data-latex="50 = 8{,}89 \\cdot U^2 \\implies U = \\sqrt{\\frac{50}{8{,}89}} \\approx 2{,}37\\,\\text{kV} = 2370\\,\\text{V}"></div>
+          <strong>Zu Teil b) Berechnung der Spannung für F = 50 mN [Schritt 5]:</strong><br>
+          Gleichung nach <span class="katex-render" data-display="false" data-latex="U">U</span> umstellen und <span class="katex-render" data-display="false" data-latex="F = 50\\,\\text{mN}">F = 50 mN</span> einsetzen:<br>
+          <div class="katex-render" data-display="true" data-latex="50\\,\\text{mN} = 8{,}89\\,\\frac{\\text{mN}}{\\text{kV}^2} \\cdot U^2 \\implies U^2 = \\frac{50}{8{,}89}\\,\\text{kV}^2 \\approx 5{,}624\\,\\text{kV}^2"></div>
+          Wurzel ziehen:<br>
+          <div class="katex-render" data-display="true" data-latex="U = \\sqrt{5{,}624\\,\\text{kV}^2} \\approx 2{,}3715\\,\\text{kV}"></div>
+          <div style="background:var(--bg-subtle); padding:0.6rem; border-left:3px solid #10b981; border-radius:4px; margin-top:0.5rem;">
+            <strong>Signifikante Stellen beachten:</strong> Da die Vorgabe <span class="katex-render" data-display="false" data-latex="F = 50\\,\\text{mN}">F = 50 mN</span> bzw. die Spannungen 2 signifikante Ziffern haben, wird das Endergebnis auf 2 Stellen gerundet:<br>
+            <strong style="color:#10b981; font-size:0.95rem;">U ≈ 2,4 kV</strong> (oder <span class="katex-render" data-display="false" data-latex="2{,}37\\,\\text{kV}">2,37 kV</span> bei 3 Stellen).
+          </div>
         `
       },
       {
