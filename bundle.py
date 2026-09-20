@@ -9,8 +9,10 @@ with open(os.path.join(portal_dir, "index.html"), "r", encoding="utf-8") as f:
 with open(os.path.join(portal_dir, "style.css"), "r", encoding="utf-8") as f:
     css = f.read()
 
-# Replace <link rel="stylesheet" href="style.css"> with <style>...</style>
-html_bundled = html.replace('<link rel="stylesheet" href="style.css">', f'<style>\n{css}\n</style>')
+import re
+
+# Replace <link rel="stylesheet" href="style.css..."> with <style>...</style>
+html_bundled = re.sub(r'<link rel="stylesheet" href="style\.css(?:\?[^"]*)?">', f'<style>\n{css}\n</style>', html)
 
 # Inline KaTeX CSS if available locally
 katex_css_path = os.path.join(portal_dir, "katex.min.css")
@@ -30,8 +32,9 @@ scripts = ["calendar.js", "politik.js", "timetable.js", "steckbrief.js", "schar.
 for s in scripts:
     with open(os.path.join(portal_dir, s), "r", encoding="utf-8") as f:
         js = f.read()
-    tag = f'<script src="{s}"></script>'
-    html_bundled = html_bundled.replace(tag, f'<script>\n// --- {s} ---\n{js}\n</script>')
+    m = re.search(rf'<script src="{re.escape(s)}(?:\?[^"]*)?"></script>', html_bundled)
+    if m:
+        html_bundled = html_bundled[:m.start()] + f'<script>\n// --- {s} ---\n{js}\n</script>' + html_bundled[m.end():]
 
 target1 = os.path.join(portal_dir, "tonda-oberstufe.html")
 target2 = os.path.join(school_dir, "tonda-oberstufe.html")

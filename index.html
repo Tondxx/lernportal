@@ -18,7 +18,7 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20260921_3">
 </head>
 <body>
 
@@ -39,7 +39,7 @@
         <button class="nav-tab" data-tab="faecher" onclick="navigateTo('faecher')">
           📚 Fächer
         </button>
-        <button class="nav-tab" data-tab="seminarfach" onclick="navigateTo('seminarfach')">
+        <button class="nav-tab" data-tab="seminarfach" onclick="navigateTo('seminarfach'); if(typeof renderSeminarfachView==='function')renderSeminarfachView();">
           🤖 Seminarfach KI
         </button>
         <button class="nav-tab" data-tab="kalender" onclick="navigateTo('kalender')">
@@ -2216,9 +2216,9 @@
   <script src="steckbrief.js"></script>
   <script src="schar.js"></script>
   <script src="matching.js"></script>
-  <script src="user_content.js"></script>
+  <script src="user_content.js?v=20260921_3"></script>
   <script src="physik.js"></script>
-  <script src="seminarfach.js"></script>
-  <script src="main_hub.js"></script>
+  <script src="seminarfach.js?v=20260921_3"></script>
+  <script src="main_hub.js?v=20260921_3"></script>
 </body>
 </html>

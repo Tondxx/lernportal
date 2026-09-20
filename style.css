@@ -6304,3 +6304,144 @@ input[type=range]::-webkit-slider-thumb:hover {
     width: 100%;
   }
 }
+
+
+/* PDF & Upload Buttons in SF Hero */
+.sf-btn-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0.55rem 1.15rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.sf-btn-upload:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.sf-btn-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 0.55rem 1.15rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.sf-btn-pdf:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+}
+
+.sf-mitschriften-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.sf-mitschriften-text h2 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 0.35rem 0;
+}
+
+.sf-mitschriften-text p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+  max-width: 820px;
+}
+
+/* Print Stylesheet */
+@media print {
+  .portal-nav,
+  .breadcrumbs-bar,
+  .sf-subnav-bar,
+  .sf-toolbar,
+  .sf-hero-actions,
+  .sf-entry-actions,
+  .btn-cal-action,
+  .sf-btn-copy-prompt,
+  .theme-segmented-control,
+  .btn-nav-privacy,
+  .iserv-nav-badge,
+  .student-badge,
+  .exam-pill-urgent,
+  #view-dashboard,
+  #view-faecher,
+  #view-fach-detail,
+  #view-topic-workspace,
+  #view-kalender,
+  #view-stundenplan,
+  .portal-modal-backdrop,
+  .sf-toast {
+    display: none !important;
+  }
+
+  #view-seminarfach {
+    display: block !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 10.5pt !important;
+  }
+
+  .sf-hero-card {
+    border: 1px solid #ddd !important;
+    border-left: 5px solid #8b5cf6 !important;
+    box-shadow: none !important;
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+
+  .sf-hero-actions {
+    display: none !important;
+  }
+
+  .sf-entry-card {
+    border: 1px solid #ccc !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .sf-prompt-box {
+    background: #f8f8f8 !important;
+    border: 1px solid #ddd !important;
+  }
+
+  .sf-reflection-card {
+    background: #fbf7ff !important;
+    border: 1px solid #8b5cf6 !important;
+    border-left: 4px solid #8b5cf6 !important;
+  }
+}

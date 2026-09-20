@@ -245,7 +245,7 @@ const SF_TOOLS_DATA = [
   }
 ];
 
-// --- 2. LOCAL STORAGE CONTROLLER ---
+// --- 2. LOCAL STORAGE & DATA ACCESS ---
 const SF_STORAGE_KEY = "tonda_seminarfach_journal_v2";
 const SF_FAV_TOPIC_KEY = "tonda_seminarfach_favorite_topic";
 
@@ -278,10 +278,36 @@ function setSfFavoriteTopicId(topicId) {
   localStorage.setItem(SF_FAV_TOPIC_KEY, topicId);
 }
 
-// Current active sub-tab inside Seminarfach View: 'journal' | 'themen' | 'prompts' | 'tools'
+// Current active sub-tab: 'journal' | 'mitschriften' | 'themen' | 'prompts' | 'tools'
 let currentSfTab = 'journal';
 let currentSfCategoryFilter = 'Alle';
 let currentSfSearchQuery = '';
+
+// Seed default Seminarfach guideline document in userDB if not yet present
+async function seedSeminarfachStarterDoc() {
+  if (typeof userDB !== 'undefined' && userDB) {
+    try {
+      await userDB.initPromise;
+      const existing = await userDB.getDocument('doc_sf_starter');
+      if (!existing && !localStorage.getItem('deleted_doc_sf_starter')) {
+        await userDB.addDocument({
+          id: 'doc_sf_starter',
+          fachId: 'seminarfach',
+          title: 'Seminarfach-Vorgaben: Prozessjournal & Eigenanteil',
+          category: 'mitschrift',
+          notes: 'Offizielle Schwerpunkte für das Seminarfach (Jahrgang 12):\n1. Fortlaufende Dokumentation im Prozessjournal (mindestens alle 1-2 Wochen ein Eintrag).\n2. Präzise formulierte Forschungsfrage (Leitmotiv: Wie lernt man am besten mit KI?).\n3. Empirischer/praktischer Eigenanteil zwingend erforderlich (z. B. Lernexperiment mit Mitschülern, Prompt-Evaluation oder Schulumfrage).\n4. Kritische Selbstreflexion über Cognitive Offloading und Vermeidung von Pseudowissen.',
+          fileName: null,
+          fileType: 'text/plain',
+          fileSize: 520,
+          fileData: null,
+          createdAt: new Date().toISOString()
+        });
+      }
+    } catch (e) {
+      console.warn("Could not seed starter doc for seminarfach:", e);
+    }
+  }
+}
 
 // --- 3. MAIN SEMINARFACH VIEW RENDERER ---
 function renderSeminarfachView() {
@@ -303,7 +329,7 @@ function renderSeminarfachView() {
         </div>
         <h1 class="sf-hero-title">Prozessjournal &amp; Forschungstagebuch</h1>
         <p class="sf-hero-subtitle">
-          Dokumentation von Prompt-Experimenten, Reflexionen über kognitives Lernen und Ausarbeitung der Seminarfacharbeit.
+          Dokumentation von Prompt-Experimenten, Reflexionen über kognitives Lernen, Mitschriften und Konzeption der Seminarfacharbeit.
         </p>
 
         <!-- Quick Stats Grid -->
@@ -312,13 +338,13 @@ function renderSeminarfachView() {
             <div class="sf-stat-num">${entries.length}</div>
             <div class="sf-stat-label">📔 Journal-Einträge</div>
           </div>
+          <div class="sf-stat-box" onclick="switchSfTab('mitschriften')" style="cursor: pointer;">
+            <div class="sf-stat-num" id="sfDocCountBadge">📁</div>
+            <div class="sf-stat-label">📝 Mitschriften &amp; Dateien</div>
+          </div>
           <div class="sf-stat-box" onclick="switchSfTab('themen')" style="cursor: pointer;">
             <div class="sf-stat-num">${SF_THEMEN.length}</div>
             <div class="sf-stat-label">💡 Forschungsansätze</div>
-          </div>
-          <div class="sf-stat-box" onclick="switchSfTab('prompts')" style="cursor: pointer;">
-            <div class="sf-stat-num">${SF_PROMPT_TEMPLATES.length}</div>
-            <div class="sf-stat-label">⚡ Getestete Tutoren-Prompts</div>
           </div>
           <div class="sf-stat-box" onclick="switchSfTab('themen')" style="cursor: pointer;">
             <div class="sf-stat-label-small">Favorit Seminararbeit:</div>
@@ -330,10 +356,16 @@ function renderSeminarfachView() {
       <!-- Action Buttons -->
       <div class="sf-hero-actions">
         <button class="sf-btn-primary" onclick="openSfNewEntryModal()">
-          <span>➕</span> Neuer Eintrag
+          <span>➕</span> Neuer Journal-Eintrag
+        </button>
+        <button class="sf-btn-upload" onclick="triggerSfUploadModal()">
+          <span>📤</span> Mitschrift / Datei einfügen
+        </button>
+        <button class="sf-btn-pdf" onclick="exportSfJournalPDF()">
+          <span>📄</span> Als PDF exportieren / Drucken
         </button>
         <button class="sf-btn-secondary" onclick="exportSfJournalMarkdown()">
-          <span>📥</span> Als Markdown exportieren
+          <span>📥</span> Als Markdown
         </button>
         <button class="sf-btn-outline" onclick="resetSfJournalDefaults()" title="Standard-Einträge wiederherstellen">
           <span>🔄</span> Reset
@@ -345,6 +377,9 @@ function renderSeminarfachView() {
     <div class="sf-subnav-bar">
       <button class="sf-subnav-btn ${currentSfTab === 'journal' ? 'active' : ''}" onclick="switchSfTab('journal')">
         📔 Prozessjournal &amp; Chronik (${entries.length})
+      </button>
+      <button class="sf-subnav-btn ${currentSfTab === 'mitschriften' ? 'active' : ''}" onclick="switchSfTab('mitschriften')">
+        📁 Mitschriften &amp; Dokumente
       </button>
       <button class="sf-subnav-btn ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')">
         💡 Themenideen &amp; Forschungsfragen (${SF_THEMEN.length})
@@ -362,6 +397,7 @@ function renderSeminarfachView() {
   `;
 
   renderCurrentSfSubTab();
+  updateSfDocBadgeCount();
 }
 
 function switchSfTab(tabName) {
@@ -381,12 +417,34 @@ function renderCurrentSfSubTab() {
 
   if (currentSfTab === 'journal') {
     renderSfJournalView(container);
+  } else if (currentSfTab === 'mitschriften') {
+    renderSfMitschriftenView(container);
   } else if (currentSfTab === 'themen') {
     renderSfThemenView(container);
   } else if (currentSfTab === 'prompts') {
     renderSfPromptsView(container);
   } else if (currentSfTab === 'tools') {
     renderSfToolsView(container);
+  }
+}
+
+// Helper to update doc count in header
+async function updateSfDocBadgeCount() {
+  if (typeof userDB !== 'undefined' && userDB) {
+    try {
+      const docs = await userDB.getDocumentsByFach('seminarfach');
+      const badge = document.getElementById('sfDocCountBadge');
+      if (badge) badge.textContent = docs.length;
+    } catch (e) {}
+  }
+}
+
+// Helper to open upload modal for seminarfach
+function triggerSfUploadModal() {
+  if (typeof openUploadModal === 'function') {
+    openUploadModal('seminarfach', 'mitschrift');
+  } else {
+    alert("Das Dokumenten-Upload-Modul wird geladen... Bitte versuche es in wenigen Sekunden erneut.");
   }
 }
 
@@ -458,7 +516,7 @@ function renderSfJournalView(container) {
             <div class="sf-entry-section sf-prompt-box">
               <div class="sf-prompt-head">
                 <span class="sf-section-label">💬 Verwendeter Prompt:</span>
-                <button class="sf-btn-copy-prompt" onclick="copySfText('${escapeForAttr(e.prompt)}', this)">
+                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('${e.id}', this)">
                   📋 Prompt kopieren
                 </button>
               </div>
@@ -473,7 +531,7 @@ function renderSfJournalView(container) {
             </div>
           ` : ''}
 
-          <!-- Kritische Reflexion & Lerneffekt: Das Herzstück des Journals -->
+          <!-- Kritische Reflexion & Lerneffekt -->
           ${e.reflection ? `
             <div class="sf-reflection-card">
               <div class="sf-reflection-head">
@@ -534,7 +592,51 @@ function getCategoryColorClass(cat) {
   return 'neutral';
 }
 
-// --- 5. SUB-TAB 2: THEMENIDEEN FÜR DIE SEMINARFACHARBEIT ---
+function copySfEntryPrompt(entryId, btnElement) {
+  const entries = getSfJournalEntries();
+  const entry = entries.find(e => e.id === entryId);
+  if (entry && entry.prompt) {
+    copySfText(entry.prompt, btnElement);
+  }
+}
+
+// --- 5. SUB-TAB 2: MITSCHRIFTEN & DOKUMENTE ---
+async function renderSfMitschriftenView(container) {
+  container.innerHTML = `
+    <div class="sf-mitschriften-intro">
+      <div class="sf-mitschriften-text">
+        <h2>📁 Eigene Mitschriften, Dateien &amp; Notizen</h2>
+        <p>
+          Füge hier handschriftliche Notizen, Fotos von Tafelbildern, Unterrichtsmitschriften oder PDFs (z. B. Bewertungsbögen, Handouts) ein. 
+          Alle Dokumente werden offline &amp; sicher in deinem Browser gespeichert.
+        </p>
+      </div>
+      <button class="sf-btn-primary" onclick="triggerSfUploadModal()">
+        <span>📤</span> Neue Datei / Notiz hochladen
+      </button>
+    </div>
+    <div id="sfMitschriftenGridContainer" style="margin-top: 1.2rem;">
+      <div style="padding: 2rem; text-align: center; color: var(--text-muted);">Lade Dokumente...</div>
+    </div>
+  `;
+
+  if (typeof renderSubjectUserDocuments === 'function') {
+    await renderSubjectUserDocuments('seminarfach', 'sfMitschriftenGridContainer');
+  } else {
+    document.getElementById('sfMitschriftenGridContainer').innerHTML = `
+      <div class="sf-empty-state">
+        <div class="sf-empty-icon">📁</div>
+        <h3>Mitschriften-Modul bereit</h3>
+        <p>Klicke oben auf „Neue Datei / Notiz hochladen“, um deine erste Mitschrift einzufügen.</p>
+        <button class="sf-btn-primary" onclick="triggerSfUploadModal()" style="margin-top: 0.8rem;">
+          ➕ Mitschrift einfügen
+        </button>
+      </div>
+    `;
+  }
+}
+
+// --- 6. SUB-TAB 3: THEMENIDEEN FÜR DIE SEMINARFACHARBEIT ---
 function renderSfThemenView(container) {
   const favTopicId = getSfFavoriteTopicId();
 
@@ -642,7 +744,7 @@ function toggleSfFavoriteTopic(topicId) {
   showSfToast("Favorit für Seminararbeit aktualisiert! ⭐");
 }
 
-// --- 6. SUB-TAB 3: PROMPT-STUDIO & TUTOREN-VORLAGEN ---
+// --- 7. SUB-TAB 4: PROMPT-STUDIO & TUTOREN-VORLAGEN ---
 function renderSfPromptsView(container) {
   let cardsHtml = SF_PROMPT_TEMPLATES.map(p => `
     <div class="sf-prompt-card">
@@ -651,7 +753,7 @@ function renderSfPromptsView(container) {
           <span class="sf-badge-pill sf-badge-purple">${p.category}</span>
           <h3 class="sf-prompt-card-title">${p.title}</h3>
         </div>
-        <button class="sf-btn-copy-prompt primary-copy" onclick="copySfText('${escapeForAttr(p.prompt)}', this)">
+        <button class="sf-btn-copy-prompt primary-copy" onclick="copySfTemplatePrompt('${p.id}', this)">
           📋 Prompt kopieren
         </button>
       </div>
@@ -674,7 +776,14 @@ function renderSfPromptsView(container) {
   `;
 }
 
-// --- 7. SUB-TAB 4: KI-MODELLVERGLEICH ---
+function copySfTemplatePrompt(templateId, btnElement) {
+  const t = SF_PROMPT_TEMPLATES.find(p => p.id === templateId);
+  if (t && t.prompt) {
+    copySfText(t.prompt, btnElement);
+  }
+}
+
+// --- 8. SUB-TAB 5: KI-MODELLVERGLEICH ---
 function renderSfToolsView(container) {
   let toolsHtml = SF_TOOLS_DATA.map(tool => `
     <div class="sf-tool-card">
@@ -737,7 +846,7 @@ function renderSfToolsView(container) {
   `;
 }
 
-// --- 8. MODAL: ENTRY CREATION & EDITING ---
+// --- 9. MODAL: ENTRY CREATION & EDITING ---
 let CURRENT_SF_EDIT_ID = null;
 
 function openSfNewEntryModal() {
@@ -855,7 +964,229 @@ function resetSfJournalDefaults() {
   showSfToast("Journal auf Standard zurückgesetzt 🔄");
 }
 
-// --- 9. EXPORTS & HELPERS ---
+// --- 10. PDF-EXPORT & PRINT ENGINE ---
+function exportSfJournalPDF() {
+  const entries = getSfJournalEntries();
+  const favTopicId = getSfFavoriteTopicId();
+  const favTopic = SF_THEMEN.find(t => t.id === favTopicId) || SF_THEMEN[0];
+
+  let printHtml = `
+    <!DOCTYPE html>
+    <html lang="de">
+    <head>
+      <meta charset="UTF-8">
+      <title>Prozessjournal - Seminarfach KI - Tonda Beutler</title>
+      <style>
+        @page {
+          size: A4 portrait;
+          margin: 1.8cm 1.5cm;
+        }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+          color: #1d1d1f;
+          line-height: 1.5;
+          margin: 0;
+          padding: 1.5rem;
+          font-size: 10.5pt;
+          background: #ffffff;
+        }
+        .header-box {
+          border-bottom: 2px solid #8b5cf6;
+          padding-bottom: 1rem;
+          margin-bottom: 1.5rem;
+        }
+        .header-title {
+          font-size: 18pt;
+          font-weight: 800;
+          color: #1d1d1f;
+          margin: 0 0 0.3rem 0;
+        }
+        .header-meta {
+          font-size: 9pt;
+          color: #4b5563;
+          line-height: 1.45;
+        }
+        .fav-box {
+          background: #f8f6fc;
+          border-left: 4px solid #8b5cf6;
+          padding: 0.8rem 1rem;
+          margin-bottom: 1.8rem;
+          border-radius: 4px;
+        }
+        .entry-card {
+          border: 1px solid #d1d5db;
+          border-radius: 6px;
+          padding: 1.1rem 1.3rem;
+          margin-bottom: 1.4rem;
+          page-break-inside: avoid;
+          break-inside: avoid;
+        }
+        .entry-header {
+          display: flex;
+          justify-content: space-between;
+          border-bottom: 1px solid #e5e7eb;
+          padding-bottom: 0.4rem;
+          margin-bottom: 0.6rem;
+          font-size: 8.5pt;
+          color: #6b7280;
+          font-weight: 600;
+        }
+        .entry-title {
+          font-size: 13pt;
+          font-weight: 700;
+          margin: 0 0 0.5rem 0;
+          color: #111827;
+        }
+        .section-label {
+          font-size: 8pt;
+          font-weight: 700;
+          text-transform: uppercase;
+          color: #4b5563;
+          margin-top: 0.5rem;
+          margin-bottom: 0.2rem;
+        }
+        .prompt-box {
+          background: #f3f4f6;
+          border-left: 3px solid #9ca3af;
+          padding: 0.6rem 0.8rem;
+          font-family: 'Courier New', Courier, monospace;
+          font-size: 9pt;
+          white-space: pre-wrap;
+          word-break: break-word;
+          margin: 0.3rem 0;
+        }
+        .reflection-box {
+          background: #f5f3ff;
+          border: 1px solid #c4b5fd;
+          border-left: 4px solid #8b5cf6;
+          border-radius: 4px;
+          padding: 0.8rem 1rem;
+          margin-top: 0.7rem;
+        }
+        .reflection-title {
+          font-weight: 700;
+          color: #6d28d9;
+          font-size: 9pt;
+          margin-bottom: 0.3rem;
+        }
+        .tags {
+          margin-top: 0.5rem;
+          font-size: 8pt;
+          color: #6b7280;
+        }
+        .print-btn-bar {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1.5rem;
+          padding: 0.8rem 1rem;
+          background: #f3f4f6;
+          border-radius: 8px;
+        }
+        .btn-print {
+          background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+          color: white;
+          border: none;
+          padding: 0.6rem 1.4rem;
+          font-size: 10pt;
+          font-weight: bold;
+          border-radius: 20px;
+          cursor: pointer;
+          box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
+        }
+        @media print {
+          .print-btn-bar { display: none !important; }
+          body { padding: 0 !important; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="print-btn-bar">
+        <span>📄 <strong>Druck- &amp; PDF-Vorschau:</strong> Wähle im Druckmenü als Ziel <em>„Als PDF speichern“</em></span>
+        <button class="btn-print" onclick="window.print()">🖨️ Jetzt als PDF drucken / speichern</button>
+      </div>
+
+      <div class="header-box">
+        <h1 class="header-title">🎓 Prozessjournal &amp; Forschungstagebuch: Seminarfach KI</h1>
+        <div class="header-meta">
+          <strong>Schüler:</strong> Tonda Beutler &bull; <strong>Jahrgang:</strong> 12 (Gymnasiale Oberstufe 2026/2027)<br>
+          <strong>Themenschwerpunkt:</strong> Künstliche Intelligenz im Lern- und Bildungsalltag<br>
+          <strong>Zentrale Leitfrage:</strong> „Wie lernt man am besten mit KI?“ &bull; <strong>Druckdatum:</strong> ${getTodayGermanDate()}
+        </div>
+      </div>
+
+      <div class="fav-box">
+        <strong>Aktuell favorisiertes Thema für die Seminarfacharbeit:</strong><br>
+        <span style="font-size: 11pt; font-weight: bold; color: #6d28d9;">${favTopic.title}</span><br>
+        <em>${favTopic.subtitle}</em><br>
+        <div style="margin-top: 0.3rem; font-size: 9pt;"><strong>Forschungsfrage:</strong> ${favTopic.question}</div>
+      </div>
+
+      <h2 style="font-size: 12pt; text-transform: uppercase; color: #4b5563; border-bottom: 1px solid #ccc; padding-bottom: 0.2rem; margin-top: 1.5rem;">
+        Chronologische Journaleinträge (${entries.length})
+      </h2>
+  `;
+
+  entries.forEach((e, idx) => {
+    printHtml += `
+      <div class="entry-card">
+        <div class="entry-header">
+          <span>📅 Datum: ${e.date || '-'} &bull; Fach: ${e.subject || 'Allgemein'}</span>
+          <span>Kategorie: ${e.category} &bull; Modell: ${e.model}</span>
+        </div>
+        <div class="entry-title">Eintrag ${entries.length - idx}: ${escapeHtml(e.title)}</div>
+
+        ${e.task ? `
+          <div class="section-label">🎯 Aufgabenstellung &amp; Kontext:</div>
+          <div>${escapeHtml(e.task)}</div>
+        ` : ''}
+
+        ${e.prompt ? `
+          <div class="section-label">💬 Verwendeter Prompt:</div>
+          <div class="prompt-box">${escapeHtml(e.prompt)}</div>
+        ` : ''}
+
+        ${e.result ? `
+          <div class="section-label">📊 Beobachtung &amp; Ergebnis der KI:</div>
+          <div>${escapeHtml(e.result)}</div>
+        ` : ''}
+
+        ${e.reflection ? `
+          <div class="reflection-box">
+            <div class="reflection-title">🧠 Kritische Lernreflexion (Seminarfach-Fokus):</div>
+            <div>${escapeHtml(e.reflection)}</div>
+          </div>
+        ` : ''}
+
+        ${e.tags && e.tags.length > 0 ? `
+          <div class="tags">Schlagwörter: ${e.tags.map(t => '#' + t).join(' ')}</div>
+        ` : ''}
+      </div>
+    `;
+  });
+
+  printHtml += `
+    </body>
+    </html>
+  `;
+
+  const printWindow = window.open('', '_blank');
+  if (printWindow) {
+    printWindow.document.open();
+    printWindow.document.write(printHtml);
+    printWindow.document.close();
+    setTimeout(() => {
+      printWindow.focus();
+      printWindow.print();
+    }, 500);
+    showSfToast("PDF-Druckansicht in neuem Tab geöffnet! 📄");
+  } else {
+    // Fallback in current page
+    window.print();
+  }
+}
+
+// --- 11. EXPORTS & HELPERS ---
 function exportSfJournalMarkdown() {
   const entries = getSfJournalEntries();
   let md = `# 📔 Prozessjournal: Mein Weg mit KI im Seminarfach\n`;
@@ -878,7 +1209,6 @@ function exportSfJournalMarkdown() {
     md += `---\n\n`;
   });
 
-  // Download file
   downloadTextFile(md, "seminarfach_ki_journal_export.md");
   showSfToast("Journal als Markdown heruntergeladen! 📥");
 }
@@ -913,23 +1243,33 @@ ${fav.theories.map(t => `- ${t}`).join('\n')}
 }
 
 function copySfText(text, btnElement = null) {
-  navigator.clipboard.writeText(text).then(() => {
-    showSfToast("In die Zwischenablage kopiert! 📋");
-    if (btnElement) {
-      const orig = btnElement.innerHTML;
-      btnElement.innerHTML = "✅ Kopiert!";
-      setTimeout(() => { btnElement.innerHTML = orig; }, 1800);
-    }
-  }).catch(() => {
-    // Fallback
-    const ta = document.createElement("textarea");
-    ta.value = text;
-    document.body.appendChild(ta);
-    ta.select();
-    document.execCommand("copy");
-    document.body.removeChild(ta);
-    showSfToast("In die Zwischenablage kopiert! 📋");
-  });
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showSfToast("In die Zwischenablage kopiert! 📋");
+      if (btnElement) {
+        const orig = btnElement.innerHTML;
+        btnElement.innerHTML = "✅ Kopiert!";
+        setTimeout(() => { btnElement.innerHTML = orig; }, 1800);
+      }
+    }).catch(() => fallbackCopy(text, btnElement));
+  } else {
+    fallbackCopy(text, btnElement);
+  }
+}
+
+function fallbackCopy(text, btnElement = null) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand("copy");
+  document.body.removeChild(ta);
+  showSfToast("In die Zwischenablage kopiert! 📋");
+  if (btnElement) {
+    const orig = btnElement.innerHTML;
+    btnElement.innerHTML = "✅ Kopiert!";
+    setTimeout(() => { btnElement.innerHTML = orig; }, 1800);
+  }
 }
 
 function downloadTextFile(text, filename) {
@@ -962,17 +1302,7 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
-function escapeForAttr(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/\\/g, '\\\\')
-    .replace(/'/g, "\\'")
-    .replace(/"/g, '&quot;')
-    .replace(/\n/g, '\\n')
-    .replace(/\r/g, '');
-}
-
-// Toast notification helper
+// Global Toast helper
 function showSfToast(msg) {
   let toast = document.getElementById('sfGlobalToast');
   if (!toast) {
@@ -986,4 +1316,22 @@ function showSfToast(msg) {
   setTimeout(() => {
     toast.classList.remove('visible');
   }, 2400);
+}
+
+// --- 12. AUTOMATIC INITIALIZATION ---
+// Self-initialize on DOM ready so seminarfachRoot is never empty
+function initSeminarfachModule() {
+  seedSeminarfachStarterDoc();
+  const root = document.getElementById('seminarfachRoot');
+  if (root) {
+    renderSeminarfachView();
+  }
+}
+
+if (typeof document !== 'undefined') {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSeminarfachModule);
+  } else {
+    initSeminarfachModule();
+  }
 }

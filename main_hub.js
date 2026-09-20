@@ -2084,5 +2084,6 @@ window.addEventListener('DOMContentLoaded', () => {
   navigateTo('dashboard');
   initIservModule();
   checkPrivacyLockOnLoad();
+  if (typeof initSeminarfachModule === 'function') initSeminarfachModule();
 });
 

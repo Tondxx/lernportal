@@ -482,6 +482,8 @@ async function saveUploadDocument(event) {
         renderFachDetail(fachId);
       } else if (fachId === 'physik' && typeof renderPhysikPortal === 'function') {
         renderPhysikPortal();
+      } else if (fachId === 'seminarfach' && typeof renderSeminarfachView === 'function') {
+        renderSeminarfachView();
       }
 
       // Update badge counts
@@ -666,6 +668,8 @@ async function deleteDocWithConfirm(id, fachId) {
       renderFachDetail(fachId);
     } else if (fachId === 'physik' && typeof renderPhysikPortal === 'function') {
       renderPhysikPortal();
+    } else if (fachId === 'seminarfach' && typeof renderSeminarfachView === 'function') {
+      renderSeminarfachView();
     }
     updateSubjectDocumentBadge(fachId);
   } catch (err) {
