@@ -357,7 +357,7 @@ async function seedSeminarfachStarterDoc() {
   }
 }
 
-// --- 3. MAIN SEMINARFACH VIEW RENDERER (GOODNOTES- / BÜCHLEIN-DESIGN) ---
+// --- 3. MAIN SEMINARFACH VIEW RENDERER (CLEAN & MINIMALIST DESIGN) ---
 function renderSeminarfachView() {
   const container = document.getElementById('seminarfachRoot');
   if (!container) return;
@@ -367,102 +367,77 @@ function renderSeminarfachView() {
   const favTopic = SF_THEMEN.find(t => t.id === favTopicId) || SF_THEMEN[0];
 
   container.innerHTML = `
-    <!-- Top Bar: Quick Actions & IServ Status Badge -->
-    <div class="sf-book-topbar">
-      <div class="sf-book-topbar-left">
-        <span class="sf-book-badge">📘 Goodnotes-Journal</span>
-        <span class="sf-book-course-pill">Abi28 sf4 &bull; Hr. Jatzeck</span>
-        <span class="sf-book-deadline-pill">⏰ Abgabe: Heute 09:59 Uhr</span>
+    <!-- Top Action Bar -->
+    <div class="sf-topbar">
+      <div class="sf-topbar-left">
+        <span class="sf-badge-pill sf-badge-purple">📘 Seminarfach 4</span>
+        <span class="sf-badge-pill sf-badge-neutral">Abi28 sf4 &bull; Hr. Jatzeck</span>
+        <span class="sf-badge-pill sf-badge-amber">⏰ Abgabe: Heute 09:59 Uhr</span>
       </div>
-      <div class="sf-book-topbar-right">
-        <button class="sf-btn-pdf" onclick="exportSfJournalPDF()" title="Erstellt das druckfertige PDF für die IServ-Abgabe">
-          <span>📄</span> Als PDF für IServ exportieren
+      <div class="sf-topbar-right">
+        <button class="sf-btn sf-btn-pdf" onclick="exportSfJournalPDF()" title="Erstellt das druckfertige PDF für die IServ-Abgabe">
+          📄 Als PDF exportieren
         </button>
-        <button class="sf-btn-upload" onclick="triggerSfUploadModal()" title="Mitschrift, Foto oder Datei hochladen">
-          <span>📤</span> Mitschrift einfügen
+        <button class="sf-btn sf-btn-secondary" onclick="triggerSfUploadModal()" title="Mitschrift, Foto oder Datei hochladen">
+          📤 Mitschrift einfügen
         </button>
-        <button class="sf-btn-primary" onclick="openSfNewEntryModal()">
-          <span>➕</span> Neuer Eintrag
+        <button class="sf-btn sf-btn-primary" onclick="openSfNewEntryModal()">
+          ➕ Neuer Eintrag
         </button>
-        <button class="sf-btn-outline" onclick="resetSfJournalDefaults()" title="Standard-Einträge wiederherstellen">
-          <span>🔄</span> Reset
+        <button class="sf-btn sf-btn-ghost" onclick="resetSfJournalDefaults()" title="Standard-Einträge wiederherstellen">
+          🔄 Reset
         </button>
       </div>
     </div>
 
-    <!-- The Digital Notebook / Büchlein Container -->
-    <div class="sf-notebook-wrapper">
+    <!-- Main Clean Journal Card -->
+    <div class="sf-journal-card">
       
-      <!-- Notebook Cover & Spine Left -->
-      <div class="sf-notebook-spine">
-        <div class="sf-spine-rings">
-          <span></span><span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span><span></span><span></span>
+      <!-- Journal Header -->
+      <div class="sf-journal-header">
+        <div class="sf-journal-super">IGS GÖTTINGEN &bull; GYMNASIALE OBERSTUFE JAHRGANG 12</div>
+        <h1 class="sf-journal-title">📔 Prozessjournal: Künstliche Intelligenz</h1>
+        <div class="sf-journal-meta">
+          <span>👤 <strong>Tonda Beutler</strong></span>
+          <span>👨‍🏫 <strong>Hr. Michael Jatzeck (sf4)</strong></span>
+          <span>🎯 Leitfrage: <em>„Wie lernt man am besten mit KI?“</em></span>
+          <span>📅 Stand: <strong>${getTodayGermanDate()}</strong></span>
+        </div>
+
+        <div class="sf-stats-strip">
+          <div class="sf-stat-pill" onclick="switchSfTab('journal')">
+            <strong>${entries.length}</strong> Einträge (vollständig)
+          </div>
+          <div class="sf-stat-pill" onclick="switchSfTab('mitschriften')">
+            <strong id="sfDocCountBadge">📁 Dokumente</strong>
+          </div>
+          <div class="sf-stat-pill" onclick="switchSfTab('themen')">
+            <strong>${favTopic.title}</strong> (Favorit)
+          </div>
         </div>
       </div>
 
-      <!-- Main Notebook Page Body -->
-      <div class="sf-notebook-page">
-        
-        <!-- Red Margin Line for authentic school notebook look -->
-        <div class="sf-notebook-red-margin"></div>
-
-        <!-- Bookmark Ribbon Hanging Down -->
-        <div class="sf-bookmark-ribbon" onclick="switchSfTab('themen')" title="Lesezeichen: Zur Themenfindung">
-          <span>🔖</span>
-        </div>
-
-        <!-- Notebook Page Header -->
-        <div class="sf-notebook-header">
-          <div class="sf-nb-header-titles">
-            <div class="sf-nb-super-title">IGS GÖTTINGEN &bull; GYMNASIALE OBERSTUFE JAHRGANG 12</div>
-            <h1 class="sf-nb-book-title">📔 Mein KI-Prozessjournal &bull; Seminarfach 4</h1>
-            <div class="sf-nb-sub-line">
-              <span>👤 <strong>Tonda Beutler</strong></span>
-              <span>👨‍🏫 <strong>Hr. Jatzeck (sf4)</strong></span>
-              <span>🎯 <em>„Wie lernt man am besten mit KI?“</em></span>
-              <span>📅 Stand: <strong>${getTodayGermanDate()}</strong></span>
-            </div>
-          </div>
-
-          <!-- Quick Stats Pill Badge Row -->
-          <div class="sf-nb-stats-strip">
-            <div class="sf-nb-stat-item" onclick="switchSfTab('journal')">
-              <strong>${entries.length}</strong> Einträge (vollständig)
-            </div>
-            <div class="sf-nb-stat-item" onclick="switchSfTab('mitschriften')">
-              <strong id="sfDocCountBadge">📁</strong> Mitschriften
-            </div>
-            <div class="sf-nb-stat-item" onclick="switchSfTab('themen')">
-              <strong>${favTopic.title}</strong> (Favorit)
-            </div>
-          </div>
-        </div>
-
-        <!-- Notebook Register Tabs (Goodnotes-Style Index Tabs on the right) -->
-        <div class="sf-notebook-tabs-bar">
-          <button class="sf-nb-tab ${currentSfTab === 'journal' ? 'active' : ''}" onclick="switchSfTab('journal')">
-            📖 Journal-Einträge (${entries.length})
-          </button>
-          <button class="sf-nb-tab ${currentSfTab === 'mitschriften' ? 'active' : ''}" onclick="switchSfTab('mitschriften')">
-            📁 Mitschriften &amp; Dateien
-          </button>
-          <button class="sf-nb-tab ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')">
-            💡 Themensuche &amp; Exposé (${SF_THEMEN.length})
-          </button>
-          <button class="sf-nb-tab ${currentSfTab === 'prompts' ? 'active' : ''}" onclick="switchSfTab('prompts')">
-            🧪 Prompt-Studio
-          </button>
-          <button class="sf-nb-tab ${currentSfTab === 'tools' ? 'active' : ''}" onclick="switchSfTab('tools')">
-            📊 Modellvergleich
-          </button>
-        </div>
-
-        <!-- Notebook Active Tab Content Sheet -->
-        <div id="sfTabContent" class="sf-notebook-sheet-body"></div>
-
+      <!-- Segmented Navigation Tabs -->
+      <div class="sf-tabs-bar">
+        <button class="sf-tab-btn ${currentSfTab === 'journal' ? 'active' : ''}" onclick="switchSfTab('journal')">
+          📖 Journal (${entries.length})
+        </button>
+        <button class="sf-tab-btn ${currentSfTab === 'mitschriften' ? 'active' : ''}" onclick="switchSfTab('mitschriften')">
+          📁 Mitschriften &amp; Dateien
+        </button>
+        <button class="sf-tab-btn ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')">
+          💡 Themenfindung (${SF_THEMEN.length})
+        </button>
+        <button class="sf-tab-btn ${currentSfTab === 'prompts' ? 'active' : ''}" onclick="switchSfTab('prompts')">
+          🧪 Prompt-Studio
+        </button>
+        <button class="sf-tab-btn ${currentSfTab === 'tools' ? 'active' : ''}" onclick="switchSfTab('tools')">
+          📊 Modellvergleich
+        </button>
       </div>
+
+      <!-- Active Tab Body -->
+      <div id="sfTabContent" class="sf-tab-content-body"></div>
 
     </div>
   `;
@@ -473,10 +448,10 @@ function renderSeminarfachView() {
 
 function switchSfTab(tabName) {
   currentSfTab = tabName;
-  document.querySelectorAll('.sf-nb-tab').forEach(btn => {
+  document.querySelectorAll('.sf-tab-btn, .sf-nb-tab').forEach(btn => {
     btn.classList.remove('active');
   });
-  const activeBtn = document.querySelector(`.sf-nb-tab[onclick*="${tabName}"]`);
+  const activeBtn = document.querySelector(`.sf-tab-btn[onclick*="${tabName}"], .sf-nb-tab[onclick*="${tabName}"]`);
   if (activeBtn) activeBtn.classList.add('active');
 
   renderCurrentSfSubTab();

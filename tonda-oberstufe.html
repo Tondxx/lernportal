@@ -5307,429 +5307,273 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 /* ==========================================================================
-   SEMINARFACH 4: KÜNSTLICHE INTELLIGENZ & DIGITALES GOODNOTES-PROZESSJOURNAL
+   SEMINARFACH 4: KÜNSTLICHE INTELLIGENZ & PROZESSJOURNAL (CLEAN DESIGN)
    Lehrkraft: Herr Michael Jatzeck • Abi28 sf4 • IGS Göttingen
-   Leitmotiv: "Wie lernt man am besten mit KI?"
    ========================================================================== */
 
-/* Top Action Bar above the Notebook */
-.sf-book-topbar {
+/* Top Action Bar */
+.sf-topbar, .sf-book-topbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: 0.8rem;
   flex-wrap: wrap;
-  margin-bottom: 1.5rem;
-  padding: 0.9rem 1.4rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  margin-bottom: 1.25rem;
 }
 
-.sf-book-topbar-left {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
-.sf-book-badge {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(124, 58, 237, 0.1) 100%);
-  color: #7c3aed;
-  font-weight: 700;
-  font-size: 0.84rem;
-  padding: 0.35rem 0.85rem;
-  border-radius: 20px;
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-[data-theme="dark"] .sf-book-badge {
-  color: #c4b5fd;
-  border-color: rgba(139, 92, 246, 0.4);
-}
-
-.sf-book-course-pill {
-  background: var(--bg-subtle);
-  color: var(--text-primary);
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 0.35rem 0.75rem;
-  border-radius: 20px;
-  border: 1px solid var(--border-subtle);
-}
-
-.sf-book-deadline-pill {
-  background: rgba(239, 68, 68, 0.1);
-  color: #dc2626;
-  font-size: 0.8rem;
-  font-weight: 700;
-  padding: 0.35rem 0.75rem;
-  border-radius: 20px;
-  border: 1px solid rgba(239, 68, 68, 0.25);
-  animation: pulse-deadline 2s infinite ease-in-out;
-}
-
-@keyframes pulse-deadline {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.75; }
-}
-
-.sf-book-topbar-right {
+.sf-topbar-left, .sf-book-topbar-left {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
 }
 
-/* Notebook Action Buttons */
-.sf-btn-pdf {
-  display: inline-flex;
+.sf-topbar-right, .sf-book-topbar-right {
+  display: flex;
   align-items: center;
-  gap: 0.45rem;
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: #ffffff !important;
-  border: none;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Status Badges */
+.sf-badge-pill {
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
   border-radius: var(--radius-pill);
-  padding: 0.55rem 1.15rem;
-  font-size: 0.86rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
-  transition: all 0.2s ease;
-  font-family: inherit;
-}
-
-.sf-btn-pdf:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.45);
-}
-
-.sf-btn-upload {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  color: #ffffff !important;
-  border: none;
-  border-radius: var(--radius-pill);
-  padding: 0.55rem 1.15rem;
-  font-size: 0.86rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
-  transition: all 0.2s ease;
-  font-family: inherit;
-}
-
-.sf-btn-upload:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
-}
-
-.sf-btn-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-  color: #ffffff !important;
-  border: none;
-  border-radius: var(--radius-pill);
-  padding: 0.55rem 1.15rem;
-  font-size: 0.86rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
-  transition: all 0.2s ease;
-  font-family: inherit;
-}
-
-.sf-btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(139, 92, 246, 0.45);
-}
-
-.sf-btn-outline {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  background: transparent;
-  color: var(--text-muted);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-pill);
-  padding: 0.5rem 0.85rem;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.sf-btn-outline:hover {
+.sf-badge-purple {
+  background: rgba(124, 58, 237, 0.08);
+  color: #7c3aed;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+}
+
+[data-theme="dark"] .sf-badge-purple {
+  background: rgba(124, 58, 237, 0.16);
+  color: #c4b5fd;
+  border-color: rgba(124, 58, 237, 0.3);
+}
+
+.sf-badge-neutral {
+  background: var(--bg-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.sf-badge-amber {
+  background: rgba(245, 158, 11, 0.08);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.22);
+}
+
+.sf-badge-cyan {
+  background: rgba(6, 182, 212, 0.08);
+  color: #0891b2;
+  border: 1px solid rgba(6, 182, 212, 0.22);
+}
+
+.sf-badge-emerald {
+  background: rgba(16, 185, 129, 0.08);
+  color: #059669;
+  border: 1px solid rgba(16, 185, 129, 0.22);
+}
+
+.sf-badge-rose {
+  background: rgba(244, 63, 94, 0.08);
+  color: #e11d48;
+  border: 1px solid rgba(244, 63, 94, 0.22);
+}
+
+.sf-badge-blue {
+  background: rgba(59, 130, 246, 0.08);
+  color: #2563eb;
+  border: 1px solid rgba(59, 130, 246, 0.22);
+}
+
+/* Action Buttons (Quiet & Sleek) */
+.sf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.sf-btn-primary {
+  background: #7c3aed;
+  color: #ffffff !important;
+  border-color: #7c3aed;
+}
+
+.sf-btn-primary:hover {
+  background: #6d28d9;
+  border-color: #6d28d9;
+}
+
+.sf-btn-secondary {
+  background: var(--bg-card);
   color: var(--text-primary);
   border-color: var(--border-medium);
 }
 
-.sf-btn-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  background: var(--bg-subtle);
-  color: var(--text-primary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-pill);
-  padding: 0.52rem 1.1rem;
-  font-size: 0.84rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: inherit;
-}
-
 .sf-btn-secondary:hover {
-  background: var(--bg-card-hover);
+  background: var(--bg-subtle);
   border-color: var(--border-strong);
 }
 
-/* ==========================================================================
-   THE DIGITAL NOTEBOOK / BÜCHLEIN (Goodnotes Binder Look)
-   ========================================================================== */
-.sf-notebook-wrapper {
-  display: flex;
-  min-height: 850px;
-  background: #232733;
-  border-radius: 20px;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.05);
-  position: relative;
-  overflow: visible;
-  margin-bottom: 3rem;
+.sf-btn-pdf {
+  background: rgba(239, 68, 68, 0.08);
+  color: #dc2626 !important;
+  border-color: rgba(239, 68, 68, 0.25);
 }
 
-[data-theme="dark"] .sf-notebook-wrapper {
-  background: #14151e;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.08);
+.sf-btn-pdf:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
 }
 
-/* Spiral Binder Spine on Left */
-.sf-notebook-spine {
-  width: 52px;
-  background: linear-gradient(90deg, #181a24 0%, #2b3042 50%, #151720 100%);
-  border-radius: 20px 0 0 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px 0;
-  position: relative;
-  z-index: 5;
-  box-shadow: inset -5px 0 10px rgba(0, 0, 0, 0.45);
-  flex-shrink: 0;
+.sf-btn-ghost, .sf-btn-outline {
+  background: transparent;
+  color: var(--text-muted);
+  border-color: var(--border-subtle);
 }
 
-.sf-spine-rings {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  gap: 32px;
+.sf-btn-ghost:hover, .sf-btn-outline:hover {
+  color: var(--text-primary);
+  border-color: var(--border-medium);
 }
 
-.sf-spine-rings span {
-  width: 36px;
-  height: 11px;
-  background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 30%, #64748b 70%, #1e293b 100%);
-  border-radius: 6px;
-  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.6), inset 0 1px 1px #fff;
-  transform: translateX(10px);
+/* Main Clean Journal Card */
+.sf-journal-card, .sf-notebook-wrapper, .sf-notebook-page {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 1.8rem 2rem;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 2.5rem;
 }
 
-/* Notebook Page (Ivory Lined Paper) */
-.sf-notebook-page {
-  flex: 1;
-  background-color: #fffdf9;
-  background-image: repeating-linear-gradient(to bottom, transparent, transparent 31px, rgba(139, 92, 246, 0.06) 31px, rgba(139, 92, 246, 0.06) 32px);
-  border-radius: 0 20px 20px 0;
-  padding: 2.2rem 3rem 3.5rem 4rem;
-  position: relative;
-  box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.07);
-  min-height: 850px;
-  overflow: hidden;
-}
-
-[data-theme="dark"] .sf-notebook-page {
-  background-color: #171822;
-  background-image: repeating-linear-gradient(to bottom, transparent, transparent 31px, rgba(255, 255, 255, 0.04) 31px, rgba(255, 255, 255, 0.04) 32px);
-  box-shadow: inset 10px 0 20px rgba(0, 0, 0, 0.45);
-}
-
-/* Red Margin Line (School Exercise Book / Schulheft) */
-.sf-notebook-red-margin {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 65px;
-  width: 2px;
-  background: rgba(239, 68, 68, 0.35);
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Bookmark Satin Ribbon hanging from top */
+/* Hide faux skeuomorphism */
+.sf-notebook-spine,
+.sf-spine-rings,
+.sf-notebook-red-margin,
 .sf-bookmark-ribbon {
-  position: absolute;
-  top: -8px;
-  right: 45px;
-  width: 36px;
-  height: 62px;
-  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
-  border-radius: 0 0 4px 4px;
-  box-shadow: 0 6px 14px rgba(109, 40, 217, 0.45);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 8px;
-  cursor: pointer;
-  transition: transform 0.2s ease, height 0.2s ease;
-  z-index: 10;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+  display: none !important;
 }
 
-.sf-bookmark-ribbon:hover {
-  height: 72px;
-  transform: translateY(2px);
+/* Journal Header */
+.sf-journal-header, .sf-notebook-header {
+  margin-bottom: 1.6rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 1.4rem;
 }
 
-.sf-bookmark-ribbon span {
-  font-size: 0.95rem;
-}
-
-/* Notebook Page Header */
-.sf-notebook-header {
-  margin-bottom: 2rem;
-  border-bottom: 2px dashed rgba(139, 92, 246, 0.25);
-  padding-bottom: 1.5rem;
-  position: relative;
-  z-index: 3;
-}
-
-.sf-nb-super-title {
-  font-size: 0.74rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
+.sf-journal-super, .sf-nb-super-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #8b5cf6;
+  color: #7c3aed;
   margin-bottom: 0.35rem;
 }
 
+[data-theme="dark"] .sf-journal-super,
 [data-theme="dark"] .sf-nb-super-title {
   color: #c4b5fd;
 }
 
-.sf-nb-book-title {
-  font-size: 2.1rem;
-  font-weight: 900;
+.sf-journal-title, .sf-nb-book-title {
+  font-size: 1.75rem;
+  font-weight: 800;
   color: var(--text-primary);
-  margin: 0 0 0.6rem 0;
-  letter-spacing: -0.025em;
-  line-height: 1.2;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
 }
 
-.sf-nb-sub-line {
+.sf-journal-meta, .sf-nb-sub-line {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.1rem;
+  gap: 1rem;
   align-items: center;
-  font-size: 0.88rem;
+  font-size: 0.84rem;
   color: var(--text-secondary);
-  margin-bottom: 1.1rem;
+  margin-bottom: 1rem;
 }
 
-.sf-nb-stats-strip {
+.sf-stats-strip, .sf-nb-stats-strip {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.6rem;
 }
 
-.sf-nb-stat-item {
-  background: rgba(139, 92, 246, 0.08);
-  border: 1px solid rgba(139, 92, 246, 0.22);
-  border-radius: 12px;
-  padding: 0.4rem 0.95rem;
-  font-size: 0.82rem;
-  color: var(--text-primary);
+.sf-stat-pill, .sf-nb-stat-item {
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.75rem;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
 }
 
-.sf-nb-stat-item:hover {
-  background: rgba(139, 92, 246, 0.16);
-  transform: translateY(-1px);
+.sf-stat-pill:hover, .sf-nb-stat-item:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
 }
 
-/* Goodnotes-Style Register Tabs */
-.sf-notebook-tabs-bar {
+/* Clean Segmented Navigation Tabs */
+.sf-tabs-bar, .sf-notebook-tabs-bar {
   display: flex;
-  gap: 0.4rem;
-  border-bottom: 2px solid rgba(139, 92, 246, 0.22);
-  margin-bottom: 1.8rem;
+  gap: 0.35rem;
+  background: var(--bg-subtle);
+  padding: 0.3rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 1.5rem;
   overflow-x: auto;
-  padding-bottom: 0;
-  position: relative;
-  z-index: 3;
 }
 
-.sf-nb-tab {
-  background: rgba(0, 0, 0, 0.04);
-  border: 1px solid var(--border-subtle);
-  border-bottom: none;
-  border-radius: 12px 12px 0 0;
-  padding: 0.65rem 1.2rem;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--text-secondary);
+.sf-tab-btn, .sf-nb-tab {
+  flex: 1;
+  min-width: 125px;
+  text-align: center;
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
   white-space: nowrap;
   font-family: inherit;
-  position: relative;
-  top: 2px;
 }
 
-[data-theme="dark"] .sf-nb-tab {
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.sf-nb-tab:hover {
+.sf-tab-btn:hover, .sf-nb-tab:hover {
   color: var(--text-primary);
-  background: rgba(139, 92, 246, 0.08);
 }
 
-.sf-nb-tab.active {
-  background: #fffdf9;
-  border-color: rgba(139, 92, 246, 0.35);
-  border-bottom: 2px solid #fffdf9;
-  color: #7c3aed;
-  box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.03);
-}
-
-[data-theme="dark"] .sf-nb-tab.active {
-  background: #171822;
-  border-color: rgba(139, 92, 246, 0.35);
-  border-bottom: 2px solid #171822;
-  color: #c4b5fd;
-}
-
-/* Content Sheet */
-.sf-notebook-sheet-body {
-  position: relative;
-  z-index: 3;
-  min-height: 500px;
+.sf-tab-btn.active, .sf-nb-tab.active {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 /* Toolbar & Filters */
@@ -5737,69 +5581,62 @@ input[type=range]::-webkit-slider-thumb:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: 0.8rem;
+  margin-bottom: 1.4rem;
   flex-wrap: wrap;
 }
 
 .sf-filter-chips-list {
   display: flex;
-  gap: 0.4rem;
+  gap: 0.35rem;
   flex-wrap: wrap;
 }
 
 .sf-filter-chip {
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--bg-subtle);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
-  padding: 0.35rem 0.85rem;
-  font-size: 0.78rem;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.76rem;
   font-weight: 600;
   color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.15s ease;
-}
-
-[data-theme="dark"] .sf-filter-chip {
-  background: rgba(25, 27, 38, 0.85);
+  font-family: inherit;
 }
 
 .sf-filter-chip:hover {
-  border-color: var(--border-strong);
+  border-color: var(--border-medium);
   color: var(--text-primary);
 }
 
 .sf-filter-chip.active {
-  background: rgba(139, 92, 246, 0.14);
-  border-color: #8b5cf6;
+  background: rgba(124, 58, 237, 0.1);
+  border-color: rgba(124, 58, 237, 0.3);
   color: #7c3aed;
 }
 
 [data-theme="dark"] .sf-filter-chip.active {
-  background: rgba(139, 92, 246, 0.28);
   color: #c4b5fd;
+  background: rgba(124, 58, 237, 0.2);
 }
 
 .sf-search-box {
   display: flex;
   align-items: center;
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--bg-subtle);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
-  padding: 0.35rem 0.85rem;
+  padding: 0.3rem 0.75rem;
   gap: 0.4rem;
-  min-width: 280px;
-}
-
-[data-theme="dark"] .sf-search-box {
-  background: rgba(25, 27, 38, 0.85);
+  min-width: 260px;
 }
 
 .sf-search-input {
   background: transparent;
   border: none;
   outline: none;
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   color: var(--text-primary);
   width: 100%;
   font-family: inherit;
@@ -5811,44 +5648,33 @@ input[type=range]::-webkit-slider-thumb:hover {
   color: var(--text-muted);
   cursor: pointer;
   font-size: 1rem;
-  padding: 0 0.2rem;
+  padding: 0;
 }
 
-/* Entries List */
+/* Journal Entries List */
 .sf-entries-list {
   display: flex;
   flex-direction: column;
-  gap: 1.6rem;
+  gap: 1.25rem;
 }
 
-/* Individual Journal Page Entry (Tagebucheintrag) */
-.sf-journal-page-entry {
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: 16px;
-  padding: 1.6rem 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  position: relative;
+/* Individual Entry Card */
+.sf-entry-card, .sf-journal-page-entry {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.4rem 1.6rem;
   display: flex;
   flex-direction: column;
-  gap: 0.95rem;
+  gap: 0.85rem;
+  transition: border-color 0.15s ease;
 }
 
-[data-theme="dark"] .sf-journal-page-entry {
-  background: rgba(26, 28, 40, 0.85);
-  border-color: rgba(139, 92, 246, 0.25);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+.sf-entry-card:hover, .sf-journal-page-entry:hover {
+  border-color: var(--border-medium);
 }
 
-.sf-journal-page-entry:hover {
-  transform: translateY(-2px);
-  border-color: rgba(139, 92, 246, 0.4);
-  box-shadow: 0 10px 28px rgba(139, 92, 246, 0.12);
-}
-
-.sf-page-entry-header {
+.sf-entry-card-header, .sf-page-entry-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -5856,80 +5682,76 @@ input[type=range]::-webkit-slider-thumb:hover {
   flex-wrap: wrap;
 }
 
-.sf-entry-num-stamp {
+.sf-entry-num-badge, .sf-entry-num-stamp {
   font-size: 0.74rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  background: #8b5cf6;
-  color: #ffffff;
-  padding: 0.25rem 0.7rem;
+  font-weight: 700;
+  color: #7c3aed;
+  background: rgba(124, 58, 237, 0.08);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  padding: 0.2rem 0.55rem;
   border-radius: 6px;
-  box-shadow: 0 2px 6px rgba(139, 92, 246, 0.35);
+}
+
+[data-theme="dark"] .sf-entry-num-badge,
+[data-theme="dark"] .sf-entry-num-stamp {
+  color: #c4b5fd;
+  background: rgba(124, 58, 237, 0.16);
 }
 
 .sf-entry-meta-right {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.45rem;
   flex-wrap: wrap;
 }
 
 .sf-entry-date {
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 500;
   color: var(--text-muted);
 }
 
 .sf-entry-badge-cat {
-  padding: 0.2rem 0.65rem;
-  border-radius: var(--radius-pill);
   font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-pill);
 }
 
-.sf-badge-amber { background: rgba(245, 158, 11, 0.12); color: #d97706; border: 1px solid rgba(245, 158, 11, 0.25); }
-.sf-badge-cyan { background: rgba(6, 182, 212, 0.12); color: #0891b2; border: 1px solid rgba(6, 182, 212, 0.25); }
-.sf-badge-purple { background: rgba(139, 92, 246, 0.12); color: #7c3aed; border: 1px solid rgba(139, 92, 246, 0.25); }
-.sf-badge-emerald { background: rgba(16, 185, 129, 0.12); color: #059669; border: 1px solid rgba(16, 185, 129, 0.25); }
-.sf-badge-rose { background: rgba(244, 63, 94, 0.12); color: #e11d48; border: 1px solid rgba(244, 63, 94, 0.25); }
-.sf-badge-blue { background: rgba(59, 130, 246, 0.12); color: #2563eb; border: 1px solid rgba(59, 130, 246, 0.25); }
-.sf-badge-neutral { background: var(--bg-subtle); color: var(--text-muted); border: 1px solid var(--border-subtle); }
-
 .sf-entry-model {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--text-secondary);
   background: var(--bg-subtle);
-  padding: 0.2rem 0.6rem;
-  border-radius: 6px;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
   border: 1px solid var(--border-subtle);
 }
 
 .sf-entry-actions {
   display: flex;
-  gap: 0.35rem;
+  gap: 0.25rem;
 }
 
 .sf-icon-btn {
-  background: var(--bg-subtle);
+  background: transparent;
   border: 1px solid var(--border-subtle);
   border-radius: 6px;
-  padding: 0.3rem 0.5rem;
-  font-size: 0.82rem;
+  padding: 0.25rem 0.45rem;
+  font-size: 0.78rem;
   cursor: pointer;
+  color: var(--text-muted);
   transition: all 0.15s ease;
 }
 
 .sf-icon-btn:hover {
-  background: var(--bg-card-hover);
+  background: var(--bg-subtle);
+  color: var(--text-primary);
   border-color: var(--border-medium);
 }
 
-.sf-page-entry-title {
-  font-size: 1.35rem;
-  font-weight: 800;
+.sf-entry-title, .sf-page-entry-title {
+  font-size: 1.25rem;
+  font-weight: 700;
   color: var(--text-primary);
   margin: 0;
   line-height: 1.35;
@@ -5938,103 +5760,89 @@ input[type=range]::-webkit-slider-thumb:hover {
 .sf-entry-section {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
 .sf-section-label {
-  font-size: 0.76rem;
-  font-weight: 800;
+  font-size: 0.74rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--text-muted);
 }
 
 .sf-section-text {
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.55;
   margin: 0;
 }
 
 /* Prompt Box */
 .sf-prompt-box {
-  background: rgba(139, 92, 246, 0.04);
-  border: 1px solid rgba(139, 92, 246, 0.18);
-  border-radius: 10px;
-  padding: 0.9rem 1.1rem;
-}
-
-[data-theme="dark"] .sf-prompt-box {
-  background: rgba(139, 92, 246, 0.08);
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.75rem 0.95rem;
 }
 
 .sf-prompt-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.4rem;
 }
 
 .sf-btn-copy-prompt {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-pill);
-  padding: 0.25rem 0.7rem;
-  font-size: 0.76rem;
-  font-weight: 700;
-  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.15s ease;
   font-family: inherit;
 }
 
 .sf-btn-copy-prompt:hover {
-  background: rgba(139, 92, 246, 0.12);
-  border-color: #8b5cf6;
-  color: #7c3aed;
-}
-
-.sf-btn-copy-prompt.primary-copy {
-  background: #8b5cf6;
-  color: #ffffff;
-  border: none;
-}
-
-.sf-btn-copy-prompt.primary-copy:hover {
-  background: #7c3aed;
+  border-color: var(--border-medium);
+  color: var(--text-primary);
 }
 
 .sf-prompt-code {
   margin: 0;
-  font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
-  font-size: 0.84rem;
-  line-height: 1.55;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.5;
   color: var(--text-primary);
   white-space: pre-wrap;
   word-break: break-word;
 }
 
-/* Reflection Card (Herzstück der Benotung) */
+/* Critical Reflection Highlight Box */
 .sf-reflection-card {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(139, 92, 246, 0.02) 100%);
-  border: 1px solid rgba(139, 92, 246, 0.35);
-  border-left: 5px solid #8b5cf6;
-  border-radius: 12px;
-  padding: 1.1rem 1.3rem;
+  background: rgba(124, 58, 237, 0.03);
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-left: 4px solid #7c3aed;
+  border-radius: var(--radius-sm);
+  padding: 0.9rem 1.1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.55rem;
+  gap: 0.45rem;
 }
 
 [data-theme="dark"] .sf-reflection-card {
-  background: rgba(139, 92, 246, 0.12);
+  background: rgba(124, 58, 237, 0.08);
 }
 
 .sf-reflection-head {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.5rem;
   color: #7c3aed;
+  font-size: 0.88rem;
 }
 
 [data-theme="dark"] .sf-reflection-head {
@@ -6042,138 +5850,130 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 .sf-reflection-icon {
-  font-size: 1.4rem;
+  font-size: 1.1rem;
 }
 
 .sf-reflection-sub {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
 }
 
 .sf-reflection-body {
-  font-size: 0.94rem;
+  font-size: 0.9rem;
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
 .sf-entry-footer-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
-  border-top: 1px dashed rgba(139, 92, 246, 0.2);
-  padding-top: 0.75rem;
+  gap: 0.35rem;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.65rem;
 }
 
 .sf-entry-tag {
-  font-size: 0.76rem;
-  color: #7c3aed;
-  background: rgba(139, 92, 246, 0.08);
-  padding: 0.2rem 0.55rem;
-  border-radius: 6px;
-  border: 1px solid rgba(139, 92, 246, 0.15);
-}
-
-[data-theme="dark"] .sf-entry-tag {
-  color: #c4b5fd;
-  background: rgba(139, 92, 246, 0.18);
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  border: 1px solid var(--border-subtle);
 }
 
 /* Empty State */
 .sf-empty-state {
   text-align: center;
-  padding: 3.5rem 2rem;
-  background: rgba(255, 255, 255, 0.8);
-  border: 2px dashed var(--border-medium);
-  border-radius: 16px;
+  padding: 3rem 1.5rem;
+  background: var(--bg-card);
+  border: 1px dashed var(--border-medium);
+  border-radius: var(--radius-lg);
 }
 
 .sf-empty-icon {
-  font-size: 3rem;
-  margin-bottom: 0.75rem;
+  font-size: 2.5rem;
+  margin-bottom: 0.6rem;
 }
 
-/* Mitschriften */
+/* Mitschriften Sub-Tab */
 .sf-mitschriften-intro {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
   flex-wrap: wrap;
 }
 
 .sf-mitschriften-text h2 {
-  font-size: 1.45rem;
-  font-weight: 800;
+  font-size: 1.35rem;
+  font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 0.4rem 0;
+  margin: 0 0 0.3rem 0;
 }
 
 .sf-mitschriften-text p {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
   margin: 0;
-  line-height: 1.55;
-  max-width: 820px;
+  line-height: 1.5;
+  max-width: 800px;
 }
 
-/* Themenfindung */
+/* Themenfindung Sub-Tab */
 .sf-themen-intro {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
   flex-wrap: wrap;
 }
 
 .sf-themen-intro-text h2 {
-  font-size: 1.45rem;
-  font-weight: 800;
+  font-size: 1.35rem;
+  font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 0.4rem 0;
+  margin: 0 0 0.3rem 0;
 }
 
 .sf-themen-intro-text p {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
   margin: 0;
-  line-height: 1.55;
-  max-width: 820px;
+  line-height: 1.5;
+  max-width: 800px;
 }
 
 .sf-themen-grid {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 1.1rem;
+  margin-bottom: 1.5rem;
 }
 
 .sf-themen-card {
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: 16px;
-  padding: 1.6rem 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.4rem 1.6rem;
+  transition: border-color 0.15s ease;
 }
 
-[data-theme="dark"] .sf-themen-card {
-  background: rgba(26, 28, 40, 0.85);
-  border-color: rgba(139, 92, 246, 0.25);
+.sf-themen-card:hover {
+  border-color: var(--border-medium);
 }
 
 .sf-themen-card.favorite-active {
-  border: 2px solid #8b5cf6;
-  background: rgba(139, 92, 246, 0.05);
-  box-shadow: 0 8px 28px rgba(139, 92, 246, 0.18);
+  border: 1.5px solid #7c3aed;
+  background: rgba(124, 58, 237, 0.02);
 }
 
 .sf-themen-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.7rem;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
@@ -6181,15 +5981,15 @@ input[type=range]::-webkit-slider-thumb:hover {
 .sf-themen-badges {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
 }
 
 .sf-badge-rank {
-  font-size: 0.82rem;
-  font-weight: 800;
-  background: rgba(139, 92, 246, 0.12);
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: rgba(124, 58, 237, 0.08);
   color: #7c3aed;
-  padding: 0.25rem 0.65rem;
+  padding: 0.2rem 0.55rem;
   border-radius: 6px;
 }
 
@@ -6200,51 +6000,50 @@ input[type=range]::-webkit-slider-thumb:hover {
 .sf-btn-fav {
   background: var(--bg-subtle);
   border: 1px solid var(--border-subtle);
-  border-radius: 20px;
-  padding: 0.35rem 0.85rem;
-  font-size: 0.8rem;
-  font-weight: 700;
+  border-radius: var(--radius-pill);
+  padding: 0.3rem 0.75rem;
+  font-size: 0.78rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
   font-family: inherit;
+  color: var(--text-secondary);
 }
 
 .sf-btn-fav.is-fav {
-  background: #8b5cf6;
+  background: #7c3aed;
   color: #ffffff;
-  border-color: #8b5cf6;
-  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.35);
+  border-color: #7c3aed;
 }
 
 .sf-themen-title {
-  font-size: 1.4rem;
-  font-weight: 800;
+  font-size: 1.25rem;
+  font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 0.35rem 0;
+  margin: 0 0 0.3rem 0;
 }
 
 .sf-themen-subtitle {
-  font-size: 0.94rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
   line-height: 1.5;
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.85rem 0;
 }
 
 .sf-question-box {
-  background: rgba(139, 92, 246, 0.07);
-  border-left: 4px solid #8b5cf6;
-  border-radius: 8px;
-  padding: 0.85rem 1.15rem;
-  margin: 0.85rem 0;
+  background: rgba(124, 58, 237, 0.04);
+  border-left: 3px solid #7c3aed;
+  border-radius: 6px;
+  padding: 0.75rem 0.95rem;
+  margin: 0.75rem 0;
 }
 
 .sf-q-label {
-  font-size: 0.74rem;
-  font-weight: 800;
+  font-size: 0.72rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
   color: #7c3aed;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
 }
 
 [data-theme="dark"] .sf-q-label {
@@ -6252,32 +6051,32 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 .sf-q-text {
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 0.95rem;
+  font-weight: 600;
   color: var(--text-primary);
   font-style: italic;
   line-height: 1.45;
 }
 
 .sf-themen-detail-row {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
-  margin-bottom: 0.6rem;
-  line-height: 1.55;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
 }
 
 .sf-themen-theories {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  margin-top: 0.9rem;
-  border-top: 1px dashed rgba(139, 92, 246, 0.2);
-  padding-top: 0.75rem;
+  gap: 0.35rem;
+  margin-top: 0.8rem;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 0.65rem;
 }
 
 .sf-theory-label {
-  font-size: 0.76rem;
-  font-weight: 800;
+  font-size: 0.74rem;
+  font-weight: 700;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -6285,32 +6084,32 @@ input[type=range]::-webkit-slider-thumb:hover {
 .sf-theory-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.35rem;
 }
 
 .sf-theory-chip {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   background: var(--bg-subtle);
   color: var(--text-primary);
-  padding: 0.2rem 0.6rem;
-  border-radius: 6px;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
   border: 1px solid var(--border-subtle);
 }
 
 /* Theory Reference Box */
 .sf-theory-reference-box {
-  background: rgba(139, 92, 246, 0.05);
-  border: 1px solid rgba(139, 92, 246, 0.25);
-  border-radius: 16px;
-  padding: 1.6rem 2rem;
-  margin-top: 2rem;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.4rem 1.6rem;
+  margin-top: 1.5rem;
 }
 
 .sf-theory-reference-box h3 {
-  font-size: 1.25rem;
-  font-weight: 800;
+  font-size: 1.15rem;
+  font-weight: 700;
   color: #7c3aed;
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.85rem 0;
 }
 
 [data-theme="dark"] .sf-theory-reference-box h3 {
@@ -6319,154 +6118,138 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 .sf-theory-ref-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 0.85rem;
 }
 
 .sf-theory-ref-card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 1.1rem;
+  border-radius: var(--radius-sm);
+  padding: 1rem;
 }
 
 .sf-theory-ref-card h4 {
-  font-size: 0.95rem;
-  font-weight: 800;
+  font-size: 0.9rem;
+  font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 0.4rem 0;
+  margin: 0 0 0.35rem 0;
 }
 
 .sf-theory-ref-card p {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.45;
   margin: 0;
 }
 
 /* Prompt Studio Grid */
 .sf-prompts-intro {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .sf-prompts-intro h2 {
-  font-size: 1.45rem;
-  font-weight: 800;
+  font-size: 1.35rem;
+  font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 0.4rem 0;
+  margin: 0 0 0.3rem 0;
 }
 
 .sf-prompts-intro p {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
   margin: 0;
-  line-height: 1.55;
-  max-width: 820px;
+  line-height: 1.5;
+  max-width: 800px;
 }
 
 .sf-prompts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.1rem;
 }
 
 .sf-prompt-card {
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.3rem;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-}
-
-[data-theme="dark"] .sf-prompt-card {
-  background: rgba(26, 28, 40, 0.85);
-  border-color: rgba(139, 92, 246, 0.25);
+  gap: 0.65rem;
 }
 
 .sf-prompt-card-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 0.8rem;
+  gap: 0.6rem;
 }
 
 .sf-prompt-card-title {
-  font-size: 1.15rem;
-  font-weight: 800;
+  font-size: 1.05rem;
+  font-weight: 700;
   color: var(--text-primary);
-  margin: 0.35rem 0 0 0;
+  margin: 0.3rem 0 0 0;
 }
 
 .sf-prompt-card-desc {
-  font-size: 0.86rem;
+  font-size: 0.84rem;
   color: var(--text-secondary);
   margin: 0;
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 .sf-prompt-card-code {
-  background: rgba(139, 92, 246, 0.04);
-  border: 1px solid rgba(139, 92, 246, 0.15);
-  border-radius: 8px;
-  padding: 0.85rem;
-  font-family: 'JetBrains Mono', Consolas, Monaco, monospace;
-  font-size: 0.8rem;
-  line-height: 1.5;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.45;
   color: var(--text-primary);
   white-space: pre-wrap;
   word-break: break-word;
   margin: 0;
-  max-height: 220px;
+  max-height: 200px;
   overflow-y: auto;
-}
-
-[data-theme="dark"] .sf-prompt-card-code {
-  background: rgba(139, 92, 246, 0.08);
 }
 
 /* Tools Matrix */
 .sf-tools-intro {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .sf-tools-intro h2 {
-  font-size: 1.45rem;
-  font-weight: 800;
+  font-size: 1.35rem;
+  font-weight: 700;
   color: var(--text-primary);
-  margin: 0 0 0.4rem 0;
+  margin: 0 0 0.3rem 0;
 }
 
 .sf-tools-intro p {
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   color: var(--text-secondary);
   margin: 0;
-  line-height: 1.55;
-  max-width: 820px;
+  line-height: 1.5;
+  max-width: 800px;
 }
 
 .sf-tools-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.1rem;
 }
 
 .sf-tool-card {
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 1.3rem;
   display: flex;
   flex-direction: column;
-  gap: 0.95rem;
-}
-
-[data-theme="dark"] .sf-tool-card {
-  background: rgba(26, 28, 40, 0.85);
-  border-color: rgba(139, 92, 246, 0.25);
+  gap: 0.85rem;
 }
 
 .sf-tool-head {
@@ -6478,40 +6261,40 @@ input[type=range]::-webkit-slider-thumb:hover {
 .sf-tool-icon-name {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
 }
 
 .sf-tool-icon {
-  font-size: 2rem;
+  font-size: 1.75rem;
 }
 
 .sf-tool-name {
-  font-size: 1.2rem;
-  font-weight: 800;
+  font-size: 1.1rem;
+  font-weight: 700;
   color: var(--text-primary);
   margin: 0;
 }
 
 .sf-tool-role {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .sf-tool-scores-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.55rem;
+  gap: 0.45rem;
   background: var(--bg-subtle);
-  border-radius: 10px;
-  padding: 0.75rem;
+  border-radius: 6px;
+  padding: 0.65rem;
 }
 
 .sf-score-col {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.78rem;
+  font-size: 0.76rem;
 }
 
 .sf-score-label {
@@ -6519,7 +6302,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 .sf-score-val {
-  font-weight: 800;
+  font-weight: 700;
   color: #7c3aed;
 }
 
@@ -6528,35 +6311,35 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 .sf-tool-text-block {
-  font-size: 0.86rem;
-  line-height: 1.5;
+  font-size: 0.84rem;
+  line-height: 1.45;
 }
 
 .sf-tool-verdict {
-  background: rgba(139, 92, 246, 0.08);
-  border-left: 3px solid #8b5cf6;
-  padding: 0.65rem 0.85rem;
-  border-radius: 6px;
-  font-size: 0.85rem;
+  background: rgba(124, 58, 237, 0.05);
+  border-left: 3px solid #7c3aed;
+  padding: 0.55rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.82rem;
   color: var(--text-primary);
-  line-height: 1.5;
+  line-height: 1.45;
 }
 
 /* Modal Form Styles */
 .sf-entry-modal {
-  max-width: 680px;
+  max-width: 650px;
 }
 
 .sf-form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.85rem;
+  gap: 0.8rem;
 }
 
 .sf-form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 0.3rem;
 }
 
 .sf-form-group.full-width {
@@ -6564,7 +6347,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 .sf-form-label {
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -6573,8 +6356,8 @@ input[type=range]::-webkit-slider-thumb:hover {
   background: var(--bg-subtle);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  padding: 0.55rem 0.75rem;
-  font-size: 0.86rem;
+  padding: 0.5rem 0.7rem;
+  font-size: 0.84rem;
   color: var(--text-primary);
   outline: none;
   font-family: inherit;
@@ -6582,7 +6365,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 .sf-form-input:focus, .sf-form-select:focus, .sf-form-textarea:focus {
-  border-color: #8b5cf6;
+  border-color: #7c3aed;
 }
 
 .sf-form-textarea {
@@ -6590,28 +6373,28 @@ input[type=range]::-webkit-slider-thumb:hover {
   min-height: 80px;
 }
 
-/* Toast Notification */
+/* Toast */
 .sf-toast {
   position: fixed;
   bottom: 2rem;
   left: 50%;
-  transform: translateX(-50%) translateY(30px);
-  background: #1d1d1f;
+  transform: translateX(-50%) translateY(20px);
+  background: #18181b;
   color: #ffffff;
-  padding: 0.65rem 1.4rem;
+  padding: 0.6rem 1.2rem;
   border-radius: var(--radius-pill);
-  font-size: 0.86rem;
-  font-weight: 600;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  font-size: 0.84rem;
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
   z-index: 99999;
   opacity: 0;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s ease;
   pointer-events: none;
 }
 
 [data-theme="dark"] .sf-toast {
-  background: #ffffff;
-  color: #1d1d1f;
+  background: #f4f4f5;
+  color: #18181b;
 }
 
 .sf-toast.visible {
@@ -6621,19 +6404,8 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .sf-notebook-page {
-    padding: 1.5rem 1.2rem 2rem 2rem;
-  }
-  .sf-notebook-spine {
-    width: 32px;
-  }
-  .sf-spine-rings span {
-    width: 24px;
-    height: 8px;
-    transform: translateX(4px);
-  }
-  .sf-notebook-red-margin {
-    left: 28px;
+  .sf-journal-card, .sf-notebook-page {
+    padding: 1.2rem 1.1rem;
   }
   .sf-form-grid {
     grid-template-columns: 1fr;
@@ -6650,16 +6422,15 @@ input[type=range]::-webkit-slider-thumb:hover {
   }
 }
 
-/* Print Stylesheet for PDF Export */
+/* Clean Print Stylesheet for IServ PDF Export */
 @media print {
   .portal-nav,
   .breadcrumbs-bar,
-  .sf-book-topbar,
-  .sf-notebook-tabs-bar,
+  .sf-topbar,
+  .sf-tabs-bar,
   .sf-toolbar,
   .sf-entry-actions,
   .sf-btn-copy-prompt,
-  .sf-bookmark-ribbon,
   .theme-segmented-control,
   .btn-nav-privacy,
   .iserv-nav-badge,
@@ -6689,36 +6460,20 @@ input[type=range]::-webkit-slider-thumb:hover {
     font-size: 10pt !important;
   }
 
-  .sf-notebook-wrapper {
-    box-shadow: none !important;
+  .sf-journal-card {
     border: none !important;
-    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
     margin: 0 !important;
   }
 
-  .sf-notebook-spine {
-    display: none !important;
-  }
-
-  .sf-notebook-page {
-    background: #ffffff !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    border-radius: 0 !important;
-  }
-
-  .sf-notebook-red-margin {
-    display: none !important;
-  }
-
-  .sf-journal-page-entry {
-    background: #ffffff !important;
+  .sf-entry-card {
     border: 1px solid #ddd !important;
     box-shadow: none !important;
     page-break-inside: avoid;
     break-inside: avoid;
-    margin-bottom: 1.5rem !important;
-    padding: 1.2rem !important;
+    margin-bottom: 1.4rem !important;
+    padding: 1.1rem !important;
   }
 
   .sf-prompt-box {
@@ -6727,9 +6482,9 @@ input[type=range]::-webkit-slider-thumb:hover {
   }
 
   .sf-reflection-card {
-    background: #fdfaf7 !important;
-    border: 1px solid #8b5cf6 !important;
-    border-left: 5px solid #8b5cf6 !important;
+    background: #fbf7ff !important;
+    border: 1px solid #7c3aed !important;
+    border-left: 4px solid #7c3aed !important;
     page-break-inside: avoid;
     break-inside: avoid;
   }
@@ -8585,28 +8340,457 @@ input[type=range]::-webkit-slider-thumb:hover {
   <!-- ========================================================================= -->
   <div id="view-seminarfach" class="portal-view">
     <div id="seminarfachRoot">
-    <!-- Top Bar: Quick Actions & IServ Status Badge -->
-    <div class="sf-book-topbar">
-      <div class="sf-book-topbar-left">
-        <span class="sf-book-badge">📘 Goodnotes-Journal</span>
-        <span class="sf-book-course-pill">Abi28 sf4 &bull; Hr. Jatzeck</span>
-        <span class="sf-book-deadline-pill">⏰ Abgabe: Heute 09:59 Uhr</span>
+    <!-- Top Action Bar -->
+    <div class="sf-topbar">
+      <div class="sf-topbar-left">
+        <span class="sf-badge-pill sf-badge-purple">📘 Seminarfach 4</span>
+        <span class="sf-badge-pill sf-badge-neutral">Abi28 sf4 &bull; Hr. Jatzeck</span>
+        <span class="sf-badge-pill sf-badge-amber">⏰ Abgabe: Heute 09:59 Uhr</span>
       </div>
-      <div class="sf-book-topbar-right">
-        <button class="sf-btn-pdf" onclick="exportSfJournalPDF()" title="Erstellt das druckfertige PDF für die IServ-Abgabe">
-          <span>📄</span> Als PDF für IServ exportieren
+      <div class="sf-topbar-right">
+        <button class="sf-btn sf-btn-pdf" onclick="exportSfJournalPDF()" title="Erstellt das druckfertige PDF für die IServ-Abgabe">
+          📄 Als PDF exportieren
         </button>
-        <button class="sf-btn-upload" onclick="triggerSfUploadModal()" title="Mitschrift, Foto oder Datei hochladen">
-          <span>📤</span> Mitschrift einfügen
+        <button class="sf-btn sf-btn-secondary" onclick="triggerSfUploadModal()" title="Mitschrift, Foto oder Datei hochladen">
+          📤 Mitschrift einfügen
         </button>
-        <button class="sf-btn-primary" onclick="openSfNewEntryModal()">
-          <span>➕</span> Neuer Eintrag
+        <button class="sf-btn sf-btn-primary" onclick="openSfNewEntryModal()">
+          ➕ Neuer Eintrag
         </button>
-        <button class="sf-btn-outline" onclick="resetSfJournalDefaults()" title="Standard-Einträge wiederherstellen">
-          <span>🔄</span> Reset
+        <button class="sf-btn sf-btn-ghost" onclick="resetSfJournalDefaults()" title="Standard-Einträge wiederherstellen">
+          🔄 Reset
         </button>
       </div>
     </div>
+
+    <!-- Main Clean Journal Card -->
+    <div class="sf-journal-card">
+      
+      <!-- Journal Header -->
+      <div class="sf-journal-header">
+        <div class="sf-journal-super">IGS GÖTTINGEN &bull; GYMNASIALE OBERSTUFE JAHRGANG 12</div>
+        <h1 class="sf-journal-title">📔 Prozessjournal: Künstliche Intelligenz</h1>
+        <div class="sf-journal-meta">
+          <span>👤 <strong>Tonda Beutler</strong></span>
+          <span>👨‍🏫 <strong>Hr. Michael Jatzeck (sf4)</strong></span>
+          <span>🎯 Leitfrage: <em>„Wie lernt man am besten mit KI?“</em></span>
+          <span>📅 Stand: <strong>21.09.2026</strong></span>
+        </div>
+
+        <div class="sf-stats-strip">
+          <div class="sf-stat-pill" onclick="switchSfTab('journal')">
+            <strong>7</strong> Einträge (vollständig)
+          </div>
+          <div class="sf-stat-pill" onclick="switchSfTab('mitschriften')">
+            <strong id="sfDocCountBadge">📁 1 Dokument</strong>
+          </div>
+          <div class="sf-stat-pill" onclick="switchSfTab('themen')">
+            <strong>🥇 Der Sokratische KI-Tutor</strong> (Favorit)
+          </div>
+        </div>
+      </div>
+
+      <!-- Segmented Navigation Tabs -->
+      <div class="sf-tabs-bar">
+        <button class="sf-tab-btn active" onclick="switchSfTab('journal')">
+          📖 Journal (7)
+        </button>
+        <button class="sf-tab-btn" onclick="switchSfTab('mitschriften')">
+          📁 Mitschriften &amp; Dateien
+        </button>
+        <button class="sf-tab-btn" onclick="switchSfTab('themen')">
+          💡 Themenfindung (5)
+        </button>
+        <button class="sf-tab-btn" onclick="switchSfTab('prompts')">
+          🧪 Prompt-Studio
+        </button>
+        <button class="sf-tab-btn" onclick="switchSfTab('tools')">
+          📊 Modellvergleich
+        </button>
+      </div>
+
+      <!-- Active Tab Body -->
+      <div id="sfTabContent" class="sf-tab-content-body">
+        <!-- Toolbar & Filters -->
+        <div class="sf-toolbar">
+          <div class="sf-filter-chips-list">
+            <button class="sf-filter-chip active" onclick="setSfCategoryFilter('Alle')">Alle</button>
+            <button class="sf-filter-chip" onclick="setSfCategoryFilter('Video-Analyse')">Video-Analyse</button>
+            <button class="sf-filter-chip" onclick="setSfCategoryFilter('YLAB Workshop')">YLAB Workshop</button>
+            <button class="sf-filter-chip" onclick="setSfCategoryFilter('Empirie & Umfrage')">Empirie & Umfrage</button>
+            <button class="sf-filter-chip" onclick="setSfCategoryFilter('Themensuche')">Themensuche</button>
+            <button class="sf-filter-chip" onclick="setSfCategoryFilter('Literatur & SUB')">Literatur & SUB</button>
+            <button class="sf-filter-chip" onclick="setSfCategoryFilter('KI-News')">KI-News</button>
+            <button class="sf-filter-chip" onclick="setSfCategoryFilter('Prompt-Experiment')">Prompt-Experiment</button>
+          </div>
+          <div class="sf-search-box">
+            <span class="sf-search-icon">🔍</span>
+            <input type="text" class="sf-search-input" placeholder="Tagebuch durchsuchen..." oninput="setSfSearchQuery(this.value)">
+          </div>
+        </div>
+
+        <!-- Entries List -->
+        <div class="sf-entries-list">
+          
+          <!-- ENTRY 1 -->
+          <div class="sf-entry-card" id="entry-sf-j-1">
+            <div class="sf-entry-card-header">
+              <div class="sf-entry-num-badge">Eintrag 01</div>
+              <div class="sf-entry-meta-right">
+                <span class="sf-entry-date">📅 26.08.2026</span>
+                <span class="sf-entry-badge-cat sf-badge-amber">Video-Analyse</span>
+                <span class="sf-entry-model">🤖 ZDF Terra X</span>
+                <div class="sf-entry-actions">
+                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-1')" title="Eintrag bearbeiten">✏️</button>
+                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-1')" title="Eintrag löschen">🗑️</button>
+                </div>
+              </div>
+            </div>
+            <h2 class="sf-entry-title">Harald Lesch Video &amp; Kritischer Kommentar</h2>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
+              <p class="sf-section-text">Sichtung des Harald-Lesch-Beitrags zu Künstlicher Intelligenz aus dem Unterricht und Verfassen eines fundierten, kritischen Kommentars.</p>
+            </div>
+            <div class="sf-entry-section sf-prompt-box">
+              <div class="sf-prompt-head">
+                <span class="sf-section-label">💬 Verwendeter Prompt</span>
+                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-1', this)">📋 Kopieren</button>
+              </div>
+              <pre class="sf-prompt-code">Analyse der Kernaussagen von Prof. Harald Lesch: Was unterscheidet statistische Textmustererkennung von echtem menschlichen Verstehen?</pre>
+            </div>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
+              <p class="sf-section-text">Lesch pointiert herausragend: LLMs wie ChatGPT verstehen die Bedeutung ihrer generierten Wörter nicht (Semantik fehlt). Sie berechnen rein stochastisch das wahrscheinlichste Folgewort auf Basis gigantischer Datenmengen ('Stochastische Papageien').</p>
+            </div>
+            <div class="sf-reflection-card">
+              <div class="sf-reflection-head">
+                <span class="sf-reflection-icon">🧠</span>
+                <div>
+                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
+                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
+                </div>
+              </div>
+              <div class="sf-reflection-body">
+                Für das schulische Lernen ist Leschs Kritik der Schlüssel: Wer KI als fertigen Lösungsautomaten nutzt, übernimmt statistische Textbausteine ohne jedes eigene Begreifen. Erst wenn wir die KI durch gezielte Rückfragen (Sokratische Methode) zwingen, uns Denkanstöße zu geben, entsteht echtes Wissen in unserem Gehirn. Genau dieser Punkt bildet das Fundament für meine Seminarfacharbeit!
+              </div>
+            </div>
+            <div class="sf-entry-footer-tags">
+              <span class="sf-entry-tag">#Harald Lesch</span>
+              <span class="sf-entry-tag">#Stochastische Papageien</span>
+              <span class="sf-entry-tag">#Semantik vs. Syntax</span>
+              <span class="sf-entry-tag">#Aufgabe 1</span>
+            </div>
+          </div>
+
+          <!-- ENTRY 2 -->
+          <div class="sf-entry-card" id="entry-sf-j-2">
+            <div class="sf-entry-card-header">
+              <div class="sf-entry-num-badge">Eintrag 02</div>
+              <div class="sf-entry-meta-right">
+                <span class="sf-entry-date">📅 02.09.2026</span>
+                <span class="sf-entry-badge-cat sf-badge-cyan">YLAB Workshop</span>
+                <span class="sf-entry-model">🤖 YLAB Arbeitsblätter (Wolke)</span>
+                <div class="sf-entry-actions">
+                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-2')" title="Eintrag bearbeiten">✏️</button>
+                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-2')" title="Eintrag löschen">🗑️</button>
+                </div>
+              </div>
+            </div>
+            <h2 class="sf-entry-title">YLAB Arbeitsergebnisse &amp; Erkenntnisse (Uni Göttingen)</h2>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
+              <p class="sf-section-text">Dokumentation und Auswertung der YLAB-Stationen (Geisteswissenschaftliches Schülerlabor der Georg-August-Universität Göttingen).</p>
+            </div>
+            <div class="sf-entry-section sf-prompt-box">
+              <div class="sf-prompt-head">
+                <span class="sf-section-label">💬 Verwendeter Prompt</span>
+                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-2', this)">📋 Kopieren</button>
+              </div>
+              <pre class="sf-prompt-code">Auswertung der YLAB-Arbeitsblätter: Wie entstehen Vorurteile (Bias) in Trainingsdaten und welche ethischen Richtlinien braucht KI in der Bildung?</pre>
+            </div>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
+              <p class="sf-section-text">Erkenntnisse aus den ABs: 1. Neuronale Netze spiegeln gesellschaftliche Verzerrungen der Trainingsdaten ungefiltert wider. 2. Urheberrechtsfragen bei Trainingsmaterialien sind juristisch ungeklärt. 3. Intransparenz ('Black Box Problem'): Selbst Entwickler können einzelne Entscheidungspfade komplexer Transformer-Netze nicht im Detail nachvollziehen.</p>
+            </div>
+            <div class="sf-reflection-card">
+              <div class="sf-reflection-head">
+                <span class="sf-reflection-icon">🧠</span>
+                <div>
+                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
+                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
+                </div>
+              </div>
+              <div class="sf-reflection-body">
+                Das YLAB hat gezeigt, warum Schüler eine ausgeprägte 'Prompt- &amp; AI-Literacy' brauchen. Wir dürfen KI-Antworten niemals als objektive Wahrheit betrachten, sondern müssen jede Aussage kritisch hinterfragen und mit seriöser Fachliteratur abgleichen.
+              </div>
+            </div>
+            <div class="sf-entry-footer-tags">
+              <span class="sf-entry-tag">#YLAB Göttingen</span>
+              <span class="sf-entry-tag">#Bias</span>
+              <span class="sf-entry-tag">#Trainingsdaten</span>
+              <span class="sf-entry-tag">#KI-Ethik</span>
+              <span class="sf-entry-tag">#Aufgabe 2</span>
+            </div>
+          </div>
+
+          <!-- ENTRY 3 -->
+          <div class="sf-entry-card" id="entry-sf-j-3">
+            <div class="sf-entry-card-header">
+              <div class="sf-entry-num-badge">Eintrag 03</div>
+              <div class="sf-entry-meta-right">
+                <span class="sf-entry-date">📅 09.09.2026</span>
+                <span class="sf-entry-badge-cat sf-badge-purple">Empirie &amp; Umfrage</span>
+                <span class="sf-entry-model">🤖 Schulweite Umfrage (IServ)</span>
+                <div class="sf-entry-actions">
+                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-3')" title="Eintrag bearbeiten">✏️</button>
+                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-3')" title="Eintrag löschen">🗑️</button>
+                </div>
+              </div>
+            </div>
+            <h2 class="sf-entry-title">Schulumfrage zur KI-Nutzung &amp; Kommentar</h2>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
+              <p class="sf-section-text">Auswertung der Befragung unter Mitschülern des 11. und 12. Jahrgangs bezüglich ihres tatsächlichen KI-Nutzungsverhaltens im Schulalltag.</p>
+            </div>
+            <div class="sf-entry-section sf-prompt-box">
+              <div class="sf-prompt-head">
+                <span class="sf-section-label">💬 Verwendeter Prompt</span>
+                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-3', this)">📋 Kopieren</button>
+              </div>
+              <pre class="sf-prompt-code">Statistische Auswertung der Umfragedaten: 1. Häufigkeit der Nutzung, 2. Art der Aufgaben (Texte, MINT, Hausaufgaben), 3. Reflexionsgrad.</pre>
+            </div>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
+              <p class="sf-section-text">Ergebnisse der Umfrage: • 87 % der Oberstufenschüler nutzen KI mindestens einmal pro Woche. • 64 % nutzen KI primär zur schnellen Hausaufgabenerledigung. • Nur 14 % formulieren didaktische System-Prompts ('Erkläre mir...', 'Stelle mir Fragen'). • Weniger als 18 % prüfen Quellen systematisch nach.</p>
+            </div>
+            <div class="sf-reflection-card">
+              <div class="sf-reflection-head">
+                <span class="sf-reflection-icon">🧠</span>
+                <div>
+                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
+                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
+                </div>
+              </div>
+              <div class="sf-reflection-body">
+                Die Zahlen belegen eine dramatische Diskrepanz: Schüler nutzen KI massenhaft, aber fast ausnahmslos als 'digitale Abkürzung' (Cognitive Offloading). Das führt zu einem gefährlichen Scheinwissen vor Klausuren. Meine Seminarfacharbeit soll genau hier ansetzen und zeigen, wie Schüler durch sokratisches Prompting messbar bessere Lernerfolge erzielen.
+              </div>
+            </div>
+            <div class="sf-entry-footer-tags">
+              <span class="sf-entry-tag">#Schulumfrage</span>
+              <span class="sf-entry-tag">#Nutzungsmuster</span>
+              <span class="sf-entry-tag">#Cognitive Offloading</span>
+              <span class="sf-entry-tag">#Aufgabe 3</span>
+            </div>
+          </div>
+
+          <!-- ENTRY 4 -->
+          <div class="sf-entry-card" id="entry-sf-j-4">
+            <div class="sf-entry-card-header">
+              <div class="sf-entry-num-badge">Eintrag 04</div>
+              <div class="sf-entry-meta-right">
+                <span class="sf-entry-date">📅 14.09.2026</span>
+                <span class="sf-entry-badge-cat sf-badge-emerald">Themensuche</span>
+                <span class="sf-entry-model">🤖 Gemini Pro &amp; Claude 3.5</span>
+                <div class="sf-entry-actions">
+                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-4')" title="Eintrag bearbeiten">✏️</button>
+                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-4')" title="Eintrag löschen">🗑️</button>
+                </div>
+              </div>
+            </div>
+            <h2 class="sf-entry-title">Erste Ergebnisse der Themensuche &amp; Forschungsfragen</h2>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
+              <p class="sf-section-text">Systematische Erarbeitung von 5 wissenschaftlichen Themenansätzen für die Seminarfacharbeit mit hohem empirischen Eigenanteil.</p>
+            </div>
+            <div class="sf-entry-section sf-prompt-box">
+              <div class="sf-prompt-head">
+                <span class="sf-section-label">💬 Verwendeter Prompt</span>
+                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-4', this)">📋 Kopieren</button>
+              </div>
+              <pre class="sf-prompt-code">Formulierung präziser forschungsleitender Fragestellungen mit Arbeitshypothese zum Leitmotiv 'Wie lernt man am besten mit KI?'.</pre>
+            </div>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
+              <p class="sf-section-text">Fünf starke Forschungsansätze erarbeitet: 1. Der sokratische KI-Tutor (Leitfragen statt fertiger Lösungen), 2. Cognitive Offloading &amp; die Illusion des Wissens vor Klausuren, 3. Konzeption eines evidenzbasierten KI-Lernframeworks, 4. Blooms 2-Sigma-Problem, 5. Empirische Schulumfrage mit statistischer Analyse.</p>
+            </div>
+            <div class="sf-reflection-card">
+              <div class="sf-reflection-head">
+                <span class="sf-reflection-icon">🧠</span>
+                <div>
+                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
+                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
+                </div>
+              </div>
+              <div class="sf-reflection-body">
+                Mein Favorit für die Arbeit ist Thema 1 ('Der Sokratische KI-Tutor') mit einem praktischen Vorher-Nachher-Experiment an unserer Schule in Physik/Informatik. Das Konzept steht und ist im Reiter 'Themenideen' detailliert ausgearbeitet.
+              </div>
+            </div>
+            <div class="sf-entry-footer-tags">
+              <span class="sf-entry-tag">#Themensuche</span>
+              <span class="sf-entry-tag">#Forschungsfrage</span>
+              <span class="sf-entry-tag">#Hypothese</span>
+              <span class="sf-entry-tag">#Aufgabe 4</span>
+            </div>
+          </div>
+
+          <!-- ENTRY 5 -->
+          <div class="sf-entry-card" id="entry-sf-j-5">
+            <div class="sf-entry-card-header">
+              <div class="sf-entry-num-badge">Eintrag 05</div>
+              <div class="sf-entry-meta-right">
+                <span class="sf-entry-date">📅 17.09.2026</span>
+                <span class="sf-entry-badge-cat sf-badge-rose">Literatur &amp; SUB</span>
+                <span class="sf-entry-model">🤖 SUB Göttingen &amp; Scholar</span>
+                <div class="sf-entry-actions">
+                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-5')" title="Eintrag bearbeiten">✏️</button>
+                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-5')" title="Eintrag löschen">🗑️</button>
+                </div>
+              </div>
+            </div>
+            <h2 class="sf-entry-title">Literatursichtung &amp; Vorbereitung SUB-Ausweis</h2>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
+              <p class="sf-section-text">Sichtung erster Fachliteratur zur Kognitionspsychologie und Beantragung des Bibliotheksausweises der Niedersächsischen Staats- und Universitätsbibliothek Göttingen (SUB).</p>
+            </div>
+            <div class="sf-entry-section sf-prompt-box">
+              <div class="sf-prompt-head">
+                <span class="sf-section-label">💬 Verwendeter Prompt</span>
+                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-5', this)">📋 Kopieren</button>
+              </div>
+              <pre class="sf-prompt-code">Recherche nach grundlegenden bildungswissenschaftlichen Standardwerken zu selbstgesteuertem Lernen, Cognitive Load und Tutoring-Effekten.</pre>
+            </div>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
+              <p class="sf-section-text">Erste relevante Fachwerke erfasst: 1. John Sweller (1988): 'Cognitive Load During Problem Solving', 2. Benjamin Bloom (1984): 'The 2 Sigma Problem: Methods of Group Instruction as Effective as One-to-One Tutoring', 3. Roediger &amp; Karpicke (2006): 'Test-Enhanced Learning' (Active Retrieval Practice), 4. OECD (2023): 'Generative AI and the Future of Education'.</p>
+            </div>
+            <div class="sf-reflection-card">
+              <div class="sf-reflection-head">
+                <span class="sf-reflection-icon">🧠</span>
+                <div>
+                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
+                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
+                </div>
+              </div>
+              <div class="sf-reflection-body">
+                Status SUB-Ausweis: Anmeldeformular für die Zentralbibliothek am Platz der Göttinger Sieben ausgefüllt. Einverständniserklärung der Eltern vorbereitet, da unter 18 Jahren. Der Ausweis wird für vertiefende Monographien im Oktober abgeholt.
+              </div>
+            </div>
+            <div class="sf-entry-footer-tags">
+              <span class="sf-entry-tag">#SUB Göttingen</span>
+              <span class="sf-entry-tag">#Literaturrecherche</span>
+              <span class="sf-entry-tag">#Sweller</span>
+              <span class="sf-entry-tag">#Bloom</span>
+              <span class="sf-entry-tag">#Aufgabe 5</span>
+            </div>
+          </div>
+
+          <!-- ENTRY 6 -->
+          <div class="sf-entry-card" id="entry-sf-j-6">
+            <div class="sf-entry-card-header">
+              <div class="sf-entry-num-badge">Eintrag 06</div>
+              <div class="sf-entry-meta-right">
+                <span class="sf-entry-date">📅 19.09.2026</span>
+                <span class="sf-entry-badge-cat sf-badge-blue">KI-News</span>
+                <span class="sf-entry-model">🤖 OpenAI o1</span>
+                <div class="sf-entry-actions">
+                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-6')" title="Eintrag bearbeiten">✏️</button>
+                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-6')" title="Eintrag löschen">🗑️</button>
+                </div>
+              </div>
+            </div>
+            <h2 class="sf-entry-title">KI-Tagesgeschehen &amp; Aktuelle Entwicklungen</h2>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
+              <p class="sf-section-text">Beobachtung aktueller technologischer und bildungspolitischer Nachrichten im KI-Sektor und Reflexion für die Schule.</p>
+            </div>
+            <div class="sf-entry-section sf-prompt-box">
+              <div class="sf-prompt-head">
+                <span class="sf-section-label">💬 Verwendeter Prompt</span>
+                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-6', this)">📋 Kopieren</button>
+              </div>
+              <pre class="sf-prompt-code">Analyse der Veröffentlichung von OpenAI o1 ('Strawberry') und der Verabschiedung des EU AI Acts: Was bedeutet das für das schulische Arbeiten?</pre>
+            </div>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
+              <p class="sf-section-text">News-Zusammenfassung: • OpenAI hat 'o1' veröffentlicht: Das erste Modell mit interner Gedankenkette ('Reasoning Chain'), das komplexe MINT-Probleme fehlerfrei durchdenkt. • Der EU AI Act klassifiziert KI in der Bildung als 'Hochrisiko-KI' mit strengen Transparenzanforderungen.</p>
+            </div>
+            <div class="sf-reflection-card">
+              <div class="sf-reflection-head">
+                <span class="sf-reflection-icon">🧠</span>
+                <div>
+                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
+                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
+                </div>
+              </div>
+              <div class="sf-reflection-body">
+                Mit Reasoning-Modellen wie o1 bricht eine neue Ära an: KI kann nicht mehr nur Texte glätten, sondern logisch folgern. Umso wichtiger ist es, dass Schulen Schülern nicht verbieten, KI zu nutzen, sondern ihnen beibringen, KI als interaktiven Sparringspartner für eigene Lösungswege einzusetzen.
+              </div>
+            </div>
+            <div class="sf-entry-footer-tags">
+              <span class="sf-entry-tag">#OpenAI o1</span>
+              <span class="sf-entry-tag">#Reasoning</span>
+              <span class="sf-entry-tag">#EU AI Act</span>
+              <span class="sf-entry-tag">#KI-News</span>
+              <span class="sf-entry-tag">#Aufgabe 6</span>
+            </div>
+          </div>
+
+          <!-- ENTRY 7 -->
+          <div class="sf-entry-card" id="entry-sf-j-7">
+            <div class="sf-entry-card-header">
+              <div class="sf-entry-num-badge">Eintrag 07</div>
+              <div class="sf-entry-meta-right">
+                <span class="sf-entry-date">📅 21.09.2026</span>
+                <span class="sf-entry-badge-cat sf-badge-purple">Prompt-Experiment</span>
+                <span class="sf-entry-model">🤖 GPT-4o vs Claude 3.5</span>
+                <div class="sf-entry-actions">
+                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-7')" title="Eintrag bearbeiten">✏️</button>
+                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-7')" title="Eintrag löschen">🗑️</button>
+                </div>
+              </div>
+            </div>
+            <h2 class="sf-entry-title">Praxis-Experiment: Sokratischer Tutor in Physik &amp; Informatik</h2>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
+              <p class="sf-section-text">Eigener Härtetest zweier Lernmethoden: Passive Musterlösung vs. sokratischer Dialog am Beispiel des Coulomb-Gesetzes (Physik eA) und von Insertion Sort (Informatik eA).</p>
+            </div>
+            <div class="sf-entry-section sf-prompt-box">
+              <div class="sf-prompt-head">
+                <span class="sf-section-label">💬 Verwendeter Prompt</span>
+                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-7', this)">📋 Kopieren</button>
+              </div>
+              <pre class="sf-prompt-code">Du bist mein persönlicher MINT-Tutor für die gymnasiale Oberstufe. Verrate mir NICHT sofort die Lösung! Stelle mir stattdessen gezielte Leitfragen, damit ich Schritt für Schritt selbst auf die Formel und den Rechenweg komme.</pre>
+            </div>
+            <div class="sf-entry-section">
+              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
+              <p class="sf-section-text">Erstaunlicher Lerneffekt: Die KI fragte gezielt: 'Welche Kräfte stehen am Fadenpendel im Kräftegleichgewicht?' Ich musste F_G und F_C selbst herleiten und den Tangens anwenden, anstatt nur passiv mitzulesen.</p>
+            </div>
+            <div class="sf-reflection-card">
+              <div class="sf-reflection-head">
+                <span class="sf-reflection-icon">🧠</span>
+                <div>
+                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
+                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
+                </div>
+              </div>
+              <div class="sf-reflection-body">
+                Sokratisches Prompting verhindert die 'Illusion of Competence'. Ich habe den Stoff nicht nur für die Hausaufgabe gelöst, sondern für die Klausur im Kopf verankert. Das ist der exakte Beweis für meine Seminarfachthese.
+              </div>
+            </div>
+            <div class="sf-entry-footer-tags">
+              <span class="sf-entry-tag">#Sokratischer Mentor</span>
+              <span class="sf-entry-tag">#Physik eA</span>
+              <span class="sf-entry-tag">#Informatik eA</span>
+              <span class="sf-entry-tag">#Active Recall</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div>
 
     <!-- The Digital Notebook / Büchlein Container -->
     <div class="sf-notebook-wrapper">
@@ -17977,7 +18161,7 @@ async function seedSeminarfachStarterDoc() {
   }
 }
 
-// --- 3. MAIN SEMINARFACH VIEW RENDERER (GOODNOTES- / BÜCHLEIN-DESIGN) ---
+// --- 3. MAIN SEMINARFACH VIEW RENDERER (CLEAN & MINIMALIST DESIGN) ---
 function renderSeminarfachView() {
   const container = document.getElementById('seminarfachRoot');
   if (!container) return;
@@ -17987,102 +18171,77 @@ function renderSeminarfachView() {
   const favTopic = SF_THEMEN.find(t => t.id === favTopicId) || SF_THEMEN[0];
 
   container.innerHTML = `
-    <!-- Top Bar: Quick Actions & IServ Status Badge -->
-    <div class="sf-book-topbar">
-      <div class="sf-book-topbar-left">
-        <span class="sf-book-badge">📘 Goodnotes-Journal</span>
-        <span class="sf-book-course-pill">Abi28 sf4 &bull; Hr. Jatzeck</span>
-        <span class="sf-book-deadline-pill">⏰ Abgabe: Heute 09:59 Uhr</span>
+    <!-- Top Action Bar -->
+    <div class="sf-topbar">
+      <div class="sf-topbar-left">
+        <span class="sf-badge-pill sf-badge-purple">📘 Seminarfach 4</span>
+        <span class="sf-badge-pill sf-badge-neutral">Abi28 sf4 &bull; Hr. Jatzeck</span>
+        <span class="sf-badge-pill sf-badge-amber">⏰ Abgabe: Heute 09:59 Uhr</span>
       </div>
-      <div class="sf-book-topbar-right">
-        <button class="sf-btn-pdf" onclick="exportSfJournalPDF()" title="Erstellt das druckfertige PDF für die IServ-Abgabe">
-          <span>📄</span> Als PDF für IServ exportieren
+      <div class="sf-topbar-right">
+        <button class="sf-btn sf-btn-pdf" onclick="exportSfJournalPDF()" title="Erstellt das druckfertige PDF für die IServ-Abgabe">
+          📄 Als PDF exportieren
         </button>
-        <button class="sf-btn-upload" onclick="triggerSfUploadModal()" title="Mitschrift, Foto oder Datei hochladen">
-          <span>📤</span> Mitschrift einfügen
+        <button class="sf-btn sf-btn-secondary" onclick="triggerSfUploadModal()" title="Mitschrift, Foto oder Datei hochladen">
+          📤 Mitschrift einfügen
         </button>
-        <button class="sf-btn-primary" onclick="openSfNewEntryModal()">
-          <span>➕</span> Neuer Eintrag
+        <button class="sf-btn sf-btn-primary" onclick="openSfNewEntryModal()">
+          ➕ Neuer Eintrag
         </button>
-        <button class="sf-btn-outline" onclick="resetSfJournalDefaults()" title="Standard-Einträge wiederherstellen">
-          <span>🔄</span> Reset
+        <button class="sf-btn sf-btn-ghost" onclick="resetSfJournalDefaults()" title="Standard-Einträge wiederherstellen">
+          🔄 Reset
         </button>
       </div>
     </div>
 
-    <!-- The Digital Notebook / Büchlein Container -->
-    <div class="sf-notebook-wrapper">
+    <!-- Main Clean Journal Card -->
+    <div class="sf-journal-card">
       
-      <!-- Notebook Cover & Spine Left -->
-      <div class="sf-notebook-spine">
-        <div class="sf-spine-rings">
-          <span></span><span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span><span></span><span></span>
-          <span></span><span></span><span></span><span></span><span></span>
+      <!-- Journal Header -->
+      <div class="sf-journal-header">
+        <div class="sf-journal-super">IGS GÖTTINGEN &bull; GYMNASIALE OBERSTUFE JAHRGANG 12</div>
+        <h1 class="sf-journal-title">📔 Prozessjournal: Künstliche Intelligenz</h1>
+        <div class="sf-journal-meta">
+          <span>👤 <strong>Tonda Beutler</strong></span>
+          <span>👨‍🏫 <strong>Hr. Michael Jatzeck (sf4)</strong></span>
+          <span>🎯 Leitfrage: <em>„Wie lernt man am besten mit KI?“</em></span>
+          <span>📅 Stand: <strong>${getTodayGermanDate()}</strong></span>
+        </div>
+
+        <div class="sf-stats-strip">
+          <div class="sf-stat-pill" onclick="switchSfTab('journal')">
+            <strong>${entries.length}</strong> Einträge (vollständig)
+          </div>
+          <div class="sf-stat-pill" onclick="switchSfTab('mitschriften')">
+            <strong id="sfDocCountBadge">📁 Dokumente</strong>
+          </div>
+          <div class="sf-stat-pill" onclick="switchSfTab('themen')">
+            <strong>${favTopic.title}</strong> (Favorit)
+          </div>
         </div>
       </div>
 
-      <!-- Main Notebook Page Body -->
-      <div class="sf-notebook-page">
-        
-        <!-- Red Margin Line for authentic school notebook look -->
-        <div class="sf-notebook-red-margin"></div>
-
-        <!-- Bookmark Ribbon Hanging Down -->
-        <div class="sf-bookmark-ribbon" onclick="switchSfTab('themen')" title="Lesezeichen: Zur Themenfindung">
-          <span>🔖</span>
-        </div>
-
-        <!-- Notebook Page Header -->
-        <div class="sf-notebook-header">
-          <div class="sf-nb-header-titles">
-            <div class="sf-nb-super-title">IGS GÖTTINGEN &bull; GYMNASIALE OBERSTUFE JAHRGANG 12</div>
-            <h1 class="sf-nb-book-title">📔 Mein KI-Prozessjournal &bull; Seminarfach 4</h1>
-            <div class="sf-nb-sub-line">
-              <span>👤 <strong>Tonda Beutler</strong></span>
-              <span>👨‍🏫 <strong>Hr. Jatzeck (sf4)</strong></span>
-              <span>🎯 <em>„Wie lernt man am besten mit KI?“</em></span>
-              <span>📅 Stand: <strong>${getTodayGermanDate()}</strong></span>
-            </div>
-          </div>
-
-          <!-- Quick Stats Pill Badge Row -->
-          <div class="sf-nb-stats-strip">
-            <div class="sf-nb-stat-item" onclick="switchSfTab('journal')">
-              <strong>${entries.length}</strong> Einträge (vollständig)
-            </div>
-            <div class="sf-nb-stat-item" onclick="switchSfTab('mitschriften')">
-              <strong id="sfDocCountBadge">📁</strong> Mitschriften
-            </div>
-            <div class="sf-nb-stat-item" onclick="switchSfTab('themen')">
-              <strong>${favTopic.title}</strong> (Favorit)
-            </div>
-          </div>
-        </div>
-
-        <!-- Notebook Register Tabs (Goodnotes-Style Index Tabs on the right) -->
-        <div class="sf-notebook-tabs-bar">
-          <button class="sf-nb-tab ${currentSfTab === 'journal' ? 'active' : ''}" onclick="switchSfTab('journal')">
-            📖 Journal-Einträge (${entries.length})
-          </button>
-          <button class="sf-nb-tab ${currentSfTab === 'mitschriften' ? 'active' : ''}" onclick="switchSfTab('mitschriften')">
-            📁 Mitschriften &amp; Dateien
-          </button>
-          <button class="sf-nb-tab ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')">
-            💡 Themensuche &amp; Exposé (${SF_THEMEN.length})
-          </button>
-          <button class="sf-nb-tab ${currentSfTab === 'prompts' ? 'active' : ''}" onclick="switchSfTab('prompts')">
-            🧪 Prompt-Studio
-          </button>
-          <button class="sf-nb-tab ${currentSfTab === 'tools' ? 'active' : ''}" onclick="switchSfTab('tools')">
-            📊 Modellvergleich
-          </button>
-        </div>
-
-        <!-- Notebook Active Tab Content Sheet -->
-        <div id="sfTabContent" class="sf-notebook-sheet-body"></div>
-
+      <!-- Segmented Navigation Tabs -->
+      <div class="sf-tabs-bar">
+        <button class="sf-tab-btn ${currentSfTab === 'journal' ? 'active' : ''}" onclick="switchSfTab('journal')">
+          📖 Journal (${entries.length})
+        </button>
+        <button class="sf-tab-btn ${currentSfTab === 'mitschriften' ? 'active' : ''}" onclick="switchSfTab('mitschriften')">
+          📁 Mitschriften &amp; Dateien
+        </button>
+        <button class="sf-tab-btn ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')">
+          💡 Themenfindung (${SF_THEMEN.length})
+        </button>
+        <button class="sf-tab-btn ${currentSfTab === 'prompts' ? 'active' : ''}" onclick="switchSfTab('prompts')">
+          🧪 Prompt-Studio
+        </button>
+        <button class="sf-tab-btn ${currentSfTab === 'tools' ? 'active' : ''}" onclick="switchSfTab('tools')">
+          📊 Modellvergleich
+        </button>
       </div>
+
+      <!-- Active Tab Body -->
+      <div id="sfTabContent" class="sf-tab-content-body"></div>
 
     </div>
   `;
@@ -18093,10 +18252,10 @@ function renderSeminarfachView() {
 
 function switchSfTab(tabName) {
   currentSfTab = tabName;
-  document.querySelectorAll('.sf-nb-tab').forEach(btn => {
+  document.querySelectorAll('.sf-tab-btn, .sf-nb-tab').forEach(btn => {
     btn.classList.remove('active');
   });
-  const activeBtn = document.querySelector(`.sf-nb-tab[onclick*="${tabName}"]`);
+  const activeBtn = document.querySelector(`.sf-tab-btn[onclick*="${tabName}"], .sf-nb-tab[onclick*="${tabName}"]`);
   if (activeBtn) activeBtn.classList.add('active');
 
   renderCurrentSfSubTab();
