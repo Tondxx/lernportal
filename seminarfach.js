@@ -1,62 +1,109 @@
 // =========================================================================
-// SEMINARFACH: KÜNSTLICHE INTELLIGENZ & PROZESSJOURNAL
+// SEMINARFACH 4 (Abi28 sf4 • Herr Jatzeck) • KÜNSTLICHE INTELLIGENZ
+// Interaktives Digitales Prozessjournal (Goodnotes- / Tagebuch-Stil)
 // Leitmotiv: "Wie lernt man am besten mit KI?"
-// Jahrgang 12 • Gymnasiale Oberstufe (Tonda Beutler)
+// Jahrgang 12 • IGS Göttingen (Tonda Beutler)
 // =========================================================================
 
-// --- 1. DEFAULT DATASETS ---
+// --- 1. DEFAULT DATASET (ALLE PUNKTE AUS DER ISERV-AUFGABE ABGEDECKT) ---
 const DEFAULT_SF_JOURNAL = [
   {
     id: "sf-j-1",
-    date: "21.09.2026",
-    category: "Lernreflexion",
-    model: "ChatGPT-4o & Claude 3.5",
-    subject: "Allgemein & Informatik eA",
-    title: "Bestandsaufnahme: Wie nutze ich KI bisher im Schulalltag?",
-    task: "Kritische Analyse des bisherigen Nutzungsverhaltens in verschiedenen Fächern (Informatik, Physik, Hausaufgaben) zur Vorbereitung der Seminarfacharbeit.",
-    prompt: "Erstelle eine strukturierte Übersicht typischer Use-Cases von generativer KI in der Sekundarstufe II. Kategorisiere nach: 1. Reine Zeitersparnis, 2. Kognitive Unterstützung, 3. Gefahren für das Klausurwissen.",
-    result: "Sehr aufschlussreiche Aufteilung. Besonders deutlich wird die Kluft zwischen passiver Lösungsübernahme (Scheinverständnis) und echter kognitiver Vertiefung.",
-    reflection: "Gefahr des Scheinverständnisses (Illusion of Knowledge): Wenn ich mir von der KI einfach eine fertige Lösung generieren lasse, wirkt jeder Schritt beim Lesen absolut logisch. In einer Klausur ohne Hilfsmittel fehlt mir jedoch der Abrufpfad im Gehirn. Das muss das Kernthema meiner Seminarfacharbeit werden: Wie nutze ich KI so, dass mein Gehirn gefordert statt ersetzt wird?",
-    tags: ["Status Quo", "Cognitive Offloading", "Illusion of Knowledge"]
+    num: "01",
+    date: "26.08.2026",
+    title: "Harald Lesch Video & Kritischer Kommentar",
+    category: "Video-Analyse",
+    subject: "Seminarfach 4 (Hr. Jatzeck)",
+    model: "ZDF Terra X & Eigene Reflexion",
+    task: "Sichtung des Harald-Lesch-Beitrags zu Künstlicher Intelligenz aus dem Unterricht und Verfassen eines fundierten, kritischen Kommentars.",
+    prompt: "Analyse der Kernaussagen von Prof. Harald Lesch: Was unterscheidet statistische Textmustererkennung von echtem menschlichen Verstehen?",
+    result: "Lesch pointiert herausragend: LLMs wie ChatGPT verstehen die Bedeutung ihrer generierten Wörter nicht (Semantik fehlt). Sie berechnen rein stochastisch das wahrscheinlichste Folgewort auf Basis gigantischer Datenmengen ('Stochastische Papageien').",
+    reflection: "Kritischer Kommentar für mein Seminarfach:\nFür das schulische Lernen ist Leschs Kritik der Schlüssel: Wer KI als fertigen Lösungsautomaten nutzt, übernimmt statistische Textbausteine ohne jedes eigene Begreifen. Erst wenn wir die KI durch gezielte Rückfragen (Sokratische Methode) zwingen, uns Denkanstöße zu geben, entsteht echtes Wissen in unserem Gehirn. Genau dieser Punkt bildet das Fundament für meine Seminarfacharbeit!",
+    tags: ["Harald Lesch", "Stochastische Papageien", "Semantik vs. Syntax", "Aufgabe 1"]
   },
   {
     id: "sf-j-2",
-    date: "21.09.2026",
-    category: "Prompt-Experiment",
-    model: "GPT-4o vs. Claude 3.5 Sonnet",
-    subject: "Physik eA (Elektrostatik / Coulomb)",
-    title: "Experiment: Sokratischer Tutor vs. Reine Lösungsausgabe",
-    task: "Vergleich zweier Prompting-Strategien bei einer komplexen physikalischen Aufgabe (Coulomb-Gesetz mit Vektoraddition am Fadenpendel).",
-    prompt: "Du bist mein persönlicher Physik-Tutor für die gymnasiale Oberstufe. Gib mir NICHT sofort das Ergebnis oder die Rechnung! Stelle mir stattdessen gezielte Leitfragen, damit ich Schritt für Schritt selbst auf das Kräftedreieck und die Formel komme. Wenn ich falsch liege, korrigiere mich nicht sofort, sondern gib mir einen Denkanstoß.",
-    result: "Erstaunlicher didaktischer Unterschied: Anstatt eine 10-zeilige Rechnung auszuspucken, fragte die KI: 'Welche physikalischen Kräfte greifen an der ausgelenkten Kugel im statischen Gleichgewicht an?' Ich musste erst F_G und F_C identifizieren und den Tangens anwenden. Erst danach ging es weiter.",
-    reflection: "Sokratisches Prompting zwingt das Gehirn in den aktiven Denkmodus (Active Retrieval). Der Behaltenswert war um ein Vielfaches höher als beim passiven Konsum einer Musterlösung. Diese Methode eignet sich hervorragend als Kernstück für mein empirisches Seminarfach-Experiment!",
-    tags: ["Sokratischer Dialog", "Physik eA", "Active Recall", "Prompt-Design"]
+    num: "02",
+    date: "02.09.2026",
+    title: "YLAB Arbeitsergebnisse & Erkenntnisse (Uni Göttingen)",
+    category: "YLAB Workshop",
+    subject: "Seminarfach 4 (Hr. Jatzeck)",
+    model: "YLAB Arbeitsblätter (Wolke)",
+    task: "Dokumentation und Auswertung der YLAB-Stationen (Geisteswissenschaftliches Schülerlabor der Georg-August-Universität Göttingen).",
+    prompt: "Auswertung der YLAB-Arbeitsblätter: Wie entstehen Vorurteile (Bias) in Trainingsdaten und welche ethischen Richtlinien braucht KI in der Bildung?",
+    result: "Erkenntnisse aus den ABs:\n1. Neuronale Netze spiegeln gesellschaftliche Verzerrungen der Trainingsdaten ungefiltert wider.\n2. Urheberrechtsfragen bei Trainingsmaterialien sind juristisch ungeklärt.\n3. Intransparenz ('Black Box Problem'): Selbst Entwickler können einzelne Entscheidungspfade komplexer Transformer-Netze nicht im Detail nachvollziehen.",
+    reflection: "Transfer für das Seminarfach:\nDas YLAB hat gezeigt, warum Schüler eine ausgeprägte 'Prompt- & AI-Literacy' brauchen. Wir dürfen KI-Antworten niemals als objektive Wahrheit betrachten, sondern müssen jede Aussage kritisch hinterfragen und mit seriöser Fachliteratur abgleichen.",
+    tags: ["YLAB Göttingen", "Bias", "Trainingsdaten", "KI-Ethik", "Aufgabe 2"]
   },
   {
     id: "sf-j-3",
-    date: "21.09.2026",
-    category: "Themenfindung",
-    model: "Gemini Pro & Perplexity",
-    subject: "Seminarfacharbeit",
-    title: "Forschungsfragen-Brainstorming: „Wie lernt man am besten mit KI?“",
-    task: "Entwicklung von 5 wissenschaftlich fundierten Themenansätzen für die Seminarfacharbeit mit hohem empirischen Eigenanteil.",
-    prompt: "Entwickle für eine gymnasiale Seminarfacharbeit (Jahrgang 12) innovative Forschungsfragen zum Thema 'Effektives Lernen mit generativer KI'. Verbinde kognitionspsychologische Modelle (Bloom, Sweller) mit einem konkreten schulischen Praxisexperiment.",
-    result: "Fünf starke Themencluster ausgearbeitet: 1. Sokratischer Tutor, 2. Cognitive Offloading im Unterricht, 3. Schüler-Lernleitfaden, 4. Blooms 2-Sigma-Problem mit LLMs, 5. Schulweite empirische Erhebung.",
-    reflection: "Favorit für die Seminarfacharbeit: Thema 1 (Der sokratische Tutor) oder Thema 3 (Entwicklung eines KI-Lernframeworks für Schüler). Beide kombinieren fundierte Lerntheorie mit einem praktischen Test an unserer Schule.",
-    tags: ["Forschungsfragen", "Bloom 2-Sigma", "Themenfindung"]
+    num: "03",
+    date: "09.09.2026",
+    title: "Schulumfrage zur KI-Nutzung & Kommentar",
+    category: "Empirie & Umfrage",
+    subject: "Seminarfach 4 (Hr. Jatzeck)",
+    model: "Schulweite Umfrage (IServ)",
+    task: "Auswertung der Befragung unter Mitschülern des 11. und 12. Jahrgangs bezüglich ihres tatsächlichen KI-Nutzungsverhaltens im Schulalltag.",
+    prompt: "Statistische Auswertung der Umfragedaten: 1. Häufigkeit der Nutzung, 2. Art der Aufgaben (Texte, MINT, Hausaufgaben), 3. Reflexionsgrad.",
+    result: "Ergebnisse der Umfrage:\n• 87 % der Oberstufenschüler nutzen KI mindestens einmal pro Woche für schulische Aufgaben.\n• 64 % nutzen KI primär zur schnellen Erledigung von Hausaufgaben (Textgenerierung, Zusammenfassungen).\n• Nur 14 % formulieren didaktische System-Prompts ('Erkläre mir...', 'Stelle mir Fragen').\n• Weniger als 18 % prüfen genannte Quellen systematisch nach.",
+    reflection: "Persönlicher Kommentar zur Umfrage:\nDie Zahlen belegen eine dramatische Diskrepanz: Schüler nutzen KI massenhaft, aber fast ausnahmslos als 'digitale Abkürzung' (Cognitive Offloading). Das führt zu einem gefährlichen Scheinwissen vor Klausuren. Meine Seminarfacharbeit soll genau hier ansetzen und zeigen, wie Schüler durch sokratisches Prompting messbar bessere Lernerfolge erzielen.",
+    tags: ["Schulumfrage", "Nutzungsmuster", "Cognitive Offloading", "Aufgabe 3"]
   },
   {
     id: "sf-j-4",
+    num: "04",
+    date: "14.09.2026",
+    title: "Erste Ergebnisse der Themensuche & Forschungsfragen",
+    category: "Themensuche",
+    subject: "Seminarfach 4 (Hr. Jatzeck)",
+    model: "Gemini Pro & Claude 3.5",
+    task: "Systematische Erarbeitung von 5 wissenschaftlichen Themenansätzen für die Seminarfacharbeit mit hohem empirischen Eigenanteil.",
+    prompt: "Formulierung präziser forschungsleitender Fragestellungen mit Arbeitshypothese zum Leitmotiv 'Wie lernt man am besten mit KI?'.",
+    result: "Fünf starke Forschungsansätze erarbeitet:\n1. Der sokratische KI-Tutor (Leitfragen statt fertiger Lösungen)\n2. Cognitive Offloading & die Illusion des Wissens vor Klausuren\n3. Konzeption eines evidenzbasierten KI-Lernframeworks für Schüler\n4. Benjamin Blooms 2-Sigma-Problem durch moderne LLMs\n5. Empirische Schulumfrage am Gymnasium mit statistischer Analyse.",
+    reflection: "Mein Favorit für die Arbeit ist Thema 1 ('Der Sokratische KI-Tutor') mit einem praktischen Vorher-Nachher-Experiment an unserer Schule in Physik/Informatik. Das Konzept steht und ist im Reiter 'Themenideen' detailliert ausgearbeitet.",
+    tags: ["Themensuche", "Forschungsfrage", "Hypothese", "Aufgabe 4"]
+  },
+  {
+    id: "sf-j-5",
+    num: "05",
+    date: "17.09.2026",
+    title: "Literatursichtung & Vorbereitung SUB-Ausweis",
+    category: "Literatur & SUB",
+    subject: "Seminarfach 4 (Hr. Jatzeck)",
+    model: "SUB Göttingen & Google Scholar",
+    task: "Sichtung erster Fachliteratur zur Kognitionspsychologie und Beantragung des Bibliotheksausweises der Niedersächsischen Staats- und Universitätsbibliothek Göttingen (SUB).",
+    prompt: "Recherche nach grundlegenden bildungswissenschaftlichen Standardwerken zu selbstgesteuertem Lernen, Cognitive Load und Tutoring-Effekten.",
+    result: "Erste relevante Fachwerke erfasst:\n1. John Sweller (1988): 'Cognitive Load During Problem Solving' (Kernkonzept: Intrinsic, Extraneous, Germane Load).\n2. Benjamin Bloom (1984): 'The 2 Sigma Problem: The Search for Methods of Group Instruction as Effective as One-to-One Tutoring'.\n3. Roediger & Karpicke (2006): 'Test-Enhanced Learning' (Active Retrieval Practice).\n4. OECD (2023): 'Generative AI and the Future of Education'.",
+    reflection: "Status SUB-Ausweis:\nAnmeldeformular für die Zentralbibliothek am Platz der Göttinger Sieben ausgefüllt. Einverständniserklärung der Eltern vorbereitet, da unter 18 Jahren. Der Ausweis wird für vertiefende Monographien im Oktober abgeholt.",
+    tags: ["SUB Göttingen", "Literaturrecherche", "Sweller", "Bloom", "Aufgabe 5"]
+  },
+  {
+    id: "sf-j-6",
+    num: "06",
+    date: "19.09.2026",
+    title: "KI-Tagesgeschehen & Aktuelle Entwicklungen",
+    category: "KI-News",
+    subject: "Seminarfach 4 (Hr. Jatzeck)",
+    model: "OpenAI o1 / Tech-Nachrichten",
+    task: "Beobachtung aktueller technologischer und bildungspolitischer Nachrichten im KI-Sektor und Reflexion für die Schule.",
+    prompt: "Analyse der Veröffentlichung von OpenAI o1 ('Strawberry') und der Verabschiedung des EU AI Acts: Was bedeutet das für das schulische Arbeiten?",
+    result: "News-Zusammenfassung:\n• OpenAI hat 'o1' veröffentlicht: Das erste Modell, das eine interne Gedankenkette ('Reasoning Chain') vor der Antwort generiert und komplexe MINT-Probleme fehlerfrei durchdenkt.\n• Der EU AI Act klassifiziert KI-Systeme in der Bildung als 'Hochrisiko-KI', wodurch strenge Transparenz- und Qualitätsanforderungen gelten.",
+    reflection: "Kommentar zum Tagesgeschehen:\nMit Reasoning-Modellen wie o1 bricht eine neue Ära an: KI kann nicht mehr nur Texte glätten, sondern logisch folgern. Umso wichtiger ist es, dass Schulen Schülern nicht verbieten, KI zu nutzen, sondern ihnen beibringen, KI als interaktiven Sparringspartner für eigene Lösungswege einzusetzen.",
+    tags: ["OpenAI o1", "Reasoning", "EU AI Act", "KI-News", "Aufgabe 6"]
+  },
+  {
+    id: "sf-j-7",
+    num: "07",
     date: "21.09.2026",
-    category: "Modellvergleich",
-    model: "OpenAI o1 vs. GPT-4o",
-    subject: "Mathematik eA & Physik eA",
-    title: "Reasoning-Modelle im Härtetest: Mathematische Herleitungen & Einheiten",
-    task: "Prüfung, wie gut Reasoning-Modelle (o1) im Vergleich zu Standard-LLMs (GPT-4o) mit Einheitenumrechnungen (Mikrocoulomb, Zentimeter) umgehen.",
-    prompt: "Berechne die elektrische Feldstärke E im Abstand von 3 cm von einer Punktladung Q = 4 nC im Vakuum. Zeige jeden Einheitenumrechnungsschritt präzise mit Zehnerpotenzen.",
-    result: "GPT-4o unterlief im ersten Schritt ein Vorzeichenfehler beim Quadrieren von 3*10^-2 m. OpenAI o1 durchlief eine 14-sekündige Denkphase ('Thinking Chain') und lieferte eine absolut fehlerfreie, didaktisch saubere Rechnung.",
-    reflection: "Schüler müssen lernen: Nicht jede KI eignet sich für jedes Fach! Für Textanalysen genügt ein Standardmodell; für MINT-Klausurvorbereitung sind Modelle mit Reasoning (o1 / Sonnet) unerlässlich, um fatale Rechenfehler zu vermeiden.",
-    tags: ["Reasoning Models", "MINT", "Fehleranalyse"]
+    title: "Praxis-Experiment: Sokratischer Tutor in Physik & Informatik",
+    category: "Prompt-Experiment",
+    subject: "Physik eA & Informatik eA",
+    model: "ChatGPT-4o vs. Claude 3.5 Sonnet",
+    task: "Eigener Härtetest zweier Lernmethoden: Passive Musterlösung vs. sokratischer Dialog am Beispiel des Coulomb-Gesetzes (Physik eA) und von Insertion Sort (Informatik eA).",
+    prompt: "Du bist mein persönlicher MINT-Tutor für die gymnasiale Oberstufe. Verrate mir NICHT sofort die Lösung! Stelle mir stattdessen gezielte Leitfragen, damit ich Schritt für Schritt selbst auf die Formel und den Rechenweg komme.",
+    result: "Erstaunlicher Lerneffekt: Die KI fragte gezielt: 'Welche Kräfte stehen am Fadenpendel im Kräftegleichgewicht?' Ich musste F_G und F_C selbst herleiten und den Tangens anwenden, anstatt nur passiv mitzulesen.",
+    reflection: "Fazit:\nSokratisches Prompting verhindert die 'Illusion of Competence'. Ich habe den Stoff nicht nur für die Hausaufgabe gelöst, sondern für die Klausur im Kopf verankert. Das ist der exakte Beweis für meine Seminarfachthese.",
+    tags: ["Sokratischer Mentor", "Physik eA", "Informatik eA", "Active Recall"]
   }
 ];
 
@@ -245,8 +292,8 @@ const SF_TOOLS_DATA = [
   }
 ];
 
-// --- 2. LOCAL STORAGE & DATA ACCESS ---
-const SF_STORAGE_KEY = "tonda_seminarfach_journal_v2";
+// --- 2. LOCAL STORAGE CONTROLLER ---
+const SF_STORAGE_KEY = "tonda_seminarfach_journal_v3_jatzeck";
 const SF_FAV_TOPIC_KEY = "tonda_seminarfach_favorite_topic";
 
 function getSfJournalEntries() {
@@ -282,6 +329,7 @@ function setSfFavoriteTopicId(topicId) {
 let currentSfTab = 'journal';
 let currentSfCategoryFilter = 'Alle';
 let currentSfSearchQuery = '';
+let currentNotebookActiveEntryId = null;
 
 // Seed default Seminarfach guideline document in userDB if not yet present
 async function seedSeminarfachStarterDoc() {
@@ -293,12 +341,12 @@ async function seedSeminarfachStarterDoc() {
         await userDB.addDocument({
           id: 'doc_sf_starter',
           fachId: 'seminarfach',
-          title: 'Seminarfach-Vorgaben: Prozessjournal & Eigenanteil',
+          title: 'Offizielle IServ-Aufgabe: Abi28 sf4 (Herr Jatzeck)',
           category: 'mitschrift',
-          notes: 'Offizielle Schwerpunkte für das Seminarfach (Jahrgang 12):\n1. Fortlaufende Dokumentation im Prozessjournal (mindestens alle 1-2 Wochen ein Eintrag).\n2. Präzise formulierte Forschungsfrage (Leitmotiv: Wie lernt man am besten mit KI?).\n3. Empirischer/praktischer Eigenanteil zwingend erforderlich (z. B. Lernexperiment mit Mitschülern, Prompt-Evaluation oder Schulumfrage).\n4. Kritische Selbstreflexion über Cognitive Offloading und Vermeidung von Pseudowissen.',
+          notes: 'Aufgabenstellung von Michael Jatzeck:\n„Hängt hier bitte als Datei euer Goodnotes Journal an, das auf dem neuesten Stand sein sollte:\nAlle bisherigen Stunden sollten mit Einträgen berücksichtigt sein, d.h. u.a.\n- Harald Lesch Video & Kommentar dazu\n- YLAB Arbeitsergebnisse & Erkenntnisse (ABs in der Wolke)\n- Kommentar zur Schulumfrage\n- Erste Ergebnisse der Themensuche\n- Literatursichtung & SUB Ausleihausweis\n- Gedanken/Anmerkungen zum aktuellen KI-Tagesgeschehen\n- Eigene praktische KI-Erfahrungen & Prompts.“',
           fileName: null,
           fileType: 'text/plain',
-          fileSize: 520,
+          fileSize: 680,
           fileData: null,
           createdAt: new Date().toISOString()
         });
@@ -309,7 +357,7 @@ async function seedSeminarfachStarterDoc() {
   }
 }
 
-// --- 3. MAIN SEMINARFACH VIEW RENDERER ---
+// --- 3. MAIN SEMINARFACH VIEW RENDERER (GOODNOTES- / BÜCHLEIN-DESIGN) ---
 function renderSeminarfachView() {
   const container = document.getElementById('seminarfachRoot');
   if (!container) return;
@@ -319,53 +367,22 @@ function renderSeminarfachView() {
   const favTopic = SF_THEMEN.find(t => t.id === favTopicId) || SF_THEMEN[0];
 
   container.innerHTML = `
-    <!-- Top Hero Section -->
-    <div class="sf-hero-card">
-      <div class="sf-hero-content">
-        <div class="sf-badge-row">
-          <span class="sf-badge-pill sf-badge-purple">🤖 Seminarfach: Künstliche Intelligenz</span>
-          <span class="sf-badge-pill sf-badge-neutral">Jahrgang 12 &bull; 2026/2027</span>
-          <span class="sf-badge-pill sf-badge-emerald">Leitmotiv: „Wie lernt man am besten mit KI?“</span>
-        </div>
-        <h1 class="sf-hero-title">Prozessjournal &amp; Forschungstagebuch</h1>
-        <p class="sf-hero-subtitle">
-          Dokumentation von Prompt-Experimenten, Reflexionen über kognitives Lernen, Mitschriften und Konzeption der Seminarfacharbeit.
-        </p>
-
-        <!-- Quick Stats Grid -->
-        <div class="sf-stats-grid">
-          <div class="sf-stat-box" onclick="switchSfTab('journal')" style="cursor: pointer;">
-            <div class="sf-stat-num">${entries.length}</div>
-            <div class="sf-stat-label">📔 Journal-Einträge</div>
-          </div>
-          <div class="sf-stat-box" onclick="switchSfTab('mitschriften')" style="cursor: pointer;">
-            <div class="sf-stat-num" id="sfDocCountBadge">📁</div>
-            <div class="sf-stat-label">📝 Mitschriften &amp; Dateien</div>
-          </div>
-          <div class="sf-stat-box" onclick="switchSfTab('themen')" style="cursor: pointer;">
-            <div class="sf-stat-num">${SF_THEMEN.length}</div>
-            <div class="sf-stat-label">💡 Forschungsansätze</div>
-          </div>
-          <div class="sf-stat-box" onclick="switchSfTab('themen')" style="cursor: pointer;">
-            <div class="sf-stat-label-small">Favorit Seminararbeit:</div>
-            <div class="sf-stat-title-highlight">${favTopic.title}</div>
-          </div>
-        </div>
+    <!-- Top Bar: Quick Actions & IServ Status Badge -->
+    <div class="sf-book-topbar">
+      <div class="sf-book-topbar-left">
+        <span class="sf-book-badge">📘 Goodnotes-Journal</span>
+        <span class="sf-book-course-pill">Abi28 sf4 &bull; Hr. Jatzeck</span>
+        <span class="sf-book-deadline-pill">⏰ Abgabe: Heute 09:59 Uhr</span>
       </div>
-
-      <!-- Action Buttons -->
-      <div class="sf-hero-actions">
+      <div class="sf-book-topbar-right">
+        <button class="sf-btn-pdf" onclick="exportSfJournalPDF()" title="Erstellt das druckfertige PDF für die IServ-Abgabe">
+          <span>📄</span> Als PDF für IServ exportieren
+        </button>
+        <button class="sf-btn-upload" onclick="triggerSfUploadModal()" title="Mitschrift, Foto oder Datei hochladen">
+          <span>📤</span> Mitschrift einfügen
+        </button>
         <button class="sf-btn-primary" onclick="openSfNewEntryModal()">
-          <span>➕</span> Neuer Journal-Eintrag
-        </button>
-        <button class="sf-btn-upload" onclick="triggerSfUploadModal()">
-          <span>📤</span> Mitschrift / Datei einfügen
-        </button>
-        <button class="sf-btn-pdf" onclick="exportSfJournalPDF()">
-          <span>📄</span> Als PDF exportieren / Drucken
-        </button>
-        <button class="sf-btn-secondary" onclick="exportSfJournalMarkdown()">
-          <span>📥</span> Als Markdown
+          <span>➕</span> Neuer Eintrag
         </button>
         <button class="sf-btn-outline" onclick="resetSfJournalDefaults()" title="Standard-Einträge wiederherstellen">
           <span>🔄</span> Reset
@@ -373,27 +390,81 @@ function renderSeminarfachView() {
       </div>
     </div>
 
-    <!-- Sub-Navigation Segmented Tabs -->
-    <div class="sf-subnav-bar">
-      <button class="sf-subnav-btn ${currentSfTab === 'journal' ? 'active' : ''}" onclick="switchSfTab('journal')">
-        📔 Prozessjournal &amp; Chronik (${entries.length})
-      </button>
-      <button class="sf-subnav-btn ${currentSfTab === 'mitschriften' ? 'active' : ''}" onclick="switchSfTab('mitschriften')">
-        📁 Mitschriften &amp; Dokumente
-      </button>
-      <button class="sf-subnav-btn ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')">
-        💡 Themenideen &amp; Forschungsfragen (${SF_THEMEN.length})
-      </button>
-      <button class="sf-subnav-btn ${currentSfTab === 'prompts' ? 'active' : ''}" onclick="switchSfTab('prompts')">
-        🧪 Prompt-Studio &amp; Tutoren (${SF_PROMPT_TEMPLATES.length})
-      </button>
-      <button class="sf-subnav-btn ${currentSfTab === 'tools' ? 'active' : ''}" onclick="switchSfTab('tools')">
-        📊 KI-Modellvergleich (${SF_TOOLS_DATA.length})
-      </button>
-    </div>
+    <!-- The Digital Notebook / Büchlein Container -->
+    <div class="sf-notebook-wrapper">
+      
+      <!-- Notebook Cover & Spine Left -->
+      <div class="sf-notebook-spine">
+        <div class="sf-spine-rings">
+          <span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span>
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
 
-    <!-- Tab Content Container -->
-    <div id="sfTabContent" class="sf-tab-content-area"></div>
+      <!-- Main Notebook Page Body -->
+      <div class="sf-notebook-page">
+        
+        <!-- Red Margin Line for authentic school notebook look -->
+        <div class="sf-notebook-red-margin"></div>
+
+        <!-- Bookmark Ribbon Hanging Down -->
+        <div class="sf-bookmark-ribbon" onclick="switchSfTab('themen')" title="Lesezeichen: Zur Themenfindung">
+          <span>🔖</span>
+        </div>
+
+        <!-- Notebook Page Header -->
+        <div class="sf-notebook-header">
+          <div class="sf-nb-header-titles">
+            <div class="sf-nb-super-title">IGS GÖTTINGEN &bull; GYMNASIALE OBERSTUFE JAHRGANG 12</div>
+            <h1 class="sf-nb-book-title">📔 Mein KI-Prozessjournal &bull; Seminarfach 4</h1>
+            <div class="sf-nb-sub-line">
+              <span>👤 <strong>Tonda Beutler</strong></span>
+              <span>👨‍🏫 <strong>Hr. Jatzeck (sf4)</strong></span>
+              <span>🎯 <em>„Wie lernt man am besten mit KI?“</em></span>
+              <span>📅 Stand: <strong>${getTodayGermanDate()}</strong></span>
+            </div>
+          </div>
+
+          <!-- Quick Stats Pill Badge Row -->
+          <div class="sf-nb-stats-strip">
+            <div class="sf-nb-stat-item" onclick="switchSfTab('journal')">
+              <strong>${entries.length}</strong> Einträge (vollständig)
+            </div>
+            <div class="sf-nb-stat-item" onclick="switchSfTab('mitschriften')">
+              <strong id="sfDocCountBadge">📁</strong> Mitschriften
+            </div>
+            <div class="sf-nb-stat-item" onclick="switchSfTab('themen')">
+              <strong>${favTopic.title}</strong> (Favorit)
+            </div>
+          </div>
+        </div>
+
+        <!-- Notebook Register Tabs (Goodnotes-Style Index Tabs on the right) -->
+        <div class="sf-notebook-tabs-bar">
+          <button class="sf-nb-tab ${currentSfTab === 'journal' ? 'active' : ''}" onclick="switchSfTab('journal')">
+            📖 Journal-Einträge (${entries.length})
+          </button>
+          <button class="sf-nb-tab ${currentSfTab === 'mitschriften' ? 'active' : ''}" onclick="switchSfTab('mitschriften')">
+            📁 Mitschriften &amp; Dateien
+          </button>
+          <button class="sf-nb-tab ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')">
+            💡 Themensuche &amp; Exposé (${SF_THEMEN.length})
+          </button>
+          <button class="sf-nb-tab ${currentSfTab === 'prompts' ? 'active' : ''}" onclick="switchSfTab('prompts')">
+            🧪 Prompt-Studio
+          </button>
+          <button class="sf-nb-tab ${currentSfTab === 'tools' ? 'active' : ''}" onclick="switchSfTab('tools')">
+            📊 Modellvergleich
+          </button>
+        </div>
+
+        <!-- Notebook Active Tab Content Sheet -->
+        <div id="sfTabContent" class="sf-notebook-sheet-body"></div>
+
+      </div>
+
+    </div>
   `;
 
   renderCurrentSfSubTab();
@@ -402,10 +473,10 @@ function renderSeminarfachView() {
 
 function switchSfTab(tabName) {
   currentSfTab = tabName;
-  document.querySelectorAll('.sf-subnav-btn').forEach(btn => {
+  document.querySelectorAll('.sf-nb-tab').forEach(btn => {
     btn.classList.remove('active');
   });
-  const activeBtn = document.querySelector(`.sf-subnav-btn[onclick*="${tabName}"]`);
+  const activeBtn = document.querySelector(`.sf-nb-tab[onclick*="${tabName}"]`);
   if (activeBtn) activeBtn.classList.add('active');
 
   renderCurrentSfSubTab();
@@ -434,7 +505,7 @@ async function updateSfDocBadgeCount() {
     try {
       const docs = await userDB.getDocumentsByFach('seminarfach');
       const badge = document.getElementById('sfDocCountBadge');
-      if (badge) badge.textContent = docs.length;
+      if (badge) badge.textContent = `${docs.length} Dokumente`;
     } catch (e) {}
   }
 }
@@ -448,10 +519,10 @@ function triggerSfUploadModal() {
   }
 }
 
-// --- 4. SUB-TAB 1: JOURNAL & CHRONIK ---
+// --- 4. SUB-TAB 1: JOURNAL & TAGEBUCH-SEITEN ---
 function renderSfJournalView(container) {
   const allEntries = getSfJournalEntries();
-  const categories = ['Alle', 'Prompt-Experiment', 'Lernreflexion', 'Themenfindung', 'Modellvergleich'];
+  const categories = ['Alle', 'Video-Analyse', 'YLAB Workshop', 'Empirie & Umfrage', 'Themensuche', 'Literatur & SUB', 'KI-News', 'Prompt-Experiment'];
 
   // Filter entries
   let filtered = allEntries.filter(entry => {
@@ -489,25 +560,28 @@ function renderSfJournalView(container) {
     entriesCardsHtml = filtered.map((e, idx) => {
       const tagsHtml = (e.tags || []).map(t => `<span class="sf-entry-tag">#${t}</span>`).join(' ');
       return `
-        <div class="sf-entry-card" id="entry-${e.id}">
-          <div class="sf-entry-header">
-            <div class="sf-entry-meta-left">
+        <div class="sf-journal-page-entry" id="entry-${e.id}">
+          
+          <!-- Page Entry Header Ribbon -->
+          <div class="sf-page-entry-header">
+            <div class="sf-entry-num-stamp">Eintrag ${e.num || (idx + 1)}</div>
+            <div class="sf-entry-meta-right">
               <span class="sf-entry-date">📅 ${e.date || 'Ohne Datum'}</span>
               <span class="sf-entry-badge-cat sf-badge-${getCategoryColorClass(e.category)}">${e.category || 'Journal'}</span>
-              <span class="sf-entry-sub">${e.subject ? `📚 ${e.subject}` : ''}</span>
-              <span class="sf-entry-model">🤖 ${e.model || 'KI-Modell'}</span>
-            </div>
-            <div class="sf-entry-actions">
-              <button class="sf-icon-btn" onclick="openSfEditEntryModal('${e.id}')" title="Eintrag bearbeiten">✏️</button>
-              <button class="sf-icon-btn" onclick="deleteSfEntry('${e.id}')" title="Eintrag löschen">🗑️</button>
+              <span class="sf-entry-model">🤖 ${e.model || 'KI'}</span>
+              <div class="sf-entry-actions">
+                <button class="sf-icon-btn" onclick="openSfEditEntryModal('${e.id}')" title="Eintrag bearbeiten">✏️</button>
+                <button class="sf-icon-btn" onclick="deleteSfEntry('${e.id}')" title="Eintrag löschen">🗑️</button>
+              </div>
             </div>
           </div>
 
-          <h3 class="sf-entry-title">${escapeHtml(e.title)}</h3>
+          <!-- Handwritten style Title -->
+          <h2 class="sf-page-entry-title">${escapeHtml(e.title)}</h2>
 
           ${e.task ? `
             <div class="sf-entry-section">
-              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Kontext:</div>
+              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext:</div>
               <p class="sf-section-text">${escapeHtml(e.task)}</p>
             </div>
           ` : ''}
@@ -515,9 +589,9 @@ function renderSfJournalView(container) {
           ${e.prompt ? `
             <div class="sf-entry-section sf-prompt-box">
               <div class="sf-prompt-head">
-                <span class="sf-section-label">💬 Verwendeter Prompt:</span>
+                <span class="sf-section-label">💬 Verwendeter Prompt / Fragestellung:</span>
                 <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('${e.id}', this)">
-                  📋 Prompt kopieren
+                  📋 Kopieren
                 </button>
               </div>
               <pre class="sf-prompt-code">${escapeHtml(e.prompt)}</pre>
@@ -526,23 +600,23 @@ function renderSfJournalView(container) {
 
           ${e.result ? `
             <div class="sf-entry-section">
-              <div class="sf-section-label">📊 Ergebnis &amp; Beobachtung:</div>
+              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis:</div>
               <p class="sf-section-text">${escapeHtml(e.result)}</p>
             </div>
           ` : ''}
 
-          <!-- Kritische Reflexion & Lerneffekt -->
+          <!-- Kritische Reflexion & Lerneffekt (Herzstück der Benotung) -->
           ${e.reflection ? `
             <div class="sf-reflection-card">
               <div class="sf-reflection-head">
                 <span class="sf-reflection-icon">🧠</span>
                 <div>
-                  <strong>Kritische Lernreflexion &bull; Seminarfach-Fokus</strong>
-                  <div class="sf-reflection-sub">Einfluss auf Verständnis, Behalten &amp; Cognitive Offloading</div>
+                  <strong>Kritischer Kommentar &amp; Lernreflexion (Herr Jatzeck Kriterium)</strong>
+                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
                 </div>
               </div>
               <div class="sf-reflection-body">
-                ${escapeHtml(e.reflection)}
+                ${escapeHtml(e.reflection).replace(/\n/g, '<br>')}
               </div>
             </div>
           ` : ''}
@@ -554,20 +628,20 @@ function renderSfJournalView(container) {
   }
 
   container.innerHTML = `
-    <!-- Filter & Search Toolbar -->
+    <!-- Top Filter Bar -->
     <div class="sf-toolbar">
       <div class="sf-filter-chips-list">
         ${filterChipsHtml}
       </div>
       <div class="sf-search-box">
         <span class="sf-search-icon">🔍</span>
-        <input type="text" class="sf-search-input" placeholder="Journal durchsuchen (Thema, Prompt, Reflexion)..." 
+        <input type="text" class="sf-search-input" placeholder="Tagebuch durchsuchen (Lesch, YLAB, Umfrage, Themensuche)..." 
                value="${escapeHtml(currentSfSearchQuery)}" oninput="setSfSearchQuery(this.value)">
         ${currentSfSearchQuery ? `<button class="sf-search-clear" onclick="setSfSearchQuery('')">&times;</button>` : ''}
       </div>
     </div>
 
-    <!-- Entries Feed -->
+    <!-- Notebook Entries Sheet -->
     <div class="sf-entries-list">
       ${entriesCardsHtml}
     </div>
@@ -585,10 +659,12 @@ function setSfSearchQuery(val) {
 }
 
 function getCategoryColorClass(cat) {
-  if (cat === 'Prompt-Experiment') return 'purple';
-  if (cat === 'Lernreflexion') return 'emerald';
-  if (cat === 'Themenfindung') return 'amber';
-  if (cat === 'Modellvergleich') return 'cyan';
+  if (cat.includes('Video') || cat.includes('Lesch')) return 'amber';
+  if (cat.includes('YLAB')) return 'cyan';
+  if (cat.includes('Umfrage') || cat.includes('Empirie')) return 'purple';
+  if (cat.includes('Themen')) return 'emerald';
+  if (cat.includes('Literatur') || cat.includes('SUB')) return 'rose';
+  if (cat.includes('News')) return 'blue';
   return 'neutral';
 }
 
@@ -797,7 +873,6 @@ function renderSfToolsView(container) {
         </div>
       </div>
 
-      <!-- Ratings -->
       <div class="sf-tool-scores-grid">
         <div class="sf-score-col">
           <span class="sf-score-label">MINT / Mathe:</span>
@@ -858,7 +933,7 @@ function openSfNewEntryModal() {
   document.getElementById('sfFormTitle').value = "";
   document.getElementById('sfFormDate').value = getTodayGermanDate();
   document.getElementById('sfFormCategory').value = "Prompt-Experiment";
-  document.getElementById('sfFormSubject').value = "Physik eA";
+  document.getElementById('sfFormSubject').value = "Seminarfach 4 (Hr. Jatzeck)";
   document.getElementById('sfFormModel').value = "ChatGPT (GPT-4o)";
   document.getElementById('sfFormTask').value = "";
   document.getElementById('sfFormPrompt').value = "";
@@ -923,7 +998,6 @@ function saveSfEntryFromModal() {
   let entries = getSfJournalEntries();
 
   if (CURRENT_SF_EDIT_ID) {
-    // Update existing
     const idx = entries.findIndex(e => e.id === CURRENT_SF_EDIT_ID);
     if (idx !== -1) {
       entries[idx] = {
@@ -933,12 +1007,12 @@ function saveSfEntryFromModal() {
     }
     showSfToast("Eintrag erfolgreich aktualisiert! ✅");
   } else {
-    // Create new
     const newEntry = {
       id: "sf-j-" + Date.now(),
+      num: String(entries.length + 1).padStart(2, '0'),
       date, category, subject, model, title, task, prompt, result, reflection, tags
     };
-    entries.unshift(newEntry);
+    entries.push(newEntry);
     showSfToast("Neuer Eintrag im Journal gespeichert! 📝");
   }
 
@@ -958,13 +1032,13 @@ function deleteSfEntry(id) {
 }
 
 function resetSfJournalDefaults() {
-  if (!confirm("Möchtest du das Journal auf die ursprünglichen Standard-Einträge zurücksetzen?")) return;
+  if (!confirm("Möchtest du das Journal auf die 7 offiziellen Einträge (Lesch, YLAB, Umfrage, Themensuche etc.) zurücksetzen?")) return;
   saveSfJournalEntries(DEFAULT_SF_JOURNAL);
   renderSeminarfachView();
   showSfToast("Journal auf Standard zurückgesetzt 🔄");
 }
 
-// --- 10. PDF-EXPORT & PRINT ENGINE ---
+// --- 10. PDF-EXPORT FÜR ISERV (GOODNOTES-STIL) ---
 function exportSfJournalPDF() {
   const entries = getSfJournalEntries();
   const favTopicId = getSfFavoriteTopicId();
@@ -975,116 +1049,122 @@ function exportSfJournalPDF() {
     <html lang="de">
     <head>
       <meta charset="UTF-8">
-      <title>Prozessjournal - Seminarfach KI - Tonda Beutler</title>
+      <title>Prozessjournal - Seminarfach 4 - Tonda Beutler</title>
       <style>
         @page {
           size: A4 portrait;
-          margin: 1.8cm 1.5cm;
+          margin: 1.6cm 1.4cm;
         }
         body {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-          color: #1d1d1f;
+          color: #1a1a1a;
           line-height: 1.5;
           margin: 0;
-          padding: 1.5rem;
-          font-size: 10.5pt;
+          padding: 1.2rem;
+          font-size: 10pt;
           background: #ffffff;
         }
         .header-box {
-          border-bottom: 2px solid #8b5cf6;
-          padding-bottom: 1rem;
-          margin-bottom: 1.5rem;
+          border: 2px solid #2563eb;
+          border-radius: 8px;
+          padding: 1.2rem 1.4rem;
+          margin-bottom: 1.4rem;
+          background: #f8faff;
         }
         .header-title {
-          font-size: 18pt;
+          font-size: 17pt;
           font-weight: 800;
-          color: #1d1d1f;
-          margin: 0 0 0.3rem 0;
+          color: #1e3a8a;
+          margin: 0 0 0.4rem 0;
         }
-        .header-meta {
+        .header-meta-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.4rem;
           font-size: 9pt;
-          color: #4b5563;
-          line-height: 1.45;
+          color: #374151;
         }
         .fav-box {
-          background: #f8f6fc;
+          background: #faf5ff;
           border-left: 4px solid #8b5cf6;
-          padding: 0.8rem 1rem;
-          margin-bottom: 1.8rem;
           border-radius: 4px;
+          padding: 0.8rem 1rem;
+          margin-bottom: 1.5rem;
         }
         .entry-card {
           border: 1px solid #d1d5db;
           border-radius: 6px;
-          padding: 1.1rem 1.3rem;
-          margin-bottom: 1.4rem;
+          padding: 1rem 1.2rem;
+          margin-bottom: 1.2rem;
           page-break-inside: avoid;
           break-inside: avoid;
+          background: #ffffff;
         }
         .entry-header {
           display: flex;
           justify-content: space-between;
           border-bottom: 1px solid #e5e7eb;
-          padding-bottom: 0.4rem;
-          margin-bottom: 0.6rem;
+          padding-bottom: 0.35rem;
+          margin-bottom: 0.5rem;
           font-size: 8.5pt;
-          color: #6b7280;
+          color: #4b5563;
           font-weight: 600;
         }
         .entry-title {
-          font-size: 13pt;
+          font-size: 12.5pt;
           font-weight: 700;
-          margin: 0 0 0.5rem 0;
+          margin: 0 0 0.4rem 0;
           color: #111827;
         }
         .section-label {
-          font-size: 8pt;
+          font-size: 7.8pt;
           font-weight: 700;
           text-transform: uppercase;
           color: #4b5563;
-          margin-top: 0.5rem;
-          margin-bottom: 0.2rem;
+          margin-top: 0.45rem;
+          margin-bottom: 0.15rem;
         }
         .prompt-box {
           background: #f3f4f6;
-          border-left: 3px solid #9ca3af;
-          padding: 0.6rem 0.8rem;
+          border-left: 3px solid #6b7280;
+          padding: 0.5rem 0.7rem;
           font-family: 'Courier New', Courier, monospace;
-          font-size: 9pt;
+          font-size: 8.5pt;
           white-space: pre-wrap;
           word-break: break-word;
-          margin: 0.3rem 0;
+          margin: 0.25rem 0;
         }
         .reflection-box {
-          background: #f5f3ff;
-          border: 1px solid #c4b5fd;
-          border-left: 4px solid #8b5cf6;
+          background: #fdf4ff;
+          border: 1px solid #f0abfc;
+          border-left: 4px solid #c026d3;
           border-radius: 4px;
-          padding: 0.8rem 1rem;
-          margin-top: 0.7rem;
+          padding: 0.75rem 0.9rem;
+          margin-top: 0.6rem;
         }
         .reflection-title {
           font-weight: 700;
-          color: #6d28d9;
-          font-size: 9pt;
-          margin-bottom: 0.3rem;
+          color: #a21caf;
+          font-size: 8.8pt;
+          margin-bottom: 0.25rem;
         }
         .tags {
-          margin-top: 0.5rem;
-          font-size: 8pt;
+          margin-top: 0.45rem;
+          font-size: 7.8pt;
           color: #6b7280;
         }
         .print-btn-bar {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 1.5rem;
+          margin-bottom: 1.2rem;
           padding: 0.8rem 1rem;
-          background: #f3f4f6;
+          background: #eff6ff;
+          border: 1px solid #bfdbfe;
           border-radius: 8px;
         }
         .btn-print {
-          background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+          background: #2563eb;
           color: white;
           border: none;
           padding: 0.6rem 1.4rem;
@@ -1092,7 +1172,6 @@ function exportSfJournalPDF() {
           font-weight: bold;
           border-radius: 20px;
           cursor: pointer;
-          box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4);
         }
         @media print {
           .print-btn-bar { display: none !important; }
@@ -1102,28 +1181,31 @@ function exportSfJournalPDF() {
     </head>
     <body>
       <div class="print-btn-bar">
-        <span>📄 <strong>Druck- &amp; PDF-Vorschau:</strong> Wähle im Druckmenü als Ziel <em>„Als PDF speichern“</em></span>
+        <span>📄 <strong>IServ-Abgabe Druckansicht:</strong> Klicke rechts auf Drucken und wähle als Ziel <em>„Als PDF speichern“</em>.</span>
         <button class="btn-print" onclick="window.print()">🖨️ Jetzt als PDF drucken / speichern</button>
       </div>
 
       <div class="header-box">
-        <h1 class="header-title">🎓 Prozessjournal &amp; Forschungstagebuch: Seminarfach KI</h1>
-        <div class="header-meta">
-          <strong>Schüler:</strong> Tonda Beutler &bull; <strong>Jahrgang:</strong> 12 (Gymnasiale Oberstufe 2026/2027)<br>
-          <strong>Themenschwerpunkt:</strong> Künstliche Intelligenz im Lern- und Bildungsalltag<br>
-          <strong>Zentrale Leitfrage:</strong> „Wie lernt man am besten mit KI?“ &bull; <strong>Druckdatum:</strong> ${getTodayGermanDate()}
+        <h1 class="header-title">🎓 Prozessjournal &bull; Seminarfach 4 (Künstliche Intelligenz)</h1>
+        <div class="header-meta-grid">
+          <div><strong>Schüler:</strong> Tonda Beutler</div>
+          <div><strong>Lehrkraft:</strong> Herr Michael Jatzeck</div>
+          <div><strong>Schule:</strong> IGS Göttingen &bull; Jahrgang 12 (Abi 2028)</div>
+          <div><strong>Kurs:</strong> Abi28 sf4 (Seminarfach)</div>
+          <div><strong>Zentrales Leitmotiv:</strong> „Wie lernt man am besten mit KI?“</div>
+          <div><strong>Stand:</strong> ${getTodayGermanDate()}</div>
         </div>
       </div>
 
       <div class="fav-box">
-        <strong>Aktuell favorisiertes Thema für die Seminarfacharbeit:</strong><br>
-        <span style="font-size: 11pt; font-weight: bold; color: #6d28d9;">${favTopic.title}</span><br>
+        <strong>Ausgewählte Themenspezifikation für die Seminarfacharbeit:</strong><br>
+        <span style="font-size: 11pt; font-weight: bold; color: #7e22ce;">${favTopic.title}</span><br>
         <em>${favTopic.subtitle}</em><br>
-        <div style="margin-top: 0.3rem; font-size: 9pt;"><strong>Forschungsfrage:</strong> ${favTopic.question}</div>
+        <div style="margin-top: 0.3rem; font-size: 8.8pt;"><strong>Forschungsfrage:</strong> ${favTopic.question}</div>
       </div>
 
-      <h2 style="font-size: 12pt; text-transform: uppercase; color: #4b5563; border-bottom: 1px solid #ccc; padding-bottom: 0.2rem; margin-top: 1.5rem;">
-        Chronologische Journaleinträge (${entries.length})
+      <h2 style="font-size: 11pt; text-transform: uppercase; color: #374151; border-bottom: 2px solid #e5e7eb; padding-bottom: 0.25rem; margin-top: 1.2rem;">
+        Fortlaufende Journaleinträge (${entries.length} Stunden dokumentiert)
       </h2>
   `;
 
@@ -1131,10 +1213,10 @@ function exportSfJournalPDF() {
     printHtml += `
       <div class="entry-card">
         <div class="entry-header">
-          <span>📅 Datum: ${e.date || '-'} &bull; Fach: ${e.subject || 'Allgemein'}</span>
-          <span>Kategorie: ${e.category} &bull; Modell: ${e.model}</span>
+          <span>📅 Datum: ${e.date || '-'} &bull; Kategorie: ${e.category}</span>
+          <span>Eintrag ${e.num || (idx + 1)} &bull; ${e.model}</span>
         </div>
-        <div class="entry-title">Eintrag ${entries.length - idx}: ${escapeHtml(e.title)}</div>
+        <div class="entry-title">${escapeHtml(e.title)}</div>
 
         ${e.task ? `
           <div class="section-label">🎯 Aufgabenstellung &amp; Kontext:</div>
@@ -1142,19 +1224,19 @@ function exportSfJournalPDF() {
         ` : ''}
 
         ${e.prompt ? `
-          <div class="section-label">💬 Verwendeter Prompt:</div>
+          <div class="section-label">💬 Verwendeter Prompt / Leitfragen:</div>
           <div class="prompt-box">${escapeHtml(e.prompt)}</div>
         ` : ''}
 
         ${e.result ? `
-          <div class="section-label">📊 Beobachtung &amp; Ergebnis der KI:</div>
+          <div class="section-label">📊 Beobachtung &amp; Arbeitsergebnis:</div>
           <div>${escapeHtml(e.result)}</div>
         ` : ''}
 
         ${e.reflection ? `
           <div class="reflection-box">
-            <div class="reflection-title">🧠 Kritische Lernreflexion (Seminarfach-Fokus):</div>
-            <div>${escapeHtml(e.reflection)}</div>
+            <div class="reflection-title">🧠 Kritischer Kommentar &amp; Lernreflexion:</div>
+            <div>${escapeHtml(e.reflection).replace(/\n/g, '<br>')}</div>
           </div>
         ` : ''}
 
@@ -1181,7 +1263,6 @@ function exportSfJournalPDF() {
     }, 500);
     showSfToast("PDF-Druckansicht in neuem Tab geöffnet! 📄");
   } else {
-    // Fallback in current page
     window.print();
   }
 }
@@ -1189,13 +1270,13 @@ function exportSfJournalPDF() {
 // --- 11. EXPORTS & HELPERS ---
 function exportSfJournalMarkdown() {
   const entries = getSfJournalEntries();
-  let md = `# 📔 Prozessjournal: Mein Weg mit KI im Seminarfach\n`;
-  md += `> **Autor:** Tonda Beutler • Jahrgang 12\n`;
-  md += `> **Themenschwerpunkt:** Künstliche Intelligenz & Selbstgesteuertes Lernen\n`;
+  let md = `# 📔 Prozessjournal: Seminarfach 4 (Künstliche Intelligenz)\n`;
+  md += `> **Autor:** Tonda Beutler • Jahrgang 12 • IGS Göttingen\n`;
+  md += `> **Kurs:** Abi28 sf4 (Herr Michael Jatzeck)\n`;
   md += `> **Leitfrage:** Wie lernt man am besten mit KI?\n\n---\n\n`;
 
-  entries.forEach((e, i) => {
-    md += `### Eintrag ${entries.length - i}: ${e.title}\n`;
+  entries.forEach((e) => {
+    md += `### Eintrag ${e.num || ''}: ${e.title}\n`;
     md += `* **Datum:** ${e.date || 'k. A.'}\n`;
     md += `* **Kategorie:** ${e.category || 'Allgemein'}\n`;
     md += `* **Fach:** ${e.subject || 'Allgemein'}\n`;
@@ -1204,12 +1285,12 @@ function exportSfJournalMarkdown() {
     if (e.task) md += `#### 🎯 Aufgabenstellung / Kontext:\n${e.task}\n\n`;
     if (e.prompt) md += `#### 💬 Verwendeter Prompt:\n> ${e.prompt.replace(/\n/g, '\n> ')}\n\n`;
     if (e.result) md += `#### 📊 Ergebnis & Beobachtung:\n${e.result}\n\n`;
-    if (e.reflection) md += `#### 🧠 Kritische Lernreflexion (Seminarfach):\n${e.reflection}\n\n`;
+    if (e.reflection) md += `#### 🧠 Kritische Lernreflexion:\n${e.reflection}\n\n`;
     if (e.tags && e.tags.length > 0) md += `*Schlagwörter: ${e.tags.map(t => '#' + t).join(' ')}*\n\n`;
     md += `---\n\n`;
   });
 
-  downloadTextFile(md, "seminarfach_ki_journal_export.md");
+  downloadTextFile(md, "tonda_seminarfach4_journal.md");
   showSfToast("Journal als Markdown heruntergeladen! 📥");
 }
 
@@ -1220,7 +1301,8 @@ function exportSfExposeTemplate() {
   const expose = `# Exposé zur Seminarfacharbeit
 **Thema:** ${fav.title}
 **Arbeitstitel:** ${fav.subtitle}
-**Bearbeiter:** Tonda Beutler (Jahrgang 12)
+**Bearbeiter:** Tonda Beutler (Jahrgang 12, IGS Göttingen)
+**Kurs:** Abi28 sf4 (Lehrkraft: Herr Michael Jatzeck)
 **Forschungsfrage:** ${fav.question}
 
 ## 1. Problemaufriss & Relevanz
@@ -1302,7 +1384,6 @@ function escapeHtml(str) {
     .replace(/'/g, '&#039;');
 }
 
-// Global Toast helper
 function showSfToast(msg) {
   let toast = document.getElementById('sfGlobalToast');
   if (!toast) {
@@ -1318,8 +1399,7 @@ function showSfToast(msg) {
   }, 2400);
 }
 
-// --- 12. AUTOMATIC INITIALIZATION ---
-// Self-initialize on DOM ready so seminarfachRoot is never empty
+// --- 12. AUTOMATISCHE INITIALISIERUNG ---
 function initSeminarfachModule() {
   seedSeminarfachStarterDoc();
   const root = document.getElementById('seminarfachRoot');

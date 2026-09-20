@@ -339,7 +339,7 @@ const FAECHER_DATA = {
     name: 'Seminarfach (KI)',
     courseCode: 'SF-KI',
     type: 'Seminarfach (Oberstufe)',
-    teacher: 'Seminarfach-Leitung',
+    teacher: 'Michael Jatzeck (sf4)',
     room: 'Sek II',
     color: '#8b5cf6',
     icon: '🤖',
