@@ -39,6 +39,9 @@
         <button class="nav-tab" data-tab="faecher" onclick="navigateTo('faecher')">
           📚 Fächer
         </button>
+        <button class="nav-tab" data-tab="seminarfach" onclick="navigateTo('seminarfach')">
+          🤖 Seminarfach KI
+        </button>
         <button class="nav-tab" data-tab="kalender" onclick="navigateTo('kalender')">
           📅 Klausuren
         </button>
@@ -170,6 +173,34 @@
         </div>
         <div class="dash-subjects-grid" id="dashSubjectsGrid">
           <!-- Populated by renderDashboardSubjects() -->
+        </div>
+      </div>
+
+      <!-- Card 4: Seminarfach KI & Prozessjournal -->
+      <div class="dash-card" style="border-left: 3px solid #8b5cf6;">
+        <div class="dash-card-header">
+          <div class="dash-card-title">
+            <span>🤖</span> Seminarfach: KI-Journal
+          </div>
+          <button class="btn-cal-action" onclick="navigateTo('seminarfach')" style="padding: 0.25rem 0.6rem; font-size: 0.74rem; background: rgba(139, 92, 246, 0.12); color: #7c3aed; border-color: rgba(139, 92, 246, 0.3);">
+            Öffnen &rarr;
+          </button>
+        </div>
+        <div style="padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 0.55rem;">
+          <div style="font-size: 0.8rem; font-weight: 700; color: #7c3aed;">
+            Leitfrage: „Wie lernt man am besten mit KI?“
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45;">
+            Laufendes Prozessjournal mit Prompt-Experimenten, sokratischen Tutoren und Themenfindung für die Seminararbeit.
+          </div>
+          <div style="display: flex; gap: 0.4rem; margin-top: 0.25rem;">
+            <button class="btn-cal-action" onclick="navigateTo('seminarfach')" style="font-size: 0.76rem; flex: 1;">
+              📔 Zum Journal
+            </button>
+            <button class="btn-cal-action" onclick="navigateTo('seminarfach'); switchSfTab('themen');" style="font-size: 0.76rem; flex: 1;">
+              💡 5 Themenideen
+            </button>
+          </div>
         </div>
       </div>
 
@@ -1833,6 +1864,13 @@
   </div>
 
   <!-- ========================================================================= -->
+  <!-- VIEW 7: SEMINARFACH KI & PROZESSJOURNAL                                   -->
+  <!-- ========================================================================= -->
+  <div id="view-seminarfach" class="portal-view">
+    <div id="seminarfachRoot"></div>
+  </div>
+
+  <!-- ========================================================================= -->
   <!-- MODALS & PRIVACY OVERLAYS                                                 -->
   <!-- ========================================================================= -->
 
@@ -2095,6 +2133,82 @@
     </div>
   </div>
 
+  <!-- Modal 6: Seminarfach Journal Entry Modal -->
+  <div class="portal-modal-backdrop" id="sfEntryModal" style="display: none;" onclick="closeSfEntryModal(event)">
+    <div class="portal-modal-content sf-entry-modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="sfModalTitle" style="margin: 0; font-size: 1.25rem;">➕ Neuer Journal-Eintrag</h3>
+        <button class="modal-close-btn" onclick="closeSfEntryModal()">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 1.2rem 1.5rem;">
+        <div class="sf-form-grid">
+          <div class="sf-form-group full-width">
+            <label class="sf-form-label" for="sfFormTitle">Titel des Eintrags *</label>
+            <input type="text" id="sfFormTitle" class="sf-form-input" placeholder="z. B. Experiment: Sokratischer Tutor vs. Lösungsausgabe">
+          </div>
+
+          <div class="sf-form-group">
+            <label class="sf-form-label" for="sfFormDate">Datum</label>
+            <input type="text" id="sfFormDate" class="sf-form-input" placeholder="z. B. 21.09.2026">
+          </div>
+
+          <div class="sf-form-group">
+            <label class="sf-form-label" for="sfFormCategory">Kategorie</label>
+            <select id="sfFormCategory" class="sf-form-select">
+              <option value="Prompt-Experiment">🧪 Prompt-Experiment</option>
+              <option value="Lernreflexion">🧠 Lernreflexion &amp; Metakognition</option>
+              <option value="Themenfindung">💡 Themenfindung Seminararbeit</option>
+              <option value="Modellvergleich">📊 Modellvergleich &amp; Benchmarks</option>
+            </select>
+          </div>
+
+          <div class="sf-form-group">
+            <label class="sf-form-label" for="sfFormSubject">Fach / Kontext</label>
+            <input type="text" id="sfFormSubject" class="sf-form-input" placeholder="z. B. Physik eA / Informatik eA / Allgemein">
+          </div>
+
+          <div class="sf-form-group">
+            <label class="sf-form-label" for="sfFormModel">Genutztes KI-Modell</label>
+            <input type="text" id="sfFormModel" class="sf-form-input" placeholder="z. B. ChatGPT-4o, Claude 3.5 Sonnet, o1, Gemini">
+          </div>
+
+          <div class="sf-form-group full-width">
+            <label class="sf-form-label" for="sfFormTask">Aufgabenstellung / Ziel</label>
+            <textarea id="sfFormTask" class="sf-form-textarea" rows="2" placeholder="Was wolltest du verstehen, lösen oder testen?"></textarea>
+          </div>
+
+          <div class="sf-form-group full-width">
+            <label class="sf-form-label" for="sfFormPrompt">Verwendeter Prompt (Wortlaut)</label>
+            <textarea id="sfFormPrompt" class="sf-form-textarea" rows="3" placeholder="Wie genau hast du die KI angesprochen?"></textarea>
+          </div>
+
+          <div class="sf-form-group full-width">
+            <label class="sf-form-label" for="sfFormResult">Ergebnis &amp; Beobachtung der Antwort</label>
+            <textarea id="sfFormResult" class="sf-form-textarea" rows="2" placeholder="Wie gut war die Antwort? Gab es Fehler oder Halluzinationen?"></textarea>
+          </div>
+
+          <div class="sf-form-group full-width">
+            <label class="sf-form-label" for="sfFormReflection" style="color: #7c3aed;">
+              🧠 Kritische Lernreflexion (Herzstück des Seminarfachs!)
+            </label>
+            <textarea id="sfFormReflection" class="sf-form-textarea" rows="3" placeholder="Hat es dein Verständnis gefördert oder nur Denkarbeit abgenommen (Cognitive Offloading)? Was bedeutet das für deine Seminarfacharbeit?"></textarea>
+          </div>
+
+          <div class="sf-form-group full-width">
+            <label class="sf-form-label" for="sfFormTags">Schlagwörter (mit Komma trennen)</label>
+            <input type="text" id="sfFormTags" class="sf-form-input" placeholder="z. B. Sokratischer Dialog, Physik, Active Recall">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer" style="padding: 1rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.6rem;">
+        <button class="btn-back-nav" onclick="closeSfEntryModal()">Abbrechen</button>
+        <button class="sf-btn-primary" onclick="saveSfEntryFromModal()">💾 Eintrag speichern</button>
+      </div>
+    </div>
+  </div>
+
   <!-- JavaScript Modules -->
   <script src="calendar.js"></script>
   <script src="politik.js"></script>
@@ -2104,6 +2218,7 @@
   <script src="matching.js"></script>
   <script src="user_content.js"></script>
   <script src="physik.js"></script>
+  <script src="seminarfach.js"></script>
   <script src="main_hub.js"></script>
 </body>
 </html>

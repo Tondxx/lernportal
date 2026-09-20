@@ -333,6 +333,48 @@ const FAECHER_DATA = {
         desc: 'Ausdauer-, Krafttraining und biomechanische Bewegungsanalyse.'
       }
     ]
+  },
+  seminarfach: {
+    id: 'seminarfach',
+    name: 'Seminarfach (KI)',
+    courseCode: 'SF-KI',
+    type: 'Seminarfach (Oberstufe)',
+    teacher: 'Seminarfach-Leitung',
+    room: 'Sek II',
+    color: '#8b5cf6',
+    icon: '🤖',
+    examStatus: '📝 Laufendes Prozessjournal & Forschungstagebuch',
+    desc: 'Künstliche Intelligenz & Selbstgesteuertes Lernen. Leitfrage der Arbeit: „Wie lernt man am besten mit KI?“ – Sokratische Tutoren, Metakognition, Cognitive Offloading.',
+    topics: [
+      {
+        id: 'sf-journal',
+        num: '01',
+        title: 'Prozessjournal & KI-Erfahrungen',
+        badge: 'Laufend',
+        desc: 'Chronologische Dokumentation von Prompt-Experimenten, Modelltests und Lernreflexionen.'
+      },
+      {
+        id: 'sf-themen',
+        num: '02',
+        title: 'Themenideen für die Seminarfacharbeit',
+        badge: '5 Ansätze',
+        desc: 'Forschungsfragen, Hypothesen und Gliederungsentwürfe mit Fokus auf effektives KI-Lernen.'
+      },
+      {
+        id: 'sf-tutor',
+        num: '03',
+        title: 'Prompt-Studio: Sokratischer Tutor',
+        badge: 'Interaktiv',
+        desc: 'Getestete Prompts zur Vermeidung von Scheinwissen und Steigerung des Verständnisses.'
+      },
+      {
+        id: 'sf-matrix',
+        num: '04',
+        title: 'KI-Modellvergleich & Praxistest',
+        badge: 'Vergleich',
+        desc: 'GPT-4o vs. o1 vs. Claude vs. Gemini vs. Perplexity für MINT, Code und Schule.'
+      }
+    ]
   }
 };
 
@@ -424,6 +466,8 @@ function navigateTo(viewName, pushHistory = true) {
     if (typeof renderCalendarView === 'function') renderCalendarView();
   } else if (viewName === 'stundenplan') {
     if (typeof renderTimetable === 'function') renderTimetable();
+  } else if (viewName === 'seminarfach') {
+    if (typeof renderSeminarfachView === 'function') renderSeminarfachView();
   }
 
   updateBreadcrumbs();
@@ -431,6 +475,10 @@ function navigateTo(viewName, pushHistory = true) {
 }
 
 function openFach(fachId, pushHistory = true) {
+  if (fachId === 'seminarfach') {
+    navigateTo('seminarfach', pushHistory);
+    return;
+  }
   if (!FAECHER_DATA[fachId]) return;
 
   if (pushHistory) {
@@ -640,6 +688,8 @@ function updateBreadcrumbs() {
       items.push(`<span class="breadcrumb-current">📅 Klausuren &amp; Kalender</span>`);
     } else if (view === 'stundenplan') {
       items.push(`<span class="breadcrumb-current">📋 Stundenplan</span>`);
+    } else if (view === 'seminarfach') {
+      items.push(`<span class="breadcrumb-current">🤖 Seminarfach: KI-Journal</span>`);
     }
   }
 
@@ -803,7 +853,7 @@ function renderDashboardSubjects() {
   const container = document.getElementById('dashSubjectsGrid');
   if (!container) return;
 
-  const quickSubjects = ['mathe', 'politik', 'physik', 'informatik'];
+  const quickSubjects = ['mathe', 'politik', 'physik', 'informatik', 'seminarfach'];
   let html = '';
 
   quickSubjects.forEach(id => {
