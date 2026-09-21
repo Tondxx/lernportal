@@ -536,6 +536,14 @@ function openTopic(fachId, topicId, pushHistory = true) {
   const fach = FAECHER_DATA[fachId];
   if (!fach) return;
 
+  if (fachId === 'informatik') {
+    openFach('informatik', pushHistory);
+    if (typeof switchInfoTab === 'function') {
+      switchInfoTab(topicId);
+    }
+    return;
+  }
+
   if (pushHistory) {
     navState.history.push({
       view: navState.currentView,

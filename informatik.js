@@ -18,7 +18,7 @@ let SORT_VISUALIZER = {
 };
 
 function renderInformatikPortal() {
-  const gridEl = document.getElementById('fachThemenGrid');
+  const gridEl = document.getElementById('themenGrid') || document.getElementById('fachThemenGrid');
   if (!gridEl) return;
 
   gridEl.className = 'info-portal-container';
