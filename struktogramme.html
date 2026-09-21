@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Struktogramme nach DIN 66261 - Informatik eA</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f1f5f9;
+    color: #0f172a;
+    padding: 2rem;
+    margin: 0;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border: 1px solid #cbd5e1;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  h1 { color: #1e3a8a; margin-top: 0; }
+  h2 { color: #2563eb; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-top: 0; }
+  .desc { color: #475569; font-size: 0.95rem; margin-bottom: 1.25rem; }
+  .svg-wrap {
+    display: flex;
+    justify-content: center;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+  .highlight-err {
+    border: 2px dashed #ef4444;
+    background: #fffaf0;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  .btn-print {
+    background: #2563eb;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Informatik eA &ndash; Alle 4 Struktogramme (DIN 66261)</h1>
+  <p>Exakt nach den Vorgaben des Arbeitsblatts mit Diagonalschrägen bei Verzweigungen (Dreiecks-Header) und L-förmigen Zählschleifen.</p>
+  <button class="btn-print" onclick="window.print()">🖨️ Diese Seite drucken / als PDF speichern</button>
+
+  <!-- AUFGABE 3 -->
+  <div class="card">
+    <h2>Aufgabe 3 (S. 12): Niederschlagsmessungen (365 Tage)</h2>
+    <div class="desc">Array <code>niederschlaege</code> (Länge 365, Index 0..364). Ermittlung von Jahreshöchstwert, Jahressumme und Tagesdurchschnitt.</div>
+    <div class="svg-wrap">
+      <svg width="650" height="350" viewBox="0 0 650 350" style="background: #fff; font-family: monospace; font-size: 14px;">
+        <rect x="10" y="10" width="630" height="35" fill="#fff" stroke="#000" stroke-width="2"/>
+        <text x="25" y="33" font-weight="bold">summe = 0</text>
+
+        <rect x="10" y="45" width="630" height="35" fill="#fff" stroke="#000" stroke-width="2"/>
+        <text x="25" y="68" font-weight="bold">max_wert = niederschlaege[0]</text>
+
+        <!-- Zählschleife -->
+        <rect x="10" y="80" width="630" height="35" fill="#f8fafc" stroke="#000" stroke-width="2"/>
+        <text x="25" y="103" font-weight="bold">i = 0, solange i &lt; 365, i = i + 1</text>
+        <!-- L-Balken links -->
+        <rect x="10" y="115" width="30" height="145" fill="#e2e8f0" stroke="#000" stroke-width="2"/>
+
+        <!-- Schleifeninhalt: summe -->
+        <rect x="40" y="115" width="600" height="35" fill="#fff" stroke="#000" stroke-width="2"/>
+        <text x="55" y="138">summe = summe + niederschlaege[i]</text>
+
+        <!-- Verzweigung mit Schrägen -->
+        <rect x="40" y="150" width="600" height="110" fill="#fff" stroke="#000" stroke-width="2"/>
+        <line x1="40" y1="150" x2="340" y2="195" stroke="#000" stroke-width="2"/>
+        <line x1="640" y1="150" x2="340" y2="195" stroke="#000" stroke-width="2"/>
+        <text x="340" y="172" text-anchor="middle" font-weight="bold">niederschlaege[i] &gt; max_wert</text>
+        <text x="60" y="190" font-weight="bold">ja</text>
+        <text x="610" y="190" font-weight="bold" text-anchor="end">nein</text>
+        <line x1="340" y1="195" x2="340" y2="260" stroke="#000" stroke-width="2"/>
+        <text x="55" y="230">max_wert = niederschlaege[i]</text>
+        <text x="490" y="230" fill="#888" text-anchor="middle">(leer)</text>
+
+        <!-- Durchschnitt -->
+        <rect x="10" y="260" width="630" height="35" fill="#fff" stroke="#000" stroke-width="2"/>
+        <text x="25" y="283" font-weight="bold">durchschnitt = summe / 365</text>
+
+        <!-- Ausgabe -->
+        <rect x="10" y="295" width="630" height="40" fill="#eff6ff" stroke="#000" stroke-width="2"/>
+        <text x="25" y="320" font-weight="bold" fill="#1d4ed8">Ausgabe: max_wert, summe, durchschnitt</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- AUFGABE 5 -->
+  <div class="card">
+    <h2>Aufgabe 5 (S. 13): Rabattsystem Paketdienst (Günstigste Regelung)</h2>
+    <div class="desc">U: Jahresumsatz, A: bisherige Sendungen, P: Paketpreis, B: Beförderung, GP: Gesamtpreis. 24. Sendung gratis, sonst bester Rabatt aus 10% auf P und 50% auf B.</div>
+    <div class="svg-wrap">
+      <svg width="680" height="460" viewBox="0 0 680 460" style="background: #fff; font-family: monospace; font-size: 13.5px;">
+        <!-- Hauptverzweigung mit Schrägen -->
+        <rect x="10" y="10" width="660" height="395" fill="#fff" stroke="#000" stroke-width="2"/>
+        <line x1="10" y1="10" x2="240" y2="55" stroke="#000" stroke-width="2"/>
+        <line x1="670" y1="10" x2="240" y2="55" stroke="#000" stroke-width="2"/>
+        <text x="260" y="33" text-anchor="middle" font-weight="bold">A == 23  (ist es die 24. Sendung?)</text>
+        <text x="35" y="50" font-weight="bold">ja</text>
+        <text x="635" y="50" font-weight="bold" text-anchor="end">nein</text>
+        <line x1="240" y1="55" x2="240" y2="405" stroke="#000" stroke-width="2"/>
+
+        <!-- Linker Zweig (ja) -->
+        <rect x="10" y="55" width="230" height="350" fill="#f0fdf4" stroke="#000" stroke-width="2"/>
+        <text x="125" y="200" text-anchor="middle" font-size="18px" font-weight="bold" fill="#16a34a">GP = 0</text>
+        <text x="125" y="225" text-anchor="middle" fill="#666">(kostenlos)</text>
+
+        <!-- Rechter Zweig (nein) -->
+        <rect x="240" y="55" width="430" height="35" fill="#fff" stroke="#000" stroke-width="2"/>
+        <text x="255" y="78">r1 = 0;  r2 = 0</text>
+
+        <!-- Verzweigung U >= 150 -->
+        <rect x="240" y="90" width="430" height="80" fill="#fff" stroke="#000" stroke-width="2"/>
+        <line x1="240" y1="90" x2="455" y2="125" stroke="#000" stroke-width="2"/>
+        <line x1="670" y1="90" x2="455" y2="125" stroke="#000" stroke-width="2"/>
+        <text x="455" y="110" text-anchor="middle" font-weight="bold">U &gt;= 150</text>
+        <text x="260" y="123" font-weight="bold">ja</text>
+        <text x="650" y="123" font-weight="bold" text-anchor="end">nein</text>
+        <line x1="455" y1="125" x2="455" y2="170" stroke="#000" stroke-width="2"/>
+        <text x="255" y="152">r1 = 0.10 * P</text>
+        <text x="560" y="152" text-anchor="middle" fill="#888">r1 = 0</text>
+
+        <!-- Verzweigung A >= 11 -->
+        <rect x="240" y="170" width="430" height="80" fill="#fff" stroke="#000" stroke-width="2"/>
+        <line x1="240" y1="170" x2="455" y2="205" stroke="#000" stroke-width="2"/>
+        <line x1="670" y1="170" x2="455" y2="205" stroke="#000" stroke-width="2"/>
+        <text x="455" y="190" text-anchor="middle" font-weight="bold">A &gt;= 11</text>
+        <text x="260" y="203" font-weight="bold">ja</text>
+        <text x="650" y="203" font-weight="bold" text-anchor="end">nein</text>
+        <line x1="455" y1="205" x2="455" y2="250" stroke="#000" stroke-width="2"/>
+        <text x="255" y="232">r2 = 0.50 * B</text>
+        <text x="560" y="232" text-anchor="middle" fill="#888">r2 = 0</text>
+
+        <!-- Verzweigung r1 > r2 -->
+        <rect x="240" y="250" width="430" height="80" fill="#fff" stroke="#000" stroke-width="2"/>
+        <line x1="240" y1="250" x2="455" y2="285" stroke="#000" stroke-width="2"/>
+        <line x1="670" y1="250" x2="455" y2="285" stroke="#000" stroke-width="2"/>
+        <text x="455" y="270" text-anchor="middle" font-weight="bold">r1 &gt; r2</text>
+        <text x="260" y="283" font-weight="bold">ja</text>
+        <text x="650" y="283" font-weight="bold" text-anchor="end">nein</text>
+        <line x1="455" y1="285" x2="455" y2="330" stroke="#000" stroke-width="2"/>
+        <text x="255" y="312">rabatt = r1</text>
+        <text x="475" y="312">rabatt = r2</text>
+
+        <!-- GP Berechnung -->
+        <rect x="240" y="330" width="430" height="75" fill="#f8fafc" stroke="#000" stroke-width="2"/>
+        <text x="255" y="372" font-weight="bold">GP = (P + B) - rabatt</text>
+
+        <!-- Ausgabe GP -->
+        <rect x="10" y="405" width="660" height="40" fill="#eff6ff" stroke="#000" stroke-width="2"/>
+        <text x="25" y="430" font-weight="bold" fill="#1d4ed8">Ausgabe: GP</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- AUFGABE 6 -->
+  <div class="card">
+    <h2>Aufgabe 6 (S. 13): Mahnprogramm (Fehleranalyse &amp; Korrektur)</h2>
+    <div class="highlight-err">
+      <strong>Fehler im abgebildeten Original:</strong><br>
+      Im Arbeitsblatt steht im Nein-Zweig von <code>FM &lt; AM</code> die Abfrage <code>FJ &le; AJ</code>. Wenn eine Rechnung im selben Jahr fällig ist (<code>FJ == AJ</code>), aber erst in der Zukunft (z.B. im Dezember, aktuell September), ist <code>FJ &le; AJ</code> trotzdem WAHR! Das Original würde <strong>sofort mahnen</strong>, obwohl die Rechnung noch lange nicht fällig ist!
+    </div>
+    <div class="desc"><strong>Korrigiertes Struktogramm nach DIN 66261:</strong> Mahnung nur, wenn Fälligkeit im Vorjahr liegt (<code>FJ &lt; AJ</code>) ODER gleiches Jahr und Monat vorbei (<code>FJ == AJ UND FM &lt; AM</code>).</div>
+    <div class="svg-wrap">
+      <svg width="650" height="230" viewBox="0 0 650 230" style="background: #fff; font-family: monospace; font-size: 13.5px;">
+        <!-- Hauptverzweigung bezahlt -->
+        <rect x="10" y="10" width="630" height="205" fill="#fff" stroke="#000" stroke-width="2"/>
+        <line x1="10" y1="10" x2="220" y2="55" stroke="#000" stroke-width="2"/>
+        <line x1="640" y1="10" x2="220" y2="55" stroke="#000" stroke-width="2"/>
+        <text x="250" y="32" text-anchor="middle" font-weight="bold">bezahlt</text>
+        <text x="35" y="50" font-weight="bold">ja</text>
+        <text x="615" y="50" font-weight="bold" text-anchor="end">nein</text>
+        <line x1="220" y1="55" x2="220" y2="215" stroke="#000" stroke-width="2"/>
+
+        <!-- ja: leer -->
+        <rect x="10" y="55" width="210" height="160" fill="#f8fafc" stroke="#000" stroke-width="2"/>
+        <text x="115" y="140" fill="#888" text-anchor="middle">(keine Aktion)</text>
+
+        <!-- nein: Verzweigung mit Schrägen -->
+        <line x1="220" y1="55" x2="430" y2="115" stroke="#000" stroke-width="2"/>
+        <line x1="640" y1="55" x2="430" y2="115" stroke="#000" stroke-width="2"/>
+        <text x="430" y="78" text-anchor="middle" font-weight="bold" font-size="12px">FJ &lt; AJ  ODER  (FJ == AJ UND FM &lt; AM)</text>
+        <text x="245" y="110" font-weight="bold">ja</text>
+        <text x="615" y="110" font-weight="bold" text-anchor="end">nein</text>
+        <line x1="430" y1="115" x2="430" y2="215" stroke="#000" stroke-width="2"/>
+
+        <!-- ja: Mahnung -->
+        <rect x="220" y="115" width="210" height="100" fill="#fef2f2" stroke="#000" stroke-width="2"/>
+        <text x="325" y="170" text-anchor="middle" font-size="16px" font-weight="bold" fill="#dc2626">Mahnung</text>
+
+        <!-- nein: leer -->
+        <rect x="430" y="115" width="210" height="100" fill="#fff" stroke="#000" stroke-width="2"/>
+        <text x="535" y="170" fill="#888" text-anchor="middle">(nicht fällig)</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- AUFGABE 12 -->
+  <div class="card">
+    <h2>Aufgabe 12 (S. 15): CARTRONIC GmbH (Tankstellenumsatz)</h2>
+    <div class="desc">Arrays: <code>TNAMEN = ["AGIP", "BP", "SHELL", "ESSO", "TOTAL"]</code>, <code>TUMS = [11200.10, 23433.20, 7134.90, 14655.00, 4175.80]</code>.</div>
+    <div class="svg-wrap">
+      <svg width="650" height="320" viewBox="0 0 650 320" style="background: #fff; font-family: monospace; font-size: 14px;">
+        <rect x="10" y="10" width="630" height="35" fill="#fff" stroke="#000" stroke-width="2"/>
+        <text x="25" y="33" font-weight="bold">max_pos = 0</text>
+
+        <rect x="10" y="45" width="630" height="35" fill="#fff" stroke="#000" stroke-width="2"/>
+        <text x="25" y="68" font-weight="bold">max_umsatz = TUMS[0]</text>
+
+        <!-- Zählschleife -->
+        <rect x="10" y="80" width="630" height="35" fill="#f8fafc" stroke="#000" stroke-width="2"/>
+        <text x="25" y="103" font-weight="bold">i = 1, solange i &lt; 5, i = i + 1</text>
+        <rect x="10" y="115" width="30" height="145" fill="#e2e8f0" stroke="#000" stroke-width="2"/>
+
+        <!-- Verzweigung mit Schrägen -->
+        <rect x="40" y="115" width="600" height="145" fill="#fff" stroke="#000" stroke-width="2"/>
+        <line x1="40" y1="115" x2="340" y2="160" stroke="#000" stroke-width="2"/>
+        <line x1="640" y1="115" x2="340" y2="160" stroke="#000" stroke-width="2"/>
+        <text x="340" y="137" text-anchor="middle" font-weight="bold">TUMS[i] &gt; max_umsatz</text>
+        <text x="60" y="155" font-weight="bold">ja</text>
+        <text x="610" y="155" font-weight="bold" text-anchor="end">nein</text>
+        <line x1="340" y1="160" x2="340" y2="260" stroke="#000" stroke-width="2"/>
+
+        <text x="55" y="195">max_umsatz = TUMS[i]</text>
+        <text x="55" y="225">max_pos = i</text>
+
+        <text x="490" y="210" fill="#888" text-anchor="middle">(keine Änderung)</text>
+
+        <!-- Ausgabe -->
+        <rect x="10" y="260" width="630" height="45" fill="#eff6ff" stroke="#000" stroke-width="2"/>
+        <text x="25" y="288" font-weight="bold" fill="#1d4ed8">Ausgabe: TNAMEN[max_pos], max_umsatz</text>
+      </svg>
+    </div>
+  </div>
+</div>
+</body>
+</html>

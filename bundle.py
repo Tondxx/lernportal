@@ -28,7 +28,7 @@ if os.path.exists(katex_js_path):
         k_js = f.read()
     html_bundled = html_bundled.replace('<script src="katex.min.js"></script>', f'<script>\n// KaTeX JS Offline\n{k_js}\n</script>')
 
-scripts = ["calendar.js", "politik.js", "timetable.js", "steckbrief.js", "schar.js", "matching.js", "user_content.js", "physik.js", "seminarfach.js", "main_hub.js"]
+scripts = ["calendar.js", "politik.js", "timetable.js", "steckbrief.js", "schar.js", "matching.js", "user_content.js", "physik.js", "seminarfach.js", "informatik.js", "main_hub.js"]
 for s in scripts:
     with open(os.path.join(portal_dir, s), "r", encoding="utf-8") as f:
         js = f.read()

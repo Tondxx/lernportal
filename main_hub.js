@@ -221,11 +221,25 @@ const FAECHER_DATA = {
     desc: 'Algorithmen, Datenstrukturen (Listen, Bäume), Objektorientierte Modellierung, Komplexität.',
     topics: [
       {
-        id: 'info-klausur',
+        id: 'grundlagen',
         num: '01',
-        title: 'Klausur-Fokus: Datenstrukturen & Algorithmen',
-        badge: 'Klausur 25.09.',
-        desc: 'OOP-Klassendiagramme, Rekursion und praktische Programmieraufgaben.'
+        title: 'Grundlagen: Sortieralgorithmen (Interaktiv)',
+        badge: 'Interaktiv',
+        desc: 'Insertionsort & Quicksort: Schritt-für-Schritt Animation, Erklärungen & Python-Beispiele.'
+      },
+      {
+        id: 'struktogramme',
+        num: '02',
+        title: 'Struktogramme (DIN 66261)',
+        badge: 'Aufgaben 3, 5, 6, 12',
+        desc: 'Nassi-Shneiderman Diagramme nach Arbeitsblatt.'
+      },
+      {
+        id: 'komplexitaet',
+        num: '03',
+        title: 'Komplexitäts- & Laufzeitanalyse',
+        badge: 'inf-schule',
+        desc: 'Laufzeitmessung in Python, Problematik und Best/Worst/Average Case Kosten.'
       }
     ]
   },
@@ -966,6 +980,12 @@ function renderFachDetail(fachId) {
     // If physics, render the dedicated comprehensive portal with 10 skills, diagrams, notes and IServ tasks
     if (fachId === 'physik' && typeof renderPhysikPortal === 'function') {
       renderPhysikPortal();
+      return;
+    }
+
+    // If informatik, render the dedicated Informatik portal with DIN 66261 Struktogramme, Sortieren & Komplexität
+    if (fachId === 'informatik' && typeof renderInformatikPortal === 'function') {
+      renderInformatikPortal();
       return;
     }
 
