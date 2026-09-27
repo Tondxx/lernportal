@@ -5461,7 +5461,7 @@ input[type=range]::-webkit-slider-thumb:hover {
    Jahrgang 12 • IGS Göttingen • Tonda Beutler • Michael Jatzeck (Abi28 sf4)
    ========================================================================== */
 
-/* Clean Top Action Bar (Typographic & Calm) */
+/* Clean Top Action Bar */
 .sf-clean-topbar {
   display: flex;
   justify-content: space-between;
@@ -5728,7 +5728,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   );
 }
 
-/* Register Tabs on Right Edge (5 klare Tabs) */
+/* Register Tabs on Right Edge (5 klare, farbcodierte Tabs) */
 .sf-book-index-tabs {
   position: absolute;
   top: 40px;
@@ -5778,16 +5778,19 @@ input[type=range]::-webkit-slider-thumb:hover {
 .sf-index-tab.active {
   transform: translateX(10px);
   background: #ffffff;
-  box-shadow: 4px 6px 16px rgba(124, 58, 237, 0.28);
-  border-color: #7c3aed;
-  color: #7c3aed;
+  box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 [data-theme="dark"] .sf-index-tab.active {
   background: #2a334a;
-  border-color: #a78bfa;
   color: #f8fafc;
 }
+
+.tab-alle.active { border-color: #7c3aed; color: #7c3aed; }
+.tab-unterricht.active { border-color: #10b981; color: #10b981; }
+.tab-ki.active { border-color: #7c3aed; color: #7c3aed; }
+.tab-themen.active { border-color: #f59e0b; color: #f59e0b; }
+.tab-news.active { border-color: #0891b2; color: #0891b2; }
 
 .sf-index-tab .tab-text {
   font-size: 0.68rem;
@@ -5796,14 +5799,6 @@ input[type=range]::-webkit-slider-thumb:hover {
   letter-spacing: 0.05em;
   text-align: center;
   line-height: 1.15;
-}
-
-.sf-index-tab.active .tab-text {
-  color: #7c3aed;
-}
-
-[data-theme="dark"] .sf-index-tab.active .tab-text {
-  color: #c4b5fd;
 }
 
 .sf-index-tab .tab-badge {
@@ -5819,7 +5814,11 @@ input[type=range]::-webkit-slider-thumb:hover {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Page Header (Minimalist & Clean) */
+.tab-unterricht .tab-badge { background: #10b981; }
+.tab-themen .tab-badge { background: #f59e0b; }
+.tab-news .tab-badge { background: #0891b2; }
+
+/* Page Header */
 .sf-gn-page-header {
   margin-bottom: 2rem;
   padding-bottom: 1.2rem;
@@ -5883,7 +5882,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   margin: 0 0 1.1rem 0;
 }
 
-/* Category Tabs (5 Clean Pills on the page) */
+/* Category Tabs (5 Clean Pills on page) */
 .sf-gn-category-tabs {
   display: flex;
   gap: 0.5rem;
@@ -5922,11 +5921,15 @@ input[type=range]::-webkit-slider-thumb:hover {
   font-weight: 700;
 }
 
+.sf-gn-pill.pill-unterricht.active { background: #10b981; border-color: #10b981; }
+.sf-gn-pill.pill-themen.active { background: #f59e0b; border-color: #f59e0b; }
+.sf-gn-pill.pill-news.active { background: #0891b2; border-color: #0891b2; }
+
 /* ==========================================================================
-   ULTRA-CLEAN INLINE NOTE INSERTER (GOODNOTES SCHREIBBLOCK)
+   SEGMENTED CATEGORY BUTTONS & INSERTER
    ========================================================================== */
 .sf-clean-note-inserter {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.9);
   border: 1.5px dashed rgba(124, 58, 237, 0.35);
   border-radius: 12px;
   padding: 1.3rem 1.6rem;
@@ -5958,9 +5961,6 @@ input[type=range]::-webkit-slider-thumb:hover {
   font-size: 0.96rem;
   font-weight: 700;
   color: #7c3aed;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
 }
 
 [data-theme="dark"] .sf-inserter-title {
@@ -5987,21 +5987,88 @@ input[type=range]::-webkit-slider-thumb:hover {
   color: #f1f5f9;
 }
 
-.sf-inserter-controls-row {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr;
-  gap: 0.85rem;
-  margin-bottom: 0.9rem;
+.sf-inserter-category-selector {
+  margin-bottom: 0.85rem;
 }
 
-.sf-inserter-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.sf-inserter-field label {
+.sf-field-hint {
   font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+/* Category Buttons Group */
+.sf-cat-buttons-group {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.sf-cat-btn {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+[data-theme="dark"] .sf-cat-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+}
+
+.sf-cat-btn:hover {
+  border-color: #7c3aed;
+  color: #7c3aed;
+}
+
+.btn-cat-unterricht.active {
+  background: #10b981;
+  color: #ffffff;
+  border-color: #10b981;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+}
+
+.btn-cat-ki.active {
+  background: #7c3aed;
+  color: #ffffff;
+  border-color: #7c3aed;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+}
+
+.btn-cat-themen.active {
+  background: #f59e0b;
+  color: #ffffff;
+  border-color: #f59e0b;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+}
+
+.btn-cat-news.active {
+  background: #0891b2;
+  color: #ffffff;
+  border-color: #0891b2;
+  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.35);
+}
+
+.sf-inserter-subject-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.sf-inserter-subject-row label {
+  font-size: 0.74rem;
   font-weight: 700;
   color: #64748b;
   text-transform: uppercase;
@@ -6012,8 +6079,8 @@ input[type=range]::-webkit-slider-thumb:hover {
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 6px;
-  padding: 0.45rem 0.7rem;
-  font-size: 0.84rem;
+  padding: 0.42rem 0.7rem;
+  font-size: 0.82rem;
   font-family: inherit;
   color: #1e293b;
   outline: none;
@@ -6152,7 +6219,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 /* ==========================================================================
-   TAGEBUCH-SEITEN / EINTRÄGE (EXAKT WIE IN GOODNOTES)
+   TAGEBUCH-SEITEN / EINTRÄGE (MIT KLARER FARBKANTE)
    ========================================================================== */
 .sf-gn-entries-list {
   display: flex;
@@ -6163,7 +6230,6 @@ input[type=range]::-webkit-slider-thumb:hover {
 .sf-gn-entry-sheet {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-left: 4.5px solid #7c3aed;
   border-radius: 8px;
   padding: 1.5rem 1.8rem;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
@@ -6174,9 +6240,14 @@ input[type=range]::-webkit-slider-thumb:hover {
 [data-theme="dark"] .sf-gn-entry-sheet {
   background: rgba(26, 29, 41, 0.75);
   border-color: rgba(255, 255, 255, 0.08);
-  border-left-color: #a78bfa;
   box-shadow: 0 3px 16px rgba(0, 0, 0, 0.25);
 }
+
+/* Farbkanten pro Kategorie */
+.entry-border-unterricht { border-left: 4.5px solid #10b981 !important; }
+.entry-border-ki { border-left: 4.5px solid #7c3aed !important; }
+.entry-border-themen { border-left: 4.5px solid #f59e0b !important; }
+.entry-border-news { border-left: 4.5px solid #0891b2 !important; }
 
 .sf-gn-entry-header {
   display: flex;
@@ -6258,7 +6329,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   gap: 0.5rem;
 }
 
-/* Handschriftliches Datums-Feeling oben rechts wie in Goodnotes */
+/* Handschriftliches Datums-Feeling oben rechts */
 .sf-gn-handwritten-date {
   font-size: 1.25rem;
   font-weight: 700;
@@ -6322,7 +6393,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 .sf-gn-entry-body {
   font-size: 1rem;
-  line-height: 32px; /* Perfect match to 32px notebook paper lines */
+  line-height: 32px;
   color: #1e293b;
   margin-bottom: 0.8rem;
 }
@@ -6357,6 +6428,232 @@ input[type=range]::-webkit-slider-thumb:hover {
   border: 1.5px dashed rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   color: var(--text-muted);
+}
+
+/* ==========================================================================
+   MODERN, CLEAN EDIT MODAL DIALOG
+   ========================================================================== */
+.sf-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.sf-modal-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  max-width: 620px;
+  width: 100%;
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  animation: sfModalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+[data-theme="dark"] .sf-modal-card {
+  background: #181d2a;
+  border-color: #2a3448;
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.7);
+}
+
+@keyframes sfModalPop {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.sf-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.6rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+[data-theme="dark"] .sf-modal-head {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.sf-modal-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+[data-theme="dark"] .sf-modal-title {
+  color: #f8fafc;
+}
+
+.sf-modal-sub {
+  font-size: 0.76rem;
+  color: #64748b;
+  display: block;
+  margin-top: 0.15rem;
+}
+
+.sf-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  line-height: 1;
+  border-radius: 6px;
+}
+
+.sf-modal-close:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: #0f172a;
+}
+
+[data-theme="dark"] .sf-modal-close:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.sf-modal-body {
+  padding: 1.4rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+.sf-modal-section,
+.sf-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sf-modal-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+[data-theme="dark"] .sf-modal-label {
+  color: #94a3b8;
+}
+
+.sf-modal-grid-2 {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 0.85rem;
+}
+
+.sf-modal-input,
+.sf-modal-select,
+.sf-modal-textarea {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: #0f172a;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+[data-theme="dark"] .sf-modal-input,
+[data-theme="dark"] .sf-modal-select,
+[data-theme="dark"] .sf-modal-textarea {
+  background: #131722;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #f1f5f9;
+}
+
+.sf-modal-input:focus,
+.sf-modal-select:focus,
+.sf-modal-textarea:focus {
+  border-color: #7c3aed;
+}
+
+.sf-modal-title-input {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.sf-modal-textarea {
+  resize: vertical;
+  min-height: 140px;
+  line-height: 1.55;
+}
+
+.sf-modal-foot {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 1rem 1.6rem;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+[data-theme="dark"] .sf-modal-foot {
+  background: rgba(0, 0, 0, 0.2);
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.sf-btn-modal-cancel {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+[data-theme="dark"] .sf-btn-modal-cancel {
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #94a3b8;
+}
+
+.sf-btn-modal-cancel:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #0f172a;
+}
+
+[data-theme="dark"] .sf-btn-modal-cancel:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.sf-btn-modal-save {
+  background: #7c3aed;
+  border: none;
+  border-radius: 6px;
+  padding: 0.52rem 1.2rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.sf-btn-modal-save:hover {
+  background: #6d28d9;
+  transform: translateY(-1px);
 }
 
 /* ==========================================================================
@@ -6406,7 +6703,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   .sf-book-red-margin {
     display: none;
   }
-  .sf-inserter-controls-row {
+  .sf-modal-grid-2 {
     grid-template-columns: 1fr;
   }
   .sf-gn-details-grid {
@@ -6440,6 +6737,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   #view-kalender,
   #view-stundenplan,
   .portal-modal-backdrop,
+  .sf-modal-overlay,
   .sf-toast {
     display: none !important;
   }
@@ -16987,7 +17285,7 @@ const SF_SUBJECT_OPTIONS = [
   { code: 'allg', name: 'Allgemein / Freie Notiz', short: 'Allgemein', color: '#64748b' }
 ];
 
-// --- 2. TONDAS ECHTE TAGEBUCH-EINTRÄGE (UMGANGSSPRACHLICH & AUTHENTISCH) ---
+// --- 2. TONDAS TAGEBUCH-EINTRÄGE (KLAR, PERSÖNLICH & REFLEKTIERT) ---
 const DEFAULT_SF_JOURNAL = [
   {
     id: "sf-1",
@@ -16996,7 +17294,7 @@ const DEFAULT_SF_JOURNAL = [
     categoryName: "Unterricht",
     subjectCode: "sf4",
     title: "Y-Lab Nachbesprechung & Journal-Anfang",
-    content: "Ergebnisse über Ylab ausgetauscht, da nur so wenige da waren.\n\nJournal anlegen und erste Informationen, wie die Infos übers Ylab eintragen.\n\nAllgemein gesagt bekommen, was so der Plan ist.\n\nAllgemein nicht super spannend, und das Ylab scheint sich nicht so gelohnt zu haben."
+    content: "Ergebnisse über das Y-Lab ausgetauscht, da nur wenige da waren.\n\nJournal anlegen und erste Informationen eintragen, wie die Notizen zum Y-Lab erfasst werden sollen.\n\nAllgemein gesagt bekommen, wie der weitere Plan im Seminarfach aussieht.\n\nWar insgesamt nicht super spannend, das Y-Lab hat sich nicht wirklich gelohnt."
   },
   {
     id: "sf-2",
@@ -17004,8 +17302,8 @@ const DEFAULT_SF_JOURNAL = [
     category: "themen",
     categoryName: "Themenfindung",
     subjectCode: "sf4",
-    title: "Kriterien für Facharbeit & Themenfindung (aus dem Y-Lab)",
-    content: "Facharbeiten sind geeignet für das Erstellen einer wissenschaftlichen Arbeit.\n\nEigenschaften einer guten Arbeit:\n• Objektiv\n• Eigenständig\n• Systematisch\n• Klarer Stil\n• Beitrag zur Wissenschaft\n\nThemenfindung:\n• Thema muss mich interessieren\n• Gut eingegrenzt (ein klares Thema)\n• Es beinhaltet eine Fragestellung von uns\n• Primärquellen"
+    title: "Kriterien für die Facharbeit (aus dem Y-Lab)",
+    content: "Notizen zur Erstellung einer wissenschaftlichen Arbeit aus dem Y-Lab:\n\nEigenschaften einer guten Facharbeit:\n• Objektiv und sachlich\n• Eigenständig erarbeitet\n• Systematischer Aufbau\n• Klarer Schreibstil\n• Nachvollziehbarer Beitrag\n\nKriterien für die Themenfindung:\n• Das Thema muss mich wirklich interessieren\n• Gut eingegrenzt (ein klares, konkretes Thema)\n• Beinhaltet eine eigene Fragestellung\n• Verlässliche Primärquellen nutzen"
   },
   {
     id: "sf-3",
@@ -17014,7 +17312,7 @@ const DEFAULT_SF_JOURNAL = [
     categoryName: "Unterricht",
     subjectCode: "sf4",
     title: "Ansage zur Arbeitsmoral & Journal-Führung",
-    content: "Ansage bekommen, weil unsere Arbeitsmoral auf dem falschen Stand ist.\n\nJournal wird noch nicht richtig geführt.\n\nLeichte Inspiration, über was wir unsere Seminarfacharbeit so machen könnten.\n\nJournal fertig machen."
+    content: "Ansage im Unterricht bekommen, weil die Arbeitsmoral im Kurs noch nicht auf dem richtigen Stand ist.\n\nDas Journal wird bei vielen noch nicht ordentlich geführt. Haben etwas Inspiration gesammelt, worüber wir die Seminarfacharbeit schreiben könnten.\n\nZiel für die nächste Zeit: Das Journal regelmäßig führen und auf den aktuellen Stand bringen."
   },
   {
     id: "sf-4",
@@ -17022,8 +17320,8 @@ const DEFAULT_SF_JOURNAL = [
     category: "ki",
     categoryName: "KI-Nutzung",
     subjectCode: "sf4",
-    title: "Gedanken zur negativen Stimmung über KI",
-    content: "Ich merke sehr viel negative Energie über KI, was irgendwo verständlich ist. Aber einfach zu sagen, KI ist schlimm und sie muss weg, ist nicht die Lösung, weil sie erstens unrealistisch ist und zweitens meiner Meinung nach nicht der schlauste Weg ist, da es durchaus eine nützliche Sache sein kann."
+    title: "Gedanken zur allgemeinen Stimmung über KI",
+    content: "Ich merke oft eine ziemlich negative Haltung gegenüber KI, was man stellenweise auch verstehen kann. Aber einfach pauschal zu sagen, KI ist schlecht und muss verboten werden, ist keine sinnvolle Lösung.\n\nDas ist erstens unrealistisch und zweitens verschenkt man damit viele Chancen, weil KI beim Lernen durchaus nützlich sein kann, wenn man sie richtig einsetzt."
   },
   {
     id: "sf-5",
@@ -17031,8 +17329,8 @@ const DEFAULT_SF_JOURNAL = [
     category: "unterricht",
     categoryName: "Unterricht",
     subjectCode: "sf4",
-    title: "Harald Lesch Video im Unterricht",
-    content: "Lesch-Video im Unterricht geschaut. Er meint halt, dass KI eigentlich gar nichts checkt, sondern einfach nur Wörter aneinanderreiht nach Wahrscheinlichkeit.\n\nStimmt schon, wenn man die KI einfach nur die Hausaufgaben machen lässt, hat man am Ende selber nichts davon verstanden. Man muss halt selber mitdenken."
+    title: "Harald Lesch Beitrag im Unterricht",
+    content: "Im Unterricht bei Herrn Jatzeck den Beitrag von Harald Lesch über KI geschaut.\n\nSein Kernpunkt: Sprachmodelle verstehen die Inhalte nicht wirklich, sondern setzen Wörter rein statistisch nach Wahrscheinlichkeiten zusammen.\n\nFür die Schule heißt das vor allem: Wer KI nur nutzt, um Hausaufgaben fertig zu bekommen, lernt selbst nichts dabei. Man muss sich die Schritte erklären lassen und selbst mitdenken, damit am Ende etwas hängenbleibt."
   },
   {
     id: "sf-6",
@@ -17041,7 +17339,7 @@ const DEFAULT_SF_JOURNAL = [
     categoryName: "Themenfindung",
     subjectCode: "sf4",
     title: "SUB Bibliotheksausweis Göttingen",
-    content: "Anmeldung für die SUB Bibliothek in Göttingen ausgefüllt. Muss im Oktober noch den Ausweis abholen, um mir da ein paar Bücher für die Seminararbeit auszuleihen."
+    content: "Anmeldeformular für die SUB Göttingen (Zentralbibliothek am Platz der Göttinger Sieben) ausgefüllt.\n\nIm Oktober kann ich den Ausweis abholen, um mir dort Fachliteratur für die Seminararbeit auszuleihen."
   },
   {
     id: "sf-7",
@@ -17050,7 +17348,7 @@ const DEFAULT_SF_JOURNAL = [
     categoryName: "KI-News",
     subjectCode: "allg",
     title: "OpenAI o1 Modell ausprobiert",
-    content: "OpenAI hat dieses neue o1 Modell rausgebracht. Soll wohl viel besser logisch denken können als die alten Versionen.\n\nHab das mal bei ein paar schwereren Mathe- und Physik-Aufgaben ausprobiert, wo normales ChatGPT sonst immer komplett Quatsch gerechnet hat. Das rechnet jetzt echt Schritt für Schritt durch und macht kaum noch Vorzeichenfehler. Ziemlich krass eigentlich."
+    content: "OpenAI hat das neue o1-Modell veröffentlicht, das vor der Antwort Zwischenschritte berechnet und logische Gedankengänge durchgeht.\n\nIch habe das bei schwierigeren Aufgaben in Mathe und Physik getestet, bei denen normale Sprachmodelle bisher oft falsche Zwischenschritte berechnet haben. Die neue Version rechnet die Schritte deutlich strukturierter durch und kommt fast immer auf das richtige Ergebnis."
   },
   {
     id: "sf-8",
@@ -17058,13 +17356,13 @@ const DEFAULT_SF_JOURNAL = [
     category: "news",
     categoryName: "KI-News",
     subjectCode: "allg",
-    title: "Neue Regeln für KI an Schulen",
-    content: "Gelesen, dass es jetzt strengere Richtlinien für KI an Schulen geben soll wegen Urheberrecht und Transparenz.\n\nBei uns in der Stufe nutzen gefühlt eh fast alle ChatGPT einfach nur für schnelles Copy-Paste bei Hausaufgaben. Jatzeck meinte aber schon, dass wir bei der Seminararbeit ganz genau offenlegen müssen, wo und wie wir KI benutzt haben, sonst gibt es Punktabzug."
+    title: "Richtlinien für KI an Schulen",
+    content: "Es gibt neue Diskussionen und Richtlinien zum Umgang mit KI im Unterricht, besonders bezüglich Transparenz und Eigenständigkeit.\n\nIm Schulalltag nutzen viele Schüler KI bisher vor allem, um Hausaufgaben schneller fertig zu haben. Herr Jatzeck hat aber betont, dass wir für die Seminarfacharbeit alle verwendeten Prompts und KI-Hilfen nachvollziehbar dokumentieren müssen, damit die eigene Leistung erkennbar bleibt."
   }
 ];
 
-// LocalStorage Keys
-const SF_STORAGE_KEY = 'tonda_sf_diary_entries_v3';
+// LocalStorage Key
+const SF_STORAGE_KEY = 'tonda_sf_diary_entries_v4';
 
 // State
 let currentSfTab = 'alle'; // 'alle' | 'unterricht' | 'ki' | 'themen' | 'news'
@@ -17137,7 +17435,7 @@ function renderSeminarfachView() {
   const countNews = entries.filter(e => e.category === 'news').length;
 
   root.innerHTML = `
-    <!-- Top Action Toolbar (Clean & Typographic) -->
+    <!-- Top Action Toolbar -->
     <div class="sf-clean-topbar">
       <div class="sf-clean-topbar-left">
         <span class="sf-clean-title-badge">Tagebuch</span>
@@ -17150,7 +17448,7 @@ function renderSeminarfachView() {
         <button class="sf-btn sf-btn-ghost" onclick="focusSfCleanInserter()" title="Neue Notiz verfassen">
           Neue Notiz
         </button>
-        <button class="sf-btn sf-btn-ghost" onclick="resetSfJournalDefaults()" title="Zurücksetzen">
+        <button class="sf-btn sf-btn-ghost" onclick="resetSfJournalDefaults()" title="Standard wiederherstellen">
           Zurücksetzen
         </button>
       </div>
@@ -17171,7 +17469,7 @@ function renderSeminarfachView() {
           <div class="sf-ribbon-tail"></div>
         </div>
 
-        <!-- Book Spine on the Left (Leder-Buchrücken mit Goldprägung) -->
+        <!-- Book Spine on the Left -->
         <div class="sf-book-spine">
           <div class="sf-spine-emboss-wrap">
             <span class="sf-spine-gold-title">TONDA BEUTLER &bull; OBERSTUFE JAHRGANG 12 &bull; TAGEBUCH</span>
@@ -17182,10 +17480,10 @@ function renderSeminarfachView() {
           <div class="sf-spine-ridge sf-spine-ridge-4"></div>
         </div>
 
-        <!-- Open Book Page Container (Elfenbeinfarbenes liniertes Papier) -->
+        <!-- Open Book Page Container -->
         <div class="sf-book-pages-container">
           
-          <!-- Rote Korrektur-Randlinie (Schulheft-Stil) -->
+          <!-- Rote Korrektur-Randlinie -->
           <div class="sf-book-red-margin"></div>
 
           <!-- Buchfalz-Schatten -->
@@ -17203,27 +17501,27 @@ function renderSeminarfachView() {
               <h1 class="sf-gn-main-title">${getPageTitleForTab(currentSfTab)}</h1>
               <p class="sf-gn-sub-title">Persönliche Aufzeichnungen, Unterrichtsverlauf und Gedanken zum KI-Lernen</p>
 
-              <!-- 5-Pill Category Bar on the page -->
+              <!-- 5-Pill Category Bar on the page (Farblich klar getrennt) -->
               <div class="sf-gn-category-tabs">
                 <button class="sf-gn-pill ${currentSfTab === 'alle' ? 'active' : ''}" onclick="switchSfTab('alle')">
                   Alle Notizen (${countAll})
                 </button>
-                <button class="sf-gn-pill ${currentSfTab === 'unterricht' ? 'active' : ''}" onclick="switchSfTab('unterricht')">
-                  Was in den Stunden war (${countUnterricht})
+                <button class="sf-gn-pill pill-unterricht ${currentSfTab === 'unterricht' ? 'active' : ''}" onclick="switchSfTab('unterricht')">
+                  Unterricht (${countUnterricht})
                 </button>
-                <button class="sf-gn-pill ${currentSfTab === 'ki' ? 'active' : ''}" onclick="switchSfTab('ki')">
-                  Wie ich aktuell KI nutze (${countKi})
+                <button class="sf-gn-pill pill-ki ${currentSfTab === 'ki' ? 'active' : ''}" onclick="switchSfTab('ki')">
+                  KI-Nutzung (${countKi})
                 </button>
-                <button class="sf-gn-pill ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')">
+                <button class="sf-gn-pill pill-themen ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')">
                   Themenfindung (${countThemen})
                 </button>
-                <button class="sf-gn-pill ${currentSfTab === 'news' ? 'active' : ''}" onclick="switchSfTab('news')">
+                <button class="sf-gn-pill pill-news ${currentSfTab === 'news' ? 'active' : ''}" onclick="switchSfTab('news')">
                   KI-News (${countNews})
                 </button>
               </div>
             </div>
 
-            <!-- CLEAN INLINE NOTE INSERTER (Direkt auf den Linien schreiben) -->
+            <!-- CLEAN INLINE NOTE INSERTER -->
             ${renderCleanNoteInserterHtml()}
 
             <!-- ENTRIES CONTAINER -->
@@ -17235,25 +17533,25 @@ function renderSeminarfachView() {
 
         </div>
 
-        <!-- 5 Register-Reiter am rechten Buchrand (Klar, groß, keine Emojis) -->
+        <!-- 5 Register-Reiter am rechten Buchrand (Farblich codiert & sauber) -->
         <div class="sf-book-index-tabs">
-          <button class="sf-index-tab ${currentSfTab === 'alle' ? 'active' : ''}" onclick="switchSfTab('alle')" title="Alle Notizen">
+          <button class="sf-index-tab tab-alle ${currentSfTab === 'alle' ? 'active' : ''}" onclick="switchSfTab('alle')" title="Alle Notizen">
             <span class="tab-text">Alle</span>
             <span class="tab-badge">${countAll}</span>
           </button>
-          <button class="sf-index-tab ${currentSfTab === 'unterricht' ? 'active' : ''}" onclick="switchSfTab('unterricht')" title="Was in den Stunden war">
+          <button class="sf-index-tab tab-unterricht ${currentSfTab === 'unterricht' ? 'active' : ''}" onclick="switchSfTab('unterricht')" title="Was in den Stunden war">
             <span class="tab-text">Stunden</span>
             <span class="tab-badge">${countUnterricht}</span>
           </button>
-          <button class="sf-index-tab ${currentSfTab === 'ki' ? 'active' : ''}" onclick="switchSfTab('ki')" title="Wie ich aktuell KI nutze">
+          <button class="sf-index-tab tab-ki ${currentSfTab === 'ki' ? 'active' : ''}" onclick="switchSfTab('ki')" title="Wie ich aktuell KI nutze">
             <span class="tab-text">KI</span>
             <span class="tab-badge">${countKi}</span>
           </button>
-          <button class="sf-index-tab ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')" title="Themenfindung">
+          <button class="sf-index-tab tab-themen ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')" title="Themenfindung">
             <span class="tab-text">Themen</span>
             <span class="tab-badge">${countThemen}</span>
           </button>
-          <button class="sf-index-tab ${currentSfTab === 'news' ? 'active' : ''}" onclick="switchSfTab('news')" title="KI-News">
+          <button class="sf-index-tab tab-news ${currentSfTab === 'news' ? 'active' : ''}" onclick="switchSfTab('news')" title="KI-News">
             <span class="tab-text">News</span>
             <span class="tab-badge">${countNews}</span>
           </button>
@@ -17278,8 +17576,10 @@ function switchSfTab(tab) {
 }
 
 // --- 4. CLEAN INLINE NOTE INSERTER ---
+let currentInserterCategory = 'unterricht';
+
 function renderCleanNoteInserterHtml() {
-  const defaultCategory = (currentSfTab === 'alle') ? 'unterricht' : currentSfTab;
+  const activeCat = (currentSfTab === 'alle') ? currentInserterCategory : currentSfTab;
 
   return `
     <div class="sf-clean-note-inserter" id="sfCleanInserter">
@@ -17292,36 +17592,44 @@ function renderCleanNoteInserterHtml() {
         </div>
       </div>
 
-      <div class="sf-inserter-controls-row">
-        <div class="sf-inserter-field">
-          <label>Kategorie:</label>
-          <select id="sfInlineCategory" class="sf-gn-select">
-            <option value="unterricht" ${defaultCategory === 'unterricht' ? 'selected' : ''}>Was in den Stunden passiert ist</option>
-            <option value="ki" ${defaultCategory === 'ki' ? 'selected' : ''}>Wie ich aktuell KI nutze & Gedanken</option>
-            <option value="themen" ${defaultCategory === 'themen' ? 'selected' : ''}>Themenfindung & Ideen für Seminararbeit</option>
-            <option value="news" ${defaultCategory === 'news' ? 'selected' : ''}>KI-News & Entwicklungen</option>
-          </select>
+      <!-- Segmented Category Buttons (Klar & Direkt anklickbar) -->
+      <div class="sf-inserter-category-selector">
+        <span class="sf-field-hint">Kategorie wählen:</span>
+        <div class="sf-cat-buttons-group">
+          <button type="button" class="sf-cat-btn btn-cat-unterricht ${activeCat === 'unterricht' ? 'active' : ''}" onclick="setInserterCategory('unterricht')">
+            Unterricht
+          </button>
+          <button type="button" class="sf-cat-btn btn-cat-ki ${activeCat === 'ki' ? 'active' : ''}" onclick="setInserterCategory('ki')">
+            KI-Nutzung
+          </button>
+          <button type="button" class="sf-cat-btn btn-cat-themen ${activeCat === 'themen' ? 'active' : ''}" onclick="setInserterCategory('themen')">
+            Themenfindung
+          </button>
+          <button type="button" class="sf-cat-btn btn-cat-news ${activeCat === 'news' ? 'active' : ''}" onclick="setInserterCategory('news')">
+            KI-News
+          </button>
         </div>
+        <input type="hidden" id="sfInlineCategory" value="${activeCat}">
+      </div>
 
-        <div class="sf-inserter-field">
-          <label>Schulfach:</label>
-          <select id="sfInlineSubject" class="sf-gn-select">
-            ${SF_SUBJECT_OPTIONS.map(s => `<option value="${s.code}">${s.short}</option>`).join('')}
-          </select>
-        </div>
+      <div class="sf-inserter-subject-row">
+        <label>Schulfach (optional):</label>
+        <select id="sfInlineSubject" class="sf-gn-select">
+          ${SF_SUBJECT_OPTIONS.map(s => `<option value="${s.code}">${s.short}</option>`).join('')}
+        </select>
       </div>
 
       <div class="sf-inserter-title-wrap">
         <input type="text" id="sfInlineTitle" class="sf-gn-title-input" 
-               placeholder="Stichwort / Titel (z. B. Was heute im Unterricht passiert ist)...">
+               placeholder="Titel / Stichwort der Notiz...">
       </div>
 
       <div class="sf-inserter-content-wrap">
         <textarea id="sfInlineContent" class="sf-gn-textarea" rows="4" 
-                  placeholder="Schreibe hier direkt deine Notizen auf..."></textarea>
+                  placeholder="Schreibe hier deine Gedanken und Mitschriften auf..."></textarea>
       </div>
 
-      <!-- Optionale Details für Herrn Jatzeck / IServ (Dezent eingeklappt) -->
+      <!-- Optionale Details für Herrn Jatzeck / IServ -->
       <div class="sf-inserter-details-toggle">
         <details>
           <summary>Zusatzangaben für Herrn Jatzeck (Prompt / Modell)</summary>
@@ -17345,6 +17653,16 @@ function renderCleanNoteInserterHtml() {
       </div>
     </div>
   `;
+}
+
+function setInserterCategory(cat) {
+  currentInserterCategory = cat;
+  const input = document.getElementById('sfInlineCategory');
+  if (input) input.value = cat;
+
+  document.querySelectorAll('.sf-cat-btn').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.querySelector(`.btn-cat-${cat}`);
+  if (activeBtn) activeBtn.classList.add('active');
 }
 
 // --- 5. NOTE SAVING & MANAGEMENT ---
@@ -17407,7 +17725,7 @@ function focusSfCleanInserter() {
   }
 }
 
-// --- 6. RENDER ENTRIES ---
+// --- 6. RENDER ENTRIES (KLAR KATEGORISIERT MIT FARBKANTE) ---
 function renderFilteredEntriesHtml() {
   const allEntries = getSfJournalEntries();
   
@@ -17429,9 +17747,9 @@ function renderFilteredEntriesHtml() {
     const subj = SF_SUBJECT_OPTIONS.find(s => s.code === e.subjectCode) || SF_SUBJECT_OPTIONS[0];
 
     return `
-      <article class="sf-gn-entry-sheet" id="entry-${e.id}">
+      <article class="sf-gn-entry-sheet entry-border-${e.category || 'unterricht'}" id="entry-${e.id}">
         
-        <!-- Top Metadata Row (Header with Handwritten Date on Right) -->
+        <!-- Top Metadata Row -->
         <div class="sf-gn-entry-header">
           <div class="sf-gn-entry-badges">
             <span class="sf-gn-cat-pill sf-cat-${e.category || 'unterricht'}">
@@ -17450,7 +17768,7 @@ function renderFilteredEntriesHtml() {
           </div>
         </div>
 
-        <!-- Clean Title directly on lines -->
+        <!-- Clean Title -->
         <h2 class="sf-gn-entry-title">${escapeHtml(e.title)}</h2>
 
         <!-- Clean Content Text matching Notebook lines -->
@@ -17495,7 +17813,7 @@ function resetSfJournalDefaults() {
   renderSeminarfachView();
 }
 
-// --- 7. MODAL FOR EDITING EXISTING ENTRIES ---
+// --- 7. MODAL FOR EDITING EXISTING ENTRIES (SCHICK, ÜBERSICHTLICH & KLAR KATEGORISIERT) ---
 let CURRENT_SF_EDIT_ID = null;
 
 function openSfEditEntryModal(id) {
@@ -17509,51 +17827,101 @@ function openSfEditEntryModal(id) {
   if (!modal) {
     modal = document.createElement('div');
     modal.id = 'sfEditModal';
-    modal.className = 'portal-modal-backdrop';
+    modal.className = 'sf-modal-overlay';
     modal.onclick = (e) => {
       if (e.target === modal) closeSfEditModal();
     };
     document.body.appendChild(modal);
   }
 
+  const activeCategory = entry.category || 'unterricht';
+
   modal.innerHTML = `
-    <div class="portal-modal-content sf-entry-modal" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <h3 style="margin: 0;">Notiz bearbeiten</h3>
-        <button class="modal-close-btn" onclick="closeSfEditModal()">&times;</button>
+    <div class="sf-modal-card" onclick="event.stopPropagation()">
+      
+      <!-- Modal Header -->
+      <div class="sf-modal-head">
+        <div>
+          <h3 class="sf-modal-title">Notiz bearbeiten</h3>
+          <span class="sf-modal-sub">Eintrag anpassen und neu zuordnen</span>
+        </div>
+        <button class="sf-modal-close" onclick="closeSfEditModal()">&times;</button>
       </div>
-      <div class="modal-body" style="padding: 1.2rem 1.5rem;">
-        <div class="sf-form-grid">
-          <div class="sf-form-group full-width">
-            <label class="sf-form-label">Titel / Stichwort</label>
-            <input type="text" id="sfEditTitle" class="sf-form-input" value="${escapeHtml(entry.title)}">
+
+      <!-- Modal Body -->
+      <div class="sf-modal-body">
+        
+        <!-- Segmented Category Buttons in Modal -->
+        <div class="sf-modal-section">
+          <label class="sf-modal-label">Kategorie wählen:</label>
+          <div class="sf-cat-buttons-group">
+            <button type="button" class="sf-cat-btn btn-cat-unterricht ${activeCategory === 'unterricht' ? 'active' : ''}" onclick="setModalEditCategory('unterricht')">
+              Unterricht
+            </button>
+            <button type="button" class="sf-cat-btn btn-cat-ki ${activeCategory === 'ki' ? 'active' : ''}" onclick="setModalEditCategory('ki')">
+              KI-Nutzung
+            </button>
+            <button type="button" class="sf-cat-btn btn-cat-themen ${activeCategory === 'themen' ? 'active' : ''}" onclick="setModalEditCategory('themen')">
+              Themenfindung
+            </button>
+            <button type="button" class="sf-cat-btn btn-cat-news ${activeCategory === 'news' ? 'active' : ''}" onclick="setModalEditCategory('news')">
+              KI-News
+            </button>
           </div>
-          <div class="sf-form-group">
-            <label class="sf-form-label">Datum</label>
-            <input type="text" id="sfEditDate" class="sf-form-input" value="${escapeHtml(entry.date)}">
-          </div>
-          <div class="sf-form-group">
-            <label class="sf-form-label">Kategorie</label>
-            <select id="sfEditCategory" class="sf-form-select">
-              <option value="unterricht" ${entry.category === 'unterricht' ? 'selected' : ''}>Was in den Stunden passiert ist</option>
-              <option value="ki" ${entry.category === 'ki' ? 'selected' : ''}>Wie ich aktuell KI nutze</option>
-              <option value="themen" ${entry.category === 'themen' ? 'selected' : ''}>Themenfindung</option>
-              <option value="news" ${entry.category === 'news' ? 'selected' : ''}>KI-News</option>
+          <input type="hidden" id="sfEditCategory" value="${activeCategory}">
+        </div>
+
+        <!-- Meta Grid (Fach & Datum) -->
+        <div class="sf-modal-grid-2">
+          <div class="sf-modal-field">
+            <label class="sf-modal-label">Schulfach:</label>
+            <select id="sfEditSubject" class="sf-modal-select">
+              ${SF_SUBJECT_OPTIONS.map(s => `
+                <option value="${s.code}" ${entry.subjectCode === s.code ? 'selected' : ''}>${s.short}</option>
+              `).join('')}
             </select>
           </div>
-          <div class="sf-form-group full-width">
-            <label class="sf-form-label">Notiztext</label>
-            <textarea id="sfEditContent" class="sf-form-textarea" rows="6">${escapeHtml(entry.content || '')}</textarea>
+          <div class="sf-modal-field">
+            <label class="sf-modal-label">Datum:</label>
+            <input type="text" id="sfEditDate" class="sf-modal-input" value="${escapeHtml(entry.date)}">
           </div>
         </div>
+
+        <!-- Title Field -->
+        <div class="sf-modal-field">
+          <label class="sf-modal-label">Titel / Stichwort:</label>
+          <input type="text" id="sfEditTitle" class="sf-modal-input sf-modal-title-input" value="${escapeHtml(entry.title)}">
+        </div>
+
+        <!-- Content Field -->
+        <div class="sf-modal-field">
+          <label class="sf-modal-label">Notiztext:</label>
+          <textarea id="sfEditContent" class="sf-modal-textarea" rows="7">${escapeHtml(entry.content || '')}</textarea>
+        </div>
+
       </div>
-      <div class="modal-footer" style="padding: 1rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.6rem;">
-        <button class="btn-back-nav" onclick="closeSfEditModal()">Abbrechen</button>
-        <button class="sf-btn sf-btn-primary" onclick="saveEditedEntry()">Änderungen speichern</button>
+
+      <!-- Modal Footer -->
+      <div class="sf-modal-foot">
+        <button class="sf-btn-modal-cancel" onclick="closeSfEditModal()">Abbrechen</button>
+        <button class="sf-btn-modal-save" onclick="saveEditedEntry()">Änderungen speichern</button>
       </div>
+
     </div>
   `;
   modal.style.display = 'flex';
+}
+
+function setModalEditCategory(cat) {
+  const input = document.getElementById('sfEditCategory');
+  if (input) input.value = cat;
+
+  const modal = document.getElementById('sfEditModal');
+  if (modal) {
+    modal.querySelectorAll('.sf-cat-btn').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = modal.querySelector(`.btn-cat-${cat}`);
+    if (activeBtn) activeBtn.classList.add('active');
+  }
 }
 
 function closeSfEditModal() {
@@ -17570,6 +17938,7 @@ function saveEditedEntry() {
   const title = document.getElementById('sfEditTitle').value.trim();
   const date = document.getElementById('sfEditDate').value.trim();
   const category = document.getElementById('sfEditCategory').value;
+  const subjectCode = document.getElementById('sfEditSubject').value;
   const content = document.getElementById('sfEditContent').value.trim();
 
   let categoryName = 'Unterricht';
@@ -17581,6 +17950,7 @@ function saveEditedEntry() {
   entries[idx].date = date || getTodayGermanShortDate();
   entries[idx].category = category;
   entries[idx].categoryName = categoryName;
+  entries[idx].subjectCode = subjectCode;
   entries[idx].content = content;
 
   saveSfJournalEntries(entries);

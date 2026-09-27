@@ -17,7 +17,7 @@ const SF_SUBJECT_OPTIONS = [
   { code: 'allg', name: 'Allgemein / Freie Notiz', short: 'Allgemein', color: '#64748b' }
 ];
 
-// --- 2. TONDAS ECHTE TAGEBUCH-EINTRÄGE (UMGANGSSPRACHLICH & AUTHENTISCH) ---
+// --- 2. TONDAS TAGEBUCH-EINTRÄGE (KLAR, PERSÖNLICH & REFLEKTIERT) ---
 const DEFAULT_SF_JOURNAL = [
   {
     id: "sf-1",
@@ -26,7 +26,7 @@ const DEFAULT_SF_JOURNAL = [
     categoryName: "Unterricht",
     subjectCode: "sf4",
     title: "Y-Lab Nachbesprechung & Journal-Anfang",
-    content: "Ergebnisse über Ylab ausgetauscht, da nur so wenige da waren.\n\nJournal anlegen und erste Informationen, wie die Infos übers Ylab eintragen.\n\nAllgemein gesagt bekommen, was so der Plan ist.\n\nAllgemein nicht super spannend, und das Ylab scheint sich nicht so gelohnt zu haben."
+    content: "Ergebnisse über das Y-Lab ausgetauscht, da nur wenige da waren.\n\nJournal anlegen und erste Informationen eintragen, wie die Notizen zum Y-Lab erfasst werden sollen.\n\nAllgemein gesagt bekommen, wie der weitere Plan im Seminarfach aussieht.\n\nWar insgesamt nicht super spannend, das Y-Lab hat sich nicht wirklich gelohnt."
   },
   {
     id: "sf-2",
@@ -34,8 +34,8 @@ const DEFAULT_SF_JOURNAL = [
     category: "themen",
     categoryName: "Themenfindung",
     subjectCode: "sf4",
-    title: "Kriterien für Facharbeit & Themenfindung (aus dem Y-Lab)",
-    content: "Facharbeiten sind geeignet für das Erstellen einer wissenschaftlichen Arbeit.\n\nEigenschaften einer guten Arbeit:\n• Objektiv\n• Eigenständig\n• Systematisch\n• Klarer Stil\n• Beitrag zur Wissenschaft\n\nThemenfindung:\n• Thema muss mich interessieren\n• Gut eingegrenzt (ein klares Thema)\n• Es beinhaltet eine Fragestellung von uns\n• Primärquellen"
+    title: "Kriterien für die Facharbeit (aus dem Y-Lab)",
+    content: "Notizen zur Erstellung einer wissenschaftlichen Arbeit aus dem Y-Lab:\n\nEigenschaften einer guten Facharbeit:\n• Objektiv und sachlich\n• Eigenständig erarbeitet\n• Systematischer Aufbau\n• Klarer Schreibstil\n• Nachvollziehbarer Beitrag\n\nKriterien für die Themenfindung:\n• Das Thema muss mich wirklich interessieren\n• Gut eingegrenzt (ein klares, konkretes Thema)\n• Beinhaltet eine eigene Fragestellung\n• Verlässliche Primärquellen nutzen"
   },
   {
     id: "sf-3",
@@ -44,7 +44,7 @@ const DEFAULT_SF_JOURNAL = [
     categoryName: "Unterricht",
     subjectCode: "sf4",
     title: "Ansage zur Arbeitsmoral & Journal-Führung",
-    content: "Ansage bekommen, weil unsere Arbeitsmoral auf dem falschen Stand ist.\n\nJournal wird noch nicht richtig geführt.\n\nLeichte Inspiration, über was wir unsere Seminarfacharbeit so machen könnten.\n\nJournal fertig machen."
+    content: "Ansage im Unterricht bekommen, weil die Arbeitsmoral im Kurs noch nicht auf dem richtigen Stand ist.\n\nDas Journal wird bei vielen noch nicht ordentlich geführt. Haben etwas Inspiration gesammelt, worüber wir die Seminarfacharbeit schreiben könnten.\n\nZiel für die nächste Zeit: Das Journal regelmäßig führen und auf den aktuellen Stand bringen."
   },
   {
     id: "sf-4",
@@ -52,8 +52,8 @@ const DEFAULT_SF_JOURNAL = [
     category: "ki",
     categoryName: "KI-Nutzung",
     subjectCode: "sf4",
-    title: "Gedanken zur negativen Stimmung über KI",
-    content: "Ich merke sehr viel negative Energie über KI, was irgendwo verständlich ist. Aber einfach zu sagen, KI ist schlimm und sie muss weg, ist nicht die Lösung, weil sie erstens unrealistisch ist und zweitens meiner Meinung nach nicht der schlauste Weg ist, da es durchaus eine nützliche Sache sein kann."
+    title: "Gedanken zur allgemeinen Stimmung über KI",
+    content: "Ich merke oft eine ziemlich negative Haltung gegenüber KI, was man stellenweise auch verstehen kann. Aber einfach pauschal zu sagen, KI ist schlecht und muss verboten werden, ist keine sinnvolle Lösung.\n\nDas ist erstens unrealistisch und zweitens verschenkt man damit viele Chancen, weil KI beim Lernen durchaus nützlich sein kann, wenn man sie richtig einsetzt."
   },
   {
     id: "sf-5",
@@ -61,8 +61,8 @@ const DEFAULT_SF_JOURNAL = [
     category: "unterricht",
     categoryName: "Unterricht",
     subjectCode: "sf4",
-    title: "Harald Lesch Video im Unterricht",
-    content: "Lesch-Video im Unterricht geschaut. Er meint halt, dass KI eigentlich gar nichts checkt, sondern einfach nur Wörter aneinanderreiht nach Wahrscheinlichkeit.\n\nStimmt schon, wenn man die KI einfach nur die Hausaufgaben machen lässt, hat man am Ende selber nichts davon verstanden. Man muss halt selber mitdenken."
+    title: "Harald Lesch Beitrag im Unterricht",
+    content: "Im Unterricht bei Herrn Jatzeck den Beitrag von Harald Lesch über KI geschaut.\n\nSein Kernpunkt: Sprachmodelle verstehen die Inhalte nicht wirklich, sondern setzen Wörter rein statistisch nach Wahrscheinlichkeiten zusammen.\n\nFür die Schule heißt das vor allem: Wer KI nur nutzt, um Hausaufgaben fertig zu bekommen, lernt selbst nichts dabei. Man muss sich die Schritte erklären lassen und selbst mitdenken, damit am Ende etwas hängenbleibt."
   },
   {
     id: "sf-6",
@@ -71,7 +71,7 @@ const DEFAULT_SF_JOURNAL = [
     categoryName: "Themenfindung",
     subjectCode: "sf4",
     title: "SUB Bibliotheksausweis Göttingen",
-    content: "Anmeldung für die SUB Bibliothek in Göttingen ausgefüllt. Muss im Oktober noch den Ausweis abholen, um mir da ein paar Bücher für die Seminararbeit auszuleihen."
+    content: "Anmeldeformular für die SUB Göttingen (Zentralbibliothek am Platz der Göttinger Sieben) ausgefüllt.\n\nIm Oktober kann ich den Ausweis abholen, um mir dort Fachliteratur für die Seminararbeit auszuleihen."
   },
   {
     id: "sf-7",
@@ -80,7 +80,7 @@ const DEFAULT_SF_JOURNAL = [
     categoryName: "KI-News",
     subjectCode: "allg",
     title: "OpenAI o1 Modell ausprobiert",
-    content: "OpenAI hat dieses neue o1 Modell rausgebracht. Soll wohl viel besser logisch denken können als die alten Versionen.\n\nHab das mal bei ein paar schwereren Mathe- und Physik-Aufgaben ausprobiert, wo normales ChatGPT sonst immer komplett Quatsch gerechnet hat. Das rechnet jetzt echt Schritt für Schritt durch und macht kaum noch Vorzeichenfehler. Ziemlich krass eigentlich."
+    content: "OpenAI hat das neue o1-Modell veröffentlicht, das vor der Antwort Zwischenschritte berechnet und logische Gedankengänge durchgeht.\n\nIch habe das bei schwierigeren Aufgaben in Mathe und Physik getestet, bei denen normale Sprachmodelle bisher oft falsche Zwischenschritte berechnet haben. Die neue Version rechnet die Schritte deutlich strukturierter durch und kommt fast immer auf das richtige Ergebnis."
   },
   {
     id: "sf-8",
@@ -88,13 +88,13 @@ const DEFAULT_SF_JOURNAL = [
     category: "news",
     categoryName: "KI-News",
     subjectCode: "allg",
-    title: "Neue Regeln für KI an Schulen",
-    content: "Gelesen, dass es jetzt strengere Richtlinien für KI an Schulen geben soll wegen Urheberrecht und Transparenz.\n\nBei uns in der Stufe nutzen gefühlt eh fast alle ChatGPT einfach nur für schnelles Copy-Paste bei Hausaufgaben. Jatzeck meinte aber schon, dass wir bei der Seminararbeit ganz genau offenlegen müssen, wo und wie wir KI benutzt haben, sonst gibt es Punktabzug."
+    title: "Richtlinien für KI an Schulen",
+    content: "Es gibt neue Diskussionen und Richtlinien zum Umgang mit KI im Unterricht, besonders bezüglich Transparenz und Eigenständigkeit.\n\nIm Schulalltag nutzen viele Schüler KI bisher vor allem, um Hausaufgaben schneller fertig zu haben. Herr Jatzeck hat aber betont, dass wir für die Seminarfacharbeit alle verwendeten Prompts und KI-Hilfen nachvollziehbar dokumentieren müssen, damit die eigene Leistung erkennbar bleibt."
   }
 ];
 
-// LocalStorage Keys
-const SF_STORAGE_KEY = 'tonda_sf_diary_entries_v3';
+// LocalStorage Key
+const SF_STORAGE_KEY = 'tonda_sf_diary_entries_v4';
 
 // State
 let currentSfTab = 'alle'; // 'alle' | 'unterricht' | 'ki' | 'themen' | 'news'
@@ -167,7 +167,7 @@ function renderSeminarfachView() {
   const countNews = entries.filter(e => e.category === 'news').length;
 
   root.innerHTML = `
-    <!-- Top Action Toolbar (Clean & Typographic) -->
+    <!-- Top Action Toolbar -->
     <div class="sf-clean-topbar">
       <div class="sf-clean-topbar-left">
         <span class="sf-clean-title-badge">Tagebuch</span>
@@ -180,7 +180,7 @@ function renderSeminarfachView() {
         <button class="sf-btn sf-btn-ghost" onclick="focusSfCleanInserter()" title="Neue Notiz verfassen">
           Neue Notiz
         </button>
-        <button class="sf-btn sf-btn-ghost" onclick="resetSfJournalDefaults()" title="Zurücksetzen">
+        <button class="sf-btn sf-btn-ghost" onclick="resetSfJournalDefaults()" title="Standard wiederherstellen">
           Zurücksetzen
         </button>
       </div>
@@ -201,7 +201,7 @@ function renderSeminarfachView() {
           <div class="sf-ribbon-tail"></div>
         </div>
 
-        <!-- Book Spine on the Left (Leder-Buchrücken mit Goldprägung) -->
+        <!-- Book Spine on the Left -->
         <div class="sf-book-spine">
           <div class="sf-spine-emboss-wrap">
             <span class="sf-spine-gold-title">TONDA BEUTLER &bull; OBERSTUFE JAHRGANG 12 &bull; TAGEBUCH</span>
@@ -212,10 +212,10 @@ function renderSeminarfachView() {
           <div class="sf-spine-ridge sf-spine-ridge-4"></div>
         </div>
 
-        <!-- Open Book Page Container (Elfenbeinfarbenes liniertes Papier) -->
+        <!-- Open Book Page Container -->
         <div class="sf-book-pages-container">
           
-          <!-- Rote Korrektur-Randlinie (Schulheft-Stil) -->
+          <!-- Rote Korrektur-Randlinie -->
           <div class="sf-book-red-margin"></div>
 
           <!-- Buchfalz-Schatten -->
@@ -233,27 +233,27 @@ function renderSeminarfachView() {
               <h1 class="sf-gn-main-title">${getPageTitleForTab(currentSfTab)}</h1>
               <p class="sf-gn-sub-title">Persönliche Aufzeichnungen, Unterrichtsverlauf und Gedanken zum KI-Lernen</p>
 
-              <!-- 5-Pill Category Bar on the page -->
+              <!-- 5-Pill Category Bar on the page (Farblich klar getrennt) -->
               <div class="sf-gn-category-tabs">
                 <button class="sf-gn-pill ${currentSfTab === 'alle' ? 'active' : ''}" onclick="switchSfTab('alle')">
                   Alle Notizen (${countAll})
                 </button>
-                <button class="sf-gn-pill ${currentSfTab === 'unterricht' ? 'active' : ''}" onclick="switchSfTab('unterricht')">
-                  Was in den Stunden war (${countUnterricht})
+                <button class="sf-gn-pill pill-unterricht ${currentSfTab === 'unterricht' ? 'active' : ''}" onclick="switchSfTab('unterricht')">
+                  Unterricht (${countUnterricht})
                 </button>
-                <button class="sf-gn-pill ${currentSfTab === 'ki' ? 'active' : ''}" onclick="switchSfTab('ki')">
-                  Wie ich aktuell KI nutze (${countKi})
+                <button class="sf-gn-pill pill-ki ${currentSfTab === 'ki' ? 'active' : ''}" onclick="switchSfTab('ki')">
+                  KI-Nutzung (${countKi})
                 </button>
-                <button class="sf-gn-pill ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')">
+                <button class="sf-gn-pill pill-themen ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')">
                   Themenfindung (${countThemen})
                 </button>
-                <button class="sf-gn-pill ${currentSfTab === 'news' ? 'active' : ''}" onclick="switchSfTab('news')">
+                <button class="sf-gn-pill pill-news ${currentSfTab === 'news' ? 'active' : ''}" onclick="switchSfTab('news')">
                   KI-News (${countNews})
                 </button>
               </div>
             </div>
 
-            <!-- CLEAN INLINE NOTE INSERTER (Direkt auf den Linien schreiben) -->
+            <!-- CLEAN INLINE NOTE INSERTER -->
             ${renderCleanNoteInserterHtml()}
 
             <!-- ENTRIES CONTAINER -->
@@ -265,25 +265,25 @@ function renderSeminarfachView() {
 
         </div>
 
-        <!-- 5 Register-Reiter am rechten Buchrand (Klar, groß, keine Emojis) -->
+        <!-- 5 Register-Reiter am rechten Buchrand (Farblich codiert & sauber) -->
         <div class="sf-book-index-tabs">
-          <button class="sf-index-tab ${currentSfTab === 'alle' ? 'active' : ''}" onclick="switchSfTab('alle')" title="Alle Notizen">
+          <button class="sf-index-tab tab-alle ${currentSfTab === 'alle' ? 'active' : ''}" onclick="switchSfTab('alle')" title="Alle Notizen">
             <span class="tab-text">Alle</span>
             <span class="tab-badge">${countAll}</span>
           </button>
-          <button class="sf-index-tab ${currentSfTab === 'unterricht' ? 'active' : ''}" onclick="switchSfTab('unterricht')" title="Was in den Stunden war">
+          <button class="sf-index-tab tab-unterricht ${currentSfTab === 'unterricht' ? 'active' : ''}" onclick="switchSfTab('unterricht')" title="Was in den Stunden war">
             <span class="tab-text">Stunden</span>
             <span class="tab-badge">${countUnterricht}</span>
           </button>
-          <button class="sf-index-tab ${currentSfTab === 'ki' ? 'active' : ''}" onclick="switchSfTab('ki')" title="Wie ich aktuell KI nutze">
+          <button class="sf-index-tab tab-ki ${currentSfTab === 'ki' ? 'active' : ''}" onclick="switchSfTab('ki')" title="Wie ich aktuell KI nutze">
             <span class="tab-text">KI</span>
             <span class="tab-badge">${countKi}</span>
           </button>
-          <button class="sf-index-tab ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')" title="Themenfindung">
+          <button class="sf-index-tab tab-themen ${currentSfTab === 'themen' ? 'active' : ''}" onclick="switchSfTab('themen')" title="Themenfindung">
             <span class="tab-text">Themen</span>
             <span class="tab-badge">${countThemen}</span>
           </button>
-          <button class="sf-index-tab ${currentSfTab === 'news' ? 'active' : ''}" onclick="switchSfTab('news')" title="KI-News">
+          <button class="sf-index-tab tab-news ${currentSfTab === 'news' ? 'active' : ''}" onclick="switchSfTab('news')" title="KI-News">
             <span class="tab-text">News</span>
             <span class="tab-badge">${countNews}</span>
           </button>
@@ -308,8 +308,10 @@ function switchSfTab(tab) {
 }
 
 // --- 4. CLEAN INLINE NOTE INSERTER ---
+let currentInserterCategory = 'unterricht';
+
 function renderCleanNoteInserterHtml() {
-  const defaultCategory = (currentSfTab === 'alle') ? 'unterricht' : currentSfTab;
+  const activeCat = (currentSfTab === 'alle') ? currentInserterCategory : currentSfTab;
 
   return `
     <div class="sf-clean-note-inserter" id="sfCleanInserter">
@@ -322,36 +324,44 @@ function renderCleanNoteInserterHtml() {
         </div>
       </div>
 
-      <div class="sf-inserter-controls-row">
-        <div class="sf-inserter-field">
-          <label>Kategorie:</label>
-          <select id="sfInlineCategory" class="sf-gn-select">
-            <option value="unterricht" ${defaultCategory === 'unterricht' ? 'selected' : ''}>Was in den Stunden passiert ist</option>
-            <option value="ki" ${defaultCategory === 'ki' ? 'selected' : ''}>Wie ich aktuell KI nutze & Gedanken</option>
-            <option value="themen" ${defaultCategory === 'themen' ? 'selected' : ''}>Themenfindung & Ideen für Seminararbeit</option>
-            <option value="news" ${defaultCategory === 'news' ? 'selected' : ''}>KI-News & Entwicklungen</option>
-          </select>
+      <!-- Segmented Category Buttons (Klar & Direkt anklickbar) -->
+      <div class="sf-inserter-category-selector">
+        <span class="sf-field-hint">Kategorie wählen:</span>
+        <div class="sf-cat-buttons-group">
+          <button type="button" class="sf-cat-btn btn-cat-unterricht ${activeCat === 'unterricht' ? 'active' : ''}" onclick="setInserterCategory('unterricht')">
+            Unterricht
+          </button>
+          <button type="button" class="sf-cat-btn btn-cat-ki ${activeCat === 'ki' ? 'active' : ''}" onclick="setInserterCategory('ki')">
+            KI-Nutzung
+          </button>
+          <button type="button" class="sf-cat-btn btn-cat-themen ${activeCat === 'themen' ? 'active' : ''}" onclick="setInserterCategory('themen')">
+            Themenfindung
+          </button>
+          <button type="button" class="sf-cat-btn btn-cat-news ${activeCat === 'news' ? 'active' : ''}" onclick="setInserterCategory('news')">
+            KI-News
+          </button>
         </div>
+        <input type="hidden" id="sfInlineCategory" value="${activeCat}">
+      </div>
 
-        <div class="sf-inserter-field">
-          <label>Schulfach:</label>
-          <select id="sfInlineSubject" class="sf-gn-select">
-            ${SF_SUBJECT_OPTIONS.map(s => `<option value="${s.code}">${s.short}</option>`).join('')}
-          </select>
-        </div>
+      <div class="sf-inserter-subject-row">
+        <label>Schulfach (optional):</label>
+        <select id="sfInlineSubject" class="sf-gn-select">
+          ${SF_SUBJECT_OPTIONS.map(s => `<option value="${s.code}">${s.short}</option>`).join('')}
+        </select>
       </div>
 
       <div class="sf-inserter-title-wrap">
         <input type="text" id="sfInlineTitle" class="sf-gn-title-input" 
-               placeholder="Stichwort / Titel (z. B. Was heute im Unterricht passiert ist)...">
+               placeholder="Titel / Stichwort der Notiz...">
       </div>
 
       <div class="sf-inserter-content-wrap">
         <textarea id="sfInlineContent" class="sf-gn-textarea" rows="4" 
-                  placeholder="Schreibe hier direkt deine Notizen auf..."></textarea>
+                  placeholder="Schreibe hier deine Gedanken und Mitschriften auf..."></textarea>
       </div>
 
-      <!-- Optionale Details für Herrn Jatzeck / IServ (Dezent eingeklappt) -->
+      <!-- Optionale Details für Herrn Jatzeck / IServ -->
       <div class="sf-inserter-details-toggle">
         <details>
           <summary>Zusatzangaben für Herrn Jatzeck (Prompt / Modell)</summary>
@@ -375,6 +385,16 @@ function renderCleanNoteInserterHtml() {
       </div>
     </div>
   `;
+}
+
+function setInserterCategory(cat) {
+  currentInserterCategory = cat;
+  const input = document.getElementById('sfInlineCategory');
+  if (input) input.value = cat;
+
+  document.querySelectorAll('.sf-cat-btn').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.querySelector(`.btn-cat-${cat}`);
+  if (activeBtn) activeBtn.classList.add('active');
 }
 
 // --- 5. NOTE SAVING & MANAGEMENT ---
@@ -437,7 +457,7 @@ function focusSfCleanInserter() {
   }
 }
 
-// --- 6. RENDER ENTRIES ---
+// --- 6. RENDER ENTRIES (KLAR KATEGORISIERT MIT FARBKANTE) ---
 function renderFilteredEntriesHtml() {
   const allEntries = getSfJournalEntries();
   
@@ -459,9 +479,9 @@ function renderFilteredEntriesHtml() {
     const subj = SF_SUBJECT_OPTIONS.find(s => s.code === e.subjectCode) || SF_SUBJECT_OPTIONS[0];
 
     return `
-      <article class="sf-gn-entry-sheet" id="entry-${e.id}">
+      <article class="sf-gn-entry-sheet entry-border-${e.category || 'unterricht'}" id="entry-${e.id}">
         
-        <!-- Top Metadata Row (Header with Handwritten Date on Right) -->
+        <!-- Top Metadata Row -->
         <div class="sf-gn-entry-header">
           <div class="sf-gn-entry-badges">
             <span class="sf-gn-cat-pill sf-cat-${e.category || 'unterricht'}">
@@ -480,7 +500,7 @@ function renderFilteredEntriesHtml() {
           </div>
         </div>
 
-        <!-- Clean Title directly on lines -->
+        <!-- Clean Title -->
         <h2 class="sf-gn-entry-title">${escapeHtml(e.title)}</h2>
 
         <!-- Clean Content Text matching Notebook lines -->
@@ -525,7 +545,7 @@ function resetSfJournalDefaults() {
   renderSeminarfachView();
 }
 
-// --- 7. MODAL FOR EDITING EXISTING ENTRIES ---
+// --- 7. MODAL FOR EDITING EXISTING ENTRIES (SCHICK, ÜBERSICHTLICH & KLAR KATEGORISIERT) ---
 let CURRENT_SF_EDIT_ID = null;
 
 function openSfEditEntryModal(id) {
@@ -539,51 +559,101 @@ function openSfEditEntryModal(id) {
   if (!modal) {
     modal = document.createElement('div');
     modal.id = 'sfEditModal';
-    modal.className = 'portal-modal-backdrop';
+    modal.className = 'sf-modal-overlay';
     modal.onclick = (e) => {
       if (e.target === modal) closeSfEditModal();
     };
     document.body.appendChild(modal);
   }
 
+  const activeCategory = entry.category || 'unterricht';
+
   modal.innerHTML = `
-    <div class="portal-modal-content sf-entry-modal" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <h3 style="margin: 0;">Notiz bearbeiten</h3>
-        <button class="modal-close-btn" onclick="closeSfEditModal()">&times;</button>
+    <div class="sf-modal-card" onclick="event.stopPropagation()">
+      
+      <!-- Modal Header -->
+      <div class="sf-modal-head">
+        <div>
+          <h3 class="sf-modal-title">Notiz bearbeiten</h3>
+          <span class="sf-modal-sub">Eintrag anpassen und neu zuordnen</span>
+        </div>
+        <button class="sf-modal-close" onclick="closeSfEditModal()">&times;</button>
       </div>
-      <div class="modal-body" style="padding: 1.2rem 1.5rem;">
-        <div class="sf-form-grid">
-          <div class="sf-form-group full-width">
-            <label class="sf-form-label">Titel / Stichwort</label>
-            <input type="text" id="sfEditTitle" class="sf-form-input" value="${escapeHtml(entry.title)}">
+
+      <!-- Modal Body -->
+      <div class="sf-modal-body">
+        
+        <!-- Segmented Category Buttons in Modal -->
+        <div class="sf-modal-section">
+          <label class="sf-modal-label">Kategorie wählen:</label>
+          <div class="sf-cat-buttons-group">
+            <button type="button" class="sf-cat-btn btn-cat-unterricht ${activeCategory === 'unterricht' ? 'active' : ''}" onclick="setModalEditCategory('unterricht')">
+              Unterricht
+            </button>
+            <button type="button" class="sf-cat-btn btn-cat-ki ${activeCategory === 'ki' ? 'active' : ''}" onclick="setModalEditCategory('ki')">
+              KI-Nutzung
+            </button>
+            <button type="button" class="sf-cat-btn btn-cat-themen ${activeCategory === 'themen' ? 'active' : ''}" onclick="setModalEditCategory('themen')">
+              Themenfindung
+            </button>
+            <button type="button" class="sf-cat-btn btn-cat-news ${activeCategory === 'news' ? 'active' : ''}" onclick="setModalEditCategory('news')">
+              KI-News
+            </button>
           </div>
-          <div class="sf-form-group">
-            <label class="sf-form-label">Datum</label>
-            <input type="text" id="sfEditDate" class="sf-form-input" value="${escapeHtml(entry.date)}">
-          </div>
-          <div class="sf-form-group">
-            <label class="sf-form-label">Kategorie</label>
-            <select id="sfEditCategory" class="sf-form-select">
-              <option value="unterricht" ${entry.category === 'unterricht' ? 'selected' : ''}>Was in den Stunden passiert ist</option>
-              <option value="ki" ${entry.category === 'ki' ? 'selected' : ''}>Wie ich aktuell KI nutze</option>
-              <option value="themen" ${entry.category === 'themen' ? 'selected' : ''}>Themenfindung</option>
-              <option value="news" ${entry.category === 'news' ? 'selected' : ''}>KI-News</option>
+          <input type="hidden" id="sfEditCategory" value="${activeCategory}">
+        </div>
+
+        <!-- Meta Grid (Fach & Datum) -->
+        <div class="sf-modal-grid-2">
+          <div class="sf-modal-field">
+            <label class="sf-modal-label">Schulfach:</label>
+            <select id="sfEditSubject" class="sf-modal-select">
+              ${SF_SUBJECT_OPTIONS.map(s => `
+                <option value="${s.code}" ${entry.subjectCode === s.code ? 'selected' : ''}>${s.short}</option>
+              `).join('')}
             </select>
           </div>
-          <div class="sf-form-group full-width">
-            <label class="sf-form-label">Notiztext</label>
-            <textarea id="sfEditContent" class="sf-form-textarea" rows="6">${escapeHtml(entry.content || '')}</textarea>
+          <div class="sf-modal-field">
+            <label class="sf-modal-label">Datum:</label>
+            <input type="text" id="sfEditDate" class="sf-modal-input" value="${escapeHtml(entry.date)}">
           </div>
         </div>
+
+        <!-- Title Field -->
+        <div class="sf-modal-field">
+          <label class="sf-modal-label">Titel / Stichwort:</label>
+          <input type="text" id="sfEditTitle" class="sf-modal-input sf-modal-title-input" value="${escapeHtml(entry.title)}">
+        </div>
+
+        <!-- Content Field -->
+        <div class="sf-modal-field">
+          <label class="sf-modal-label">Notiztext:</label>
+          <textarea id="sfEditContent" class="sf-modal-textarea" rows="7">${escapeHtml(entry.content || '')}</textarea>
+        </div>
+
       </div>
-      <div class="modal-footer" style="padding: 1rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.6rem;">
-        <button class="btn-back-nav" onclick="closeSfEditModal()">Abbrechen</button>
-        <button class="sf-btn sf-btn-primary" onclick="saveEditedEntry()">Änderungen speichern</button>
+
+      <!-- Modal Footer -->
+      <div class="sf-modal-foot">
+        <button class="sf-btn-modal-cancel" onclick="closeSfEditModal()">Abbrechen</button>
+        <button class="sf-btn-modal-save" onclick="saveEditedEntry()">Änderungen speichern</button>
       </div>
+
     </div>
   `;
   modal.style.display = 'flex';
+}
+
+function setModalEditCategory(cat) {
+  const input = document.getElementById('sfEditCategory');
+  if (input) input.value = cat;
+
+  const modal = document.getElementById('sfEditModal');
+  if (modal) {
+    modal.querySelectorAll('.sf-cat-btn').forEach(btn => btn.classList.remove('active'));
+    const activeBtn = modal.querySelector(`.btn-cat-${cat}`);
+    if (activeBtn) activeBtn.classList.add('active');
+  }
 }
 
 function closeSfEditModal() {
@@ -600,6 +670,7 @@ function saveEditedEntry() {
   const title = document.getElementById('sfEditTitle').value.trim();
   const date = document.getElementById('sfEditDate').value.trim();
   const category = document.getElementById('sfEditCategory').value;
+  const subjectCode = document.getElementById('sfEditSubject').value;
   const content = document.getElementById('sfEditContent').value.trim();
 
   let categoryName = 'Unterricht';
@@ -611,6 +682,7 @@ function saveEditedEntry() {
   entries[idx].date = date || getTodayGermanShortDate();
   entries[idx].category = category;
   entries[idx].categoryName = categoryName;
+  entries[idx].subjectCode = subjectCode;
   entries[idx].content = content;
 
   saveSfJournalEntries(entries);

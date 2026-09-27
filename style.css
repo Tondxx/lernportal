@@ -5433,7 +5433,7 @@ input[type=range]::-webkit-slider-thumb:hover {
    Jahrgang 12 • IGS Göttingen • Tonda Beutler • Michael Jatzeck (Abi28 sf4)
    ========================================================================== */
 
-/* Clean Top Action Bar (Typographic & Calm) */
+/* Clean Top Action Bar */
 .sf-clean-topbar {
   display: flex;
   justify-content: space-between;
@@ -5700,7 +5700,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   );
 }
 
-/* Register Tabs on Right Edge (5 klare Tabs) */
+/* Register Tabs on Right Edge (5 klare, farbcodierte Tabs) */
 .sf-book-index-tabs {
   position: absolute;
   top: 40px;
@@ -5750,16 +5750,19 @@ input[type=range]::-webkit-slider-thumb:hover {
 .sf-index-tab.active {
   transform: translateX(10px);
   background: #ffffff;
-  box-shadow: 4px 6px 16px rgba(124, 58, 237, 0.28);
-  border-color: #7c3aed;
-  color: #7c3aed;
+  box-shadow: 4px 6px 16px rgba(0, 0, 0, 0.2);
 }
 
 [data-theme="dark"] .sf-index-tab.active {
   background: #2a334a;
-  border-color: #a78bfa;
   color: #f8fafc;
 }
+
+.tab-alle.active { border-color: #7c3aed; color: #7c3aed; }
+.tab-unterricht.active { border-color: #10b981; color: #10b981; }
+.tab-ki.active { border-color: #7c3aed; color: #7c3aed; }
+.tab-themen.active { border-color: #f59e0b; color: #f59e0b; }
+.tab-news.active { border-color: #0891b2; color: #0891b2; }
 
 .sf-index-tab .tab-text {
   font-size: 0.68rem;
@@ -5768,14 +5771,6 @@ input[type=range]::-webkit-slider-thumb:hover {
   letter-spacing: 0.05em;
   text-align: center;
   line-height: 1.15;
-}
-
-.sf-index-tab.active .tab-text {
-  color: #7c3aed;
-}
-
-[data-theme="dark"] .sf-index-tab.active .tab-text {
-  color: #c4b5fd;
 }
 
 .sf-index-tab .tab-badge {
@@ -5791,7 +5786,11 @@ input[type=range]::-webkit-slider-thumb:hover {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Page Header (Minimalist & Clean) */
+.tab-unterricht .tab-badge { background: #10b981; }
+.tab-themen .tab-badge { background: #f59e0b; }
+.tab-news .tab-badge { background: #0891b2; }
+
+/* Page Header */
 .sf-gn-page-header {
   margin-bottom: 2rem;
   padding-bottom: 1.2rem;
@@ -5855,7 +5854,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   margin: 0 0 1.1rem 0;
 }
 
-/* Category Tabs (5 Clean Pills on the page) */
+/* Category Tabs (5 Clean Pills on page) */
 .sf-gn-category-tabs {
   display: flex;
   gap: 0.5rem;
@@ -5894,11 +5893,15 @@ input[type=range]::-webkit-slider-thumb:hover {
   font-weight: 700;
 }
 
+.sf-gn-pill.pill-unterricht.active { background: #10b981; border-color: #10b981; }
+.sf-gn-pill.pill-themen.active { background: #f59e0b; border-color: #f59e0b; }
+.sf-gn-pill.pill-news.active { background: #0891b2; border-color: #0891b2; }
+
 /* ==========================================================================
-   ULTRA-CLEAN INLINE NOTE INSERTER (GOODNOTES SCHREIBBLOCK)
+   SEGMENTED CATEGORY BUTTONS & INSERTER
    ========================================================================== */
 .sf-clean-note-inserter {
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.9);
   border: 1.5px dashed rgba(124, 58, 237, 0.35);
   border-radius: 12px;
   padding: 1.3rem 1.6rem;
@@ -5930,9 +5933,6 @@ input[type=range]::-webkit-slider-thumb:hover {
   font-size: 0.96rem;
   font-weight: 700;
   color: #7c3aed;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
 }
 
 [data-theme="dark"] .sf-inserter-title {
@@ -5959,21 +5959,88 @@ input[type=range]::-webkit-slider-thumb:hover {
   color: #f1f5f9;
 }
 
-.sf-inserter-controls-row {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr;
-  gap: 0.85rem;
-  margin-bottom: 0.9rem;
+.sf-inserter-category-selector {
+  margin-bottom: 0.85rem;
 }
 
-.sf-inserter-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.sf-inserter-field label {
+.sf-field-hint {
   font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+/* Category Buttons Group */
+.sf-cat-buttons-group {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.sf-cat-btn {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  border-radius: 6px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+[data-theme="dark"] .sf-cat-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+}
+
+.sf-cat-btn:hover {
+  border-color: #7c3aed;
+  color: #7c3aed;
+}
+
+.btn-cat-unterricht.active {
+  background: #10b981;
+  color: #ffffff;
+  border-color: #10b981;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+}
+
+.btn-cat-ki.active {
+  background: #7c3aed;
+  color: #ffffff;
+  border-color: #7c3aed;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+}
+
+.btn-cat-themen.active {
+  background: #f59e0b;
+  color: #ffffff;
+  border-color: #f59e0b;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+}
+
+.btn-cat-news.active {
+  background: #0891b2;
+  color: #ffffff;
+  border-color: #0891b2;
+  box-shadow: 0 2px 8px rgba(8, 145, 178, 0.35);
+}
+
+.sf-inserter-subject-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.sf-inserter-subject-row label {
+  font-size: 0.74rem;
   font-weight: 700;
   color: #64748b;
   text-transform: uppercase;
@@ -5984,8 +6051,8 @@ input[type=range]::-webkit-slider-thumb:hover {
   background: rgba(255, 255, 255, 0.95);
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 6px;
-  padding: 0.45rem 0.7rem;
-  font-size: 0.84rem;
+  padding: 0.42rem 0.7rem;
+  font-size: 0.82rem;
   font-family: inherit;
   color: #1e293b;
   outline: none;
@@ -6124,7 +6191,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 
 /* ==========================================================================
-   TAGEBUCH-SEITEN / EINTRÄGE (EXAKT WIE IN GOODNOTES)
+   TAGEBUCH-SEITEN / EINTRÄGE (MIT KLARER FARBKANTE)
    ========================================================================== */
 .sf-gn-entries-list {
   display: flex;
@@ -6135,7 +6202,6 @@ input[type=range]::-webkit-slider-thumb:hover {
 .sf-gn-entry-sheet {
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-left: 4.5px solid #7c3aed;
   border-radius: 8px;
   padding: 1.5rem 1.8rem;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.03);
@@ -6146,9 +6212,14 @@ input[type=range]::-webkit-slider-thumb:hover {
 [data-theme="dark"] .sf-gn-entry-sheet {
   background: rgba(26, 29, 41, 0.75);
   border-color: rgba(255, 255, 255, 0.08);
-  border-left-color: #a78bfa;
   box-shadow: 0 3px 16px rgba(0, 0, 0, 0.25);
 }
+
+/* Farbkanten pro Kategorie */
+.entry-border-unterricht { border-left: 4.5px solid #10b981 !important; }
+.entry-border-ki { border-left: 4.5px solid #7c3aed !important; }
+.entry-border-themen { border-left: 4.5px solid #f59e0b !important; }
+.entry-border-news { border-left: 4.5px solid #0891b2 !important; }
 
 .sf-gn-entry-header {
   display: flex;
@@ -6230,7 +6301,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   gap: 0.5rem;
 }
 
-/* Handschriftliches Datums-Feeling oben rechts wie in Goodnotes */
+/* Handschriftliches Datums-Feeling oben rechts */
 .sf-gn-handwritten-date {
   font-size: 1.25rem;
   font-weight: 700;
@@ -6294,7 +6365,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 .sf-gn-entry-body {
   font-size: 1rem;
-  line-height: 32px; /* Perfect match to 32px notebook paper lines */
+  line-height: 32px;
   color: #1e293b;
   margin-bottom: 0.8rem;
 }
@@ -6329,6 +6400,232 @@ input[type=range]::-webkit-slider-thumb:hover {
   border: 1.5px dashed rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   color: var(--text-muted);
+}
+
+/* ==========================================================================
+   MODERN, CLEAN EDIT MODAL DIALOG
+   ========================================================================== */
+.sf-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.sf-modal-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  max-width: 620px;
+  width: 100%;
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  animation: sfModalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+[data-theme="dark"] .sf-modal-card {
+  background: #181d2a;
+  border-color: #2a3448;
+  box-shadow: 0 25px 60px -12px rgba(0, 0, 0, 0.7);
+}
+
+@keyframes sfModalPop {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.sf-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.6rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+[data-theme="dark"] .sf-modal-head {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.sf-modal-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin: 0;
+}
+
+[data-theme="dark"] .sf-modal-title {
+  color: #f8fafc;
+}
+
+.sf-modal-sub {
+  font-size: 0.76rem;
+  color: #64748b;
+  display: block;
+  margin-top: 0.15rem;
+}
+
+.sf-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  line-height: 1;
+  border-radius: 6px;
+}
+
+.sf-modal-close:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: #0f172a;
+}
+
+[data-theme="dark"] .sf-modal-close:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.sf-modal-body {
+  padding: 1.4rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+.sf-modal-section,
+.sf-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.sf-modal-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+[data-theme="dark"] .sf-modal-label {
+  color: #94a3b8;
+}
+
+.sf-modal-grid-2 {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 0.85rem;
+}
+
+.sf-modal-input,
+.sf-modal-select,
+.sf-modal-textarea {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.88rem;
+  font-family: inherit;
+  color: #0f172a;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+[data-theme="dark"] .sf-modal-input,
+[data-theme="dark"] .sf-modal-select,
+[data-theme="dark"] .sf-modal-textarea {
+  background: #131722;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #f1f5f9;
+}
+
+.sf-modal-input:focus,
+.sf-modal-select:focus,
+.sf-modal-textarea:focus {
+  border-color: #7c3aed;
+}
+
+.sf-modal-title-input {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.sf-modal-textarea {
+  resize: vertical;
+  min-height: 140px;
+  line-height: 1.55;
+}
+
+.sf-modal-foot {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 1rem 1.6rem;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+[data-theme="dark"] .sf-modal-foot {
+  background: rgba(0, 0, 0, 0.2);
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+.sf-btn-modal-cancel {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+[data-theme="dark"] .sf-btn-modal-cancel {
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #94a3b8;
+}
+
+.sf-btn-modal-cancel:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #0f172a;
+}
+
+[data-theme="dark"] .sf-btn-modal-cancel:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.sf-btn-modal-save {
+  background: #7c3aed;
+  border: none;
+  border-radius: 6px;
+  padding: 0.52rem 1.2rem;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.sf-btn-modal-save:hover {
+  background: #6d28d9;
+  transform: translateY(-1px);
 }
 
 /* ==========================================================================
@@ -6378,7 +6675,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   .sf-book-red-margin {
     display: none;
   }
-  .sf-inserter-controls-row {
+  .sf-modal-grid-2 {
     grid-template-columns: 1fr;
   }
   .sf-gn-details-grid {
@@ -6412,6 +6709,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   #view-kalender,
   #view-stundenplan,
   .portal-modal-backdrop,
+  .sf-modal-overlay,
   .sf-toast {
     display: none !important;
   }
