@@ -564,36 +564,63 @@ function renderTableOfContentsHtml() {
       <div class="sf-clean-toc-top">
         <div class="sf-clean-toc-title-group">
           <h2>Inhaltsverzeichnis</h2>
-          <span class="sf-clean-toc-sub">Übersicht aller Aufzeichnungen nach Rubriken &bull; Klicke auf eine Zeile, um direkt dorthin zu springen</span>
+          <span class="sf-clean-toc-sub">Wähle eine Rubrik zum Filtern oder klicke direkt auf eine Zeile, um zur Notiz zu springen</span>
         </div>
         <div class="sf-clean-toc-counter-badge">
           ${countAll} Notizen
         </div>
       </div>
 
-      <!-- 2-Column Clean Editorial Grid -->
-      <div class="sf-clean-toc-grid">
+      <!-- 4 Clickable Category Cards at Top -->
+      <div class="sf-toc-cat-nav">
+  `;
+
+  SF_CATEGORIES.forEach((cat) => {
+    const catEntries = entries.filter(e => e.category === cat.key);
+    html += `
+      <div class="sf-toc-cat-nav-btn nav-${cat.key}" onclick="switchSfTab('${cat.key}')" title="Nur ${cat.name} anzeigen">
+        <div class="sf-toc-nav-top">
+          <span class="sf-toc-nav-name">${cat.name}</span>
+          <span class="sf-toc-nav-count">${catEntries.length}</span>
+        </div>
+        <div class="sf-toc-nav-sub">${cat.fullName}</div>
+        <div class="sf-toc-nav-link">Rubrik öffnen &rarr;</div>
+      </div>
+    `;
+  });
+
+  html += `
+      </div>
+
+      <!-- Full-Width Category Sections -->
+      <div class="sf-toc-full-list">
   `;
 
   SF_CATEGORIES.forEach((cat) => {
     const catEntries = entries.filter(e => e.category === cat.key);
 
     html += `
-      <div class="sf-clean-toc-section sec-${cat.key}">
-        <div class="sf-clean-toc-sec-head">
-          <div class="sf-clean-sec-title-wrap">
-            <span class="sf-clean-toc-dot dot-${cat.key}"></span>
-            <span class="sf-clean-toc-sec-name">${cat.name}</span>
+      <div class="sf-toc-full-section sec-${cat.key}">
+        
+        <!-- Clickable Category Header Banner -->
+        <div class="sf-toc-full-header head-${cat.key}" onclick="switchSfTab('${cat.key}')" title="Klicken, um Rubrik '${cat.name}' zu öffnen">
+          <div class="sf-toc-head-left">
+            <span class="sf-toc-head-dot dot-${cat.key}"></span>
+            <span class="sf-toc-head-title">${cat.name}</span>
+            <span class="sf-toc-head-desc">&bull; ${cat.desc}</span>
           </div>
-          <span class="sf-clean-toc-sec-count">${catEntries.length} ${catEntries.length === 1 ? 'Notiz' : 'Notizen'}</span>
+          <div class="sf-toc-head-right">
+            <span class="sf-toc-head-count">${catEntries.length} ${catEntries.length === 1 ? 'Notiz' : 'Notizen'}</span>
+            <span class="sf-toc-head-btn">Rubrik anzeigen &rarr;</span>
+          </div>
         </div>
 
-        <div class="sf-clean-toc-rows">
+        <div class="sf-toc-full-rows">
     `;
 
     if (catEntries.length === 0) {
       html += `
-        <div class="sf-clean-toc-empty">
+        <div class="sf-toc-full-empty">
           Noch keine Notizen in dieser Rubrik erfasst.
         </div>
       `;
@@ -603,13 +630,13 @@ function renderTableOfContentsHtml() {
         const numStr = String(idx + 1).padStart(2, '0');
 
         html += `
-          <a href="#entry-${e.id}" class="sf-clean-toc-row" onclick="jumpToEntry('${e.id}', event)" title="Zur Notiz springen">
-            <span class="sf-clean-row-num">${numStr}</span>
-            <span class="sf-clean-row-subj" style="color: ${subj.color}; background: ${subj.color}15;">${subj.short}</span>
-            <span class="sf-clean-row-title">${escapeHtml(e.title)}</span>
-            <span class="sf-clean-row-dots"></span>
-            <span class="sf-clean-row-date">${escapeHtml(e.date)}</span>
-            <span class="sf-clean-row-arrow">&rarr;</span>
+          <a href="#entry-${e.id}" class="sf-toc-full-row" onclick="jumpToEntry('${e.id}', event)" title="Zur Notiz springen">
+            <span class="sf-toc-row-num">${numStr}</span>
+            <span class="sf-toc-row-subj" style="color: ${subj.color}; background: ${subj.color}15;">${subj.short}</span>
+            <span class="sf-toc-row-title">${escapeHtml(e.title)}</span>
+            <span class="sf-toc-row-dots"></span>
+            <span class="sf-toc-row-date">${escapeHtml(e.date)}</span>
+            <span class="sf-toc-row-arrow">&rarr;</span>
           </a>
         `;
       });
