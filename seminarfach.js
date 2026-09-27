@@ -559,39 +559,6 @@ function renderTableOfContentsHtml() {
 
   let html = `
     <div class="sf-clean-toc-wrap">
-      
-      <!-- Clean Minimalist Header -->
-      <div class="sf-clean-toc-top">
-        <div class="sf-clean-toc-title-group">
-          <h2>Inhaltsverzeichnis</h2>
-          <span class="sf-clean-toc-sub">Wähle eine Rubrik zum Filtern oder klicke direkt auf eine Zeile, um zur Notiz zu springen</span>
-        </div>
-        <div class="sf-clean-toc-counter-badge">
-          ${countAll} Notizen
-        </div>
-      </div>
-
-      <!-- 4 Clickable Category Cards at Top -->
-      <div class="sf-toc-cat-nav">
-  `;
-
-  SF_CATEGORIES.forEach((cat) => {
-    const catEntries = entries.filter(e => e.category === cat.key);
-    html += `
-      <div class="sf-toc-cat-nav-btn nav-${cat.key}" onclick="switchSfTab('${cat.key}')" title="Nur ${cat.name} anzeigen">
-        <div class="sf-toc-nav-top">
-          <span class="sf-toc-nav-name">${cat.name}</span>
-          <span class="sf-toc-nav-count">${catEntries.length}</span>
-        </div>
-        <div class="sf-toc-nav-sub">${cat.fullName}</div>
-        <div class="sf-toc-nav-link">Rubrik öffnen &rarr;</div>
-      </div>
-    `;
-  });
-
-  html += `
-      </div>
-
       <!-- Full-Width Category Sections -->
       <div class="sf-toc-full-list">
   `;
