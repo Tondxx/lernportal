@@ -17,6 +17,59 @@ const SF_SUBJECT_OPTIONS = [
   { code: 'allg', name: 'Allgemein / Freie Notiz', short: 'Allgemein', color: '#64748b' }
 ];
 
+
+// --- 1.1 KATEGORIEN-DEFINITIONEN & AKZENTE ---
+const SF_CATEGORIES = [
+  {
+    key: 'unterricht',
+    name: 'Unterricht',
+    fullName: 'Was in den Stunden stattgefunden hat',
+    desc: 'Mitschriften zum Unterricht bei Herrn Jatzeck, Y-Lab & Arbeitsaufträge',
+    badgeClass: 'badge-unterricht',
+    headClass: 'head-unterricht',
+    bannerClass: 'cat-unterricht',
+    dotClass: 'dot-unterricht',
+    pillClass: 'pill-unterricht',
+    color: '#10b981'
+  },
+  {
+    key: 'ki',
+    name: 'KI-Nutzung',
+    fullName: 'Wie ich aktuell KI nutze',
+    desc: 'Eigene Erfahrungen beim Lernen mit KI & persönliche Gedanken',
+    badgeClass: 'badge-ki',
+    headClass: 'head-ki',
+    bannerClass: 'cat-ki',
+    dotClass: 'dot-ki',
+    pillClass: 'pill-ki',
+    color: '#7c3aed'
+  },
+  {
+    key: 'themen',
+    name: 'Themenfindung',
+    fullName: 'Themenfindung für die Seminararbeit',
+    desc: 'Ideen für die Facharbeit, Kriterien & Literatursuche an der SUB Göttingen',
+    badgeClass: 'badge-themen',
+    headClass: 'head-themen',
+    bannerClass: 'cat-themen',
+    dotClass: 'dot-themen',
+    pillClass: 'pill-themen',
+    color: '#f59e0b'
+  },
+  {
+    key: 'news',
+    name: 'KI-News',
+    fullName: 'KI-News & Entwicklungen',
+    desc: 'Aktuelle Modelle (z. B. o1), Richtlinien an Schulen & Praxistests',
+    badgeClass: 'badge-news',
+    headClass: 'head-news',
+    bannerClass: 'cat-news',
+    dotClass: 'dot-news',
+    pillClass: 'pill-news',
+    color: '#0891b2'
+  }
+];
+
 // --- 2. TONDAS TAGEBUCH-EINTRÄGE (KLAR, PERSÖNLICH & REFLEKTIERT) ---
 const DEFAULT_SF_JOURNAL = [
   {
@@ -97,7 +150,7 @@ const DEFAULT_SF_JOURNAL = [
 const SF_STORAGE_KEY = 'tonda_sf_diary_entries_v5';
 
 // State
-let currentSfTab = 'alle'; // 'alle' | 'unterricht' | 'ki' | 'themen' | 'news'
+let currentSfTab = 'inhalt'; // 'inhalt' | 'alle' | 'unterricht' | 'ki' | 'themen' | 'news'
 
 // --- HELPER FUNCTIONS ---
 function getSfJournalEntries() {
@@ -247,8 +300,11 @@ function renderSeminarfachView() {
               <h1 class="sf-gn-main-title">${getPageTitleForTab(currentSfTab)}</h1>
               <p class="sf-gn-sub-title">Persönliche Aufzeichnungen, Unterrichtsverlauf und Gedanken zum KI-Lernen</p>
 
-              <!-- 5-Pill Category Bar on the page (Farblich klar getrennt) -->
+              <!-- 6-Pill Category Bar on the page -->
               <div class="sf-gn-category-tabs">
+                <button class="sf-gn-pill pill-inhalt ${currentSfTab === 'inhalt' ? 'active' : ''}" onclick="switchSfTab('inhalt')">
+                  Inhaltsverzeichnis
+                </button>
                 <button class="sf-gn-pill ${currentSfTab === 'alle' ? 'active' : ''}" onclick="switchSfTab('alle')">
                   Alle Notizen (${countAll})
                 </button>
@@ -267,8 +323,8 @@ function renderSeminarfachView() {
               </div>
             </div>
 
-            <!-- CLEAN INLINE NOTE INSERTER -->
-            ${renderCleanNoteInserterHtml()}
+            <!-- CLEAN INLINE NOTE INSERTER (auf Inhaltsverzeichnis ausgeblendet) -->
+            ${currentSfTab === 'inhalt' ? '' : renderCleanNoteInserterHtml()}
 
             <!-- ENTRIES CONTAINER -->
             <div id="sfEntriesContainer" class="sf-gn-entries-list">
@@ -279,8 +335,12 @@ function renderSeminarfachView() {
 
         </div>
 
-        <!-- 5 Register-Reiter am rechten Buchrand (Farblich codiert & sauber) -->
+        <!-- 6 Register-Reiter am rechten Buchrand -->
         <div class="sf-book-index-tabs">
+          <button class="sf-index-tab tab-inhalt ${currentSfTab === 'inhalt' ? 'active' : ''}" onclick="switchSfTab('inhalt')" title="Inhaltsverzeichnis">
+            <span class="tab-text">Inhalt</span>
+            <span class="tab-badge">${countAll}</span>
+          </button>
           <button class="sf-index-tab tab-alle ${currentSfTab === 'alle' ? 'active' : ''}" onclick="switchSfTab('alle')" title="Alle Notizen">
             <span class="tab-text">Alle</span>
             <span class="tab-badge">${countAll}</span>
@@ -309,16 +369,25 @@ function renderSeminarfachView() {
 }
 
 function getPageTitleForTab(tab) {
+  if (tab === 'inhalt') return 'Inhaltsverzeichnis & Übersicht';
   if (tab === 'unterricht') return 'Was in den Stunden stattgefunden hat';
   if (tab === 'ki') return 'Wie ich aktuell KI nutze & Gedanken dazu';
   if (tab === 'themen') return 'Themenfindung & Ideen für die Seminararbeit';
   if (tab === 'news') return 'KI-News & Entwicklungen';
-  return 'Mein Tagebuch & Schul-Notizen';
+  return 'Mein Tagebuch & Notizen';
 }
 
 function switchSfTab(tab) {
   currentSfTab = tab;
   renderSeminarfachView();
+}
+
+function getCategoryGuidanceText(cat) {
+  if (cat === 'unterricht') return 'Mitschriften zu Unterrichtsstunden bei Herrn Jatzeck, Y-Lab & Arbeitsaufträgen';
+  if (cat === 'ki') return 'Wie ich KI beim Lernen einsetze & persönliche Beobachtungen dazu';
+  if (cat === 'themen') return 'Ideen für die Seminararbeit, Kriterien & Literatursuche an der SUB Göttingen';
+  if (cat === 'news') return 'Aktuelle Modelle (z. B. OpenAI o1), Richtlinien an Schulen & Tests';
+  return 'Wähle eine Rubrik für deinen Eintrag';
 }
 
 // --- 4. CLEAN INLINE NOTE INSERTER ---
@@ -356,6 +425,7 @@ function renderCleanNoteInserterHtml() {
           </button>
         </div>
         <input type="hidden" id="sfInlineCategory" value="${activeCat}">
+        <div class="sf-inserter-cat-desc" id="sfInserterCatDesc">${getCategoryGuidanceText(activeCat)}</div>
       </div>
 
       <div class="sf-inserter-subject-row">
@@ -409,6 +479,9 @@ function setInserterCategory(cat) {
   document.querySelectorAll('.sf-cat-btn').forEach(btn => btn.classList.remove('active'));
   const activeBtn = document.querySelector(`.btn-cat-${cat}`);
   if (activeBtn) activeBtn.classList.add('active');
+
+  const descEl = document.getElementById('sfInserterCatDesc');
+  if (descEl) descEl.textContent = getCategoryGuidanceText(cat);
 }
 
 // --- 5. NOTE SAVING & MANAGEMENT ---
@@ -463,6 +536,10 @@ function saveSfInlineNote() {
 }
 
 function focusSfCleanInserter() {
+  if (currentSfTab === 'inhalt') {
+    currentSfTab = 'unterricht';
+    renderSeminarfachView();
+  }
   const el = document.getElementById('sfCleanInserter');
   if (el) {
     el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -471,68 +548,239 @@ function focusSfCleanInserter() {
   }
 }
 
-// --- 6. RENDER ENTRIES (KLAR KATEGORISIERT MIT FARBKANTE) ---
-function renderFilteredEntriesHtml() {
-  const allEntries = getSfJournalEntries();
-  
-  let filtered = allEntries;
-  if (currentSfTab !== 'alle') {
-    filtered = allEntries.filter(e => e.category === currentSfTab);
-  }
+// --- 6. INHALTSVERZEICHNIS & ENTRY RENDERING ---
 
-  if (filtered.length === 0) {
-    return `
-      <div class="sf-gn-empty">
-        <p>In dieser Kategorie sind noch keine Notizen vorhanden.</p>
-        <button class="sf-btn-gn-save" onclick="focusSfCleanInserter()">Erste Notiz schreiben</button>
+function renderTableOfContentsHtml() {
+  const entries = getSfJournalEntries();
+  const countAll = entries.length;
+  const countUnterricht = entries.filter(e => e.category === 'unterricht').length;
+  const countKi = entries.filter(e => e.category === 'ki').length;
+  const countThemen = entries.filter(e => e.category === 'themen').length;
+  const countNews = entries.filter(e => e.category === 'news').length;
+
+  let html = `
+    <div class="sf-toc-container">
+      
+      <!-- TOC Hero Card -->
+      <div class="sf-toc-hero">
+        <div class="sf-toc-hero-left">
+          <h2>Inhaltsverzeichnis des Tagebuchs</h2>
+          <p>Systematische Gliederung in 4 Rubriken &bull; Klicke auf eine Zeile, um direkt zur Notiz zu springen</p>
+        </div>
+        <div class="sf-toc-stats-bar">
+          <span class="sf-toc-stat-pill" onclick="switchSfTab('unterricht')" style="cursor: pointer;" title="Nur Stunden anzeigen">
+            <span class="dot dot-unterricht"></span> ${countUnterricht} Stunden
+          </span>
+          <span class="sf-toc-stat-pill" onclick="switchSfTab('ki')" style="cursor: pointer;" title="Nur KI-Nutzung anzeigen">
+            <span class="dot dot-ki"></span> ${countKi} KI-Nutzung
+          </span>
+          <span class="sf-toc-stat-pill" onclick="switchSfTab('themen')" style="cursor: pointer;" title="Nur Themenfindung anzeigen">
+            <span class="dot dot-themen"></span> ${countThemen} Themenfindung
+          </span>
+          <span class="sf-toc-stat-pill" onclick="switchSfTab('news')" style="cursor: pointer;" title="Nur KI-News anzeigen">
+            <span class="dot dot-news"></span> ${countNews} KI-News
+          </span>
+        </div>
+      </div>
+
+      <!-- Categories Cards Grid -->
+      <div class="sf-toc-grid">
+  `;
+
+  SF_CATEGORIES.forEach((cat, catIdx) => {
+    const catEntries = entries.filter(e => e.category === cat.key);
+    
+    html += `
+      <div class="sf-toc-cat-card">
+        <div class="sf-toc-cat-header ${cat.headClass}">
+          <div class="sf-toc-cat-title-wrap">
+            <span class="sf-toc-cat-badge ${cat.badgeClass}">0${catIdx + 1} &bull; ${cat.name}</span>
+            <span class="sf-toc-cat-desc">${cat.fullName}</span>
+          </div>
+          <span class="sf-toc-cat-counter">${catEntries.length} ${catEntries.length === 1 ? 'Notiz' : 'Notizen'}</span>
+        </div>
+        
+        <div class="sf-toc-items-list">
+    `;
+
+    if (catEntries.length === 0) {
+      html += `
+        <div style="padding: 1.2rem; color: var(--text-muted); font-size: 0.85rem; text-align: center;">
+          Noch keine Notizen in dieser Rubrik erfasst.
+        </div>
+      `;
+    } else {
+      catEntries.forEach((e, idx) => {
+        const subj = SF_SUBJECT_OPTIONS.find(s => s.code === e.subjectCode) || SF_SUBJECT_OPTIONS[0];
+        const numStr = String(idx + 1).padStart(2, '0');
+
+        html += `
+          <div class="sf-toc-item-row" onclick="jumpToEntry('${e.id}')" title="Zu dieser Notiz springen">
+            <span class="sf-toc-num">${numStr}</span>
+            <span class="sf-toc-entry-subj" style="color: ${subj.color}; background: ${subj.color}15; border: 1px solid ${subj.color}35;">${subj.short}</span>
+            <span class="sf-toc-entry-title">${escapeHtml(e.title)}</span>
+            <span class="sf-toc-dots"></span>
+            <span class="sf-toc-entry-date">${escapeHtml(e.date)}</span>
+            <span class="sf-toc-jump-arrow">&rarr;</span>
+          </div>
+        `;
+      });
+    }
+
+    html += `
+        </div>
       </div>
     `;
+  });
+
+  html += `
+      </div>
+    </div>
+  `;
+
+  return html;
+}
+
+function renderSingleEntrySheetHtml(e) {
+  const subj = SF_SUBJECT_OPTIONS.find(s => s.code === e.subjectCode) || SF_SUBJECT_OPTIONS[0];
+
+  return `
+    <article class="sf-gn-entry-sheet entry-border-${e.category || 'unterricht'}" id="entry-${e.id}">
+      
+      <!-- Top Metadata Row -->
+      <div class="sf-gn-entry-header">
+        <div class="sf-gn-entry-badges">
+          <span class="sf-gn-cat-pill sf-cat-${e.category || 'unterricht'}">
+            ${escapeHtml(e.categoryName || 'Unterricht')}
+          </span>
+          <span class="sf-gn-subj-pill" style="color: ${subj.color}; background: ${subj.color}15; border: 1px solid ${subj.color}35;">
+            ${subj.short}
+          </span>
+        </div>
+        
+        <div class="sf-gn-entry-right">
+          <!-- Handwritten-style Date Stamp -->
+          <span class="sf-gn-handwritten-date">${escapeHtml(e.date)}</span>
+          <button class="sf-gn-btn-action" onclick="openSfEditEntryModal('${e.id}')" title="Notiz bearbeiten">Bearbeiten</button>
+          <button class="sf-gn-btn-action sf-btn-danger" onclick="deleteSfEntry('${e.id}')" title="Notiz löschen">Löschen</button>
+        </div>
+      </div>
+
+      <!-- Clean Title -->
+      <h2 class="sf-gn-entry-title">${escapeHtml(e.title)}</h2>
+
+      <!-- Clean Content Text matching Notebook lines -->
+      <div class="sf-gn-entry-body">
+        ${formatNotebookText(e.content)}
+      </div>
+
+      <!-- Optional Science / Prompt Info if present -->
+      ${(e.prompt || e.model) ? `
+        <div class="sf-gn-entry-footer-meta">
+          ${e.model ? `<span>Modell: <strong>${escapeHtml(e.model)}</strong></span>` : ''}
+          ${e.prompt ? `<span>Prompt: <em>„${escapeHtml(e.prompt)}“</em></span>` : ''}
+        </div>
+      ` : ''}
+
+    </article>
+  `;
+}
+
+function renderFilteredEntriesHtml() {
+  if (currentSfTab === 'inhalt') {
+    return renderTableOfContentsHtml();
   }
 
-  return filtered.map(e => {
-    const subj = SF_SUBJECT_OPTIONS.find(s => s.code === e.subjectCode) || SF_SUBJECT_OPTIONS[0];
-
-    return `
-      <article class="sf-gn-entry-sheet entry-border-${e.category || 'unterricht'}" id="entry-${e.id}">
-        
-        <!-- Top Metadata Row -->
-        <div class="sf-gn-entry-header">
-          <div class="sf-gn-entry-badges">
-            <span class="sf-gn-cat-pill sf-cat-${e.category || 'unterricht'}">
-              ${escapeHtml(e.categoryName || 'Unterricht')}
-            </span>
-            <span class="sf-gn-subj-pill" style="color: ${subj.color}; background: ${subj.color}15; border: 1px solid ${subj.color}35;">
-              ${subj.short}
-            </span>
-          </div>
-          
-          <div class="sf-gn-entry-right">
-            <!-- Handwritten-style Date Stamp -->
-            <span class="sf-gn-handwritten-date">${escapeHtml(e.date)}</span>
-            <button class="sf-gn-btn-action" onclick="openSfEditEntryModal('${e.id}')" title="Notiz bearbeiten">Bearbeiten</button>
-            <button class="sf-gn-btn-action sf-btn-danger" onclick="deleteSfEntry('${e.id}')" title="Notiz löschen">Löschen</button>
-          </div>
+  const allEntries = getSfJournalEntries();
+  
+  // Specific single category view
+  if (currentSfTab !== 'alle') {
+    const filtered = allEntries.filter(e => e.category === currentSfTab);
+    if (filtered.length === 0) {
+      return `
+        <div class="sf-gn-empty">
+          <p>In dieser Kategorie sind noch keine Notizen vorhanden.</p>
+          <button class="sf-btn-gn-save" onclick="focusSfCleanInserter()">Erste Notiz schreiben</button>
         </div>
+      `;
+    }
+    return filtered.map(renderSingleEntrySheetHtml).join('');
+  }
 
-        <!-- Clean Title -->
-        <h2 class="sf-gn-entry-title">${escapeHtml(e.title)}</h2>
+  // 'alle' View: Grouped by category with Quick Jump Bar
+  const countUnterricht = allEntries.filter(e => e.category === 'unterricht').length;
+  const countKi = allEntries.filter(e => e.category === 'ki').length;
+  const countThemen = allEntries.filter(e => e.category === 'themen').length;
+  const countNews = allEntries.filter(e => e.category === 'news').length;
 
-        <!-- Clean Content Text matching Notebook lines -->
-        <div class="sf-gn-entry-body">
-          ${formatNotebookText(e.content)}
+  let html = `
+    <!-- Quick Table of Contents Jump Bar -->
+    <div class="sf-toc-quicknav">
+      <span class="sf-toc-quicknav-label">Inhaltsverzeichnis:</span>
+      <button type="button" class="sf-quicknav-chip" onclick="scrollToSfCategory('unterricht')">
+        <span class="dot dot-unterricht"></span> Unterricht (${countUnterricht}) &darr;
+      </button>
+      <button type="button" class="sf-quicknav-chip" onclick="scrollToSfCategory('ki')">
+        <span class="dot dot-ki"></span> KI-Nutzung (${countKi}) &darr;
+      </button>
+      <button type="button" class="sf-quicknav-chip" onclick="scrollToSfCategory('themen')">
+        <span class="dot dot-themen"></span> Themenfindung (${countThemen}) &darr;
+      </button>
+      <button type="button" class="sf-quicknav-chip" onclick="scrollToSfCategory('news')">
+        <span class="dot dot-news"></span> KI-News (${countNews}) &darr;
+      </button>
+      <button type="button" class="sf-quicknav-chip chip-toc-link" onclick="switchSfTab('inhalt')">
+        Gesamtübersicht öffnen &rarr;
+      </button>
+    </div>
+  `;
+
+  // Render each category group with distinct Section Banner
+  SF_CATEGORIES.forEach((cat) => {
+    const groupEntries = allEntries.filter(e => e.category === cat.key);
+    if (groupEntries.length === 0) return;
+
+    html += `
+      <div class="sf-category-section-banner ${cat.bannerClass}" id="cat-section-${cat.key}">
+        <div class="sf-cat-banner-left">
+          <span class="sf-toc-cat-badge ${cat.badgeClass}">${cat.name}</span>
+          <span class="sf-cat-banner-title">${cat.fullName}</span>
+          <span class="sf-cat-banner-sub">&bull; ${cat.desc}</span>
         </div>
-
-        <!-- Optional Science / Prompt Info if present -->
-        ${(e.prompt || e.model) ? `
-          <div class="sf-gn-entry-footer-meta">
-            ${e.model ? `<span>Modell: <strong>${escapeHtml(e.model)}</strong></span>` : ''}
-            ${e.prompt ? `<span>Prompt: <em>„${escapeHtml(e.prompt)}“</em></span>` : ''}
-          </div>
-        ` : ''}
-
-      </article>
+        <span class="sf-cat-banner-count">${groupEntries.length} ${groupEntries.length === 1 ? 'Notiz' : 'Notizen'}</span>
+      </div>
     `;
-  }).join('');
+
+    html += groupEntries.map(renderSingleEntrySheetHtml).join('');
+  });
+
+  return html;
+}
+
+function jumpToEntry(id) {
+  if (currentSfTab === 'inhalt') {
+    currentSfTab = 'alle';
+    renderSeminarfachView();
+  }
+  setTimeout(() => {
+    const el = document.getElementById('entry-' + id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.remove('sf-entry-highlighted');
+      void el.offsetWidth;
+      el.classList.add('sf-entry-highlighted');
+      setTimeout(() => el.classList.remove('sf-entry-highlighted'), 2400);
+    }
+  }, 120);
+}
+
+function scrollToSfCategory(cat) {
+  const el = document.getElementById('cat-section-' + cat);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } else {
+    switchSfTab(cat);
+  }
 }
 
 function formatNotebookText(text) {
