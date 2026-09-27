@@ -365,6 +365,9 @@ function renderSeminarfachView() {
 
       </div>
     </div>
+
+    <!-- DEDICATED PRINT DOCUMENT FOR CLICKABLE PDF EXPORT -->
+    ${renderPrintDocumentHtml(entries)}
   `;
 }
 
@@ -553,59 +556,44 @@ function focusSfCleanInserter() {
 function renderTableOfContentsHtml() {
   const entries = getSfJournalEntries();
   const countAll = entries.length;
-  const countUnterricht = entries.filter(e => e.category === 'unterricht').length;
-  const countKi = entries.filter(e => e.category === 'ki').length;
-  const countThemen = entries.filter(e => e.category === 'themen').length;
-  const countNews = entries.filter(e => e.category === 'news').length;
 
   let html = `
-    <div class="sf-toc-container">
+    <div class="sf-clean-toc-wrap">
       
-      <!-- TOC Hero Card -->
-      <div class="sf-toc-hero">
-        <div class="sf-toc-hero-left">
-          <h2>Inhaltsverzeichnis des Tagebuchs</h2>
-          <p>Systematische Gliederung in 4 Rubriken &bull; Klicke auf eine Zeile, um direkt zur Notiz zu springen</p>
+      <!-- Clean Minimalist Header -->
+      <div class="sf-clean-toc-top">
+        <div class="sf-clean-toc-title-group">
+          <h2>Inhaltsverzeichnis</h2>
+          <span class="sf-clean-toc-sub">Übersicht aller Aufzeichnungen nach Rubriken &bull; Klicke auf eine Zeile, um direkt dorthin zu springen</span>
         </div>
-        <div class="sf-toc-stats-bar">
-          <span class="sf-toc-stat-pill" onclick="switchSfTab('unterricht')" style="cursor: pointer;" title="Nur Stunden anzeigen">
-            <span class="dot dot-unterricht"></span> ${countUnterricht} Stunden
-          </span>
-          <span class="sf-toc-stat-pill" onclick="switchSfTab('ki')" style="cursor: pointer;" title="Nur KI-Nutzung anzeigen">
-            <span class="dot dot-ki"></span> ${countKi} KI-Nutzung
-          </span>
-          <span class="sf-toc-stat-pill" onclick="switchSfTab('themen')" style="cursor: pointer;" title="Nur Themenfindung anzeigen">
-            <span class="dot dot-themen"></span> ${countThemen} Themenfindung
-          </span>
-          <span class="sf-toc-stat-pill" onclick="switchSfTab('news')" style="cursor: pointer;" title="Nur KI-News anzeigen">
-            <span class="dot dot-news"></span> ${countNews} KI-News
-          </span>
+        <div class="sf-clean-toc-counter-badge">
+          ${countAll} Notizen
         </div>
       </div>
 
-      <!-- Categories Cards Grid -->
-      <div class="sf-toc-grid">
+      <!-- 2-Column Clean Editorial Grid -->
+      <div class="sf-clean-toc-grid">
   `;
 
-  SF_CATEGORIES.forEach((cat, catIdx) => {
+  SF_CATEGORIES.forEach((cat) => {
     const catEntries = entries.filter(e => e.category === cat.key);
-    
+
     html += `
-      <div class="sf-toc-cat-card">
-        <div class="sf-toc-cat-header ${cat.headClass}">
-          <div class="sf-toc-cat-title-wrap">
-            <span class="sf-toc-cat-badge ${cat.badgeClass}">0${catIdx + 1} &bull; ${cat.name}</span>
-            <span class="sf-toc-cat-desc">${cat.fullName}</span>
+      <div class="sf-clean-toc-section sec-${cat.key}">
+        <div class="sf-clean-toc-sec-head">
+          <div class="sf-clean-sec-title-wrap">
+            <span class="sf-clean-toc-dot dot-${cat.key}"></span>
+            <span class="sf-clean-toc-sec-name">${cat.name}</span>
           </div>
-          <span class="sf-toc-cat-counter">${catEntries.length} ${catEntries.length === 1 ? 'Notiz' : 'Notizen'}</span>
+          <span class="sf-clean-toc-sec-count">${catEntries.length} ${catEntries.length === 1 ? 'Notiz' : 'Notizen'}</span>
         </div>
-        
-        <div class="sf-toc-items-list">
+
+        <div class="sf-clean-toc-rows">
     `;
 
     if (catEntries.length === 0) {
       html += `
-        <div style="padding: 1.2rem; color: var(--text-muted); font-size: 0.85rem; text-align: center;">
+        <div class="sf-clean-toc-empty">
           Noch keine Notizen in dieser Rubrik erfasst.
         </div>
       `;
@@ -615,14 +603,14 @@ function renderTableOfContentsHtml() {
         const numStr = String(idx + 1).padStart(2, '0');
 
         html += `
-          <div class="sf-toc-item-row" onclick="jumpToEntry('${e.id}')" title="Zu dieser Notiz springen">
-            <span class="sf-toc-num">${numStr}</span>
-            <span class="sf-toc-entry-subj" style="color: ${subj.color}; background: ${subj.color}15; border: 1px solid ${subj.color}35;">${subj.short}</span>
-            <span class="sf-toc-entry-title">${escapeHtml(e.title)}</span>
-            <span class="sf-toc-dots"></span>
-            <span class="sf-toc-entry-date">${escapeHtml(e.date)}</span>
-            <span class="sf-toc-jump-arrow">&rarr;</span>
-          </div>
+          <a href="#entry-${e.id}" class="sf-clean-toc-row" onclick="jumpToEntry('${e.id}', event)" title="Zur Notiz springen">
+            <span class="sf-clean-row-num">${numStr}</span>
+            <span class="sf-clean-row-subj" style="color: ${subj.color}; background: ${subj.color}15;">${subj.short}</span>
+            <span class="sf-clean-row-title">${escapeHtml(e.title)}</span>
+            <span class="sf-clean-row-dots"></span>
+            <span class="sf-clean-row-date">${escapeHtml(e.date)}</span>
+            <span class="sf-clean-row-arrow">&rarr;</span>
+          </a>
         `;
       });
     }
@@ -757,7 +745,10 @@ function renderFilteredEntriesHtml() {
   return html;
 }
 
-function jumpToEntry(id) {
+function jumpToEntry(id, event) {
+  if (event) {
+    event.preventDefault();
+  }
   if (currentSfTab === 'inhalt') {
     currentSfTab = 'alle';
     renderSeminarfachView();
@@ -951,6 +942,107 @@ function saveEditedEntry() {
   closeSfEditModal();
   showSfToast("Änderungen gespeichert");
   renderSeminarfachView();
+}
+
+
+function renderPrintDocumentHtml(entries) {
+  let html = `
+    <!-- DEDICATED PRINT DOCUMENT FOR ISERV / A4 PDF EXPORT -->
+    <div class="sf-print-document">
+      
+      <!-- Page 1: Official Header & Clickable Table of Contents -->
+      <div class="sf-print-cover-page">
+        <div class="sf-print-school-header">
+          <div class="sf-print-school-left">
+            <h1>IGS Göttingen &bull; Gymnasiale Oberstufe</h1>
+            <p>Seminarfach 4: Künstliche Intelligenz &bull; Kursleiter: Herr Jatzeck &bull; Abitur 2028</p>
+          </div>
+          <div class="sf-print-school-meta">
+            <strong>Tonda Beutler</strong><br>
+            Digitales Prozessjournal &bull; Stand: ${getTodayGermanShortDate()}
+          </div>
+        </div>
+
+        <div class="sf-print-toc-title">Inhaltsverzeichnis</div>
+        <div class="sf-print-toc-sub">Interaktives Inhaltsverzeichnis: Klicke auf einen Eintrag, um direkt zur entsprechenden Notiz im Dokument zu springen.</div>
+
+        <div class="sf-print-toc-grid">
+  `;
+
+  SF_CATEGORIES.forEach((cat) => {
+    const catEntries = entries.filter(e => e.category === cat.key);
+
+    html += `
+      <div class="sf-print-toc-cat cat-${cat.key}">
+        <div class="sf-print-toc-cat-title">
+          <span>${cat.name}</span>
+          <span>${catEntries.length} ${catEntries.length === 1 ? 'Eintrag' : 'Einträge'}</span>
+        </div>
+    `;
+
+    catEntries.forEach((e, idx) => {
+      const numStr = String(idx + 1).padStart(2, '0');
+      html += `
+        <a href="#print-entry-${e.id}" class="sf-print-toc-row">
+          <span class="sf-print-toc-num">${numStr}</span>
+          <span class="sf-print-toc-row-title">${escapeHtml(e.title)}</span>
+          <span class="sf-print-toc-dots"></span>
+          <span class="sf-print-toc-date">${escapeHtml(e.date)}</span>
+        </a>
+      `;
+    });
+
+    html += `
+      </div>
+    `;
+  });
+
+  html += `
+        </div>
+      </div>
+
+      <!-- Pages 2+: Full Entries with Target Anchors -->
+      <div class="sf-print-entries-container">
+  `;
+
+  SF_CATEGORIES.forEach((cat) => {
+    const groupEntries = entries.filter(e => e.category === cat.key);
+    if (groupEntries.length === 0) return;
+
+    groupEntries.forEach((e) => {
+      const subj = SF_SUBJECT_OPTIONS.find(s => s.code === e.subjectCode) || SF_SUBJECT_OPTIONS[0];
+
+      html += `
+        <article class="sf-print-entry-sheet cat-${e.category || 'unterricht'}" id="print-entry-${e.id}">
+          <div class="sf-print-entry-header">
+            <div>
+              <span class="sf-print-badge">${escapeHtml(e.categoryName || 'Unterricht')}</span>
+              <span class="sf-print-badge">${subj.short}</span>
+            </div>
+            <strong>${escapeHtml(e.date)}</strong>
+          </div>
+
+          <h2 class="sf-print-entry-title">${escapeHtml(e.title)}</h2>
+
+          <div class="sf-print-entry-content">${escapeHtml(e.content)}</div>
+
+          ${(e.prompt || e.model) ? `
+            <div style="margin-top: 0.8rem; padding-top: 0.6rem; border-top: 1px solid #f1f5f9; font-size: 8pt; color: #64748b;">
+              ${e.model ? `Modell: <strong>${escapeHtml(e.model)}</strong> &bull; ` : ''}
+              ${e.prompt ? `Prompt: <em>„${escapeHtml(e.prompt)}“</em>` : ''}
+            </div>
+          ` : ''}
+        </article>
+      `;
+    });
+  });
+
+  html += `
+      </div>
+    </div>
+  `;
+
+  return html;
 }
 
 // --- 8. ISERV PDF EXPORT ---
