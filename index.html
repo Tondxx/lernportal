@@ -1868,456 +1868,11 @@
   <!-- ========================================================================= -->
   <div id="view-seminarfach" class="portal-view">
     <div id="seminarfachRoot">
-    <!-- Top Action Bar -->
-    <div class="sf-topbar">
-      <div class="sf-topbar-left">
-        <span class="sf-badge-pill sf-badge-purple">📘 Seminarfach 4</span>
-        <span class="sf-badge-pill sf-badge-neutral">Abi28 sf4 &bull; Hr. Jatzeck</span>
-        <span class="sf-badge-pill sf-badge-amber">⏰ Abgabe: Heute 09:59 Uhr</span>
-      </div>
-      <div class="sf-topbar-right">
-        <button class="sf-btn sf-btn-pdf" onclick="exportSfJournalPDF()" title="Erstellt das druckfertige PDF für die IServ-Abgabe">
-          📄 Als PDF exportieren
-        </button>
-        <button class="sf-btn sf-btn-secondary" onclick="triggerSfUploadModal()" title="Mitschrift, Foto oder Datei hochladen">
-          📤 Mitschrift einfügen
-        </button>
-        <button class="sf-btn sf-btn-primary" onclick="openSfNewEntryModal()">
-          ➕ Neuer Eintrag
-        </button>
-        <button class="sf-btn sf-btn-ghost" onclick="resetSfJournalDefaults()" title="Standard-Einträge wiederherstellen">
-          🔄 Reset
-        </button>
+      <div style="padding: 2.5rem; text-align: center; color: var(--text-muted);">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📖</div>
+        <div>Lade digitales Prozessjournal &amp; Tagebuch...</div>
       </div>
     </div>
-
-    <!-- Main Clean Journal Card -->
-    <div class="sf-journal-card">
-      
-      <!-- Journal Header -->
-      <div class="sf-journal-header">
-        <div class="sf-journal-super">IGS GÖTTINGEN &bull; GYMNASIALE OBERSTUFE JAHRGANG 12</div>
-        <h1 class="sf-journal-title">📔 Prozessjournal: Künstliche Intelligenz</h1>
-        <div class="sf-journal-meta">
-          <span>👤 <strong>Tonda Beutler</strong></span>
-          <span>👨‍🏫 <strong>Hr. Michael Jatzeck (sf4)</strong></span>
-          <span>🎯 Leitfrage: <em>„Wie lernt man am besten mit KI?“</em></span>
-          <span>📅 Stand: <strong>21.09.2026</strong></span>
-        </div>
-
-        <div class="sf-stats-strip">
-          <div class="sf-stat-pill" onclick="switchSfTab('journal')">
-            <strong>7</strong> Einträge (vollständig)
-          </div>
-          <div class="sf-stat-pill" onclick="switchSfTab('mitschriften')">
-            <strong id="sfDocCountBadge">📁 1 Dokument</strong>
-          </div>
-          <div class="sf-stat-pill" onclick="switchSfTab('themen')">
-            <strong>🥇 Der Sokratische KI-Tutor</strong> (Favorit)
-          </div>
-        </div>
-      </div>
-
-      <!-- Segmented Navigation Tabs -->
-      <div class="sf-tabs-bar">
-        <button class="sf-tab-btn active" onclick="switchSfTab('journal')">
-          📖 Journal (7)
-        </button>
-        <button class="sf-tab-btn" onclick="switchSfTab('mitschriften')">
-          📁 Mitschriften &amp; Dateien
-        </button>
-        <button class="sf-tab-btn" onclick="switchSfTab('themen')">
-          💡 Themenfindung (5)
-        </button>
-        <button class="sf-tab-btn" onclick="switchSfTab('prompts')">
-          🧪 Prompt-Studio
-        </button>
-        <button class="sf-tab-btn" onclick="switchSfTab('tools')">
-          📊 Modellvergleich
-        </button>
-      </div>
-
-      <!-- Active Tab Body -->
-      <div id="sfTabContent" class="sf-tab-content-body">
-        <!-- Toolbar & Filters -->
-        <div class="sf-toolbar">
-          <div class="sf-filter-chips-list">
-            <button class="sf-filter-chip active" onclick="setSfCategoryFilter('Alle')">Alle</button>
-            <button class="sf-filter-chip" onclick="setSfCategoryFilter('Video-Analyse')">Video-Analyse</button>
-            <button class="sf-filter-chip" onclick="setSfCategoryFilter('YLAB Workshop')">YLAB Workshop</button>
-            <button class="sf-filter-chip" onclick="setSfCategoryFilter('Empirie & Umfrage')">Empirie & Umfrage</button>
-            <button class="sf-filter-chip" onclick="setSfCategoryFilter('Themensuche')">Themensuche</button>
-            <button class="sf-filter-chip" onclick="setSfCategoryFilter('Literatur & SUB')">Literatur & SUB</button>
-            <button class="sf-filter-chip" onclick="setSfCategoryFilter('KI-News')">KI-News</button>
-            <button class="sf-filter-chip" onclick="setSfCategoryFilter('Prompt-Experiment')">Prompt-Experiment</button>
-          </div>
-          <div class="sf-search-box">
-            <span class="sf-search-icon">🔍</span>
-            <input type="text" class="sf-search-input" placeholder="Tagebuch durchsuchen..." oninput="setSfSearchQuery(this.value)">
-          </div>
-        </div>
-
-        <!-- Entries List -->
-        <div class="sf-entries-list">
-          
-          <!-- ENTRY 1 -->
-          <div class="sf-entry-card" id="entry-sf-j-1">
-            <div class="sf-entry-card-header">
-              <div class="sf-entry-num-badge">Eintrag 01</div>
-              <div class="sf-entry-meta-right">
-                <span class="sf-entry-date">📅 26.08.2026</span>
-                <span class="sf-entry-badge-cat sf-badge-amber">Video-Analyse</span>
-                <span class="sf-entry-model">🤖 ZDF Terra X</span>
-                <div class="sf-entry-actions">
-                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-1')" title="Eintrag bearbeiten">✏️</button>
-                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-1')" title="Eintrag löschen">🗑️</button>
-                </div>
-              </div>
-            </div>
-            <h2 class="sf-entry-title">Harald Lesch Video &amp; Kritischer Kommentar</h2>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
-              <p class="sf-section-text">Sichtung des Harald-Lesch-Beitrags zu Künstlicher Intelligenz aus dem Unterricht und Verfassen eines fundierten, kritischen Kommentars.</p>
-            </div>
-            <div class="sf-entry-section sf-prompt-box">
-              <div class="sf-prompt-head">
-                <span class="sf-section-label">💬 Verwendeter Prompt</span>
-                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-1', this)">📋 Kopieren</button>
-              </div>
-              <pre class="sf-prompt-code">Analyse der Kernaussagen von Prof. Harald Lesch: Was unterscheidet statistische Textmustererkennung von echtem menschlichen Verstehen?</pre>
-            </div>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
-              <p class="sf-section-text">Lesch pointiert herausragend: LLMs wie ChatGPT verstehen die Bedeutung ihrer generierten Wörter nicht (Semantik fehlt). Sie berechnen rein stochastisch das wahrscheinlichste Folgewort auf Basis gigantischer Datenmengen ('Stochastische Papageien').</p>
-            </div>
-            <div class="sf-reflection-card">
-              <div class="sf-reflection-head">
-                <span class="sf-reflection-icon">🧠</span>
-                <div>
-                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
-                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
-                </div>
-              </div>
-              <div class="sf-reflection-body">
-                Für das schulische Lernen ist Leschs Kritik der Schlüssel: Wer KI als fertigen Lösungsautomaten nutzt, übernimmt statistische Textbausteine ohne jedes eigene Begreifen. Erst wenn wir die KI durch gezielte Rückfragen (Sokratische Methode) zwingen, uns Denkanstöße zu geben, entsteht echtes Wissen in unserem Gehirn. Genau dieser Punkt bildet das Fundament für meine Seminarfacharbeit!
-              </div>
-            </div>
-            <div class="sf-entry-footer-tags">
-              <span class="sf-entry-tag">#Harald Lesch</span>
-              <span class="sf-entry-tag">#Stochastische Papageien</span>
-              <span class="sf-entry-tag">#Semantik vs. Syntax</span>
-              <span class="sf-entry-tag">#Aufgabe 1</span>
-            </div>
-          </div>
-
-          <!-- ENTRY 2 -->
-          <div class="sf-entry-card" id="entry-sf-j-2">
-            <div class="sf-entry-card-header">
-              <div class="sf-entry-num-badge">Eintrag 02</div>
-              <div class="sf-entry-meta-right">
-                <span class="sf-entry-date">📅 02.09.2026</span>
-                <span class="sf-entry-badge-cat sf-badge-cyan">YLAB Workshop</span>
-                <span class="sf-entry-model">🤖 YLAB Arbeitsblätter (Wolke)</span>
-                <div class="sf-entry-actions">
-                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-2')" title="Eintrag bearbeiten">✏️</button>
-                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-2')" title="Eintrag löschen">🗑️</button>
-                </div>
-              </div>
-            </div>
-            <h2 class="sf-entry-title">YLAB Arbeitsergebnisse &amp; Erkenntnisse (Uni Göttingen)</h2>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
-              <p class="sf-section-text">Dokumentation und Auswertung der YLAB-Stationen (Geisteswissenschaftliches Schülerlabor der Georg-August-Universität Göttingen).</p>
-            </div>
-            <div class="sf-entry-section sf-prompt-box">
-              <div class="sf-prompt-head">
-                <span class="sf-section-label">💬 Verwendeter Prompt</span>
-                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-2', this)">📋 Kopieren</button>
-              </div>
-              <pre class="sf-prompt-code">Auswertung der YLAB-Arbeitsblätter: Wie entstehen Vorurteile (Bias) in Trainingsdaten und welche ethischen Richtlinien braucht KI in der Bildung?</pre>
-            </div>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
-              <p class="sf-section-text">Erkenntnisse aus den ABs: 1. Neuronale Netze spiegeln gesellschaftliche Verzerrungen der Trainingsdaten ungefiltert wider. 2. Urheberrechtsfragen bei Trainingsmaterialien sind juristisch ungeklärt. 3. Intransparenz ('Black Box Problem'): Selbst Entwickler können einzelne Entscheidungspfade komplexer Transformer-Netze nicht im Detail nachvollziehen.</p>
-            </div>
-            <div class="sf-reflection-card">
-              <div class="sf-reflection-head">
-                <span class="sf-reflection-icon">🧠</span>
-                <div>
-                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
-                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
-                </div>
-              </div>
-              <div class="sf-reflection-body">
-                Das YLAB hat gezeigt, warum Schüler eine ausgeprägte 'Prompt- &amp; AI-Literacy' brauchen. Wir dürfen KI-Antworten niemals als objektive Wahrheit betrachten, sondern müssen jede Aussage kritisch hinterfragen und mit seriöser Fachliteratur abgleichen.
-              </div>
-            </div>
-            <div class="sf-entry-footer-tags">
-              <span class="sf-entry-tag">#YLAB Göttingen</span>
-              <span class="sf-entry-tag">#Bias</span>
-              <span class="sf-entry-tag">#Trainingsdaten</span>
-              <span class="sf-entry-tag">#KI-Ethik</span>
-              <span class="sf-entry-tag">#Aufgabe 2</span>
-            </div>
-          </div>
-
-          <!-- ENTRY 3 -->
-          <div class="sf-entry-card" id="entry-sf-j-3">
-            <div class="sf-entry-card-header">
-              <div class="sf-entry-num-badge">Eintrag 03</div>
-              <div class="sf-entry-meta-right">
-                <span class="sf-entry-date">📅 09.09.2026</span>
-                <span class="sf-entry-badge-cat sf-badge-purple">Empirie &amp; Umfrage</span>
-                <span class="sf-entry-model">🤖 Schulweite Umfrage (IServ)</span>
-                <div class="sf-entry-actions">
-                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-3')" title="Eintrag bearbeiten">✏️</button>
-                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-3')" title="Eintrag löschen">🗑️</button>
-                </div>
-              </div>
-            </div>
-            <h2 class="sf-entry-title">Schulumfrage zur KI-Nutzung &amp; Kommentar</h2>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
-              <p class="sf-section-text">Auswertung der Befragung unter Mitschülern des 11. und 12. Jahrgangs bezüglich ihres tatsächlichen KI-Nutzungsverhaltens im Schulalltag.</p>
-            </div>
-            <div class="sf-entry-section sf-prompt-box">
-              <div class="sf-prompt-head">
-                <span class="sf-section-label">💬 Verwendeter Prompt</span>
-                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-3', this)">📋 Kopieren</button>
-              </div>
-              <pre class="sf-prompt-code">Statistische Auswertung der Umfragedaten: 1. Häufigkeit der Nutzung, 2. Art der Aufgaben (Texte, MINT, Hausaufgaben), 3. Reflexionsgrad.</pre>
-            </div>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
-              <p class="sf-section-text">Ergebnisse der Umfrage: • 87 % der Oberstufenschüler nutzen KI mindestens einmal pro Woche. • 64 % nutzen KI primär zur schnellen Hausaufgabenerledigung. • Nur 14 % formulieren didaktische System-Prompts ('Erkläre mir...', 'Stelle mir Fragen'). • Weniger als 18 % prüfen Quellen systematisch nach.</p>
-            </div>
-            <div class="sf-reflection-card">
-              <div class="sf-reflection-head">
-                <span class="sf-reflection-icon">🧠</span>
-                <div>
-                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
-                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
-                </div>
-              </div>
-              <div class="sf-reflection-body">
-                Die Zahlen belegen eine dramatische Diskrepanz: Schüler nutzen KI massenhaft, aber fast ausnahmslos als 'digitale Abkürzung' (Cognitive Offloading). Das führt zu einem gefährlichen Scheinwissen vor Klausuren. Meine Seminarfacharbeit soll genau hier ansetzen und zeigen, wie Schüler durch sokratisches Prompting messbar bessere Lernerfolge erzielen.
-              </div>
-            </div>
-            <div class="sf-entry-footer-tags">
-              <span class="sf-entry-tag">#Schulumfrage</span>
-              <span class="sf-entry-tag">#Nutzungsmuster</span>
-              <span class="sf-entry-tag">#Cognitive Offloading</span>
-              <span class="sf-entry-tag">#Aufgabe 3</span>
-            </div>
-          </div>
-
-          <!-- ENTRY 4 -->
-          <div class="sf-entry-card" id="entry-sf-j-4">
-            <div class="sf-entry-card-header">
-              <div class="sf-entry-num-badge">Eintrag 04</div>
-              <div class="sf-entry-meta-right">
-                <span class="sf-entry-date">📅 14.09.2026</span>
-                <span class="sf-entry-badge-cat sf-badge-emerald">Themensuche</span>
-                <span class="sf-entry-model">🤖 Gemini Pro &amp; Claude 3.5</span>
-                <div class="sf-entry-actions">
-                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-4')" title="Eintrag bearbeiten">✏️</button>
-                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-4')" title="Eintrag löschen">🗑️</button>
-                </div>
-              </div>
-            </div>
-            <h2 class="sf-entry-title">Erste Ergebnisse der Themensuche &amp; Forschungsfragen</h2>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
-              <p class="sf-section-text">Systematische Erarbeitung von 5 wissenschaftlichen Themenansätzen für die Seminarfacharbeit mit hohem empirischen Eigenanteil.</p>
-            </div>
-            <div class="sf-entry-section sf-prompt-box">
-              <div class="sf-prompt-head">
-                <span class="sf-section-label">💬 Verwendeter Prompt</span>
-                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-4', this)">📋 Kopieren</button>
-              </div>
-              <pre class="sf-prompt-code">Formulierung präziser forschungsleitender Fragestellungen mit Arbeitshypothese zum Leitmotiv 'Wie lernt man am besten mit KI?'.</pre>
-            </div>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
-              <p class="sf-section-text">Fünf starke Forschungsansätze erarbeitet: 1. Der sokratische KI-Tutor (Leitfragen statt fertiger Lösungen), 2. Cognitive Offloading &amp; die Illusion des Wissens vor Klausuren, 3. Konzeption eines evidenzbasierten KI-Lernframeworks, 4. Blooms 2-Sigma-Problem, 5. Empirische Schulumfrage mit statistischer Analyse.</p>
-            </div>
-            <div class="sf-reflection-card">
-              <div class="sf-reflection-head">
-                <span class="sf-reflection-icon">🧠</span>
-                <div>
-                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
-                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
-                </div>
-              </div>
-              <div class="sf-reflection-body">
-                Mein Favorit für die Arbeit ist Thema 1 ('Der Sokratische KI-Tutor') mit einem praktischen Vorher-Nachher-Experiment an unserer Schule in Physik/Informatik. Das Konzept steht und ist im Reiter 'Themenideen' detailliert ausgearbeitet.
-              </div>
-            </div>
-            <div class="sf-entry-footer-tags">
-              <span class="sf-entry-tag">#Themensuche</span>
-              <span class="sf-entry-tag">#Forschungsfrage</span>
-              <span class="sf-entry-tag">#Hypothese</span>
-              <span class="sf-entry-tag">#Aufgabe 4</span>
-            </div>
-          </div>
-
-          <!-- ENTRY 5 -->
-          <div class="sf-entry-card" id="entry-sf-j-5">
-            <div class="sf-entry-card-header">
-              <div class="sf-entry-num-badge">Eintrag 05</div>
-              <div class="sf-entry-meta-right">
-                <span class="sf-entry-date">📅 17.09.2026</span>
-                <span class="sf-entry-badge-cat sf-badge-rose">Literatur &amp; SUB</span>
-                <span class="sf-entry-model">🤖 SUB Göttingen &amp; Scholar</span>
-                <div class="sf-entry-actions">
-                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-5')" title="Eintrag bearbeiten">✏️</button>
-                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-5')" title="Eintrag löschen">🗑️</button>
-                </div>
-              </div>
-            </div>
-            <h2 class="sf-entry-title">Literatursichtung &amp; Vorbereitung SUB-Ausweis</h2>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
-              <p class="sf-section-text">Sichtung erster Fachliteratur zur Kognitionspsychologie und Beantragung des Bibliotheksausweises der Niedersächsischen Staats- und Universitätsbibliothek Göttingen (SUB).</p>
-            </div>
-            <div class="sf-entry-section sf-prompt-box">
-              <div class="sf-prompt-head">
-                <span class="sf-section-label">💬 Verwendeter Prompt</span>
-                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-5', this)">📋 Kopieren</button>
-              </div>
-              <pre class="sf-prompt-code">Recherche nach grundlegenden bildungswissenschaftlichen Standardwerken zu selbstgesteuertem Lernen, Cognitive Load und Tutoring-Effekten.</pre>
-            </div>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
-              <p class="sf-section-text">Erste relevante Fachwerke erfasst: 1. John Sweller (1988): 'Cognitive Load During Problem Solving', 2. Benjamin Bloom (1984): 'The 2 Sigma Problem: Methods of Group Instruction as Effective as One-to-One Tutoring', 3. Roediger &amp; Karpicke (2006): 'Test-Enhanced Learning' (Active Retrieval Practice), 4. OECD (2023): 'Generative AI and the Future of Education'.</p>
-            </div>
-            <div class="sf-reflection-card">
-              <div class="sf-reflection-head">
-                <span class="sf-reflection-icon">🧠</span>
-                <div>
-                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
-                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
-                </div>
-              </div>
-              <div class="sf-reflection-body">
-                Status SUB-Ausweis: Anmeldeformular für die Zentralbibliothek am Platz der Göttinger Sieben ausgefüllt. Einverständniserklärung der Eltern vorbereitet, da unter 18 Jahren. Der Ausweis wird für vertiefende Monographien im Oktober abgeholt.
-              </div>
-            </div>
-            <div class="sf-entry-footer-tags">
-              <span class="sf-entry-tag">#SUB Göttingen</span>
-              <span class="sf-entry-tag">#Literaturrecherche</span>
-              <span class="sf-entry-tag">#Sweller</span>
-              <span class="sf-entry-tag">#Bloom</span>
-              <span class="sf-entry-tag">#Aufgabe 5</span>
-            </div>
-          </div>
-
-          <!-- ENTRY 6 -->
-          <div class="sf-entry-card" id="entry-sf-j-6">
-            <div class="sf-entry-card-header">
-              <div class="sf-entry-num-badge">Eintrag 06</div>
-              <div class="sf-entry-meta-right">
-                <span class="sf-entry-date">📅 19.09.2026</span>
-                <span class="sf-entry-badge-cat sf-badge-blue">KI-News</span>
-                <span class="sf-entry-model">🤖 OpenAI o1</span>
-                <div class="sf-entry-actions">
-                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-6')" title="Eintrag bearbeiten">✏️</button>
-                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-6')" title="Eintrag löschen">🗑️</button>
-                </div>
-              </div>
-            </div>
-            <h2 class="sf-entry-title">KI-Tagesgeschehen &amp; Aktuelle Entwicklungen</h2>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
-              <p class="sf-section-text">Beobachtung aktueller technologischer und bildungspolitischer Nachrichten im KI-Sektor und Reflexion für die Schule.</p>
-            </div>
-            <div class="sf-entry-section sf-prompt-box">
-              <div class="sf-prompt-head">
-                <span class="sf-section-label">💬 Verwendeter Prompt</span>
-                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-6', this)">📋 Kopieren</button>
-              </div>
-              <pre class="sf-prompt-code">Analyse der Veröffentlichung von OpenAI o1 ('Strawberry') und der Verabschiedung des EU AI Acts: Was bedeutet das für das schulische Arbeiten?</pre>
-            </div>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
-              <p class="sf-section-text">News-Zusammenfassung: • OpenAI hat 'o1' veröffentlicht: Das erste Modell mit interner Gedankenkette ('Reasoning Chain'), das komplexe MINT-Probleme fehlerfrei durchdenkt. • Der EU AI Act klassifiziert KI in der Bildung als 'Hochrisiko-KI' mit strengen Transparenzanforderungen.</p>
-            </div>
-            <div class="sf-reflection-card">
-              <div class="sf-reflection-head">
-                <span class="sf-reflection-icon">🧠</span>
-                <div>
-                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
-                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
-                </div>
-              </div>
-              <div class="sf-reflection-body">
-                Mit Reasoning-Modellen wie o1 bricht eine neue Ära an: KI kann nicht mehr nur Texte glätten, sondern logisch folgern. Umso wichtiger ist es, dass Schulen Schülern nicht verbieten, KI zu nutzen, sondern ihnen beibringen, KI als interaktiven Sparringspartner für eigene Lösungswege einzusetzen.
-              </div>
-            </div>
-            <div class="sf-entry-footer-tags">
-              <span class="sf-entry-tag">#OpenAI o1</span>
-              <span class="sf-entry-tag">#Reasoning</span>
-              <span class="sf-entry-tag">#EU AI Act</span>
-              <span class="sf-entry-tag">#KI-News</span>
-              <span class="sf-entry-tag">#Aufgabe 6</span>
-            </div>
-          </div>
-
-          <!-- ENTRY 7 -->
-          <div class="sf-entry-card" id="entry-sf-j-7">
-            <div class="sf-entry-card-header">
-              <div class="sf-entry-num-badge">Eintrag 07</div>
-              <div class="sf-entry-meta-right">
-                <span class="sf-entry-date">📅 21.09.2026</span>
-                <span class="sf-entry-badge-cat sf-badge-purple">Prompt-Experiment</span>
-                <span class="sf-entry-model">🤖 GPT-4o vs Claude 3.5</span>
-                <div class="sf-entry-actions">
-                  <button class="sf-icon-btn" onclick="openSfEditEntryModal('sf-j-7')" title="Eintrag bearbeiten">✏️</button>
-                  <button class="sf-icon-btn" onclick="deleteSfEntry('sf-j-7')" title="Eintrag löschen">🗑️</button>
-                </div>
-              </div>
-            </div>
-            <h2 class="sf-entry-title">Praxis-Experiment: Sokratischer Tutor in Physik &amp; Informatik</h2>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">🎯 Aufgabenstellung &amp; Unterrichtskontext</div>
-              <p class="sf-section-text">Eigener Härtetest zweier Lernmethoden: Passive Musterlösung vs. sokratischer Dialog am Beispiel des Coulomb-Gesetzes (Physik eA) und von Insertion Sort (Informatik eA).</p>
-            </div>
-            <div class="sf-entry-section sf-prompt-box">
-              <div class="sf-prompt-head">
-                <span class="sf-section-label">💬 Verwendeter Prompt</span>
-                <button class="sf-btn-copy-prompt" onclick="copySfEntryPrompt('sf-j-7', this)">📋 Kopieren</button>
-              </div>
-              <pre class="sf-prompt-code">Du bist mein persönlicher MINT-Tutor für die gymnasiale Oberstufe. Verrate mir NICHT sofort die Lösung! Stelle mir stattdessen gezielte Leitfragen, damit ich Schritt für Schritt selbst auf die Formel und den Rechenweg komme.</pre>
-            </div>
-            <div class="sf-entry-section">
-              <div class="sf-section-label">📊 Beobachtung &amp; Arbeitsergebnis</div>
-              <p class="sf-section-text">Erstaunlicher Lerneffekt: Die KI fragte gezielt: 'Welche Kräfte stehen am Fadenpendel im Kräftegleichgewicht?' Ich musste F_G und F_C selbst herleiten und den Tangens anwenden, anstatt nur passiv mitzulesen.</p>
-            </div>
-            <div class="sf-reflection-card">
-              <div class="sf-reflection-head">
-                <span class="sf-reflection-icon">🧠</span>
-                <div>
-                  <strong>Kritische Lernreflexion (Herr Jatzeck Kriterium)</strong>
-                  <div class="sf-reflection-sub">Erkenntnisgewinn, Cognitive Offloading &amp; Relevanz für die Seminararbeit</div>
-                </div>
-              </div>
-              <div class="sf-reflection-body">
-                Sokratisches Prompting verhindert die 'Illusion of Competence'. Ich habe den Stoff nicht nur für die Hausaufgabe gelöst, sondern für die Klausur im Kopf verankert. Das ist der exakte Beweis für meine Seminarfachthese.
-              </div>
-            </div>
-            <div class="sf-entry-footer-tags">
-              <span class="sf-entry-tag">#Sokratischer Mentor</span>
-              <span class="sf-entry-tag">#Physik eA</span>
-              <span class="sf-entry-tag">#Informatik eA</span>
-              <span class="sf-entry-tag">#Active Recall</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-    </div>
-  </div>
   </div>
 
   <!-- ========================================================================= -->
@@ -2583,19 +2138,37 @@
     </div>
   </div>
 
-  <!-- Modal 6: Seminarfach Journal Entry Modal -->
+  <!-- Modal 6: Seminarfach & Schul-Tagebuch Entry Modal -->
   <div class="portal-modal-backdrop" id="sfEntryModal" style="display: none;" onclick="closeSfEntryModal(event)">
     <div class="portal-modal-content sf-entry-modal" onclick="event.stopPropagation()">
       <div class="modal-header">
-        <h3 id="sfModalTitle" style="margin: 0; font-size: 1.25rem;">➕ Neuer Journal-Eintrag</h3>
+        <h3 id="sfModalTitle" style="margin: 0; font-size: 1.25rem;">✍️ Neuer Tagebuch-Eintrag</h3>
         <button class="modal-close-btn" onclick="closeSfEntryModal()">&times;</button>
       </div>
 
-      <div class="modal-body" style="padding: 1.2rem 1.5rem;">
+      <div class="modal-body" style="padding: 1.2rem 1.5rem; max-height: 80vh; overflow-y: auto;">
         <div class="sf-form-grid">
+          
           <div class="sf-form-group full-width">
-            <label class="sf-form-label" for="sfFormTitle">Titel des Eintrags *</label>
-            <input type="text" id="sfFormTitle" class="sf-form-input" placeholder="z. B. Experiment: Sokratischer Tutor vs. Lösungsausgabe">
+            <label class="sf-form-label" for="sfFormTitle">Titel des Tagebucheintrags *</label>
+            <input type="text" id="sfFormTitle" class="sf-form-input" placeholder="z. B. Sokratischer Dialog in Physik LK oder Erkenntnis zur Semantik">
+          </div>
+
+          <div class="sf-form-group">
+            <label class="sf-form-label" for="sfFormSubjectSelect">Schulfach / Kurs *</label>
+            <select id="sfFormSubjectSelect" class="sf-form-select" onchange="document.getElementById('sfFormSubject').value = this.options[this.selectedIndex].text">
+              <option value="sf4" selected>🤖 Seminarfach 4: KI (Hr. Jatzeck)</option>
+              <option value="MA11">📐 Mathematik LK (Fr. Meyer)</option>
+              <option value="PH12">⚡ Physik LK (Hr. Lohse)</option>
+              <option value="IF13">💻 Informatik LK (Hr. Trittmacher)</option>
+              <option value="pw25">⚖️ Politik-Wirtschaft (Hr. Hoffmann)</option>
+              <option value="de48">📖 Deutsch (Fr. Heinrich)</option>
+              <option value="en39">🌍 Englisch (Hr. Westphal)</option>
+              <option value="ge27">🏛️ Geschichte (Hr. Weinert)</option>
+              <option value="ds26">🎭 Darstellendes Spiel (Fr. Klose)</option>
+              <option value="sp15Z">⚽ Sport (Hr. Ln)</option>
+              <option value="allg">📝 Allgemein / Freie KI-Reflexion</option>
+            </select>
           </div>
 
           <div class="sf-form-group">
@@ -2604,57 +2177,100 @@
           </div>
 
           <div class="sf-form-group">
-            <label class="sf-form-label" for="sfFormCategory">Kategorie</label>
-            <select id="sfFormCategory" class="sf-form-select">
-              <option value="Prompt-Experiment">🧪 Prompt-Experiment</option>
-              <option value="Lernreflexion">🧠 Lernreflexion &amp; Metakognition</option>
-              <option value="Themenfindung">💡 Themenfindung Seminararbeit</option>
-              <option value="Modellvergleich">📊 Modellvergleich &amp; Benchmarks</option>
+            <label class="sf-form-label" for="sfFormLesson">Unterrichtsstunde / Kontext</label>
+            <input type="text" id="sfFormLesson" class="sf-form-input" placeholder="z. B. Mo, 8./9. Std (sf4) oder Di, 3./4. Std">
+          </div>
+
+          <div class="sf-form-group">
+            <label class="sf-form-label" for="sfFormMood">Stimmung / Vibe</label>
+            <select id="sfFormMood" class="sf-form-select">
+              <option value="💡 Erkenntnis" selected>💡 Erkenntnis / Heureka</option>
+              <option value="🔥 Produktiv">🔥 Produktiv / Flow</option>
+              <option value="🤔 Nachdenklich">🤔 Nachdenklich / Kritisch</option>
+              <option value="⚠️ KI-Fehler">⚠️ KI-Fehler / Halluzination</option>
+              <option value="🎯 Meilenstein">🎯 Meilenstein erreicht</option>
+              <option value="📝 Mitschrift">📝 Mitschrift / Unterricht</option>
             </select>
           </div>
 
-          <div class="sf-form-group">
-            <label class="sf-form-label" for="sfFormSubject">Fach / Kontext</label>
-            <input type="text" id="sfFormSubject" class="sf-form-input" placeholder="z. B. Physik eA / Informatik eA / Allgemein">
-          </div>
-
-          <div class="sf-form-group">
-            <label class="sf-form-label" for="sfFormModel">Genutztes KI-Modell</label>
-            <input type="text" id="sfFormModel" class="sf-form-input" placeholder="z. B. ChatGPT-4o, Claude 3.5 Sonnet, o1, Gemini">
-          </div>
-
           <div class="sf-form-group full-width">
-            <label class="sf-form-label" for="sfFormTask">Aufgabenstellung / Ziel</label>
-            <textarea id="sfFormTask" class="sf-form-textarea" rows="2" placeholder="Was wolltest du verstehen, lösen oder testen?"></textarea>
+            <label class="sf-form-label" for="sfFormCategory">Kategorie</label>
+            <select id="sfFormCategory" class="sf-form-select">
+              <option value="Tagebuch &amp; Reflexion" selected>📔 Tagebuch &amp; Persönliche Reflexion</option>
+              <option value="Unterrichtsstunde">🏫 Unterrichtsstunde &amp; Fachnotiz</option>
+              <option value="Prompt-Experiment">🧪 Prompt-Experiment &amp; Tutor</option>
+              <option value="Themensuche">💡 Themenfindung Seminararbeit</option>
+              <option value="KI-News">🌐 KI-Tagesgeschehen &amp; Ethik</option>
+              <option value="Video-Analyse">🎥 Video-Analyse (z. B. Lesch)</option>
+              <option value="YLAB Workshop">🏛️ YLAB Workshop (Uni Göttingen)</option>
+              <option value="Empirie &amp; Umfrage">📊 Empirie &amp; Schulumfrage</option>
+              <option value="Literatur &amp; SUB">📚 Literatur &amp; SUB-Recherche</option>
+            </select>
           </div>
 
+          <!-- Main Diary Narrative Textarea -->
           <div class="sf-form-group full-width">
-            <label class="sf-form-label" for="sfFormPrompt">Verwendeter Prompt (Wortlaut)</label>
-            <textarea id="sfFormPrompt" class="sf-form-textarea" rows="3" placeholder="Wie genau hast du die KI angesprochen?"></textarea>
-          </div>
-
-          <div class="sf-form-group full-width">
-            <label class="sf-form-label" for="sfFormResult">Ergebnis &amp; Beobachtung der Antwort</label>
-            <textarea id="sfFormResult" class="sf-form-textarea" rows="2" placeholder="Wie gut war die Antwort? Gab es Fehler oder Halluzinationen?"></textarea>
-          </div>
-
-          <div class="sf-form-group full-width">
-            <label class="sf-form-label" for="sfFormReflection" style="color: #7c3aed;">
-              🧠 Kritische Lernreflexion (Herzstück des Seminarfachs!)
+            <label class="sf-form-label" for="sfFormContent" style="font-size: 0.92rem; color: #7c3aed; font-weight: 700;">
+              📖 Persönlicher Tagebucheintrag (Deine eigenen Worte) *
             </label>
-            <textarea id="sfFormReflection" class="sf-form-textarea" rows="3" placeholder="Hat es dein Verständnis gefördert oder nur Denkarbeit abgenommen (Cognitive Offloading)? Was bedeutet das für deine Seminarfacharbeit?"></textarea>
+            <textarea id="sfFormContent" class="sf-form-textarea" rows="4" 
+                      placeholder="Was ging dir heute durch den Kopf? Was hast du im Unterricht erlebt? Wie hast du KI eingesetzt und was ist dir dabei aufgefallen?"></textarea>
           </div>
 
-          <div class="sf-form-group full-width">
-            <label class="sf-form-label" for="sfFormTags">Schlagwörter (mit Komma trennen)</label>
-            <input type="text" id="sfFormTags" class="sf-form-input" placeholder="z. B. Sokratischer Dialog, Physik, Active Recall">
+          <!-- Expandable Details for Academic / IServ Requirements -->
+          <div class="sf-form-group full-width" style="margin-top: 0.5rem; border-top: 1px solid var(--border-subtle); padding-top: 0.8rem;">
+            <details class="sf-form-details" open>
+              <summary style="font-size: 0.84rem; font-weight: 700; color: var(--text-secondary); cursor: pointer; margin-bottom: 0.8rem;">
+                🔬 Wissenschaftliche Details für Herrn Jatzeck &amp; IServ (Prompt, Modell, Reflexion)
+              </summary>
+              
+              <div class="sf-form-grid" style="margin-top: 0.6rem;">
+                <div class="sf-form-group">
+                  <label class="sf-form-label" for="sfFormSubject">Fach-Bezeichnung (Text)</label>
+                  <input type="text" id="sfFormSubject" class="sf-form-input" placeholder="Seminarfach 4: KI (Hr. Jatzeck)">
+                </div>
+
+                <div class="sf-form-group">
+                  <label class="sf-form-label" for="sfFormModel">Genutztes Modell / Tool</label>
+                  <input type="text" id="sfFormModel" class="sf-form-input" placeholder="z. B. ChatGPT-4o, Claude 3.5 Sonnet, o1">
+                </div>
+
+                <div class="sf-form-group full-width">
+                  <label class="sf-form-label" for="sfFormTask">Aufgabenstellung / Kontext</label>
+                  <textarea id="sfFormTask" class="sf-form-textarea" rows="2" placeholder="Was war die Fragestellung oder das Unterrichtsziel?"></textarea>
+                </div>
+
+                <div class="sf-form-group full-width">
+                  <label class="sf-form-label" for="sfFormPrompt">Verwendeter Prompt (Wortlaut)</label>
+                  <textarea id="sfFormPrompt" class="sf-form-textarea" rows="3" placeholder="Wie genau hast du die KI angesprochen? (Prompt-Wortlaut)"></textarea>
+                </div>
+
+                <div class="sf-form-group full-width">
+                  <label class="sf-form-label" for="sfFormResult">Beobachtung &amp; KI-Ergebnis</label>
+                  <textarea id="sfFormResult" class="sf-form-textarea" rows="2" placeholder="Wie hat die KI geantwortet? Wo gab es Stärken oder Halluzinationen?"></textarea>
+                </div>
+
+                <div class="sf-form-group full-width">
+                  <label class="sf-form-label" for="sfFormReflection" style="color: #7c3aed;">
+                    🧠 Kritische Lernreflexion (Herr Jatzeck Kriterium: Erkenntnis vs. Cognitive Offloading)
+                  </label>
+                  <textarea id="sfFormReflection" class="sf-form-textarea" rows="3" placeholder="Welcher Lerneffekt ist entstanden? Was bedeutet das für deine Seminararbeit?"></textarea>
+                </div>
+
+                <div class="sf-form-group full-width">
+                  <label class="sf-form-label" for="sfFormTags">Schlagwörter (Komma-getrennt)</label>
+                  <input type="text" id="sfFormTags" class="sf-form-input" placeholder="z. B. Sokratik, Physik LK, Sweller, Active Recall">
+                </div>
+              </div>
+            </details>
           </div>
+
         </div>
       </div>
 
       <div class="modal-footer" style="padding: 1rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.6rem;">
         <button class="btn-back-nav" onclick="closeSfEntryModal()">Abbrechen</button>
-        <button class="sf-btn-primary" onclick="saveSfEntryFromModal()">💾 Eintrag speichern</button>
+        <button class="sf-btn sf-btn-primary" onclick="saveSfEntryFromModal()">💾 Tagebucheintrag speichern</button>
       </div>
     </div>
   </div>
