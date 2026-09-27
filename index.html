@@ -18,7 +18,7 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="stylesheet" href="style.css?v=20260921_5">
+  <link rel="stylesheet" href="style.css?v=20260928_1">
 </head>
 <body>
 
@@ -40,7 +40,7 @@
           📚 Fächer
         </button>
         <button class="nav-tab" data-tab="seminarfach" onclick="navigateTo('seminarfach'); if(typeof renderSeminarfachView==='function')renderSeminarfachView();">
-          🤖 Seminarfach KI
+          Seminarfach KI
         </button>
         <button class="nav-tab" data-tab="kalender" onclick="navigateTo('kalender')">
           📅 Klausuren
@@ -176,11 +176,11 @@
         </div>
       </div>
 
-      <!-- Card 4: Seminarfach KI & Prozessjournal -->
-      <div class="dash-card" style="border-left: 3px solid #8b5cf6;">
+      <!-- Card 4: Seminarfach KI & Tagebuch -->
+      <div class="dash-card" style="border-left: 3px solid #7c3aed;">
         <div class="dash-card-header">
           <div class="dash-card-title">
-            <span>🤖</span> Seminarfach: KI-Journal
+            Seminarfach: Tagebuch
           </div>
           <button class="btn-cal-action" onclick="navigateTo('seminarfach')" style="padding: 0.25rem 0.6rem; font-size: 0.74rem; background: rgba(139, 92, 246, 0.12); color: #7c3aed; border-color: rgba(139, 92, 246, 0.3);">
             Öffnen &rarr;
@@ -188,17 +188,17 @@
         </div>
         <div style="padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 0.55rem;">
           <div style="font-size: 0.8rem; font-weight: 700; color: #7c3aed;">
-            Leitfrage: „Wie lernt man am besten mit KI?“
+            Oberstufen-Tagebuch &bull; Seminarfach 4 (Hr. Jatzeck)
           </div>
           <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45;">
-            Laufendes Prozessjournal mit Prompt-Experimenten, sokratischen Tutoren und Themenfindung für die Seminararbeit.
+            Persönliche Notizen zu den Unterrichtsstunden, Überlegungen zur Themenfindung, KI-Nutzung und aktuellen KI-News.
           </div>
           <div style="display: flex; gap: 0.4rem; margin-top: 0.25rem;">
             <button class="btn-cal-action" onclick="navigateTo('seminarfach')" style="font-size: 0.76rem; flex: 1;">
-              📔 Zum Journal
+              Zum Tagebuch
             </button>
             <button class="btn-cal-action" onclick="navigateTo('seminarfach'); switchSfTab('themen');" style="font-size: 0.76rem; flex: 1;">
-              💡 5 Themenideen
+              Themenfindung
             </button>
           </div>
         </div>
@@ -2138,143 +2138,6 @@
     </div>
   </div>
 
-  <!-- Modal 6: Seminarfach & Schul-Tagebuch Entry Modal -->
-  <div class="portal-modal-backdrop" id="sfEntryModal" style="display: none;" onclick="closeSfEntryModal(event)">
-    <div class="portal-modal-content sf-entry-modal" onclick="event.stopPropagation()">
-      <div class="modal-header">
-        <h3 id="sfModalTitle" style="margin: 0; font-size: 1.25rem;">✍️ Neuer Tagebuch-Eintrag</h3>
-        <button class="modal-close-btn" onclick="closeSfEntryModal()">&times;</button>
-      </div>
-
-      <div class="modal-body" style="padding: 1.2rem 1.5rem; max-height: 80vh; overflow-y: auto;">
-        <div class="sf-form-grid">
-          
-          <div class="sf-form-group full-width">
-            <label class="sf-form-label" for="sfFormTitle">Titel des Tagebucheintrags *</label>
-            <input type="text" id="sfFormTitle" class="sf-form-input" placeholder="z. B. Sokratischer Dialog in Physik LK oder Erkenntnis zur Semantik">
-          </div>
-
-          <div class="sf-form-group">
-            <label class="sf-form-label" for="sfFormSubjectSelect">Schulfach / Kurs *</label>
-            <select id="sfFormSubjectSelect" class="sf-form-select" onchange="document.getElementById('sfFormSubject').value = this.options[this.selectedIndex].text">
-              <option value="sf4" selected>🤖 Seminarfach 4: KI (Hr. Jatzeck)</option>
-              <option value="MA11">📐 Mathematik LK (Fr. Meyer)</option>
-              <option value="PH12">⚡ Physik LK (Hr. Lohse)</option>
-              <option value="IF13">💻 Informatik LK (Hr. Trittmacher)</option>
-              <option value="pw25">⚖️ Politik-Wirtschaft (Hr. Hoffmann)</option>
-              <option value="de48">📖 Deutsch (Fr. Heinrich)</option>
-              <option value="en39">🌍 Englisch (Hr. Westphal)</option>
-              <option value="ge27">🏛️ Geschichte (Hr. Weinert)</option>
-              <option value="ds26">🎭 Darstellendes Spiel (Fr. Klose)</option>
-              <option value="sp15Z">⚽ Sport (Hr. Ln)</option>
-              <option value="allg">📝 Allgemein / Freie KI-Reflexion</option>
-            </select>
-          </div>
-
-          <div class="sf-form-group">
-            <label class="sf-form-label" for="sfFormDate">Datum</label>
-            <input type="text" id="sfFormDate" class="sf-form-input" placeholder="z. B. 21.09.2026">
-          </div>
-
-          <div class="sf-form-group">
-            <label class="sf-form-label" for="sfFormLesson">Unterrichtsstunde / Kontext</label>
-            <input type="text" id="sfFormLesson" class="sf-form-input" placeholder="z. B. Mo, 8./9. Std (sf4) oder Di, 3./4. Std">
-          </div>
-
-          <div class="sf-form-group">
-            <label class="sf-form-label" for="sfFormMood">Stimmung / Vibe</label>
-            <select id="sfFormMood" class="sf-form-select">
-              <option value="💡 Erkenntnis" selected>💡 Erkenntnis / Heureka</option>
-              <option value="🔥 Produktiv">🔥 Produktiv / Flow</option>
-              <option value="🤔 Nachdenklich">🤔 Nachdenklich / Kritisch</option>
-              <option value="⚠️ KI-Fehler">⚠️ KI-Fehler / Halluzination</option>
-              <option value="🎯 Meilenstein">🎯 Meilenstein erreicht</option>
-              <option value="📝 Mitschrift">📝 Mitschrift / Unterricht</option>
-            </select>
-          </div>
-
-          <div class="sf-form-group full-width">
-            <label class="sf-form-label" for="sfFormCategory">Kategorie</label>
-            <select id="sfFormCategory" class="sf-form-select">
-              <option value="Tagebuch &amp; Reflexion" selected>📔 Tagebuch &amp; Persönliche Reflexion</option>
-              <option value="Unterrichtsstunde">🏫 Unterrichtsstunde &amp; Fachnotiz</option>
-              <option value="Prompt-Experiment">🧪 Prompt-Experiment &amp; Tutor</option>
-              <option value="Themensuche">💡 Themenfindung Seminararbeit</option>
-              <option value="KI-News">🌐 KI-Tagesgeschehen &amp; Ethik</option>
-              <option value="Video-Analyse">🎥 Video-Analyse (z. B. Lesch)</option>
-              <option value="YLAB Workshop">🏛️ YLAB Workshop (Uni Göttingen)</option>
-              <option value="Empirie &amp; Umfrage">📊 Empirie &amp; Schulumfrage</option>
-              <option value="Literatur &amp; SUB">📚 Literatur &amp; SUB-Recherche</option>
-            </select>
-          </div>
-
-          <!-- Main Diary Narrative Textarea -->
-          <div class="sf-form-group full-width">
-            <label class="sf-form-label" for="sfFormContent" style="font-size: 0.92rem; color: #7c3aed; font-weight: 700;">
-              📖 Persönlicher Tagebucheintrag (Deine eigenen Worte) *
-            </label>
-            <textarea id="sfFormContent" class="sf-form-textarea" rows="4" 
-                      placeholder="Was ging dir heute durch den Kopf? Was hast du im Unterricht erlebt? Wie hast du KI eingesetzt und was ist dir dabei aufgefallen?"></textarea>
-          </div>
-
-          <!-- Expandable Details for Academic / IServ Requirements -->
-          <div class="sf-form-group full-width" style="margin-top: 0.5rem; border-top: 1px solid var(--border-subtle); padding-top: 0.8rem;">
-            <details class="sf-form-details" open>
-              <summary style="font-size: 0.84rem; font-weight: 700; color: var(--text-secondary); cursor: pointer; margin-bottom: 0.8rem;">
-                🔬 Wissenschaftliche Details für Herrn Jatzeck &amp; IServ (Prompt, Modell, Reflexion)
-              </summary>
-              
-              <div class="sf-form-grid" style="margin-top: 0.6rem;">
-                <div class="sf-form-group">
-                  <label class="sf-form-label" for="sfFormSubject">Fach-Bezeichnung (Text)</label>
-                  <input type="text" id="sfFormSubject" class="sf-form-input" placeholder="Seminarfach 4: KI (Hr. Jatzeck)">
-                </div>
-
-                <div class="sf-form-group">
-                  <label class="sf-form-label" for="sfFormModel">Genutztes Modell / Tool</label>
-                  <input type="text" id="sfFormModel" class="sf-form-input" placeholder="z. B. ChatGPT-4o, Claude 3.5 Sonnet, o1">
-                </div>
-
-                <div class="sf-form-group full-width">
-                  <label class="sf-form-label" for="sfFormTask">Aufgabenstellung / Kontext</label>
-                  <textarea id="sfFormTask" class="sf-form-textarea" rows="2" placeholder="Was war die Fragestellung oder das Unterrichtsziel?"></textarea>
-                </div>
-
-                <div class="sf-form-group full-width">
-                  <label class="sf-form-label" for="sfFormPrompt">Verwendeter Prompt (Wortlaut)</label>
-                  <textarea id="sfFormPrompt" class="sf-form-textarea" rows="3" placeholder="Wie genau hast du die KI angesprochen? (Prompt-Wortlaut)"></textarea>
-                </div>
-
-                <div class="sf-form-group full-width">
-                  <label class="sf-form-label" for="sfFormResult">Beobachtung &amp; KI-Ergebnis</label>
-                  <textarea id="sfFormResult" class="sf-form-textarea" rows="2" placeholder="Wie hat die KI geantwortet? Wo gab es Stärken oder Halluzinationen?"></textarea>
-                </div>
-
-                <div class="sf-form-group full-width">
-                  <label class="sf-form-label" for="sfFormReflection" style="color: #7c3aed;">
-                    🧠 Kritische Lernreflexion (Herr Jatzeck Kriterium: Erkenntnis vs. Cognitive Offloading)
-                  </label>
-                  <textarea id="sfFormReflection" class="sf-form-textarea" rows="3" placeholder="Welcher Lerneffekt ist entstanden? Was bedeutet das für deine Seminararbeit?"></textarea>
-                </div>
-
-                <div class="sf-form-group full-width">
-                  <label class="sf-form-label" for="sfFormTags">Schlagwörter (Komma-getrennt)</label>
-                  <input type="text" id="sfFormTags" class="sf-form-input" placeholder="z. B. Sokratik, Physik LK, Sweller, Active Recall">
-                </div>
-              </div>
-            </details>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="modal-footer" style="padding: 1rem 1.5rem; display: flex; justify-content: flex-end; gap: 0.6rem;">
-        <button class="btn-back-nav" onclick="closeSfEntryModal()">Abbrechen</button>
-        <button class="sf-btn sf-btn-primary" onclick="saveSfEntryFromModal()">💾 Tagebucheintrag speichern</button>
-      </div>
-    </div>
-  </div>
-
   <!-- JavaScript Modules -->
   <script src="calendar.js"></script>
   <script src="politik.js"></script>
@@ -2282,10 +2145,10 @@
   <script src="steckbrief.js"></script>
   <script src="schar.js"></script>
   <script src="matching.js"></script>
-  <script src="user_content.js?v=20260921_5"></script>
+  <script src="user_content.js?v=20260928_1"></script>
   <script src="physik.js"></script>
-  <script src="seminarfach.js?v=20260921_5"></script>
-  <script src="informatik.js?v=20260921_5"></script>
-  <script src="main_hub.js?v=20260921_5"></script>
+  <script src="seminarfach.js?v=20260928_1"></script>
+  <script src="informatik.js?v=20260928_1"></script>
+  <script src="main_hub.js?v=20260928_1"></script>
 </body>
 </html>

@@ -94,7 +94,7 @@ const DEFAULT_SF_JOURNAL = [
 ];
 
 // LocalStorage Key
-const SF_STORAGE_KEY = 'tonda_sf_diary_entries_v4';
+const SF_STORAGE_KEY = 'tonda_sf_diary_entries_v5';
 
 // State
 let currentSfTab = 'alle'; // 'alle' | 'unterricht' | 'ki' | 'themen' | 'news'
@@ -105,11 +105,25 @@ function getSfJournalEntries() {
     const raw = localStorage.getItem(SF_STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        // Check if any old entry has leftover slang or old buzzwords
+        const hasOutdated = parsed.some(e => 
+          e.content && (e.content.includes("Ziemlich krass") || e.content.includes("Cognitive Offloading") || e.content.includes("Schulumfrage"))
+        );
+        if (!hasOutdated) {
+          return parsed;
+        }
+      }
     }
+    // Clean old storage keys
+    localStorage.removeItem('tonda_sf_diary_entries_v4');
+    localStorage.removeItem('tonda_sf_diary_entries_v3');
+    localStorage.removeItem('tonda_sf_diary_entries_v2');
+    localStorage.removeItem('tonda_sf_diary_entries');
   } catch (e) {
     console.error("Fehler beim Laden des Tagebuchs:", e);
   }
+  saveSfJournalEntries(DEFAULT_SF_JOURNAL);
   return [...DEFAULT_SF_JOURNAL];
 }
 

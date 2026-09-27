@@ -356,37 +356,37 @@ const FAECHER_DATA = {
     teacher: 'Michael Jatzeck (sf4)',
     room: 'Sek II',
     color: '#8b5cf6',
-    icon: '🤖',
-    examStatus: '📝 Laufendes Prozessjournal & Forschungstagebuch',
-    desc: 'Künstliche Intelligenz & Selbstgesteuertes Lernen. Leitfrage der Arbeit: „Wie lernt man am besten mit KI?“ – Sokratische Tutoren, Metakognition, Cognitive Offloading.',
+    icon: '📓',
+    examStatus: 'Laufendes Oberstufen-Tagebuch',
+    desc: 'Künstliche Intelligenz in der Oberstufe. Persönliches Tagebuch, Unterrichtsmitschriften, Gedanken zur Themenfindung und aktuelle KI-News.',
     topics: [
       {
         id: 'sf-journal',
         num: '01',
-        title: 'Prozessjournal & KI-Erfahrungen',
+        title: 'Tagebuch & Notizen',
         badge: 'Laufend',
-        desc: 'Chronologische Dokumentation von Prompt-Experimenten, Modelltests und Lernreflexionen.'
+        desc: 'Dokumentation von Unterrichtsstunden, persönlichen Gedanken und KI-News.'
       },
       {
         id: 'sf-themen',
         num: '02',
-        title: 'Themenideen für die Seminarfacharbeit',
-        badge: '5 Ansätze',
-        desc: 'Forschungsfragen, Hypothesen und Gliederungsentwürfe mit Fokus auf effektives KI-Lernen.'
+        title: 'Themenfindung',
+        badge: 'Ideen',
+        desc: 'Kriterien und Notizen zur wissenschaftlichen Arbeit und Themenwahl.'
       },
       {
-        id: 'sf-tutor',
+        id: 'sf-ki-nutzung',
         num: '03',
-        title: 'Prompt-Studio: Sokratischer Tutor',
-        badge: 'Interaktiv',
-        desc: 'Getestete Prompts zur Vermeidung von Scheinwissen und Steigerung des Verständnisses.'
+        title: 'Eigene KI-Nutzung',
+        badge: 'Praxis',
+        desc: 'Erfahrungen und Beobachtungen beim Lernen mit Sprachmodellen.'
       },
       {
-        id: 'sf-matrix',
+        id: 'sf-news',
         num: '04',
-        title: 'KI-Modellvergleich & Praxistest',
-        badge: 'Vergleich',
-        desc: 'GPT-4o vs. o1 vs. Claude vs. Gemini vs. Perplexity für MINT, Code und Schule.'
+        title: 'Aktuelle KI-News',
+        badge: 'Aktuell',
+        desc: 'Neue Modelle, Schulthemen und Richtlinien im Überblick.'
       }
     ]
   }
