@@ -998,6 +998,12 @@ function renderFachDetail(fachId) {
       return;
     }
 
+    // If Deutsch, render the dedicated Sandmann Klausur-Portal directly in Fach-Detail
+    if (fachId === 'deutsch') {
+      renderDeutschPortal();
+      return;
+    }
+
     // If the subject has hierarchical stations, render drill-down folders
     if (fach.stations && fach.stations.length > 0) {
       gridEl.className = 'themen-stations-container';
@@ -2116,21 +2122,29 @@ window.addEventListener('DOMContentLoaded', () => {
   if (typeof initSeminarfachModule === 'function') initSeminarfachModule();
 });
 
+// --- DEUTSCH PORTAL & MODUL FUNCTIONS ---
+function renderDeutschPortal() {
+  const gridEl = document.getElementById('themenGrid');
+  const modEl = document.getElementById('topic-deutsch-sandmann');
+  if (!gridEl || !modEl) return;
 
+  gridEl.className = 'themen-custom-container';
+  gridEl.style.display = 'block';
+  gridEl.innerHTML = modEl.innerHTML;
 
+  // Initialize first tab
+  setTimeout(() => {
+    switchDeutschTab('augen');
+  }, 40);
+}
 
-
-
-// --- DEUTSCH MODUL FUNCTIONS ---
 function switchDeutschTab(tabId) {
   document.querySelectorAll('.deutsch-tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.deutsch-panel').forEach(p => p.classList.remove('active-panel'));
 
-  const btn = document.getElementById('dtab-btn-' + tabId);
-  const panel = document.getElementById('dpanel-' + tabId);
-
-  if (btn) btn.classList.add('active');
-  if (panel) panel.classList.add('active-panel');
+  // Activate all matching buttons and panels in both views (fach-detail and topic-workspace)
+  document.querySelectorAll('#dtab-btn-' + tabId + ', [id="dtab-btn-' + tabId + '"]').forEach(b => b.classList.add('active'));
+  document.querySelectorAll('#dpanel-' + tabId + ', [id="dpanel-' + tabId + '"]').forEach(p => p.classList.add('active-panel'));
 }
 
 function toggleDeutschAnswer(btn) {
