@@ -252,15 +252,15 @@ const FAECHER_DATA = {
     room: 'R3',
     color: '#f43f5e',
     icon: '📖',
-    examStatus: '⏳ Klausur am Freitag, 09.10.2026 (3. Std., R3)',
-    desc: 'Dramenanalyse, Epochenumbruch 18./19. Jahrhundert, Rhetorische Mittel, Argumentation.',
+    examStatus: '🚨 KLAUSUR MORGEN: E.T.A. Hoffmann „Der Sandmann“ (01.10.2026)',
+    desc: 'Schwarze Romantik, Novellenanalyse, Das Unheimliche, Figurenkontraste (Clara vs. Olimpia), Dialektische Auseinandersetzung.',
     topics: [
       {
-        id: 'deutsch-klausur',
+        id: 'deutsch-sandmann',
         num: '01',
-        title: 'Klausur-Fokus: Dramenanalyse & Operatoren',
-        badge: 'Klausur 09.10.',
-        desc: 'Szenenanalyse, Regieanweisungen, Dialoganalyse und Epochenkontexte.'
+        title: 'E.T.A. Hoffmann: Der Sandmann – Klausur-Mastery',
+        badge: '🚨 Klausur morgen!',
+        desc: 'Erstes & zweites Augenpaar (Clara vs. Olimpia / Kindheit vs. Coppola), dialektische Auseinandersetzung (AFB III), Freud, Formulierungshilfen & Zitate.'
       }
     ]
   },
@@ -533,6 +533,7 @@ function openFach(fachId, pushHistory = true) {
 }
 
 function openTopic(fachId, topicId, pushHistory = true) {
+  if (topicId === 'deutsch-klausur') topicId = 'deutsch-sandmann';
   const fach = FAECHER_DATA[fachId];
   if (!fach) return;
 
@@ -720,34 +721,34 @@ function updateBreadcrumbs() {
 
 // --- 6. DASHBOARD RENDERER ---
 function renderDashboard() {
-  // 1. Klausur Hero
+  // 1. Klausur Hero (Deutsch Morgen)
   const heroEl = document.getElementById('dashHeroUrgent');
   if (heroEl) {
     heroEl.innerHTML = `
-      <div class="urgent-hero-box" style="border-left-color: var(--accent-politik);">
+      <div class="urgent-hero-box" style="border-left-color: var(--accent-deutsch);">
         <div class="urgent-left">
-          <div class="urgent-alert-pill" style="background: var(--accent-politik-bg); color: var(--accent-politik); border-color: var(--accent-politik-border);">
-            <span class="status-dot"></span>
-            <strong>NÄCHSTE KLAUSUR: MORGEN!</strong>
+          <div class="urgent-alert-pill" style="background: var(--accent-deutsch-bg); color: var(--accent-deutsch); border-color: var(--accent-deutsch-border);">
+            <span class="status-dot" style="background: var(--accent-deutsch);"></span>
+            <strong>NÄCHSTE KLAUSUR: MORGEN! (DONNERSTAG, 01.10.2026)</strong>
           </div>
-          <h2 class="urgent-title">🏛️ Politik-Wirtschaft (pw25-Hf) &bull; Partizipation &amp; Wahlen</h2>
+          <h2 class="urgent-title">📖 Deutsch gA (de48-Hh) &bull; E.T.A. Hoffmann: Der Sandmann</h2>
           <div class="urgent-meta-grid">
-            <div class="um-item">📅 <strong>Dienstag, 15.09.2026</strong></div>
-            <div class="um-item">⏰ <strong>1. Stunde</strong> (Raum: <strong>R1</strong>)</div>
-            <div class="um-item">👨‍🏫 Lehrer: <strong>Hf</strong></div>
-            <div class="um-item">🎯 <strong>AFB I (Zusammenfassen), AFB II (Erläutern), AFB III (Urteil)</strong></div>
+            <div class="um-item">📅 <strong>Donnerstag, 01.10.2026</strong></div>
+            <div class="um-item">⏰ <strong>1. Stunde</strong> (Raum: <strong>R3</strong>)</div>
+            <div class="um-item">👩‍🏫 Lehrerin: <strong>Fr. Heinrich (Hh)</strong></div>
+            <div class="um-item">🎯 <strong>Augenpaare (Clara vs. Olimpia) &bull; Dialektische Auseinandersetzung (AFB III)</strong></div>
           </div>
         </div>
         <div class="urgent-right">
           <div class="next-up-preview">
-            <span class="nu-label">Direkt am Freitag folgt:</span>
-            <div class="nu-card">
-              <strong>⚡ PH12-Lh (Physik eA)</strong>
-              <span>Freitag, 18.09.2026 • 1. Stunde • Raum NW1</span>
+            <span class="nu-label">Klausur-Fokus:</span>
+            <div class="nu-card" style="border-left: 3px solid var(--accent-deutsch);">
+              <strong>👁️ Erstes &amp; zweites Augenpaar</strong>
+              <span>Rollentausch &bull; Psychologie &bull; Freud</span>
             </div>
           </div>
-          <button class="btn-hero-study" onclick="openFach('politik')">
-            🏛️ Politik-Lernmodule öffnen &rarr;
+          <button class="btn-hero-study" onclick="openTopic('deutsch', 'deutsch-sandmann')" style="background: var(--accent-deutsch); border-color: var(--accent-deutsch); box-shadow: 0 4px 14px rgba(185, 28, 28, 0.4);">
+            📖 Sandmann-Klausurmodul jetzt öffnen &rarr;
           </button>
         </div>
       </div>
@@ -875,7 +876,7 @@ function renderDashboardSubjects() {
   const container = document.getElementById('dashSubjectsGrid');
   if (!container) return;
 
-  const quickSubjects = ['mathe', 'politik', 'physik', 'informatik', 'seminarfach'];
+  const quickSubjects = ['deutsch', 'mathe', 'physik', 'informatik', 'politik', 'seminarfach'];
   let html = '';
 
   quickSubjects.forEach(id => {
@@ -2115,3 +2116,39 @@ window.addEventListener('DOMContentLoaded', () => {
   if (typeof initSeminarfachModule === 'function') initSeminarfachModule();
 });
 
+
+
+
+
+
+// --- DEUTSCH MODUL FUNCTIONS ---
+function switchDeutschTab(tabId) {
+  document.querySelectorAll('.deutsch-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.deutsch-panel').forEach(p => p.classList.remove('active-panel'));
+
+  const btn = document.getElementById('dtab-btn-' + tabId);
+  const panel = document.getElementById('dpanel-' + tabId);
+
+  if (btn) btn.classList.add('active');
+  if (panel) panel.classList.add('active-panel');
+}
+
+function toggleDeutschAnswer(btn) {
+  const card = btn.closest('.quiz-card');
+  const ans = card ? card.querySelector('.quiz-a') : null;
+  if (!ans) return;
+  const isShown = ans.style.display === 'block';
+  ans.style.display = isShown ? 'none' : 'block';
+  btn.textContent = isShown ? 'Antwort anzeigen' : 'Antwort verbergen';
+}
+
+let allDeutschRevealed = false;
+function toggleAllDeutschAnswers() {
+  allDeutschRevealed = !allDeutschRevealed;
+  document.querySelectorAll('.quiz-a').forEach(a => {
+    a.style.display = allDeutschRevealed ? 'block' : 'none';
+  });
+  document.querySelectorAll('.btn-toggle-quiz').forEach(b => {
+    b.textContent = allDeutschRevealed ? 'Antwort verbergen' : 'Antwort anzeigen';
+  });
+}

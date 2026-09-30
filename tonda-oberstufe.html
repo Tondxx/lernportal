@@ -7459,9 +7459,9 @@ input[type=range]::-webkit-slider-thumb:hover {
         <span id="privacyLockIcon">🔒</span>
       </button>
       <span class="student-badge">Tutor: J. Hildebrandt</span>
-      <div class="exam-pill-urgent" onclick="openFach('politik')">
-        <span class="status-dot"></span>
-        <strong>Morgen: Politik (pw25-Hf)</strong>
+      <div class="exam-pill-urgent" onclick="openTopic('deutsch', 'deutsch-sandmann')" style="background: var(--accent-deutsch-bg); color: var(--accent-deutsch); border-color: var(--accent-deutsch-border); cursor: pointer;">
+        <span class="status-dot" style="background: var(--accent-deutsch);"></span>
+        <strong>Morgen: Deutsch-Klausur (Der Sandmann)</strong>
       </div>
     </div>
   </nav>
@@ -7727,6 +7727,668 @@ input[type=range]::-webkit-slider-thumb:hover {
 
     <!-- Generic Module Placeholder -->
     <div id="topic-generic-placeholder" class="topic-module-box"></div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- DEUTSCH TOPIC: E.T.A. HOFFMANN - DER SANDMANN                         -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-deutsch-sandmann" class="topic-module-box">
+      <style>
+        .deutsch-hero-banner {
+          background: linear-gradient(135deg, rgba(185, 28, 28, 0.12) 0%, rgba(185, 28, 28, 0.03) 100%);
+          border: 1px solid var(--accent-deutsch-border);
+          border-left: 5px solid var(--accent-deutsch);
+          border-radius: var(--radius-lg);
+          padding: 1.25rem 1.5rem;
+          margin-bottom: 1.5rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+        .dh-title-area h2 {
+          font-size: 1.45rem;
+          font-weight: 800;
+          color: var(--text-primary);
+          margin-bottom: 0.25rem;
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+        }
+        .dh-meta {
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+          margin-top: 0.35rem;
+        }
+        .dh-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          padding: 0.2rem 0.6rem;
+          border-radius: var(--radius-xs);
+          font-size: 0.76rem;
+          font-weight: 700;
+          background: var(--accent-deutsch-bg);
+          color: var(--accent-deutsch);
+          border: 1px solid var(--accent-deutsch-border);
+        }
+        .deutsch-tab-bar {
+          display: flex;
+          gap: 0.5rem;
+          margin-bottom: 1.25rem;
+          overflow-x: auto;
+          padding-bottom: 0.25rem;
+        }
+        .deutsch-tab-btn {
+          padding: 0.6rem 1.1rem;
+          background: var(--bg-card);
+          border: 1px solid var(--border-subtle);
+          border-radius: var(--radius-md);
+          color: var(--text-secondary);
+          font-size: 0.86rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          white-space: nowrap;
+        }
+        .deutsch-tab-btn:hover {
+          background: var(--bg-subtle);
+          color: var(--text-primary);
+          border-color: var(--border-medium);
+        }
+        .deutsch-tab-btn.active {
+          background: var(--accent-deutsch);
+          color: #ffffff;
+          border-color: var(--accent-deutsch);
+          box-shadow: 0 2px 8px rgba(185, 28, 28, 0.3);
+        }
+        .deutsch-panel {
+          display: none;
+          flex-direction: column;
+          gap: 1.25rem;
+        }
+        .deutsch-panel.active-panel {
+          display: flex;
+        }
+        .contrast-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.25rem;
+        }
+        @media (max-width: 820px) {
+          .contrast-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+        .c-box {
+          background: var(--bg-card);
+          border-radius: var(--radius-md);
+          border: 1px solid var(--border-subtle);
+          padding: 1.2rem;
+          box-shadow: var(--card-shadow);
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+        .c-box.clara {
+          border-top: 4px solid #0284c7;
+        }
+        .c-box.olimpia {
+          border-top: 4px solid var(--accent-deutsch);
+        }
+        .c-box.coppelius {
+          border-top: 4px solid #7c3aed;
+        }
+        .c-box.coppola {
+          border-top: 4px solid #d97706;
+        }
+        .c-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          border-bottom: 1px solid var(--border-subtle);
+          padding-bottom: 0.6rem;
+        }
+        .c-head h4 {
+          font-size: 1.05rem;
+          font-weight: 800;
+          color: var(--text-primary);
+        }
+        .c-badge {
+          font-size: 0.72rem;
+          font-weight: 700;
+          padding: 0.15rem 0.5rem;
+          border-radius: var(--radius-xs);
+        }
+        .quiz-card {
+          background: var(--bg-card);
+          border: 1px solid var(--border-subtle);
+          border-radius: var(--radius-md);
+          padding: 1rem 1.2rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          box-shadow: var(--card-shadow);
+        }
+        .quiz-q {
+          font-weight: 700;
+          font-size: 0.92rem;
+          color: var(--text-primary);
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+        .quiz-a {
+          display: none;
+          background: var(--bg-subtle);
+          border-left: 3px solid var(--accent-deutsch);
+          padding: 0.75rem 1rem;
+          border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+          line-height: 1.5;
+          margin-top: 0.4rem;
+        }
+        .btn-toggle-quiz {
+          align-self: flex-start;
+          background: transparent;
+          border: 1px solid var(--border-medium);
+          padding: 0.3rem 0.75rem;
+          border-radius: var(--radius-sm);
+          font-size: 0.78rem;
+          font-weight: 600;
+          color: var(--text-secondary);
+          cursor: pointer;
+          transition: all 0.15s ease;
+        }
+        .btn-toggle-quiz:hover {
+          background: var(--bg-subtle);
+          color: var(--text-primary);
+        }
+        .quote-callout {
+          background: var(--bg-subtle);
+          border-left: 4px solid var(--accent-deutsch);
+          border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+          padding: 0.85rem 1.15rem;
+          margin: 0.5rem 0;
+          font-style: italic;
+          color: var(--text-primary);
+          font-size: 0.92rem;
+          line-height: 1.45;
+        }
+        .quote-sub {
+          display: block;
+          font-style: normal;
+          font-size: 0.78rem;
+          color: var(--text-muted);
+          margin-top: 0.35rem;
+          font-weight: 600;
+        }
+      </style>
+
+      <!-- HERO BANNER -->
+      <div class="deutsch-hero-banner">
+        <div class="dh-title-area">
+          <h2><span>📖</span> E.T.A. Hoffmann: Der Sandmann (1816)</h2>
+          <div class="dh-meta">
+            <span class="dh-pill">🚨 Klausur: 01.10.2026 (1. Std., R3)</span>
+            <span>Fach: <strong>Deutsch gA (de48)</strong></span>
+            <span>Lehrerin: <strong>Fr. Heinrich (Hh)</strong></span>
+            <span>Epoche: <strong>Schwarze Romantik / Spätromantik</strong></span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn-cal-action" onclick="openFach('deutsch')" style="font-size: 0.8rem;">
+            &larr; Deutsch-Übersicht
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB NAVIGATION -->
+      <div class="deutsch-tab-bar">
+        <button class="deutsch-tab-btn active" id="dtab-btn-augen" onclick="switchDeutschTab('augen')">
+          <span>👀</span> 1. Erstes &amp; Zweites Augenpaar
+        </button>
+        <button class="deutsch-tab-btn" id="dtab-btn-auseinandersetzung" onclick="switchDeutschTab('auseinandersetzung')">
+          <span>✍️</span> 2. Die Auseinandersetzung (Leitfaden)
+        </button>
+        <button class="deutsch-tab-btn" id="dtab-btn-streitfragen" onclick="switchDeutschTab('streitfragen')">
+          <span>⚔️</span> 3. Die 3 Klausur-Streitfragen
+        </button>
+        <button class="deutsch-tab-btn" id="dtab-btn-zitate" onclick="switchDeutschTab('zitate')">
+          <span>💎</span> 4. Zitate &amp; Formulierungen
+        </button>
+        <button class="deutsch-tab-btn" id="dtab-btn-quiz" onclick="switchDeutschTab('quiz')">
+          <span>🧠</span> 5. Klausur-Quiz (8 Fragen)
+        </button>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- TAB 1: ERSTES & ZWEITES AUGENPAAR                                   -->
+      <!-- =================================================================== -->
+      <div id="dpanel-augen" class="deutsch-panel active-panel">
+        
+        <!-- CARD 1: DIE WEIBLICHEN AUGENPAARE (CLARA VS. OLIMPIA) -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>👁️</span> Ebene 1: Die gegensätzlichen Frauenaugen (Clara vs. Olimpia)</h3>
+            <span class="p-badge" style="background: rgba(185, 28, 28, 0.15); color: var(--accent-deutsch); border: 1px solid var(--accent-deutsch-border);">Klausur-Kernfokus</span>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem;">
+            Das Augenmotiv spiegelt Nathanaels geistigen Zustand und seine gestörte Beziehung zur Wirklichkeit. Im Zentrum steht der <strong>fatale Rollentausch</strong> zwischen der lebendigen Frau und der toten Holzpuppe:
+          </p>
+
+          <div class="contrast-grid">
+            <!-- CLARA -->
+            <div class="c-box clara">
+              <div class="c-head">
+                <h4>1. Augenpaar: Clara</h4>
+                <span class="c-badge" style="background: rgba(2, 132, 199, 0.15); color: #0284c7; border: 1px solid rgba(2, 132, 199, 0.3);">Aufklärung &bull; Realität</span>
+              </div>
+              <ul style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; margin-left: 1.1rem; display: flex; flex-direction: column; gap: 0.45rem;">
+                <li><strong>Namensbedeutung:</strong> Lat. <em>clarus</em> = die Helle, Klare, Reine, Einsichtige.</li>
+                <li><strong>Reale Beschaffenheit:</strong> Lebendige, klare, aufmerksame Augen. Der Erzähler lobt ihren seelenvollen, reinen Blick.</li>
+                <li><strong>Funktion &amp; Weltbild:</strong> Repräsentantin der <strong>Aufklärung</strong> und des gesunden Menschenverstands. Sie entlarvt den Sandmann als psychologisches Hirngespinst (<em>„Alles Entsetzliche existierte nur in deinem Gemüt“</em>).</li>
+                <li><strong>Nathanaels Wahrnehmungsverzerrung:</strong> Da Clara seine düsteren Dichtungen kritisch hinterfragt und nicht hysterisch bewundert, empfindet er ihren klaren Blick als Kälte. Er beschuldigt sie eines <em>„toten Gemüts“</em> und beschimpft sie im Affekt als <strong>„leblose, verdammte Puppe“</strong>!</li>
+                <li><strong>Beziehungsdynamik:</strong> Echte, gleichberechtigte Kommunikation. Nathanael hält diese Konfrontation mit der Wirklichkeit nicht aus.</li>
+              </ul>
+            </div>
+
+            <!-- OLIMPIA -->
+            <div class="c-box olimpia">
+              <div class="c-head">
+                <h4>2. Augenpaar: Olimpia</h4>
+                <span class="c-badge" style="background: rgba(185, 28, 28, 0.15); color: var(--accent-deutsch); border: 1px solid var(--accent-deutsch-border);">Täuschung &bull; Projektion</span>
+              </div>
+              <ul style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; margin-left: 1.1rem; display: flex; flex-direction: column; gap: 0.45rem;">
+                <li><strong>Reale Beschaffenheit:</strong> Eine leblose Holzpuppe (Automat). Ihre Augen sind <strong>starre Glasaugen</strong>, blicklos, unbeweglich, seelenlos und <em>„todesstarr“</em>.</li>
+                <li><strong>Nathanaels Wahrnehmungsverzerrung:</strong> Durch Coppolas manipulierendes <strong>Taschenperspektiv</strong> meint Nathanael, in ihren Augen tiefste Seelenverwandtschaft, Liebe und feurige Blicke zu sehen (<em>„strahlende Sehnsucht“</em>).</li>
+                <li><strong>Funktion &amp; Weltbild:</strong> <strong>Narzisstische Projektionsfläche</strong>. Olimpia sagt im Grunde nur <em>„Ach, ach!“</em>. Sie widerspricht nie, hat keinen eigenen Verstand und dient Nathanael nur als stummer Spiegel, in dem er sich selbst als Dichtergenie anhimmelt.</li>
+                <li><strong>Höhepunkt &amp; Vernichtung:</strong> Streit zwischen Coppola und Spalanzani. Spalanzani reißt ihr die Augen heraus und schleudert Nathanael die blutigen Glasaugen an die Brust: <em>„Da hast du die Augen!“</em></li>
+                <li><strong>Beziehungsdynamik:</strong> Schein-Beziehung ohne Gegenüber. Nathanael liebt nicht Olimpia, sondern nur sein eigenes Echo.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- KLAUSUR-HIGHLIGHT BOX -->
+          <div class="schema-box" style="border-left: 4px solid var(--accent-deutsch); margin-top: 1.25rem;">
+            <div class="sb-head">
+              <strong>💡 Klausur-Pointe für die Bestnote: Der fatale Rollentausch</strong>
+              <span class="sb-badge" style="background: var(--accent-deutsch-bg); color: var(--accent-deutsch);">Pointen-Garant</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+              Nathanael erleidet eine vollständige Verkehrung seiner Wahrnehmung: 
+              Er degradiert die <strong>lebendige, fühlende Frau (Clara)</strong> zur <em>„leblosen Puppe“</em>, weil sie autonom denkt und ihm widerspricht. Gleichzeitig erhebt er die <strong>tote, künstliche Holzpuppe (Olimpia)</strong> zur <em>„einzigen Frau mit Seele“</em>, weil sie stumm bleibt und sein Ego ungestört reflektiert. Seine Liebe zu Olimpia ist in Wahrheit reiner <strong>Narzissmus</strong>.
+            </p>
+          </div>
+        </section>
+
+        <!-- CARD 2: DIE TRAUMATISCHEN GEWALT-SZENEN (COPPELIUS VS. COPPOLA) -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>⚡</span> Ebene 2: Die traumatischen Augen-Szenen (Kindheit vs. Erwachsenenalter)</h3>
+            <span class="p-badge" style="background: rgba(124, 58, 237, 0.15); color: #7c3aed; border: 1px solid rgba(124, 58, 237, 0.3);">Traumagenese &bull; Freud</span>
+          </div>
+
+          <div class="contrast-grid">
+            <!-- SZENE 1 -->
+            <div class="c-box coppelius">
+              <div class="c-head">
+                <h4>1. Szene: Das Kindheitstrauma</h4>
+                <span class="c-badge" style="background: rgba(124, 58, 237, 0.15); color: #7c3aed;">Coppelius &bull; Alchemie</span>
+              </div>
+              <ul style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; margin-left: 1.1rem; display: flex; flex-direction: column; gap: 0.45rem;">
+                <li><strong>Der Ursprung:</strong> Die Amme erzählt das Schauermärchen vom Sandmann, der bösen Kindern Sand in die Augen streut, bis sie blutig herausspringen, und sie an seine Jungen im Eulennest verfüttert.</li>
+                <li><strong>Die Konfrontation:</strong> Nathanael versteckt sich im Zimmer des Vaters. Der grässliche Advokat <strong>Coppelius</strong> führt alchemistische Experimente durch.</li>
+                <li><strong>Der Gewaltexzess:</strong> Coppelius entdeckt den Knaben, reißt ihn an sich: <em>„Augen her, Augen her!“</em> Er droht, glühende Asche/Glutkörner in seine Augen zu streuen und schraubt ihm symbolisch Hände und Füße ab.</li>
+                <li><strong>Das Ende:</strong> Bei einem späteren Experiment explodiert der Ofen – der Vater stirbt, Coppelius flieht spurlos.</li>
+                <li><strong>Deutung nach Freud:</strong> Angst vor Erblindung ist die psychische Verschiebung der <strong>Kastrationsangst</strong> und der Angst vor Bestrafung durch die übermächtige Vaterfigur.</li>
+              </ul>
+            </div>
+
+            <!-- SZENE 2 -->
+            <div class="c-box coppola">
+              <div class="c-head">
+                <h4>2. Szene: Die Wiederkehr des Traumas</h4>
+                <span class="c-badge" style="background: rgba(217, 119, 6, 0.15); color: #d97706;">Coppola &bull; Brillen &amp; Puppe</span>
+              </div>
+              <ul style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; margin-left: 1.1rem; display: flex; flex-direction: column; gap: 0.45rem;">
+                <li><strong>Das Auftauchen:</strong> Der italienische Händler <strong>Giuseppe Coppola</strong> klopft an Nathanaels Studentenzimmer. Er ähnelt Coppelius bis aufs Haar.</li>
+                <li><strong>Die Kiste der Augen:</strong> Coppola ruft: <em>„Ei, Sköne Oke – Sköne Oke!“</em> (Schöne Augen). Er öffnet seinen Kasten: Hunderte Brillen und Linsen starren Nathanael wie flammende, dämonische Augen an.</li>
+                <li><strong>Das Instrument der Täuschung:</strong> Nathanael kauft aus panischer Beklemmung das <strong>Taschenperspektiv</strong>. Statt die Realität zu schärfen, verzerrt das optische Glas seinen Blick auf Olimpia vollends.</li>
+                <li><strong>Die Entlarvung:</strong> Nathanael wird Zeuge des Streits zwischen Spalanzani und Coppola. Olimpia liegt ohne Augen da – die blutigen Glasaugen fliegen ihm an die Brust.</li>
+                <li><strong>Der Rückfall:</strong> Das verdrängte Kindheitstrauma bricht schlagartig durch; Nathanael verfällt dem absoluten Tobsuchtswahn (<em>„Feuerkreis, dreh dich!“</em>).</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- TAB 2: DIE AUSEINANDERSETZUNG (LEITFADEN & AUFBAU)                  -->
+      <!-- =================================================================== -->
+      <div id="dpanel-auseinandersetzung" class="deutsch-panel">
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>📋</span> Leitfaden: Wie schreibe ich die Auseinandersetzung (AFB III)?</h3>
+            <span class="p-badge" style="background: rgba(30, 126, 52, 0.15); color: #16a34a; border: 1px solid rgba(30, 126, 52, 0.3);">Klausur-Erfolgsplan</span>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem;">
+            Der Operator <strong>„Sich auseinandersetzen mit...“</strong> verlangt eine <strong>dialektische Urteilsbildung</strong>. Du musst Thesen strukturiert abwägen, Gegenargumente prüfen und zu einem fundierten, eigenständigen Schlusssurteil gelangen.
+          </p>
+
+          <div class="schema-step-list">
+            <!-- SCHRITT 1 -->
+            <div class="schema-box" style="border-left: 3px solid #0284c7;">
+              <div class="sb-head">
+                <strong>Schritt 1: Einleitung (Problemaufriss &amp; These)</strong>
+                <span class="sb-badge" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">ca. 10 % des Textes</span>
+              </div>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+                <li><strong>Basissatz:</strong> Text, Autor, Erscheinungsjahr (1816), Epoche (Schwarze Romantik).</li>
+                <li><strong>Thematische Hinführung:</strong> Den Streitpunkt bzw. das Zitat aus der Aufgabenstellung präzise aufgreifen (z. B. <em>„In der Forschung wird kontrovers diskutiert, ob Nathanael an einem inneren Wahnsinn zugrunde geht oder ob finstere Mächte sein Schicksal besiegeln.“</em>).</li>
+                <li><strong>Leitfrage formulieren:</strong> <em>„Im Folgenden soll erörtert werden, inwiefern...“</em>.</li>
+              </ul>
+            </div>
+
+            <!-- SCHRITT 2 -->
+            <div class="schema-box" style="border-left: 3px solid #d97706;">
+              <div class="sb-head">
+                <strong>Schritt 2: Hauptteil (Dialektische Argumentation)</strong>
+                <span class="sb-badge" style="background: rgba(217, 119, 6, 0.15); color: #d97706;">ca. 75 % des Textes</span>
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.45;">
+                Verwende das <strong>Sanduhr-Prinzip</strong> (vom schwächsten zum stärksten Argument) oder das <strong>Ping-Pong-Prinzip</strong>:
+              </p>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-top: 0.4rem;">
+                <li><strong>Teil A (Antithese / Gegenseite):</strong> Beginne mit der Position, die du <em>weniger</em> vertrittst (z. B. reine Dämonie oder reine Schuld Claras). Führe Argumente an und stütze sie mit Textstellen (Coppelius’ reales Wiedererscheinen auf dem Turm, Spalanzanis unheimliche Puppe). Entkräfte diese Argumente am Ende des Abschnitts.</li>
+                <li><strong>Teil B (These / Eigene Hauptposition):</strong> Entfalte nun die stärkere Position (z. B. Psychologisches Trauma, Autosuggestion, Narzissmus). Stütze jedes Argument mit Szenen (Ammenmärchen, Claras Briefanalyse, Olimpia als stummer Spiegel).</li>
+                <li><strong>Dreischritt pro Argument:</strong> Behauptung $
+ightarrow$ Begründung/Textbeleg (Zitate oder Szenenbezug) $
+ightarrow$ Deutung/Rückbezug zur Leitfrage.</li>
+              </ul>
+            </div>
+
+            <!-- SCHRITT 3 -->
+            <div class="schema-box" style="border-left: 3px solid var(--accent-deutsch);">
+              <div class="sb-head">
+                <strong>Schritt 3: Schlusssynthese &amp; Differenziertes Fazit</strong>
+                <span class="sb-badge" style="background: var(--accent-deutsch-bg); color: var(--accent-deutsch);">ca. 15 % des Textes</span>
+              </div>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+                <li><strong>Keine bloße Zusammenfassung:</strong> Führe die Argumente auf eine höhere Ebene zusammen!</li>
+                <li><strong>Die Hoffmannsche Ambivalenz aufzeigen:</strong> Hoffmanns Meisterleistung liegt darin, dass er die Frage <strong>bewusst in der Schwebe lässt</strong>. Nathanaels Psyche ist hochgradig gestört (Projektion/Wahn), doch die Welt um ihn herum (Mechanik, Automaten, Spukfiguren) ist tatsächlich beängstigend und kalt.</li>
+                <li><strong>Abschließender Gedanke:</strong> Ausblick auf die Moderne (z. B. Sehnsucht nach perfekten künstlichen Projektionen wie KI/Siri vs. Angst vor menschlicher Kritik; Vereinsamung des Subjekts).</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- TAB 3: DIE 3 KLASSISCHEN KLAUSUR-STREITFRAGEN                      -->
+      <!-- =================================================================== -->
+      <div id="dpanel-streitfragen" class="deutsch-panel">
+        
+        <!-- STREITFRAGE 1 -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>⚔️</span> Streitfrage 1: Psychologischer Wahn vs. Reale Dämonie</h3>
+            <span class="p-badge" style="background: rgba(185, 28, 28, 0.15); color: var(--accent-deutsch);">Klassiker Nr. 1</span>
+          </div>
+          <div class="contrast-grid">
+            <div class="c-box" style="border-top: 3px solid #0284c7;">
+              <h4 style="color: #0284c7;">Position A: Psychologische Störung / Wahn</h4>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-left: 1rem;">
+                <li><strong>Traumatisierung:</strong> Die Ammenmärchen haben sich als Phobie ins kindliche Gemüt eingebrannt. Der Tod des Vaters fixiert das Trauma.</li>
+                <li><strong>Autosuggestion:</strong> Nathanael deutet zufällige Begegnungen (Coppola = Hausierer mit Brillen) wahnhaft als Rückkehr des Dämons Coppelius.</li>
+                <li><strong>Sigmund Freud („Das Unheimliche“):</strong> Die Bedrohung der Augen ist die verdrängte <em>Kastrationsangst</em>; Coppelius spaltet die Vaterfigur in den guten Vater (Experimente) und bösen Vater (Coppelius/Zerstörer).</li>
+              </ul>
+            </div>
+            <div class="c-box" style="border-top: 3px solid #7c3aed;">
+              <h4 style="color: #7c3aed;">Position B: Reale dämonische Mächte</h4>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-left: 1rem;">
+                <li><strong>Nachtseite der Natur:</strong> Romantische Überzeugung, dass der Mensch von finsteren, unerklärlichen Schicksalsmächten gelenkt wird.</li>
+                <li><strong>Reale Doppelgängerschaft:</strong> Coppola und Coppelius kooperieren nachweislich mit Spalanzani. Die Puppe Olimpia existiert real!</li>
+                <li><strong>Schlussauftritt:</strong> Beim Turmsturz steht Coppelius tatsächlich mitten im Volk und prophezeit Nathanaels Tod (<em>„Wart nur, der kommt schon von selbst herunter“</em>).</li>
+              </ul>
+            </div>
+          </div>
+          <div class="schema-box" style="margin-top: 0.8rem; background: var(--bg-subtle);">
+            <strong style="color: var(--text-primary); font-size: 0.84rem;">🎯 Synthese für die Klausur:</strong>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.2rem;">
+              Hoffmann wendet das poetische Konzept des <strong>unzuverlässigen Erzählers</strong> an (Konzept des Phantastischen nach Todorov). Die düstere Macht entfaltet ihre Wirkung gerade <em>durch</em> Nathanaels labile Psyche. Wie Clara treffend formuliert: Die dunkle Macht kann nur siegen, wenn das eigene Innere ihr Raum gibt.
+            </p>
+          </div>
+        </section>
+
+        <!-- STREITFRAGE 2 -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>⚖️</span> Streitfrage 2: Clara – Lebensretterin oder verständnislose Philisterin?</h3>
+            <span class="p-badge" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">Aufklärung vs. Romantik</span>
+          </div>
+          <div class="contrast-grid">
+            <div class="c-box" style="border-top: 3px solid #16a34a;">
+              <h4 style="color: #16a34a;">Pro Clara (Die Vernunft &amp; Rettung)</h4>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-left: 1rem;">
+                <li>Sie analysiert Nathanaels Trauma messerscharf und nimmt ihm die Schuldgefühle.</li>
+                <li>Sie liebt ihn aufrichtig und bewahrt ihn vor dem Duell mit ihrem Bruder Lothar.</li>
+                <li>Auf dem Turm versucht sie bis zur letzten Sekunde, ihn vor dem Sturz ins Verderben zu bewahren.</li>
+              </ul>
+            </div>
+            <div class="c-box" style="border-top: 3px solid #dc2626;">
+              <h4 style="color: #dc2626;">Contra Clara (Kälte &amp; Philistertum)</h4>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-left: 1rem;">
+                <li>Ihr fehlt jedes Verständnis für künstlerische Sensibilität und seelische Abgründe.</li>
+                <li>Sie langweilt sich bei seinen Gedichten und fordert ihn auf, seine Kunst ins Feuer zu werfen.</li>
+                <li>Am Ende heiratet sie einen biederen, unauffälligen Mann und lebt ein bürgerliches Idyll („Philister-Dasein“).</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- STREITFRAGE 3 -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>🤖</span> Streitfrage 3: Olimpia als bösartige Satire auf die Gesellschaft</h3>
+            <span class="p-badge" style="background: rgba(217, 119, 6, 0.15); color: #d97706;">Gesellschaftskritik</span>
+          </div>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+            Warum fällt die Gesellschaft wochenlang auf eine Holzpuppe herein?
+            Hoffmann übt hier vernichtende Kritik am <strong>patriarchalen Frauenbild</strong> des 19. Jahrhunderts:
+          </p>
+          <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-left: 1.2rem; margin-top: 0.4rem;">
+            <li>Eine „perfekte bürgerliche Dame“ sollte Klavier spielen, zierlich tanzen, nicht widersprechen und den Mann anhimmeln. Olimpia tut exakt das – und wird deshalb von Professoren und Studenten als hochgebildet und sittsam gelobt!</li>
+            <li>Nach der Entlarvung bricht in der Stadt Panik aus: Die Bürger verlangen von ihren Bräuten und Ehefrauen, dass sie beim Sprechen leicht gähnen oder ungelenk tanzen, um zu beweisen, dass sie keine Maschinen sind!</li>
+          </ul>
+        </section>
+
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- TAB 4: ZITATE & FORMULIERUNGSHILFEN                                 -->
+      <!-- =================================================================== -->
+      <div id="dpanel-zitate" class="deutsch-panel">
+        
+        <!-- CARD: SCHLÜSSELZITATE -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>💎</span> Die 6 goldenen Klausur-Zitate (mit Anwendungskontext)</h3>
+            <span class="p-badge" style="background: var(--accent-deutsch-bg); color: var(--accent-deutsch);">Auswendig lernen!</span>
+          </div>
+
+          <div class="quote-callout">
+            „Augen her, Augen her!“
+            <span class="quote-sub">Coppelius beim Nachtexperiment &bull; Perfekt für: Kindheitstrauma, Kastrationsangst nach Freud, Ursprung des Wahns.</span>
+          </div>
+
+          <div class="quote-callout">
+            „Ei, Sköne Oke – Sköne Oke!“
+            <span class="quote-sub">Giuseppe Coppola beim Brillenverkauf &bull; Perfekt für: Reaktivierung des Traumas, Verkaufsgespräch der optischen Linsen.</span>
+          </div>
+
+          <div class="quote-callout">
+            „Glaube, dass wenn es eine dunkle Macht gibt, ... sie in unserem eignen Innern Platz greifen muss.“
+            <span class="quote-sub">Clara in ihrem 1. Brief an Nathanael &bull; Perfekt für: Aufklärerische Vernunft, psychologische Verinnerlichung des Bösen.</span>
+          </div>
+
+          <div class="quote-callout">
+            „Du leblose, verdammte Puppe!“
+            <span class="quote-sub">Nathanael zu Clara beim Streit um sein Gedicht &bull; Perfekt für: Verkehrung der Wirklichkeit / Rollentausch vor dem Olimpia-Kontakt.</span>
+          </div>
+
+          <div class="quote-callout">
+            „Da hast du die Augen – da hast du sie!“
+            <span class="quote-sub">Spalanzani schleudert die blutigen Glasaugen an Nathanaels Brust &bull; Perfekt für: Wendepunkt (Peripetie), endgültiger Rückfall in den Wahnsinn.</span>
+          </div>
+
+          <div class="quote-callout">
+            „Sköne Püppchen, dreh dich! – dreh dich!“
+            <span class="quote-sub">Nathanaels Wahnsinnsruf auf dem Rathausturm &bull; Perfekt für: Finale Katastrophe, Verschmelzen von Clara und Olimpia im Wahn.</span>
+          </div>
+        </section>
+
+        <!-- CARD: FORMULIERUNGSHILFEN -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>✍️</span> Elegante Formulierungshilfen für Bestnoten</h3>
+            <span class="p-badge" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">Sprachliche Brillanz</span>
+          </div>
+          <div class="schema-step-list">
+            <div class="schema-box">
+              <strong style="color: var(--text-primary); font-size: 0.85rem;">Für die Einleitung:</strong>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem; font-style: italic;">
+                „E.T.A. Hoffmanns 1816 erschienene Schauernovelle ‚Der Sandmann‘ thematisiert das fragile Verhältnis zwischen subjektiver Einbildungskraft und objektiver Realität an der Epochenschwelle von Aufklärung und Schwarzer Romantik.“
+              </p>
+            </div>
+            <div class="schema-box">
+              <strong style="color: var(--text-primary); font-size: 0.85rem;">Für den Übergang zur Analyse / Auseinandersetzung:</strong>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem; font-style: italic;">
+                „Dieses Spannungsverhältnis kristallisiert sich insbesondere am zentralen Leitmotiv des Werkes heraus: dem Auge als Spiegel der Seele und Einfallstor des Wahns.“
+              </p>
+            </div>
+            <div class="schema-box">
+              <strong style="color: var(--text-primary); font-size: 0.85rem;">Für den Rollentausch (Clara vs. Olimpia):</strong>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem; font-style: italic;">
+                „Nathanaels Wahrnehmungsvermögen unterliegt einer pervertierten Inversion: Während er Claras emanzipierte Vernunft als gefühllose Starrheit denunziert, verklärt er Olimpias mechanische Leblosigkeit zum Inbegriff weiblicher Hingabe.“
+              </p>
+            </div>
+            <div class="schema-box">
+              <strong style="color: var(--text-primary); font-size: 0.85rem;">Für das differenzierte Fazit (Synthese):</strong>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem; font-style: italic;">
+                „Hoffmann entzieht dem Rezipienten bewusst die tröstliche Sicherheit einer eindeutigen Deutung. Die Tragödie Nathanaels entfaltet sich exakt in jenem unheimlichen Zwischenreich, in dem psychische Disposition und äußere Schrecknisse unlösbar ineinandergreifen.“
+              </p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- TAB 5: INTERAKTIVES KLAUSUR-QUIZ (8 SELBSTTEST-FRAGEN)             -->
+      <!-- =================================================================== -->
+      <div id="dpanel-quiz" class="deutsch-panel">
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>🧠</span> Express-Check: 8 Klausur-Testfragen (Mit Klick-Lösungen)</h3>
+            <button class="btn-cal-action" onclick="toggleAllDeutschAnswers()" style="font-size: 0.78rem;">
+              👁️ Alle Antworten aufdecken / verdecken
+            </button>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.8rem;">
+            Teste dich jetzt selbst, um vor der Klausur morgen absolut sicher zu sein:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            
+            <!-- Q1 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>1.</span> Warum kauft Nathanael das Perspektiv, obwohl er Angst vor Coppola hat?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Aus einer Mischung aus panischer Beklemmung, Scham und dem unbewussten Drang, Coppola loszuwerden. Das Taschenperspektiv fungiert fortan als optischer Filter, der seine Wahrnehmung manipuliert und Olimpia belebt.
+              </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>2.</span> Welche Rolle spielt Sigmund Freuds Aufsatz „Das Unheimliche“ für das Werk?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Freud deutet die Angst vor Augenverlust als <strong>Kastrationsangst</strong>. Das Unheimliche ist nach Freud nichts gänzlich Neues, sondern etwas einst Vertrautes (Kindheitsangst, Ammenmärchen), das verdrängt wurde und nun mit Gewalt wieder an die Oberfläche bricht.
+              </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>3.</span> Wie kommt es zum Rollentausch zwischen Clara und Olimpia?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Clara fordert Nathanael heraus, widerspricht ihm und vertritt die Vernunft – Nathanael fühlt sich gekränkt und beschimpft sie als <em>„leblose Puppe“</em>. Olimpia dagegen schweigt, widerspricht nie und dient als leerer Spiegel für sein Ego – Nathanael hält die Holzpuppe deshalb für die einzige beseelte Frau.
+              </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>4.</span> Was bedeuten Coppolas Worte „Ei, Sköne Oke“?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Coppola spricht mit italienischem Akzent und meint Brillen und Gläser („Schöne Augen“). Für Nathanael reaktiviert dieser Ausruf jedoch das Kindheitstrauma, in dem Coppelius rief: <em>„Augen her, Augen her!“</em>.
+              </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>5.</span> Was geschieht auf dem Rathausturm am Ende der Novelle?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Nathanael will mit Clara die Aussicht genießen. Er greift nach dem Taschenperspektiv, blickt versehentlich auf Clara, verfällt erneut dem Tobsuchtswahn (<em>„Sköne Püppchen, dreh dich!“</em>) und will sie in die Tiefe stürzen. Lothar rettet Clara. Unten in der Menge sieht Nathanael Coppelius und stürzt sich selbst mit zerschmettertem Schädel in den Tod.
+              </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>6.</span> Inwiefern ist der Erzähler im „Sandmann“ unzuverlässig?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Die Novelle beginnt mit drei Briefen (Nathanael, Clara, Nathanael), die subjektive, widersprüchliche Sichtweisen bieten. Danach schaltet sich ein Ich-Erzähler ein, der Sympathie für Nathanael hegt, aber zugibt, dass ihm die Worte fehlen. Der Leser erhält nie eine neutrale, objektive Wahrheit.
+              </div>
+            </div>
+
+            <!-- Q7 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>7.</span> Warum ist Olimpia eine Satire auf das Bildungsbürgertum?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Weil kein Professor und kein feiner Bürger merkt, dass sie eine Maschine ist. Sie erfüllt perfekt das damalige Klischee der passiven, hübschen, schweigenden Frau. Hoffmann verspottet die Oberflächlichkeit bürgerlicher Salons.
+              </div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>8.</span> Was ist das ideale Urteil in einer Auseinandersetzung zur Frage „Wahnsinn oder Dämonie“?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Eine Synthese: Nathanael ist zweifellos schwer traumatisiert und autosuggestiv veranlagt; Hoffmann gestaltet jedoch zugleich eine Welt, in der die Realität selbst (Spalanzanis Maschinenbau, Coppelius' Auftauchen) beängstigend und dämonisch wirkt. Hoffmann lässt die Grenzen bewusst verschwimmen.
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </div>
+
+    </div>
+
+
+    
 
     <!-- --------------------------------------------------------------------- -->
     <!-- MATHE TOPIC 1: STECKBRIEF (BUCH S. 18)                                -->
@@ -20119,15 +20781,15 @@ const FAECHER_DATA = {
     room: 'R3',
     color: '#f43f5e',
     icon: '📖',
-    examStatus: '⏳ Klausur am Freitag, 09.10.2026 (3. Std., R3)',
-    desc: 'Dramenanalyse, Epochenumbruch 18./19. Jahrhundert, Rhetorische Mittel, Argumentation.',
+    examStatus: '🚨 KLAUSUR MORGEN: E.T.A. Hoffmann „Der Sandmann“ (01.10.2026)',
+    desc: 'Schwarze Romantik, Novellenanalyse, Das Unheimliche, Figurenkontraste (Clara vs. Olimpia), Dialektische Auseinandersetzung.',
     topics: [
       {
-        id: 'deutsch-klausur',
+        id: 'deutsch-sandmann',
         num: '01',
-        title: 'Klausur-Fokus: Dramenanalyse & Operatoren',
-        badge: 'Klausur 09.10.',
-        desc: 'Szenenanalyse, Regieanweisungen, Dialoganalyse und Epochenkontexte.'
+        title: 'E.T.A. Hoffmann: Der Sandmann – Klausur-Mastery',
+        badge: '🚨 Klausur morgen!',
+        desc: 'Erstes & zweites Augenpaar (Clara vs. Olimpia / Kindheit vs. Coppola), dialektische Auseinandersetzung (AFB III), Freud, Formulierungshilfen & Zitate.'
       }
     ]
   },
@@ -20400,6 +21062,7 @@ function openFach(fachId, pushHistory = true) {
 }
 
 function openTopic(fachId, topicId, pushHistory = true) {
+  if (topicId === 'deutsch-klausur') topicId = 'deutsch-sandmann';
   const fach = FAECHER_DATA[fachId];
   if (!fach) return;
 
@@ -20587,34 +21250,34 @@ function updateBreadcrumbs() {
 
 // --- 6. DASHBOARD RENDERER ---
 function renderDashboard() {
-  // 1. Klausur Hero
+  // 1. Klausur Hero (Deutsch Morgen)
   const heroEl = document.getElementById('dashHeroUrgent');
   if (heroEl) {
     heroEl.innerHTML = `
-      <div class="urgent-hero-box" style="border-left-color: var(--accent-politik);">
+      <div class="urgent-hero-box" style="border-left-color: var(--accent-deutsch);">
         <div class="urgent-left">
-          <div class="urgent-alert-pill" style="background: var(--accent-politik-bg); color: var(--accent-politik); border-color: var(--accent-politik-border);">
-            <span class="status-dot"></span>
-            <strong>NÄCHSTE KLAUSUR: MORGEN!</strong>
+          <div class="urgent-alert-pill" style="background: var(--accent-deutsch-bg); color: var(--accent-deutsch); border-color: var(--accent-deutsch-border);">
+            <span class="status-dot" style="background: var(--accent-deutsch);"></span>
+            <strong>NÄCHSTE KLAUSUR: MORGEN! (DONNERSTAG, 01.10.2026)</strong>
           </div>
-          <h2 class="urgent-title">🏛️ Politik-Wirtschaft (pw25-Hf) &bull; Partizipation &amp; Wahlen</h2>
+          <h2 class="urgent-title">📖 Deutsch gA (de48-Hh) &bull; E.T.A. Hoffmann: Der Sandmann</h2>
           <div class="urgent-meta-grid">
-            <div class="um-item">📅 <strong>Dienstag, 15.09.2026</strong></div>
-            <div class="um-item">⏰ <strong>1. Stunde</strong> (Raum: <strong>R1</strong>)</div>
-            <div class="um-item">👨‍🏫 Lehrer: <strong>Hf</strong></div>
-            <div class="um-item">🎯 <strong>AFB I (Zusammenfassen), AFB II (Erläutern), AFB III (Urteil)</strong></div>
+            <div class="um-item">📅 <strong>Donnerstag, 01.10.2026</strong></div>
+            <div class="um-item">⏰ <strong>1. Stunde</strong> (Raum: <strong>R3</strong>)</div>
+            <div class="um-item">👩‍🏫 Lehrerin: <strong>Fr. Heinrich (Hh)</strong></div>
+            <div class="um-item">🎯 <strong>Augenpaare (Clara vs. Olimpia) &bull; Dialektische Auseinandersetzung (AFB III)</strong></div>
           </div>
         </div>
         <div class="urgent-right">
           <div class="next-up-preview">
-            <span class="nu-label">Direkt am Freitag folgt:</span>
-            <div class="nu-card">
-              <strong>⚡ PH12-Lh (Physik eA)</strong>
-              <span>Freitag, 18.09.2026 • 1. Stunde • Raum NW1</span>
+            <span class="nu-label">Klausur-Fokus:</span>
+            <div class="nu-card" style="border-left: 3px solid var(--accent-deutsch);">
+              <strong>👁️ Erstes &amp; zweites Augenpaar</strong>
+              <span>Rollentausch &bull; Psychologie &bull; Freud</span>
             </div>
           </div>
-          <button class="btn-hero-study" onclick="openFach('politik')">
-            🏛️ Politik-Lernmodule öffnen &rarr;
+          <button class="btn-hero-study" onclick="openTopic('deutsch', 'deutsch-sandmann')" style="background: var(--accent-deutsch); border-color: var(--accent-deutsch); box-shadow: 0 4px 14px rgba(185, 28, 28, 0.4);">
+            📖 Sandmann-Klausurmodul jetzt öffnen &rarr;
           </button>
         </div>
       </div>
@@ -20742,7 +21405,7 @@ function renderDashboardSubjects() {
   const container = document.getElementById('dashSubjectsGrid');
   if (!container) return;
 
-  const quickSubjects = ['mathe', 'politik', 'physik', 'informatik', 'seminarfach'];
+  const quickSubjects = ['deutsch', 'mathe', 'physik', 'informatik', 'politik', 'seminarfach'];
   let html = '';
 
   quickSubjects.forEach(id => {
@@ -21982,6 +22645,42 @@ window.addEventListener('DOMContentLoaded', () => {
   if (typeof initSeminarfachModule === 'function') initSeminarfachModule();
 });
 
+
+
+
+
+
+// --- DEUTSCH MODUL FUNCTIONS ---
+function switchDeutschTab(tabId) {
+  document.querySelectorAll('.deutsch-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.deutsch-panel').forEach(p => p.classList.remove('active-panel'));
+
+  const btn = document.getElementById('dtab-btn-' + tabId);
+  const panel = document.getElementById('dpanel-' + tabId);
+
+  if (btn) btn.classList.add('active');
+  if (panel) panel.classList.add('active-panel');
+}
+
+function toggleDeutschAnswer(btn) {
+  const card = btn.closest('.quiz-card');
+  const ans = card ? card.querySelector('.quiz-a') : null;
+  if (!ans) return;
+  const isShown = ans.style.display === 'block';
+  ans.style.display = isShown ? 'none' : 'block';
+  btn.textContent = isShown ? 'Antwort anzeigen' : 'Antwort verbergen';
+}
+
+let allDeutschRevealed = false;
+function toggleAllDeutschAnswers() {
+  allDeutschRevealed = !allDeutschRevealed;
+  document.querySelectorAll('.quiz-a').forEach(a => {
+    a.style.display = allDeutschRevealed ? 'block' : 'none';
+  });
+  document.querySelectorAll('.btn-toggle-quiz').forEach(b => {
+    b.textContent = allDeutschRevealed ? 'Antwort verbergen' : 'Antwort anzeigen';
+  });
+}
 
 </script>
 </body>
