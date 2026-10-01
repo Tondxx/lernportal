@@ -14089,7 +14089,7 @@ if (document.readyState === 'loading') {
 // 6. Eigene Notizfelder mit Auto-Save & Dokument-Upload
 // =========================================================================
 
-let CURRENT_PHYSIK_MODE = 'ordner'; // 'ordner' | 'funktionen' | 'themen' | 'iserv-pool' | 'uploads' | 'spickzettel'
+let CURRENT_PHYSIK_MODE = 'ordner'; // 'ordner' | 'funktionen' | 'themen' | 'kombi' | 'beweisen' | 'iserv-pool' | 'uploads' | 'spickzettel'
 let CURRENT_PHYSIK_FOLDER = null;
 let CURRENT_PHYSIK_SKILL = null;
 let CURRENT_ISERV_CATEGORY = 'all';
@@ -15871,8 +15871,42 @@ const SKILLS_FOLDERS_4_5 = [
           <em>Physikalische Erklärung der Energiezunahme im Fall B:</em><br>
           Obwohl keine Batterie angeschlossen ist, hat sich die Energie verdoppelt! Woher kommt die Energie? Man muss die beiden entgegengesetzt geladenen Platten gegen ihre elektrostatische Anziehungskraft auseinanderziehen. Die dafür von Hand verrichtete mechanische Arbeit <span class="katex-render" data-display="false" data-latex="W_{\\text{mech}} = F_{\\text{el}} \\cdot \\Delta d">Wmech = Fel • Δd</span> fließt zu 100% als zusätzliche Feldenergie in das elektrische Feld des Kondensators!
         `
+      },
+      {
+        title: 'Aufgabe 3 (IServ-Hausaufgabe 01.10.2026): Plattenabstand vierteln & Dielektrikum εr = 3 (Quelle ANGESCHLOSSEN)',
+        prompt: `
+          Der aufgeladene Kondensator wird diesmal <strong>nicht von der Quelle getrennt</strong>. Dann wird der Plattenabstand um den Faktor 4 verringert (d₂ = ¼ d₁) und es wird ein Dielektrikum eingeführt mit der relativen Permittivität von 3 (vorher 1).
+          Wie und warum ändern sich die Größen C, Q, U und E? Begründe und beweise die Zusammenhänge!
+        `,
+        solution: `
+          <strong>1. Spannung U:</strong> Bleibt konstant (<strong>U₂ = U₁</strong>, Faktor 1), da die Spannungsquelle dauerhaft angeschlossen bleibt und die Potentialdifferenz fest vorschreibt.<br><br>
+          <strong>2. Kapazität C:</strong> <span class="katex-render" data-display="false" data-latex="C = \varepsilon_0 \cdot \varepsilon_r \cdot \frac{A}{d}">C = ε₀εᵣ A/d</span>.<br>
+          Abstand geviertelt (&divide; 4) &rarr; &times; 4; Dielektrikum &epsilon;<sub>r</sub> = 3 &rarr; &times; 3. Zusammen: 3 &middot; 4 = 12 &rarr; <strong>C₂ = 12 • C₁ (Verzwölffacht sich!)</strong>.<br><br>
+          <strong>3. Ladung Q:</strong> <span class="katex-render" data-display="false" data-latex="Q = C \cdot U">Q = C • U</span>.<br>
+          Da C um das 12-fache steigt und U fest bleibt: <strong>Q₂ = 12 • Q₁ (Verzwölffacht sich!)</strong>. Die Batterie lädt zusätzliche Ladungsträger nach.<br><br>
+          <strong>4. Feldstärke E:</strong> <span class="katex-render" data-display="false" data-latex="E = \frac{U}{d}">E = U / d</span>.<br>
+          <span class="katex-render" data-display="false" data-latex="E_2 = \frac{U_1}{\frac{1}{4} d_1} = 4 \cdot \frac{U_1}{d_1} = 4 \cdot E_1">E₂ = 4 • E₁</span> &rarr; <strong>E₂ = 4 • E₁ (Vervierfacht sich!)</strong>.<br>
+          <em>Gegenprobe über Polarisation:</em> <span class="katex-render" data-display="false" data-latex="E = \frac{\sigma}{\varepsilon_0 \varepsilon_r} = \frac{12 \sigma_1}{3 \varepsilon_0} = 4 \cdot E_1">E = 12σ₁ / (3ε₀) = 4 E₁</span>.<br><br>
+          <strong>5. Gespeicherte Energie:</strong> <span class="katex-render" data-display="false" data-latex="W = \frac{1}{2} C U^2">W = ½ C U²</span> &rarr; <strong>W₂ = 12 • W₁ (Verzwölffacht sich!)</strong>.
+        `
+      },
+      {
+        title: 'Aufgabe 4 (Gegenbeispiel zum Üben): Plattenabstand vierteln & Dielektrikum εr = 3 (von Quelle GETRENNT)',
+        prompt: `
+          Derselbe Kondensator wird geladen, aber <strong>vor</strong> der Abstandsverringerung (Faktor 4) und dem Einschieben des Dielektrikums (εr = 3) <strong>von der Spannungsquelle GETRENNT</strong>.
+          Beweise, wie sich diesmal C, Q, U und E verändern, und erkläre den physikalischen Grund für die Unterschiede zu Aufgabe 3!
+        `,
+        solution: `
+          <strong>1. Ladung Q:</strong> Bleibt konstant (<strong>Q₂ = Q₁</strong>, Faktor 1), da der Kondensator isoliert ist und Ladungen nicht entweichen können.<br><br>
+          <strong>2. Kapazität C:</strong> <span class="katex-render" data-display="false" data-latex="C_2 = 12 \cdot C_1">C₂ = 12 • C₁</span>. Die Kapazität ist eine reine Geometrie- und Materialeigenschaft und verzwölffacht sich in beiden Fällen identisch!<br><br>
+          <strong>3. Spannung U:</strong> <span class="katex-render" data-display="false" data-latex="U = \frac{Q}{C}">U = Q / C</span>.<br>
+          <span class="katex-render" data-display="false" data-latex="U_2 = \frac{Q_1}{12 \cdot C_1} = \frac{1}{12} \cdot U_1">U₂ = ¹/₁₂ • U₁</span> &rarr; <strong>U₂ = ¹/₁₂ • U₁ (Sinkt auf ein Zwölftel!)</strong>.<br><br>
+          <strong>4. Feldstärke E:</strong> <span class="katex-render" data-display="false" data-latex="E_2 = \frac{U_2}{d_2} = \frac{\frac{1}{12} U_1}{\frac{1}{4} d_1} = \frac{4}{12} \cdot E_1 = \frac{1}{3} \cdot E_1">E₂ = ¹/₃ • E₁</span> &rarr; <strong>E₂ = ¹/₃ • E₁ (Sinkt auf ein Drittel!)</strong>.<br>
+          <em>Physikalische Erklärung:</em> Bei konstanter Ladung Q ist die Flächenladung &sigma; konstant. Das Feld ist <span class="katex-render" data-display="false" data-latex="E = \frac{\sigma}{\varepsilon_0 \varepsilon_r}">E = σ / (ε₀εᵣ)</span> &ndash; unabhängig von d! Nur das Dielektrikum schwächt das Feld durch Polarisation um den Faktor 3 ab.<br><br>
+          <strong>5. Gespeicherte Energie:</strong> <span class="katex-render" data-display="false" data-latex="W = \frac{Q^2}{2C}">W = Q² / (2C)</span> &rarr; <strong>W₂ = ¹/₁₂ • W₁ (Sinkt auf ein Zwölftel!)</strong>.<br>
+          <em>Wo ist die Energie hin?</em> Das Dielektrikum wird von den geladenen Kondensatorplatten durch Dipolkräfte angezogen. Das Feld verrichtet mechanische Arbeit beim Hereinziehen!
+        `
       }
-
     ]
   }
 ];
@@ -15963,7 +15997,178 @@ const KOMBI_AUFGABEN = [
 ];
 
 // --- 7. GROSSER AUFGABENPOOL AUS ALLEN ISERV-ARBEITSBLÄTTERN (AB01 - AB11 + S. 33) ---
+
+// --- 6b. WIESO ETWAS SO IST: BEWEISEN & BEGRÜNDEN ZUM ÜBEN (AFB II & III) ---
+const BEWEISEN_AUFGABEN = [
+  {
+    title: 'Beweis 1: Plattenabstand vierteln & Dielektrikum εr = 3 (Quelle ANGESCHLOSSEN – Hausaufgabe Hr. Lehmann)',
+    badges: ['Spannungsquelle aktiv (U = konst.)', 'Geometrie & Medium', 'Ladungsnachfluss Q ~ C', 'Feldstärke E = U/d'],
+    prompt: `
+      <strong>Original-Aufgabenstellung aus IServ (01.10.2026):</strong><br>
+      <em>&bdquo;Der aufgeladene Kondensator wird diesmal <strong>nicht von der Quelle getrennt</strong>. Dann wird der Plattenabstand um den Faktor 4 verringert und es wird ein Dielektrikum eingeführt mit der relativen Permeabilität (Permittivität) von 3 (vorher war sie 1). Wie ändern sich die Größen C, Q, U und E?&ldquo;</em><br><br>
+      <strong>Arbeitsauftrag zum Üben:</strong><br>
+      Beweise und begründe für jede der vier Größen (<span class="katex-render" data-display="false" data-latex="C, Q, U, E">C, Q, U, E</span>) sowie für die im Feld gespeicherte Energie <span class="katex-render" data-display="false" data-latex="W_{\\text{el}}">Wel</span> formelmäßig und physikalisch, warum und um welchen exakten Faktor sie sich ändert!
+      <div style="margin-top:0.6rem;">
+        <a href="Abgabe_Physik_Kondensator_Tonda_Beutler.pdf" target="_blank" download style="text-decoration:none; display:inline-flex; align-items:center; gap:0.4rem; padding:0.35rem 0.8rem; font-size:0.8rem; background:rgba(67,56,202,0.12); color:#4338ca; border-radius:999px; font-weight:700; border:1px solid rgba(67,56,202,0.25);">
+          <span>📄</span><span>Fertiges Abgabe-PDF herunterladen (1 Seite)</span>
+        </a>
+      </div>
+    `,
+    solution: `
+      <div style="background: var(--bg-subtle); border-radius: 8px; padding: 0.9rem; margin-bottom: 0.7rem; border-left: 4px solid #10b981;">
+        <strong style="color: #059669; font-size: 0.95rem;">1. Beweis für die Spannung U:</strong><br>
+        <span class="katex-render" data-display="false" data-latex="U_2 = U_1 = U = \\text{konstant} \\quad (\\text{Änderungsfaktor } 1)">U₂ = U₁ = konstant (Faktor 1)</span><br>
+        <strong>Physikalische Begründung:</strong> Die ma&szlig;gebliche Randbedingung ist, dass der Kondensator <em>dauerhaft mit der Spannungsquelle verbunden bleibt</em>. Eine ideale Spannungsquelle erzwingt stets eine feste Potentialdifferenz zwischen ihren Polen &ndash; die Spannung an den Platten kann sich daher unter keinen Umständen verändern.
+      </div>
+
+      <div style="background: var(--bg-subtle); border-radius: 8px; padding: 0.9rem; margin-bottom: 0.7rem; border-left: 4px solid #3b82f6;">
+        <strong style="color: #2563eb; font-size: 0.95rem;">2. Beweis für die Kapazität C:</strong><br>
+        <div class="katex-render" data-display="true" data-latex="C_2 = \\varepsilon_0 \\cdot \\varepsilon_{r,2} \\cdot \\frac{A}{d_2} = \\varepsilon_0 \\cdot 3 \\cdot \\frac{A}{\\frac{1}{4}d_1} = 3 \\cdot 4 \\cdot \\left(\\varepsilon_0 \\frac{A}{d_1}\\right) = 12 \\cdot C_1"></div>
+        <strong>Physikalische Begründung:</strong> Die Kapazität hängt rein von Geometrie und Medium ab:<br>
+        &bull; <em>Abstand d</em> wird geviertelt (&divide; 4) &rarr; Faktor 4 auf die Kapazität (antiproportionales Verhalten: <span class="katex-render" data-display="false" data-latex="C \\propto 1/d">C ~ 1/d</span>).<br>
+        &bull; <em>Dielektrikum</em> mit <span class="katex-render" data-display="false" data-latex="\\varepsilon_r = 3">εᵣ = 3</span> &rarr; Faktor 3 auf die Kapazität (proportionales Verhalten: <span class="katex-render" data-display="false" data-latex="C \\propto \\varepsilon_r">C ~ εᵣ</span>).<br>
+        Zusammen ergibt sich der Faktor <span class="katex-render" data-display="false" data-latex="3 \\cdot 4 = 12">3 · 4 = 12</span>. Die Kapazität <strong>verzwölffacht sich (&times; 12)</strong>.
+      </div>
+
+      <div style="background: var(--bg-subtle); border-radius: 8px; padding: 0.9rem; margin-bottom: 0.7rem; border-left: 4px solid #3b82f6;">
+        <strong style="color: #2563eb; font-size: 0.95rem;">3. Beweis für die gespeicherte Ladung Q:</strong><br>
+        <div class="katex-render" data-display="true" data-latex="Q_2 = C_2 \\cdot U_2 = (12 \\cdot C_1) \\cdot U_1 = 12 \\cdot (C_1 \\cdot U_1) = 12 \\cdot Q_1"></div>
+        <strong>Physikalische Begründung:</strong> Da die Kapazität um das 12-fache gestiegen ist, die Spannung <span class="katex-render" data-display="false" data-latex="U">U</span> jedoch von der Batterie unverändert aufrechterhalten wird, fließen w&auml;hrend des Vorgangs zusätzliche Ladungsträger von der Spannungsquelle nach, bis das Gleichgewicht <span class="katex-render" data-display="false" data-latex="Q = C \\cdot U">Q = C · U</span> erreicht ist. Die Ladung auf den Platten <strong>verzwölffacht sich (&times; 12)</strong>.
+      </div>
+
+      <div style="background: var(--bg-subtle); border-radius: 8px; padding: 0.9rem; margin-bottom: 0.7rem; border-left: 4px solid #f59e0b;">
+        <strong style="color: #d97706; font-size: 0.95rem;">4. Beweis für die elektrische Feldstärke E:</strong><br>
+        <div class="katex-render" data-display="true" data-latex="E_2 = \\frac{U_2}{d_2} = \\frac{U_1}{\\frac{1}{4} d_1} = 4 \\cdot \\frac{U_1}{d_1} = 4 \\cdot E_1"></div>
+        <strong>Physikalische Begründung &amp; Gegenprobe über Polarisation:</strong><br>
+        &bull; <em>Direkter Weg:</em> Im homogenen Plattenkondensator gilt exakt <span class="katex-render" data-display="false" data-latex="E = U / d">E = U / d</span>. Da <span class="katex-render" data-display="false" data-latex="U">U</span> konstant ist und <span class="katex-render" data-display="false" data-latex="d">d</span> geviertelt wird, vervierfacht sich <span class="katex-render" data-display="false" data-latex="E">E</span> zwingend.<br>
+        &bull; <em>Gegenprobe über Flächenladungsdichte &sigma;:</em> <span class="katex-render" data-display="false" data-latex="E = \\frac{\\sigma}{\\varepsilon_0 \\varepsilon_r} = \\frac{12 \\sigma_1}{3 \\varepsilon_0} = 4 \\cdot E_1">E = σ / (ε₀εᵣ) = 12σ₁ / (3ε₀) = 4 E₁</span>. Die Polarisation des Dielektrikums schwächt das durch die 12-fache Ladung entstandene Feld um den Faktor 3 ab &ndash; es verbleibt exakt die <strong>Vervierfachung (&times; 4)</strong>!
+      </div>
+
+      <div style="background: var(--bg-subtle); border-radius: 8px; padding: 0.9rem; border-left: 4px solid #8b5cf6;">
+        <strong style="color: #7c3aed; font-size: 0.95rem;">5. Energiebetrachtung Wel:</strong><br>
+        <div class="katex-render" data-display="true" data-latex="W_2 = \\frac{1}{2} C_2 U_2^2 = \\frac{1}{2} (12 C_1) U_1^2 = 12 \\cdot W_1"></div>
+        Die im elektrischen Feld gespeicherte Energie <strong>verzwölffacht sich</strong>. Die nötige Energie liefert die Spannungsquelle beim Nachladen der Platten.
+      </div>
+    `
+  },
+  {
+    title: 'Beweis 2: Plattenabstand vierteln & Dielektrikum εr = 3 (von Spannungsquelle GETRENNT – Gegenbeispiel)',
+    badges: ['Isolierter Zustand (Q = konst.)', 'Spannungsabfall U ~ 1/C', 'Feldabschwächung durch Polarisation', 'Mechanische Energieabnahme'],
+    prompt: `
+      <strong>Das entscheidende Klausur-Gegenbeispiel:</strong><br>
+      Derselbe Kondensator wie in Aufgabe 1 wird aufgeladen, aber <strong>vor</strong> jeglicher Veränderung <strong>dauerhaft von der Spannungsquelle getrennt</strong>.<br>
+      Anschließend wird ebenfalls der Plattenabstand um den Faktor 4 verringert (<span class="katex-render" data-display="false" data-latex="d_2 = \\frac{1}{4} d_1">d₂ = ¼ d₁</span>) und dasselbe Dielektrikum (<span class="katex-render" data-display="false" data-latex="\\varepsilon_r = 3">εᵣ = 3</span>) eingeschoben.<br><br>
+      <strong>Arbeitsauftrag zum Üben:</strong><br>
+      Beweise und begründe, wie sich diesmal die Größen <span class="katex-render" data-display="false" data-latex="C, Q, U, E">C, Q, U, E</span> und <span class="katex-render" data-display="false" data-latex="W_{\\text{el}}">Wel</span> verändern. Wo liegen die fundamentalen physikalischen Unterschiede zu Aufgabe 1?
+    `,
+    solution: `
+      <div style="background: var(--bg-subtle); border-radius: 8px; padding: 0.9rem; margin-bottom: 0.7rem; border-left: 4px solid #10b981;">
+        <strong style="color: #059669; font-size: 0.95rem;">1. Beweis für die Ladung Q:</strong><br>
+        <span class="katex-render" data-display="false" data-latex="Q_2 = Q_1 = Q = \\text{konstant} \\quad (\\text{Änderungsfaktor } 1)">Q₂ = Q₁ = konstant (Faktor 1)</span><br>
+        <strong>Physikalische Begründung:</strong> Da der Kondensator vor der Manipulation von der Quelle getrennt wurde, ist er elektrisch isoliert. Nach dem Gesetz der Ladungserhaltung können keine Elektronen nachfließen oder abfließen. Die Ladungsmenge bleibt exakt gleich.
+      </div>
+
+      <div style="background: var(--bg-subtle); border-radius: 8px; padding: 0.9rem; margin-bottom: 0.7rem; border-left: 4px solid #3b82f6;">
+        <strong style="color: #2563eb; font-size: 0.95rem;">2. Beweis für die Kapazität C:</strong><br>
+        <div class="katex-render" data-display="true" data-latex="C_2 = \\varepsilon_0 \\cdot \\varepsilon_{r,2} \\cdot \\frac{A}{d_2} = \\varepsilon_0 \\cdot 3 \\cdot \\frac{A}{\\frac{1}{4}d_1} = 12 \\cdot C_1"></div>
+        <strong>Physikalische Begründung:</strong> Die Kapazität <span class="katex-render" data-display="false" data-latex="C">C</span> ist eine reine Bauformeigenschaft (Geometrie &amp; Dielektrikum). Es ist völlig egal, ob der Kondensator an einer Batterie hängt oder nicht &ndash; die Kapazität <strong>verzwölffacht sich (&times; 12)</strong> in beiden Fällen identisch!
+      </div>
+
+      <div style="background: var(--bg-subtle); border-radius: 8px; padding: 0.9rem; margin-bottom: 0.7rem; border-left: 4px solid #8b5cf6;">
+        <strong style="color: #7c3aed; font-size: 0.95rem;">3. Beweis für die Spannung U:</strong><br>
+        <div class="katex-render" data-display="true" data-latex="U_2 = \\frac{Q_2}{C_2} = \\frac{Q_1}{12 \\cdot C_1} = \\frac{1}{12} \\cdot \\frac{Q_1}{C_1} = \\frac{1}{12} \\cdot U_1"></div>
+        <strong>Physikalische Begründung:</strong> Weil die Ladung <span class="katex-render" data-display="false" data-latex="Q">Q</span> gefangen ist, aber der Kondensator nun 12-mal mehr Ladung pro Volt speichern könnte (<span class="katex-render" data-display="false" data-latex="C \\times 12">C × 12</span>), <strong>sinkt die Spannung an den Platten auf ein Zwölftel (&times; &sup1;/₁₂)</strong>!
+      </div>
+
+      <div style="background: var(--bg-subtle); border-radius: 8px; padding: 0.9rem; margin-bottom: 0.7rem; border-left: 4px solid #f59e0b;">
+        <strong style="color: #d97706; font-size: 0.95rem;">4. Beweis für die elektrische Feldstärke E (Klausur-Highlight!):</strong><br>
+        <div class="katex-render" data-display="true" data-latex="E_2 = \\frac{U_2}{d_2} = \\frac{\\frac{1}{12} U_1}{\\frac{1}{4} d_1} = \\frac{4}{12} \\cdot \\frac{U_1}{d_1} = \\frac{1}{3} \\cdot E_1"></div>
+        <strong>Physikalische Begründung:</strong><br>
+        Bei getrenntem Kondensator ist die Flächenladungsdichte <span class="katex-render" data-display="false" data-latex="\\sigma = Q / A">σ = Q/A</span> konstant. F&uuml;r das Feld gilt daher:
+        <div class="katex-render" data-display="true" data-latex="E = \\frac{\\sigma}{\\varepsilon_0 \\cdot \\varepsilon_r}"></div>
+        Der Plattenabstand <span class="katex-render" data-display="false" data-latex="d">d</span> taucht in dieser Gleichung überhaupt nicht auf! Eine Abstandsänderung bei isoliertem Kondensator verändert das Feld <span class="katex-render" data-display="false" data-latex="E">E</span> also gar nicht. Einzig das Dielektrikum schwächt durch Polarisation das Feld um den Faktor <span class="katex-render" data-display="false" data-latex="\\varepsilon_r = 3">εᵣ = 3</span> ab. Daher <strong>sinkt die Feldstärke auf ein Drittel (&times; &sup1;/₃)</strong>!
+      </div>
+
+      <div style="background: var(--bg-subtle); border-radius: 8px; padding: 0.9rem; border-left: 4px solid #ef4444;">
+        <strong style="color: #dc2626; font-size: 0.95rem;">5. Energiebetrachtung Wel &amp; mechanische Kraft:</strong><br>
+        <div class="katex-render" data-display="true" data-latex="W_2 = \\frac{Q_2^2}{2 C_2} = \\frac{Q_1^2}{2 \\cdot (12 C_1)} = \\frac{1}{12} \\cdot W_1"></div>
+        Die im Feld gespeicherte Energie <strong>sinkt auf ein Zwölftel</strong>! Wo ist die Energie hin? Das polarisierte Dielektrikum wird von den geladenen Kondensatorplatten mit einer messbaren Anziehungskraft von selbst hineingezogen. Das Feld verrichtet mechanische Arbeit <span class="katex-render" data-display="false" data-latex="W_{\\text{mech}}">Wmech</span> am Dielektrikum, wodurch dem Feld genau diese Energie entzogen wird!
+      </div>
+    `
+  },
+  {
+    title: 'Beweis 3: Der Widerspruchsbeweis für Feldlinien (Meds.pdf S. 7)',
+    badges: ['Widerspruchsbeweis', 'Eindeutigkeit des Vektorfeldes', 'Klausur-Klassiker'],
+    prompt: `
+      Auf Seite 7 deiner Mitschriften (Meds.pdf) wird der Beweis geführt: <em>&bdquo;Feldlinien schneiden sich nicht!&ldquo;</em><br>
+      Führe den vollständigen mathematisch-physikalischen Widerspruchsbeweis (Reductio ad absurdum) durch.
+    `,
+    solution: `
+      <strong>1. Annahme zum Widerspruch:</strong><br>
+      Wir nehmen an, zwei elektrische Feldlinien würden sich in einem Punkt <span class="katex-render" data-display="false" data-latex="P">P</span> schneiden.<br><br>
+      <strong>2. Folgerung aus der Annahme:</strong><br>
+      Da die Richtung der Feldlinie an jedem Punkt die Richtung der Tangente (und damit die Richtung des Feldstärkevektors <span class="katex-render" data-display="false" data-latex="\\vec{E}">E</span>) angibt, gäbe es im Schnittpunkt <span class="katex-render" data-display="false" data-latex="P">P</span> zwei verschiedene Tangenten &ndash; und somit zwei unterschiedliche Feldstärkevektoren <span class="katex-render" data-display="false" data-latex="\\vec{E}_1">E₁</span> und <span class="katex-render" data-display="false" data-latex="\\vec{E}_2">E₂</span>.<br>
+      Auf eine dort platzierte Probeladung <span class="katex-render" data-display="false" data-latex="q">q</span> müssten demnach zwei verschiedene Kräfte <span class="katex-render" data-display="false" data-latex="\\vec{F}_1 = q\\vec{E}_1">F₁</span> und <span class="katex-render" data-display="false" data-latex="\\vec{F}_2 = q\\vec{E}_2">F₂</span> in unterschiedliche Richtungen gleichzeitig wirken.<br><br>
+      <strong>3. Widerspruch &amp; Schluss:</strong><br>
+      In der klassischen Physik kann auf einen Massepunkt zu einem festen Zeitpunkt nur <em>eine einzige resultierende Kraft</em> <span class="katex-render" data-display="false" data-latex="\\vec{F}_{\\text{res}} = \\vec{F}_1 + \\vec{F}_2 = q(\\vec{E}_1 + \\vec{E}_2)">Fres</span> wirken (Eindeutigkeit des Kraftvektors). Die beiden Vektoren überlagern sich zu einem einzigen resultierenden Vektor <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{res}}">Eres</span>.<br>
+      Die Feldlinie verläuft per Definition immer entlang dieses resultierenden Vektors.<br>
+      &rarr; <strong>Widerspruch! Feldlinien können sich niemals schneiden oder kreuzen.</strong>
+    `
+  },
+  {
+    title: 'Beweis 4: Der 4-Schritte-Beweis für den feldfreien Raum im Faradayschen Käfig (Meds.pdf S. 25)',
+    badges: ['Influenz im Leiter', 'Gegenfeld', 'E_innen = 0'],
+    prompt: `
+      Beweise schrittweise anhand der Elektrostatik, warum das Innere eines geschlossenen Metallkörpers (Faradayscher Käfig) im statischen Zustand stets vollkommen feldfrei (<span class="katex-render" data-display="false" data-latex="E_{\\text{innen}} = 0">E_innen = 0</span>) ist.
+    `,
+    solution: `
+      <strong>Schritt 1 (Äußeres Feld wirkt ein):</strong> Ein metallischer Körper wird in ein äußeres elektrisches Feld <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{außen}}">E_außen</span> gebracht.<br><br>
+      <strong>Schritt 2 (Ladungstrennung durch Influenz):</strong> Metalle besitzen frei bewegliche Leitungselektronen. Auf diese Elektronen wirkt die Coulombkraft <span class="katex-render" data-display="false" data-latex="\\vec{F}_{\\text{el}} = -e \\cdot \\vec{E}_{\\text{außen}}">Fel = -e · E_außen</span>. Die Elektronen verschieben sich entgegen der Richtung der Feldlinien zur feldeintretenden Oberfläche (Influenz).<br><br>
+      <strong>Schritt 3 (Aufbau des Gegenfeldes):</strong> Durch die Ladungsverschiebung entsteht auf der einen Oberfläche ein Elektronenüberschuss (&minus;) und auf der gegenüberliegenden ein Elektronenmangel (+). Diese Oberflächenladungen erzeugen im Inneren des Leiters ein Gegenfeld <span class="katex-render" data-display="false" data-latex="\\vec{E}_{\\text{Gegen}}">E_Gegen</span>, das dem äußeren Feld genau entgegengerichtet ist.<br><br>
+      <strong>Schritt 4 (Statisches Gleichgewicht):</strong> Die Elektronen bewegen sich so lange weiter, bis die Gesamtkraft auf jedes Leitungselektron null ist. Das ist genau dann der Fall, wenn das interne Gegenfeld das äußere Feld exakt kompensiert:<br>
+      <div class="katex-render" data-display="true" data-latex="\\vec{E}_{\\text{ges}} = \\vec{E}_{\\text{außen}} + \\vec{E}_{\\text{Gegen}} = \\vec{0} \\implies E_{\\text{innen}} = 0"></div>
+      Im Inneren des Leiters herrscht vollkommene Feldfreiheit!
+    `
+  },
+  {
+    title: 'Beweis 5: Warum Feldlinien stets senkrecht auf Äquipotentiallinien stehen (Meds.pdf S. 10)',
+    badges: ['Potenzialdifferenz', 'Vektorielle Arbeit ΔW = 0', 'Skalarprodukt cos α = 0'],
+    prompt: `
+      Beweise mithilfe des Arbeitsbegriffs <span class="katex-render" data-display="false" data-latex="W = \\vec{F} \\cdot \\vec{s}">W = F • s</span>, warum elektrische Feldlinien jede Äquipotentiallinie (bzw. -fläche) stets im rechten Winkel (<span class="katex-render" data-display="false" data-latex="\\alpha = 90^\\circ">α = 90°</span>) schneiden müssen.
+    `,
+    solution: `
+      <strong>1. Definition der Äquipotentiallinie:</strong><br>
+      Auf einer Äquipotentiallinie ist das elektrische Potential <span class="katex-render" data-display="false" data-latex="\\varphi">φ</span> konstant. Zwischen zwei beliebigen Punkten auf derselben Linie gilt demnach für die Potentialdifferenz (Spannung):<br>
+      <div class="katex-render" data-display="true" data-latex="\\Delta U = \\varphi_2 - \\varphi_1 = 0\\,\\text{V}"></div>
+      <br>
+      <strong>2. Verrichtete Arbeit beim Verschieben einer Ladung:</strong><br>
+      Verschiebt man eine Probeladung <span class="katex-render" data-display="false" data-latex="q">q</span> entlang der Äquipotentiallinie um die Strecke <span class="katex-render" data-display="false" data-latex="\\Delta \\vec{s}">Δs</span>, so ist die elektrische Arbeit:<br>
+      <div class="katex-render" data-display="true" data-latex="\\Delta W = q \\cdot \\Delta U = q \\cdot 0 = 0"></div>
+      <br>
+      <strong>3. Auswertung über das Skalarprodukt der Kraft:</strong><br>
+      Andererseits ist die Arbeit als Skalarprodukt definiert: <span class="katex-render" data-display="false" data-latex="\\Delta W = \\vec{F} \\cdot \\Delta \\vec{s} = F \\cdot \\Delta s \\cdot \\cos(\\alpha)">ΔW = F • Δs • cos(α)</span>, wobei <span class="katex-render" data-display="false" data-latex="\\alpha">α</span> der Winkel zwischen der Feldkraft <span class="katex-render" data-display="false" data-latex="\\vec{F} = q\\vec{E}">F = qE</span> (Richtung der Feldlinie) und dem Weg <span class="katex-render" data-display="false" data-latex="\\Delta \\vec{s}">Δs</span> (Tangente an die Äquipotentiallinie) ist.<br>
+      Da <span class="katex-render" data-display="false" data-latex="F \\neq 0">F ≠ 0</span> und <span class="katex-render" data-display="false" data-latex="\\Delta s > 0">Δs > 0</span>, muss gelten:<br>
+      <div class="katex-render" data-display="true" data-latex="\\cos(\\alpha) = 0 \\implies \\alpha = 90^\\circ"></div>
+      &rarr; <strong>Die Feldlinien stehen zwingend senkrecht auf den Äquipotentiallinien.</strong>
+    `
+  }
+];
+
 const ISERV_AUFGABEN_POOL = [
+  {
+    sheet: 'IServ Hausaufgabe (01.10.2026)',
+    category: 'beweisen',
+    title: 'Hausaufgabe Hr. Lehmann: Kondensator vierteln & εr = 3 (Quelle ANGESCHLOSSEN)',
+    prompt: 'Der aufgeladene Kondensator wird diesmal nicht von der Quelle getrennt. Dann wird der Plattenabstand um den Faktor 4 verringert und ein Dielektrikum mit εr = 3 eingeführt. Beweise, wie sich C, Q, U und E verändern.',
+    solution: '<strong>U:</strong> Bleibt konstant (U₂ = U₁, Quelle angeschlossen).<br><strong>C:</strong> C = ε₀εᵣ A/d &rarr; C₂ = 3 • 4 • C₁ = <strong>12 • C₁</strong> (Verzwölffacht sich).<br><strong>Q:</strong> Q = C • U &rarr; Q₂ = 12C₁ • U₁ = <strong>12 • Q₁</strong> (Verzwölffacht sich, Quelle lädt nach).<br><strong>E:</strong> E = U / d &rarr; E₂ = U₁ / (¼ d₁) = <strong>4 • E₁</strong> (Vervierfacht sich).'
+  },
+  {
+    sheet: 'Übungs-Gegenbeispiel',
+    category: 'beweisen',
+    title: 'Gegenbeispiel zum Üben: Kondensator vierteln & εr = 3 (von Quelle GETRENNT)',
+    prompt: 'Derselbe Kondensator wie bei Herrn Lehmann wird geladen, aber VOR der Abstandsverringerung (Faktor 4) und dem Dielektrikum (εr = 3) von der Spannungsquelle GETRENNT. Beweise, wie sich C, Q, U und E diesmal verändern.',
+    solution: '<strong>Q:</strong> Bleibt konstant (Q₂ = Q₁, isoliert).<br><strong>C:</strong> C₂ = 3 • 4 • C₁ = <strong>12 • C₁</strong> (Kapazität hängt nur von Geometrie & Medium ab).<br><strong>U:</strong> U = Q / C &rarr; U₂ = Q₁ / (12 C₁) = <strong>¹/₁₂ • U₁</strong> (Sinkt auf ein Zwölftel!).<br><strong>E:</strong> E₂ = U₂ / d₂ = (¹/₁₂ U₁) / (¼ d₁) = <strong>¹/₃ • E₁</strong> (Sinkt auf ein Drittel, da das Dielektrikum das Feld schwächt und d bei konstanter Ladung keinen Einfluss hat!).'
+  },
   {
     sheet: 'Klausurblatt Meds.pdf S. 33',
     category: 'messwerte',
@@ -16086,6 +16291,9 @@ function getPhysikModeBarHtml() {
       </button>
       <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'kombi' ? 'active' : ''}" onclick="switchPhysikMode('kombi')">
         <span>🧩</span><span>Kombinations-Aufgaben</span>
+      </button>
+      <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'beweisen' ? 'active' : ''}" onclick="switchPhysikMode('beweisen')">
+        <span>⚖️</span><span>Wieso etwas so ist (Beweisen zum Üben)</span>
       </button>
       <button class="physik-mode-btn ${CURRENT_PHYSIK_MODE === 'iserv-pool' ? 'active' : ''}" onclick="switchPhysikMode('iserv-pool')">
         <span>🎯</span><span>Aufgabenpool (AB01 - AB11)</span>
@@ -16299,6 +16507,109 @@ function renderPhysikPortal() {
       `;
     });
   }
+  // D2. WIESO ETWAS SO IST (BEWEISEN & BEGRÜNDEN ZUM ÜBEN)
+  else if (CURRENT_PHYSIK_MODE === 'beweisen') {
+    html += `
+      <div style="margin-bottom: 1.4rem;">
+        <!-- Hero Card -->
+        <div class="formula-hero-card" style="border-left: 6px solid #4338ca; background: var(--bg-card); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--card-shadow); border: 1px solid var(--border-subtle); margin-bottom: 1.4rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 0.8rem;">
+            <span class="formula-hero-badge" style="background: rgba(67, 56, 202, 0.12); color: #4338ca; font-size: 0.82rem; font-weight: 800; padding: 0.35rem 0.8rem; border-radius: 999px;">
+              ⚖️ AFB II &amp; AFB III: WIESO ETWAS SO IST (BEWEISEN &amp; BEGRÜNDEN)
+            </span>
+            <span class="p-badge" style="background: var(--bg-subtle); color: #4338ca; border: 1px solid var(--border-subtle); font-weight: 700;">
+              Hausaufgabe 01.10.2026 + Klausur-Klassiker
+            </span>
+          </div>
+
+          <h2 style="font-size: 1.4rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.5rem 0;">
+            Wieso etwas so ist: Physikalische Zusammenhänge beweisen &amp; begründen
+          </h2>
+          <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0; line-height: 1.55;">
+            Im Physik-Abitur reicht es oft nicht, bloße Zahlen in Formeln einzusetzen. Du musst <strong>Beweisen und Begründen</strong>, warum sich eine physikalische Größe verdoppelt, vervierfacht oder konstant bleibt. 
+            Hier findest du die aktuelle Hausaufgabe von Herrn Lehmann, das entscheidende Gegenbeispiel (Spannungsquelle angeschlossen vs. getrennt) sowie die klassischen Klausurbeweise aus deinen Mitschriften.
+          </p>
+        </div>
+
+        <!-- Vergleichs-Spickzettel: Kondensator angeschlossen vs. getrennt -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 1.3rem; margin-bottom: 1.6rem; box-shadow: var(--card-shadow);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin: 0;">
+              📌 Das 4-Schritte-Beweisschema für den Plattenkondensator
+            </h3>
+            <span style="font-size: 0.78rem; font-weight: 700; color: #4338ca; background: rgba(67, 56, 202, 0.1); padding: 0.25rem 0.6rem; border-radius: 999px;">
+              Klausur-Schlüsselkompetenz
+            </span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+            <!-- Fall 1: Angeschlossen -->
+            <div style="background: var(--bg-subtle); border: 1.5px solid #10b981; border-radius: 8px; padding: 1rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <span style="font-size: 1.2rem;">🟢</span>
+                <strong style="color: #059669; font-size: 0.98rem;">Fall 1: Quelle bleibt ANGESCHLOSSEN</strong>
+              </div>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.85rem; line-height: 1.55; color: var(--text-primary);">
+                <li><strong>Fixe Randbedingung:</strong> <span class="katex-render" data-display="false" data-latex="U = \\text{konstant}">U = konst.</span> (Batterie erzwingt Spannung).</li>
+                <li><strong>Kapazität:</strong> <span class="katex-render" data-display="false" data-latex="C = \\varepsilon_0 \\varepsilon_r \\frac{A}{d}">C = ε₀εᵣ A/d</span> &rarr; hängt nur von Bauform &amp; Dielektrikum ab.</li>
+                <li><strong>Ladung:</strong> <span class="katex-render" data-display="false" data-latex="Q = C \\cdot U">Q = C • U</span> &rarr; Quelle lädt bei steigendem <span class="katex-render" data-display="false" data-latex="C">C</span> Ladung nach (<span class="katex-render" data-display="false" data-latex="Q \\propto C">Q ~ C</span>).</li>
+                <li><strong>Feldstärke:</strong> <span class="katex-render" data-display="false" data-latex="E = \\frac{U}{d}">E = U/d</span> &rarr; hängt direkt an <span class="katex-render" data-display="false" data-latex="d">d</span>, da <span class="katex-render" data-display="false" data-latex="U">U</span> fest ist!</li>
+              </ul>
+            </div>
+
+            <!-- Fall 2: Getrennt -->
+            <div style="background: var(--bg-subtle); border: 1.5px solid #8b5cf6; border-radius: 8px; padding: 1rem;">
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <span style="font-size: 1.2rem;">🟣</span>
+                <strong style="color: #7c3aed; font-size: 0.98rem;">Fall 2: Vorher von Quelle GETRENNT</strong>
+              </div>
+              <ul style="margin: 0; padding-left: 1.2rem; font-size: 0.85rem; line-height: 1.55; color: var(--text-primary);">
+                <li><strong>Fixe Randbedingung:</strong> <span class="katex-render" data-display="false" data-latex="Q = \\text{konstant}">Q = konst.</span> (Platten isoliert, Ladung 'gefangen').</li>
+                <li><strong>Kapazität:</strong> <span class="katex-render" data-display="false" data-latex="C = \\varepsilon_0 \\varepsilon_r \\frac{A}{d}">C = ε₀εᵣ A/d</span> &rarr; exakt dieselbe Änderung wie in Fall 1!</li>
+                <li><strong>Spannung:</strong> <span class="katex-render" data-display="false" data-latex="U = \\frac{Q}{C}">U = Q/C</span> &rarr; sinkt bei steigendem <span class="katex-render" data-display="false" data-latex="C">C</span> (<span class="katex-render" data-display="false" data-latex="U \\propto 1/C">U ~ 1/C</span>).</li>
+                <li><strong>Feldstärke:</strong> <span class="katex-render" data-display="false" data-latex="E = \\frac{\\sigma}{\\varepsilon_0 \\varepsilon_r}">E = σ/(ε₀εᵣ)</span> &rarr; unabhängig von <span class="katex-render" data-display="false" data-latex="d">d</span>, sinkt nur durch <span class="katex-render" data-display="false" data-latex="\\varepsilon_r">εᵣ</span>!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 1.2rem;">
+          <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--text-primary); margin: 0 0 0.2rem 0;">
+            🎯 Beweis-Aufgaben zum interaktiven Üben (${BEWEISEN_AUFGABEN.length})
+          </h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0;">
+            Decke die Lösung erst auf, nachdem du dir die Begründungsschritte selbst überlegt hast:
+          </p>
+        </div>
+      </div>
+    `;
+
+    BEWEISEN_AUFGABEN.forEach((beweis, idx) => {
+      html += `
+        <div class="kombi-card" style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 1.4rem; margin-bottom: 1.2rem; box-shadow: var(--card-shadow);">
+          <div class="kombi-header" style="margin-bottom: 0.6rem;">
+            <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--text-primary); margin: 0;">
+              ${beweis.title}
+            </h4>
+          </div>
+          <div class="kombi-connected-badges" style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.8rem;">
+            ${beweis.badges.map(b => `<span class="kombi-pill" style="font-size: 0.75rem; background: rgba(67, 56, 202, 0.12); color: #4338ca; padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 700;">⚖️ ${b}</span>`).join('')}
+          </div>
+          <div class="task-prompt-box" style="background: var(--bg-subtle); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.88rem; line-height: 1.55;">
+            ${beweis.prompt}
+          </div>
+          <button class="btn-reveal-card" onclick="toggleSolution('solBeweis_${idx}', this)">
+            👁️ Vollständigen Beweis &amp; Herleitung aufdecken
+          </button>
+          <div class="task-solution-container" id="solBeweis_${idx}">
+            <div style="font-weight: 800; color: #10b981; margin-bottom: 0.8rem;">✓ Vollständige Beweisführung:</div>
+            ${beweis.solution}
+          </div>
+        </div>
+      `;
+    });
+  }
+
   // E. ISERV AUFGABEN POOL
   else if (CURRENT_PHYSIK_MODE === 'iserv-pool') {
     html += `
@@ -16313,6 +16624,7 @@ function renderPhysikPortal() {
 
       <div class="iserv-pool-filter" style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1.2rem;">
         <button class="iserv-filter-pill ${CURRENT_ISERV_CATEGORY === 'all' ? 'active' : ''}" onclick="filterIservPool('all')">Alle Aufgaben (${ISERV_AUFGABEN_POOL.length})</button>
+        <button class="iserv-filter-pill ${CURRENT_ISERV_CATEGORY === 'beweisen' ? 'active' : ''}" onclick="filterIservPool('beweisen')">⚖️ Wieso etwas so ist (Beweisen)</button>
         <button class="iserv-filter-pill ${CURRENT_ISERV_CATEGORY === 'messwerte' ? 'active' : ''}" onclick="filterIservPool('messwerte')">Messwerte &amp; Linearisierung (S. 33)</button>
         <button class="iserv-filter-pill ${CURRENT_ISERV_CATEGORY === 'coulomb' ? 'active' : ''}" onclick="filterIservPool('coulomb')">Coulombsches Gesetz</button>
         <button class="iserv-filter-pill ${CURRENT_ISERV_CATEGORY === 'efeld' ? 'active' : ''}" onclick="filterIservPool('efeld')">Elektrisches Feld</button>

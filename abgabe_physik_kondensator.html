@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Physik eA - Hausaufgabe: Kondensator - Tonda Beutler</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 12mm 15mm 12mm 15mm;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.42;
+    font-size: 10pt;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
+  .header {
+    border-bottom: 2px solid #4338ca;
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .header-left h1 {
+    font-size: 15pt;
+    margin: 0 0 2px 0;
+    color: #312e81;
+    font-weight: 700;
+  }
+  .header-left .subtitle {
+    font-size: 10pt;
+    color: #4338ca;
+    font-weight: 600;
+  }
+  .header-right {
+    text-align: right;
+    font-size: 8.5pt;
+    color: #64748b;
+    line-height: 1.35;
+  }
+  .task-box {
+    background-color: #f8fafc;
+    border-left: 4px solid #4338ca;
+    border-radius: 0 6px 6px 0;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    font-size: 9pt;
+  }
+  .task-title {
+    font-weight: 700;
+    color: #1e1b4b;
+    margin-bottom: 3px;
+    font-size: 9.5pt;
+  }
+  .task-quote {
+    font-style: italic;
+    color: #334155;
+    margin: 0;
+  }
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 12px;
+    font-size: 9pt;
+  }
+  .summary-table th {
+    background-color: #e0e7ff;
+    color: #1e1b4b;
+    text-align: left;
+    padding: 6px 9px;
+    font-weight: 700;
+    border: 1px solid #c7d2fe;
+  }
+  .summary-table td {
+    padding: 5px 9px;
+    border: 1px solid #e2e8f0;
+    vertical-align: middle;
+  }
+  .summary-table tr:nth-child(even) {
+    background-color: #f8fafc;
+  }
+  .badge-factor {
+    display: inline-block;
+    background-color: #4338ca;
+    color: white;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 8.5pt;
+  }
+  .badge-const {
+    display: inline-block;
+    background-color: #059669;
+    color: white;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 8.5pt;
+  }
+  h2 {
+    font-size: 11pt;
+    color: #312e81;
+    margin: 10px 0 5px 0;
+    border-bottom: 1px solid #cbd5e1;
+    padding-bottom: 2px;
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 7px 10px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+  .card-title {
+    font-weight: 700;
+    font-size: 9pt;
+    color: #4338ca;
+    margin-bottom: 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .math {
+    font-family: "Cambria Math", "Times New Roman", serif;
+    font-size: 9.5pt;
+    background-color: #f1f5f9;
+    padding: 3px 6px;
+    border-radius: 4px;
+    display: block;
+    margin: 3px 0;
+    color: #0f172a;
+  }
+  .card p {
+    margin: 3px 0;
+    font-size: 8.5pt;
+    color: #334155;
+  }
+  .conclusion {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 6px;
+    padding: 7px 11px;
+    margin-top: 8px;
+    font-size: 8.8pt;
+    color: #1e3a8a;
+  }
+  .note-box {
+    background-color: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 8.2pt;
+    color: #92400e;
+    margin-top: 8px;
+  }
+  .note-box strong {
+    color: #78350f;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>Physik eA (PH12) &ndash; Hausaufgabe</h1>
+    <div class="subtitle">Funktionale Zusammenh&auml;nge am Plattenkondensator</div>
+  </div>
+  <div class="header-right">
+    <strong>Sch&uuml;ler:</strong> Tonda Beutler<br>
+    <strong>Kurslehrer:</strong> Herr Puran Lehmann<br>
+    <strong>Datum:</strong> 01.10.2026
+  </div>
+</div>
+
+<div class="task-box">
+  <div class="task-title">Aufgabenstellung aus dem IServ-Aufgabenmodul:</div>
+  <div class="task-quote">
+    &bdquo;Der aufgeladene Kondensator wird diesmal <strong>nicht von der Quelle getrennt</strong>. Dann wird der Plattenabstand um den Faktor 4 verringert und es wird ein Dielektrikum eingef&uuml;hrt mit der relativen Permeabilit&auml;t von 3 (vorher war sie 1). Wie &auml;ndern sich die Gr&ouml;&szlig;en <strong>C</strong>, <strong>Q</strong>, <strong>U</strong> und <strong>E</strong>?&ldquo;
+  </div>
+</div>
+
+<h2>1. &Uuml;bersicht der &Auml;nderungsfaktoren</h2>
+<table class="summary-table">
+  <thead>
+    <tr>
+      <th style="width: 22%;">Physikalische Gr&ouml;&szlig;e</th>
+      <th style="width: 24%;">Formelzusammenhang</th>
+      <th style="width: 20%;">&Auml;nderungsfaktor</th>
+      <th style="width: 34%;">Verhalten / Physikalische Begr&uuml;ndung</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Spannung U</strong></td>
+      <td>Quelle bleibt verbunden</td>
+      <td><span class="badge-const">Faktor 1 (konstant)</span></td>
+      <td>Bleibt exakt gleich: <em>U<sub>2</sub> = U<sub>1</sub></em></td>
+    </tr>
+    <tr>
+      <td><strong>Kapazit&auml;t C</strong></td>
+      <td>C = &epsilon;<sub>0</sub> &middot; &epsilon;<sub>r</sub> &middot; A / d</td>
+      <td><span class="badge-factor">&times; 12</span></td>
+      <td>Verzw&ouml;lffacht sich (3 &middot; 4 = 12)</td>
+    </tr>
+    <tr>
+      <td><strong>Ladung Q</strong></td>
+      <td>Q = C &middot; U</td>
+      <td><span class="badge-factor">&times; 12</span></td>
+      <td>Verzw&ouml;lffacht sich (Quelle l&auml;dt nach)</td>
+    </tr>
+    <tr>
+      <td><strong>Feldst&auml;rke E</strong></td>
+      <td>E = U / d</td>
+      <td><span class="badge-factor">&times; 4</span></td>
+      <td>Vervierfacht sich (da d geviertelt wird)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>2. Schritt-f&uuml;r-Schritt-Herleitung</h2>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-title">
+      <span>1. Elektrische Spannung U</span>
+      <span class="badge-const">U<sub>2</sub> = U<sub>1</sub></span>
+    </div>
+    <div class="math">U<sub>2</sub> = U<sub>1</sub> = U = konstant</div>
+    <p><strong>Begr&uuml;ndung:</strong> Die ma&szlig;gebliche Randbedingung ist, dass der Kondensator <em>nicht von der Spannungsquelle getrennt wird</em>.</p>
+    <p>Eine ideale Spannungsquelle h&auml;lt die Potentialdifferenz zwischen den Kondensatorplatten konstant. Daher &auml;ndert sich <em>U</em> nicht (&Auml;nderungsfaktor 1).</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>2. Kapazit&auml;t C</span>
+      <span class="badge-factor">C<sub>2</sub> = 12 &middot; C<sub>1</sub></span>
+    </div>
+    <div class="math">C<sub>2</sub> = &epsilon;<sub>0</sub> &middot; &epsilon;<sub>r,2</sub> &middot; (A / d<sub>2</sub>) = &epsilon;<sub>0</sub> &middot; 3 &middot; (A / (d<sub>1</sub>/4)) = 12 &middot; C<sub>1</sub></div>
+    <p><strong>Einflussfaktoren:</strong></p>
+    <p>&bull; <em>Abstand d</em> wird geviertelt (&divide; 4) &rarr; Faktor 4 auf die Kapazit&auml;t (antiproportional).</p>
+    <p>&bull; <em>Dielektrikum</em> (&epsilon;<sub>r</sub> = 3) &rarr; Faktor 3 auf die Kapazit&auml;t (proportional).</p>
+    <p>Zusammen ergibt sich der Faktor <strong>12</strong>.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>3. Gespeicherte Ladung Q</span>
+      <span class="badge-factor">Q<sub>2</sub> = 12 &middot; Q<sub>1</sub></span>
+    </div>
+    <div class="math">Q<sub>2</sub> = C<sub>2</sub> &middot; U<sub>2</sub> = (12 &middot; C<sub>1</sub>) &middot; U<sub>1</sub> = 12 &middot; Q<sub>1</sub></div>
+    <p><strong>Physikalischer Vorgang:</strong></p>
+    <p>Da die Kapazit&auml;t um den Faktor 12 ansteigt und die Spannung fest bleibt, flossen w&auml;hrend des Vorgangs zus&auml;tzliche Ladungstr&auml;ger von der Spannungsquelle auf die Platten nach, bis <em>Q<sub>2</sub> = 12 &middot; Q<sub>1</sub></em> erreicht ist.</p>
+    <p>Die Ladungsmenge <strong>verzw&ouml;lffacht sich</strong>.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">
+      <span>4. Elektrische Feldst&auml;rke E</span>
+      <span class="badge-factor">E<sub>2</sub> = 4 &middot; E<sub>1</sub></span>
+    </div>
+    <div class="math">E<sub>2</sub> = U<sub>2</sub> / d<sub>2</sub> = U<sub>1</sub> / (d<sub>1</sub> / 4) = 4 &middot; (U<sub>1</sub> / d<sub>1</sub>) = 4 &middot; E<sub>1</sub></div>
+    <p><strong>Begr&uuml;ndung &amp; Gegenprobe:</strong></p>
+    <p>&bull; <em>Direkter Weg:</em> F&uuml;r das homogene Feld gilt <em>E = U / d</em>. Bei konstantem <em>U</em> und gevierteltem <em>d</em> vervierfacht sich <em>E</em>.</p>
+    <p>&bull; <em>Gegenprobe &uuml;ber Fl&auml;chenladung:</em> <em>E = &sigma; / (&epsilon;<sub>0</sub>&epsilon;<sub>r</sub>) = (12 &middot; &sigma;<sub>1</sub>) / (3 &middot; &epsilon;<sub>0</sub>) = 4 &middot; E<sub>1</sub></em>. Die Polarisation schw&auml;cht das 12-fache Feld um den Faktor 3 ab &rarr; exakt 4!</p>
+  </div>
+</div>
+
+<div class="conclusion">
+  <strong>Ergebnis / Antwortsatz:</strong><br>
+  Durch das Verringern des Plattenabstands auf ein Viertel und das Einf&uuml;hren des Dielektrikums (&epsilon;<sub>r</sub> = 3) bei angeschlossener Quelle <strong>bleibt die Spannung U konstant</strong> (Faktor 1), die <strong>elektrische Feldst&auml;rke E vervierfacht sich</strong> (&times;4), w&auml;hrend sich die <strong>Kapazit&auml;t C</strong> und die <strong>gespeicherte Ladung Q jeweils verzw&ouml;lffachen</strong> (&times;12).
+</div>
+
+<div class="note-box">
+  <strong>Fachliche Pr&auml;zisierung zur Aufgabenstellung:</strong><br>
+  In der Aufgabenstellung wird der Ausdruck <em>&bdquo;relative Permeabilit&auml;t&ldquo;</em> verwendet (physikalische Gr&ouml;&szlig;e &mu;<sub>r</sub> f&uuml;r magnetische Stoffe). Im Kontext elektrostatische Felder und Kondensatordielektrika ist hier die <strong>relative Permittivit&auml;t</strong> bzw. <strong>Dielektrizit&auml;tszahl</strong> &epsilon;<sub>r</sub> = 3 gemeint.
+</div>
+
+</body>
+</html>
