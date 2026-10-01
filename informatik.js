@@ -64,6 +64,9 @@ function renderInformatikPortal() {
       <button onclick="switchInfoTab('komplexitaet')" id="infoTabBtn-komplexitaet" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.1rem; border: none; background: transparent; font-weight: 600; font-size: 0.92rem; color: #64748b; border-bottom: 3px solid transparent; cursor: pointer; border-radius: 6px 6px 0 0;">
         <span>📊</span> <span>3. Komplexitätsanalyse &amp; Aufgabe 2</span>
       </button>
+      <button onclick="switchInfoTab('rekursion')" id="infoTabBtn-rekursion" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.65rem 1.1rem; border: none; background: transparent; font-weight: 600; font-size: 0.92rem; color: #64748b; border-bottom: 3px solid transparent; cursor: pointer; border-radius: 6px 6px 0 0;">
+        <span>🔄</span> <span>4. Rekursive Funktionen &amp; Zinseszins</span>
+      </button>
     </div>
 
     <!-- TAB 1: GRUNDLAGEN (SORTIERVERFAHREN INTERAKTIV) -->
@@ -80,6 +83,11 @@ function renderInformatikPortal() {
     <div id="infoTabContent-komplexitaet" style="display: none;">
       ${renderInfoKomplexitaetSection()}
     </div>
+
+    <!-- TAB 4: REKURSION -->
+    <div id="infoTabContent-rekursion" style="display: none;">
+      ${renderInfoRekursionSection()}
+    </div>
   `;
 
   // Initialize visualizer after DOM mount
@@ -90,7 +98,7 @@ function renderInformatikPortal() {
 
 function switchInfoTab(tabId) {
   CURRENT_INFO_TAB = tabId;
-  ['grundlagen', 'struktogramme', 'komplexitaet'].forEach(t => {
+  ['grundlagen', 'struktogramme', 'komplexitaet', 'rekursion'].forEach(t => {
     const btn = document.getElementById(`infoTabBtn-${t}`);
     const cnt = document.getElementById(`infoTabContent-${t}`);
     if (btn) {
@@ -1060,4 +1068,222 @@ function renderInfoKomplexitaetSection() {
       </div>
     </div>
   `;
+}
+
+
+// =========================================================================
+// 4. REKURSION & REKURSIVE FUNKTIONEN (AUFGABE 1: ZINSESZINS)
+// =========================================================================
+
+function renderInfoRekursionSection() {
+  return `
+    <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <!-- Hero Card -->
+      <div style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: #f8fafc; border-radius: 12px; padding: 1.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.12); border: 1px solid #4338ca;">
+        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem;">
+          <span style="background: #6366f1; color: white; font-weight: 800; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 4px; text-transform: uppercase;">Informatik eA</span>
+          <span style="background: #10b981; color: white; font-weight: 700; font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 4px;">Grundlagen der Algorithmik</span>
+        </div>
+        <h2 style="font-size: 1.45rem; font-weight: 800; margin: 0 0 0.5rem 0; color: #ffffff;">
+          🔄 Rekursive Funktionen &amp; Zinseszins-Algorithmus
+        </h2>
+        <p style="margin: 0; color: #c7d2fe; font-size: 0.92rem; line-height: 1.55; max-width: 900px;">
+          Ein fundamentales Konzept der Algorithmik: Wie sich komplexe Probleme durch Selbstaufruf auf einfachere Teilprobleme reduzieren lassen &ndash; von der Rekursionsbasis bis zum Call Stack.
+        </p>
+      </div>
+
+      <!-- Theorie Grid: Die 3 Kernkonzepte -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+        <div style="background: var(--bg-card, #ffffff); border: 1px solid #e2e8f0; border-top: 4px solid #3b82f6; border-radius: 8px; padding: 1.2rem; box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+          <div style="font-weight: 800; font-size: 1rem; color: #1e40af; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
+            <span>1️⃣</span> Was ist Rekursion?
+          </div>
+          <p style="font-size: 0.86rem; color: #475569; line-height: 1.5; margin: 0;">
+            Eine Funktion heißt <strong>rekursiv</strong>, wenn sie sich in ihrem eigenen Funktionskörper selbst wieder aufruft. Sie zerlegt eine Gesamtaufgabe der Größe <code>n</code> in ein gleichartiges, aber <em>kleineres</em> Teilproblem <code>n - 1</code>.
+          </p>
+        </div>
+
+        <div style="background: var(--bg-card, #ffffff); border: 1px solid #e2e8f0; border-top: 4px solid #10b981; border-radius: 8px; padding: 1.2rem; box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+          <div style="font-weight: 800; font-size: 1rem; color: #065f46; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
+            <span>2️⃣</span> Die 2 Säulen der Rekursion
+          </div>
+          <p style="font-size: 0.86rem; color: #475569; line-height: 1.5; margin: 0;">
+            <strong>A. Rekursionsbasis (Base Case):</strong> Die Abbruchbedingung. Der kleinste Fall, der ohne weiteren Aufruf sofort gelöst wird (z. B. <code>n == 0</code>). Verhindert den Stack Overflow!<br>
+            <strong>B. Rekursionsschritt:</strong> Die Problemreduktion <code>n &rarr; n - 1</code>.
+          </p>
+        </div>
+
+        <div style="background: var(--bg-card, #ffffff); border: 1px solid #e2e8f0; border-top: 4px solid #8b5cf6; border-radius: 8px; padding: 1.2rem; box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+          <div style="font-weight: 800; font-size: 1rem; color: #5b21b6; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
+            <span>3️⃣</span> Der Call Stack (Aufrufstapel)
+          </div>
+          <p style="font-size: 0.86rem; color: #475569; line-height: 1.5; margin: 0;">
+            <strong>Abstieg (Wind-up):</strong> Jeder Aufruf wird auf dem Stapelspeicher geparkt.<br>
+            <strong>Aufstieg (Unwind):</strong> Sobald die Basis <code>n=0</code> erreicht ist, reichen die Funktionen von unten nach oben ihre Rückgabewerte weiter, bis das Endergebnis feststeht.
+          </p>
+        </div>
+      </div>
+
+      <!-- AUFGABE 1: REKURSIVE ZINSESZINS-RECHNUNG -->
+      <div style="background: var(--bg-card, #ffffff); border: 1px solid #cbd5e1; border-radius: 10px; padding: 1.4rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.8rem;">
+          <h3 style="margin: 0; font-size: 1.25rem; color: #0f172a;">
+            Aufgabe 1: Rekursive Zinseszins-Rechnung (kapital(n))
+          </h3>
+          <span style="background: #e0e7ff; color: #3730a3; font-weight: 700; font-size: 0.78rem; padding: 0.25rem 0.6rem; border-radius: 4px;">
+            Startkapital 1000 € &bull; 5 % Zinsen
+          </span>
+        </div>
+
+        <div style="background: #f8fafc; border-left: 4px solid #6366f1; padding: 0.9rem 1.2rem; border-radius: 0 8px 8px 0; margin-bottom: 1.2rem; font-size: 0.9rem; color: #334155;">
+          <strong>Gegebene Problemreduktionsschritte:</strong>
+          <pre style="background: #ffffff; border: 1px solid #e2e8f0; padding: 0.7rem; border-radius: 6px; margin: 0.5rem 0 0 0; font-family: 'Consolas', monospace; font-size: 0.88rem; color: #1e293b;">kapital(0) -> 1000
+kapital(5) -> kapital(4) + 0.05 * kapital(4)</pre>
+        </div>
+
+        <h4 style="font-size: 1rem; color: #1e1b4b; margin: 1rem 0 0.5rem 0;">1. Verallgemeinerung der Reduktionsschritte</h4>
+        <p style="font-size: 0.88rem; color: #475569; line-height: 1.55; margin-bottom: 0.8rem;">
+          Aus den beiden vorgegebenen Fällen leiten wir die allgemeine mathematische und algorithmische Rekursionsvorschrift für jedes beliebige Jahr <code>n</code> ab:
+        </p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.8rem; margin-bottom: 1.2rem;">
+          <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 6px; padding: 0.8rem;">
+            <strong style="color: #065f46;">A. Rekursionsbasis (n = 0):</strong><br>
+            <code>kapital(0) = 1000</code><br>
+            <span style="font-size: 0.8rem; color: #047857;">Das Startkapital zu Beginn (nach 0 Jahren) beträgt 1000 Euro.</span>
+          </div>
+          <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 0.8rem;">
+            <strong style="color: #1e40af;">B. Rekursionsschritt (n > 0):</strong><br>
+            <code>kapital(n) = kapital(n - 1) + 0.05 * kapital(n - 1)</code><br>
+            <span style="font-size: 0.8rem; color: #1d4ed8;">Oder ausgeklammert: <code>kapital(n) = 1.05 * kapital(n - 1)</code>.</span>
+          </div>
+        </div>
+
+        <h4 style="font-size: 1rem; color: #1e1b4b; margin: 1rem 0 0.5rem 0;">2. Vollständiger Python-Quellcode</h4>
+        <div style="background: #0f172a; border-radius: 8px; padding: 1rem; color: #f8fafc; font-family: 'Consolas', monospace; font-size: 0.88rem; line-height: 1.5; overflow-x: auto; margin-bottom: 1.2rem; position: relative;">
+          <button onclick="copyPythonRekursionCode()" style="position: absolute; top: 0.6rem; right: 0.6rem; background: #334155; border: 1px solid #475569; color: #f8fafc; font-size: 0.76rem; padding: 0.3rem 0.6rem; border-radius: 4px; cursor: pointer;">
+            📋 Code kopieren
+          </button>
+<pre style="margin: 0; color: #e2e8f0;"><span style="color: #94a3b8;"># Python 3: Rekursive Zinseszins-Funktion</span>
+<span style="color: #f43f5e;">def</span> <span style="color: #38bdf8;">kapital</span>(n):
+    <span style="color: #94a3b8;"># 1. Rekursionsbasis (Abbruchbedingung)</span>
+    <span style="color: #f43f5e;">if</span> n == <span style="color: #a5b4fc;">0</span>:
+        <span style="color: #f43f5e;">return</span> <span style="color: #a5b4fc;">1000.0</span>
+    
+    <span style="color: #94a3b8;"># 2. Rekursionsschritt (Problemreduktion)</span>
+    vorher = kapital(n - <span style="color: #a5b4fc;">1</span>)
+    <span style="color: #f43f5e;">return</span> vorher + <span style="color: #a5b4fc;">0.05</span> * vorher
+
+<span style="color: #94a3b8;"># Test-Funktionsaufrufe:</span>
+<span style="color: #f43f5e;">for</span> jahre <span style="color: #f43f5e;">in</span> [<span style="color: #a5b4fc;">0</span>, <span style="color: #a5b4fc;">1</span>, <span style="color: #a5b4fc;">2</span>, <span style="color: #a5b4fc;">3</span>, <span style="color: #a5b4fc;">4</span>, <span style="color: #a5b4fc;">5</span>, <span style="color: #a5b4fc;">10</span>]:
+    print(<span style="color: #38bdf8;">f"kapital({jahre}) = {kapital(jahre):.2f} Euro"</span>)</pre>
+        </div>
+
+        <!-- INTERAKTIVER LIVE-TESTER -->
+        <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 8px; padding: 1.2rem; margin-bottom: 1.4rem;">
+          <h4 style="margin: 0 0 0.6rem 0; font-size: 1rem; color: #0f172a; display: flex; align-items: center; gap: 0.4rem;">
+            <span>⚡</span> Interaktiver Rekursions-Simulator &amp; Call Stack Trace
+          </h4>
+          <p style="font-size: 0.85rem; color: #475569; margin-bottom: 0.8rem;">
+            Gib eine beliebige Jahreszahl <code>n</code> ein und beobachte, wie der Algorithmus bis zum Basisfall <code>kapital(0)</code> absteigt und das Kapital Schritt für Schritt berechnet:
+          </p>
+          <div style="display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem;">
+            <label style="font-size: 0.88rem; font-weight: 700; color: #334155;">Laufzeit n (Jahre):</label>
+            <input type="number" id="inputRekursionJahre" value="5" min="0" max="25" style="padding: 0.45rem 0.8rem; border: 1px solid #94a3b8; border-radius: 6px; font-weight: 700; width: 80px; font-size: 0.95rem;">
+            <button onclick="runLiveRekursionTest()" style="background: #2563eb; color: white; border: none; padding: 0.5rem 1.1rem; border-radius: 6px; font-weight: 700; font-size: 0.88rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;">
+              <span>🚀</span> <span>kapital(n) berechnen</span>
+            </button>
+          </div>
+
+          <div id="rekursionOutputBox" style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 1rem; font-family: 'Consolas', monospace; font-size: 0.86rem; color: #1e293b; max-height: 280px; overflow-y: auto;">
+            <!-- Generated dynamically -->
+          </div>
+        </div>
+
+        <!-- WERTETABELLE DER FUNKTIONSAUFRUFE -->
+        <h4 style="font-size: 1rem; color: #1e1b4b; margin: 1rem 0 0.5rem 0;">3. Tabelle der Test-Funktionsaufrufe</h4>
+        <div style="overflow-x: auto; margin-bottom: 1.2rem;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.88rem; text-align: left;">
+            <thead>
+              <tr style="background: #f1f5f9; border-bottom: 2px solid #cbd5e1;">
+                <th style="padding: 0.6rem; border: 1px solid #cbd5e1;">Aufruf kapital(n)</th>
+                <th style="padding: 0.6rem; border: 1px solid #cbd5e1;">Berechnungsweg</th>
+                <th style="padding: 0.6rem; border: 1px solid #cbd5e1;">Kapitalwert</th>
+                <th style="padding: 0.6rem; border: 1px solid #cbd5e1;">Explizite Formel (1000 &middot; 1,05ⁿ)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700;">kapital(0)</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1; color: #10b981; font-weight: 700;">Basisfall (Abbruch)</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700;">1000,00 €</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1;">1000,00 €</td></tr>
+              <tr><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700;">kapital(1)</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1;">1000,00 + 0,05 &middot; 1000,00</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700;">1050,00 €</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1;">1050,00 €</td></tr>
+              <tr><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700;">kapital(2)</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1;">1050,00 + 0,05 &middot; 1050,00</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700;">1102,50 €</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1;">1102,50 €</td></tr>
+              <tr><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700;">kapital(3)</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1;">1102,50 + 0,05 &middot; 1102,50</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700;">1157,63 €</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1;">1157,63 €</td></tr>
+              <tr><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700;">kapital(4)</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1;">1157,63 + 0,05 &middot; 1157,63</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700;">1215,51 €</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1;">1215,51 €</td></tr>
+              <tr style="background: #eff6ff;"><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">kapital(5)</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700;">kapital(4) + 0,05 &middot; kapital(4)</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 800; color: #1e40af;">1276,28 €</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700; color: #1e40af;">1276,28 €</td></tr>
+              <tr><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700;">kapital(10)</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1;">kapital(9) + 0,05 &middot; kapital(9)</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1; font-weight: 700;">1628,89 €</td><td style="padding: 0.5rem; border: 1px solid #cbd5e1;">1628,89 €</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- KLAUSUR-TIPP & EFFIZIENZ (AFB III) -->
+        <div style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 1rem; color: #92400e; font-size: 0.86rem; line-height: 1.5;">
+          <strong style="color: #78350f; font-size: 0.95rem;">💡 Klausur-Falle &amp; Laufzeitoptimierung (AFB III):</strong><br>
+          Schreibt man exakt <code>return kapital(n-1) + 0.05 * kapital(n-1)</code>, so ruft sich die Funktion in <em>jeder Zeile zweimal</em> selbst auf! Das führt zu einer <strong>Baumrekursion mit exponentieller Laufzeit</strong> <span style="font-family: monospace; font-weight: 700;">O(2ⁿ)</span>. Bei <code>n = 30</code> wären das über 2 Milliarden Funktionsaufrufe!<br>
+          <em>Lösung:</em> Man speichert den Rückgabewert in einer Variable (<code>vorher = kapital(n-1)</code>) oder schreibt <code>return 1.05 * kapital(n-1)</code>. Dadurch entsteht eine <strong>lineare Rekursion mit genau n Aufrufen</strong> (<span style="font-family: monospace; font-weight: 700;">O(n)</span>).
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function runLiveRekursionTest() {
+  const input = document.getElementById('inputRekursionJahre');
+  const outBox = document.getElementById('rekursionOutputBox');
+  if (!input || !outBox) return;
+
+  const n = parseInt(input.value) || 0;
+  if (n < 0 || n > 30) {
+    outBox.innerHTML = '<span style="color: #dc2626;">Bitte eine Zahl zwischen 0 und 25 eingeben.</span>';
+    return;
+  }
+
+  let log = [];
+  log.push(`=== Call Stack Trace für kapital(${n}) ===`);
+
+  function simKapital(k, depth) {
+    const indent = '  '.repeat(depth);
+    log.push(`${indent}↳ [Abstieg] Rufe kapital(${k}) auf...`);
+    if (k === 0) {
+      log.push(`${indent}★ [BASISFALL erreicht] kapital(0) = 1000.00 € (Startkapital)`);
+      return 1000.0;
+    }
+    const prev = simKapital(k - 1, depth + 1);
+    const zinsen = prev * 0.05;
+    const res = prev + zinsen;
+    log.push(`${indent}⮤ [Rückgabe] kapital(${k}) = ${prev.toFixed(2)} € + ${zinsen.toFixed(2)} € (5% Zinsen) = ${res.toFixed(2)} €`);
+    return res;
+  }
+
+  const finalVal = simKapital(n, 0);
+  log.push(`--------------------------------------------------`);
+  log.push(`Endergebnis nach ${n} Jahren: kapital(${n}) = ${finalVal.toFixed(2)} €`);
+  log.push(`Vergleichsformel: 1000 * 1.05^${n} = ${(1000 * Math.pow(1.05, n)).toFixed(2)} € (exakt übereinstimmend)`);
+
+  outBox.innerHTML = log.join('\n');
+}
+
+function copyPythonRekursionCode() {
+  const code = `def kapital(n):
+    # 1. Rekursionsbasis (Abbruchbedingung)
+    if n == 0:
+        return 1000.0
+    
+    # 2. Rekursionsschritt (Problemreduktion)
+    vorher = kapital(n - 1)
+    return vorher + 0.05 * vorher
+
+# Tests
+for jahre in [0, 1, 2, 3, 4, 5, 10]:
+    print(f"kapital({jahre}) = {kapital(jahre):.2f} Euro")`;
+  navigator.clipboard.writeText(code).then(() => {
+    alert('Python-Code in die Zwischenablage kopiert!');
+  });
 }
