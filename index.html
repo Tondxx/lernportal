@@ -1441,6 +1441,174 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
     </div>
 
     <!-- --------------------------------------------------------------------- -->
+    <!-- MATHE TOPIC 5: INTEGRALRECHNUNG (AH S. 2 & S. 4)                     -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-mathe-integral" class="topic-module-box">
+      <div class="steckbrief-container">
+        <header class="sb-header">
+          <div class="sb-header-left">
+            <span class="page-pill" style="background:#e0f2fe; color:#0284c7; border-color:#7dd3fc;">AH S. 2 &amp; S. 4</span>
+            <span class="topic-pill">Integralrechnung</span>
+            <h1 class="sb-title">Bestände rekonstruieren &amp; Stammfunktionen</h1>
+            <div class="schar-sub-tabs" style="margin-top:0.6rem;">
+              <button class="sub-tab-btn active" id="integral-tab-s2" onclick="switchIntegralTab('s2')">
+                📐 S. 2 · Näherung (Flächen)
+              </button>
+              <button class="sub-tab-btn" id="integral-tab-s4" onclick="switchIntegralTab('s4')">
+                ∫ S. 4 · Stammfunktionen
+              </button>
+              <button class="sub-tab-btn" id="integral-tab-stammcheck" onclick="switchIntegralTab('stammcheck')">
+                ✔️ Aufgaben-Check (S. 4 Nr. 1–3)
+              </button>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <img src="integral_seite2_naeherung.jpg" alt="Arbeitsheft S.2" style="height:54px;border-radius:6px;border:1px solid var(--border-subtle);margin-right:6px;cursor:pointer;" onclick="this.style.height=this.style.height==='180px'?'54px':'180px'" title="Klicken zum Vergrößern">
+            <img src="integral_seite4_stammfunktionen.png" alt="Arbeitsheft S.4" style="height:54px;border-radius:6px;border:1px solid var(--border-subtle);cursor:pointer;" onclick="this.style.height=this.style.height==='180px'?'54px':'180px'" title="Klicken zum Vergrößern">
+          </div>
+        </header>
+
+        <!-- PANE 1: S.2 NÄHERUNG -->
+        <div id="integral-pane-s2">
+          <div class="p-card" style="border-left:4px solid #f87171; background:var(--bg-subtle); margin-bottom:1.2rem;">
+            <h3 style="color:#f87171;margin:0 0 0.5rem 0;">🔴 Näherungsweise Flächenberechnung (Infokästchen AH S.2)</h3>
+            <p style="font-size:0.88rem;color:var(--text-secondary);margin:0 0 0.6rem 0;">
+              Der <strong>Bestand</strong> (mm² Bakterienkultur) = Fläche zwischen Änderungsgraph &amp; x-Achse.<br>
+              <span style="color:#38bdf8;">■</span> Fläche <em>oberhalb</em> x-Achse = Bestand <strong>steigt</strong> &nbsp;|&nbsp;
+              <span style="color:#f87171;">■</span> Fläche <em>unterhalb</em> = Bestand <strong>sinkt</strong>
+            </p>
+            <div style="display:flex;gap:1rem;flex-wrap:wrap;font-size:0.85rem;">
+              <div class="formula-chip">Dreieck: <span class="katex-render" data-display="false" data-latex="A = \tfrac{1}{2} \cdot b \cdot h"></span></div>
+              <div class="formula-chip">Trapez: <span class="katex-render" data-display="false" data-latex="A = \tfrac{1}{2}(a+c)\cdot h"></span></div>
+              <div class="formula-chip">Rechteck: <span class="katex-render" data-display="false" data-latex="A = b \cdot h"></span></div>
+              <div class="formula-chip" style="background:var(--bg-card);">1 Kästchen = 0,1h · 0,5mm²/h = <strong>0,05 mm²</strong></div>
+            </div>
+          </div>
+
+          <div class="p-card" style="margin-bottom:1.2rem;">
+            <h4 style="margin:0 0 0.5rem 0;">Visualisierung: Beispiel Infokästchen (AH S.2 oben) – Bakterienkultur</h4>
+            <canvas id="integral-canvas-bakteria" width="680" height="260" style="width:100%;max-width:680px;display:block;border-radius:8px;"></canvas>
+            <div style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
+              🟡 Goldenes Dreieck ≈ Fläche oberhalb (Bestand steigt) &nbsp;|&nbsp; 🟣 Lila Trapez ≈ Fläche unterhalb (Bestand sinkt)
+            </div>
+          </div>
+
+          <div class="p-card" style="margin-bottom:1rem;">
+            <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:0.8rem;">
+              <h4 style="margin:0;">Aufgabe 1 – Näherungsweise Bestand bestimmen (Anfangsbestand = 0)</h4>
+              <label style="font-size:0.83rem;cursor:pointer;display:flex;align-items:center;gap:0.3rem;">
+                <input type="checkbox" id="integral-show-shapes" onchange="renderAufgabe1()">
+                Geometrische Näherungen einblenden
+              </label>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;flex-wrap:wrap;">
+              <div>
+                <canvas id="integral-canvas-1a" width="440" height="240" style="width:100%;border-radius:8px;"></canvas>
+                <div style="font-size:0.82rem;margin-top:0.5rem;color:var(--text-secondary);">
+                  <strong>a)</strong>
+                  <div style="margin-top:0.3rem;">t=2: B(2)≈<input class="integral-input" id="in-1a-b2" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1a-b2','≈ 3,9 mm² (Dreieck: ½·2,5·3,1)')">Lsg</button> <span id="sol-1a-b2" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                  <div style="margin-top:0.25rem;">t=3: B(3)≈<input class="integral-input" id="in-1a-b3" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1a-b3','≈ 3,4 mm²')">Lsg</button> <span id="sol-1a-b3" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                  <div style="margin-top:0.25rem;">t=7: B(7)≈<input class="integral-input" id="in-1a-b7" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1a-b7','≈ 2,1 mm²')">Lsg</button> <span id="sol-1a-b7" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                </div>
+              </div>
+              <div>
+                <canvas id="integral-canvas-1b" width="440" height="240" style="width:100%;border-radius:8px;"></canvas>
+                <div style="font-size:0.82rem;margin-top:0.5rem;color:var(--text-secondary);">
+                  <strong>b)</strong>
+                  <div style="margin-top:0.3rem;">t=1,5: B(1,5)≈<input class="integral-input" id="in-1b-b15" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1b-b15','≈ 1,4 mm²')">Lsg</button> <span id="sol-1b-b15" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                  <div style="margin-top:0.25rem;">t=2: B(2)≈<input class="integral-input" id="in-1b-b2" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1b-b2','≈ 1,9 mm²')">Lsg</button> <span id="sol-1b-b2" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                  <div style="margin-top:0.25rem;">t=3: B(3)≈<input class="integral-input" id="in-1b-b3" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1b-b3','≈ 1,9 mm²')">Lsg</button> <span id="sol-1b-b3" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-card">
+            <h4 style="margin:0 0 0.6rem 0;">Aufgabe 2 – Populationsentwicklung von Rehen (AH S.2)</h4>
+            <div style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.7rem;">
+              Änderung der Tierzahl pro Jahr: positiver Bereich → Wachstum, negativer Bereich → Schrumpfung.
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.85rem;">
+              <div><strong>a) Wann war die Population am größten?</strong> <input class="integral-input" id="in-2a" placeholder="Jahr?" style="width:80px;margin:0 0.4rem;"> <button class="btn-sm" onclick="showIntegralSol('sol-2a','Jahr ≈ 40 (Nullstelle des Änderungsgraphen)')">Lösung</button> <span id="sol-2a" class="integral-sol" style="display:none;color:#34d399;"></span></div>
+              <div><strong>b) Wachstum in ersten 30 Jahren ≈</strong> <input class="integral-input" id="in-2b" placeholder="? Tiere" style="width:90px;margin:0 0.4rem;"> <button class="btn-sm" onclick="showIntegralSol('sol-2b','≈ ½·30·100 = 1 500 Tiere (Dreieck)')">Lösung</button> <span id="sol-2b" class="integral-sol" style="display:none;color:#34d399;"></span></div>
+              <div><strong>c) Schrumpfung t=35 bis 60 ≈</strong> <input class="integral-input" id="in-2c" placeholder="? Tiere" style="width:90px;margin:0 0.4rem;"> <button class="btn-sm" onclick="showIntegralSol('sol-2c','≈ ½·25·200 = 2 500 Tiere (Dreieck unterhalb x-Achse)')">Lösung</button> <span id="sol-2c" class="integral-sol" style="display:none;color:#34d399;"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: S.4 STAMMFUNKTIONEN -->
+        <div id="integral-pane-s4" style="display:none;">
+          <div class="p-card" style="border-left:4px solid #a78bfa;margin-bottom:1.2rem;">
+            <h3 style="color:#a78bfa;margin:0 0 0.5rem 0;">∫ Stammfunktion = Umkehrung der Ableitung</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;flex-wrap:wrap;">
+              <div><h4 style="margin:0 0 0.3rem 0;font-size:0.9rem;">Potenzregel</h4><div class="formula-chip"><span class="katex-render" data-display="true" data-latex="f(x)=x^n \;\Rightarrow\; F(x)=\frac{x^{n+1}}{n+1}+c"></span></div></div>
+              <div><h4 style="margin:0 0 0.3rem 0;font-size:0.9rem;">Konstanter Faktor</h4><div class="formula-chip"><span class="katex-render" data-display="true" data-latex="f(x)=a\cdot x^n \;\Rightarrow\; F(x)=a\cdot\frac{x^{n+1}}{n+1}+c"></span></div></div>
+              <div><h4 style="margin:0 0 0.3rem 0;font-size:0.9rem;">Summenregel</h4><div class="formula-chip"><span class="katex-render" data-display="true" data-latex="h=f+g \;\Rightarrow\; H=F+G+c"></span></div></div>
+              <div><h4 style="margin:0 0 0.3rem 0;font-size:0.9rem;">Konstante c = Anfangsbestand</h4><div class="formula-chip"><span class="katex-render" data-display="true" data-latex="F(0)=c=\text{Anfangsbestand}"></span></div></div>
+            </div>
+          </div>
+
+          <div class="p-card" style="margin-bottom:1rem;">
+            <h4 style="margin:0 0 0.6rem 0;">Visualisierung: Änderungsrate f(x) ↔ Stammfunktion F(x)</h4>
+            <p style="font-size:0.82rem;color:var(--text-muted);margin:0 0 0.6rem 0;">Links: f(x) (Ableitung / Änderungsrate) &nbsp;|&nbsp; Rechts: F(x) (Stammfunktion / Bestand)</p>
+            <canvas id="stammfunktion-demo-canvas" width="680" height="220" style="width:100%;max-width:680px;display:block;border-radius:8px;margin-bottom:0.3rem;"></canvas>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.8rem;">Beispiel: f(x) = 2x &nbsp;→&nbsp; F(x) = x²</div>
+            <canvas id="stammfunktion-demo-canvas2" width="680" height="220" style="width:100%;max-width:680px;display:block;border-radius:8px;"></canvas>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem;">Beispiel: f(x) = 3x² &nbsp;→&nbsp; F(x) = x³</div>
+          </div>
+
+          <div class="p-card" style="background:var(--bg-subtle);">
+            <h4 style="margin:0 0 0.5rem 0;">Spezialregeln</h4>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;font-size:0.85rem;">
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int \sin(x)\,dx = -\cos(x)+c"></span></div>
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int \cos(x)\,dx = \sin(x)+c"></span></div>
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int \frac{1}{x}\,dx = \ln|x|+c"></span></div>
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int e^x\,dx = e^x+c"></span></div>
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int a\,dx = a\cdot x+c"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: AUFGABEN-CHECK -->
+        <div id="integral-pane-stammcheck" style="display:none;">
+          <div class="p-card" style="margin-bottom:1rem;">
+            <h4 style="margin:0 0 0.8rem 0;">Nr. 1 – Eine Stammfunktion (S.4)</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0.7rem;font-size:0.85rem;">
+              <div class="steckbrief-condition-card"><div class="sc-label">a) <span class="katex-render" data-display="false" data-latex="f(x)=x^4"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{1}{5}x^5')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">b) <span class="katex-render" data-display="false" data-latex="f(x)=x^{-2}"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-x^{-1}=-\\frac{1}{x}')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">c) <span class="katex-render" data-display="false" data-latex="f(x)=3x^4-2x-2"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{3}{5}x^5-x^2-2x')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">e) <span class="katex-render" data-display="false" data-latex="f(x)=12x^4"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{12}{5}x^5')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">g) <span class="katex-render" data-display="false" data-latex="f(x)=\frac{1}{4}x^2"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{1}{12}x^3')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">h) <span class="katex-render" data-display="false" data-latex="f(x)=3\sin(x)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-3\\cos(x)')">Lösung</button></div>
+            </div>
+          </div>
+
+          <div class="p-card" style="margin-bottom:1rem;">
+            <h4 style="margin:0 0 0.8rem 0;">Nr. 2 – Alle Stammfunktionen (+c) (S.4)</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0.7rem;font-size:0.85rem;">
+              <div class="steckbrief-condition-card"><div class="sc-label">a) <span class="katex-render" data-display="false" data-latex="f(x)=x^5"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{1}{6}x^6+c')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">b) <span class="katex-render" data-display="false" data-latex="f(x)=\frac{1}{3}x^{-2}"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-\\frac{1}{3}x^{-1}+c')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">c) <span class="katex-render" data-display="false" data-latex="f(x)=2x^2-\frac{1}{x^3}"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{2}{3}x^3+\\frac{1}{2}x^{-2}+c')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">d) <span class="katex-render" data-display="false" data-latex="f(x)=\sin(x)+1"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-\\cos(x)+x+c')">Lösung</button></div>
+            </div>
+          </div>
+
+          <div class="p-card">
+            <h4 style="margin:0 0 0.8rem 0;">Nr. 3 – Stammfunktion durch Punkt P bestimmen (S.4)</h4>
+            <p style="font-size:0.83rem;color:var(--text-muted);margin:0 0 0.7rem 0;">Allgemeine Stammfunktion F(x)+c bestimmen → c mit P(x|y) ausrechnen.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:0.7rem;font-size:0.85rem;">
+              <div class="steckbrief-condition-card"><div class="sc-label">a) <span class="katex-render" data-display="false" data-latex="f(x)=x^{-3},\;P(1|5)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-\\frac{1}{2}x^{-2}+5{,}5')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">b) <span class="katex-render" data-display="false" data-latex="f(x)=2x^5,\;P(0|-2)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{1}{3}x^6-2')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">d) <span class="katex-render" data-display="false" data-latex="f(x)=x^{1/3},\;P(8|-2)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{3}{4}x^{4/3}-14')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">g) <span class="katex-render" data-display="false" data-latex="f(x)=\frac{12}{x^2},\;P(0{,}5|4)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-\\frac{12}{x}+28')">Lösung</button></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /topic-mathe-integral -->
+
+    <!-- --------------------------------------------------------------------- -->
     <!-- POLITIK TOPIC 1: OPERATOREN (AFB I - III)                             -->
     <!-- --------------------------------------------------------------------- -->
     <div id="topic-politik-operatoren" class="topic-module-box">
@@ -2846,6 +3014,8 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
   <script src="physik.js?v=20261001_beweisen"></script>
   <script src="seminarfach.js?v=20260928_5"></script>
   <script src="informatik.js?v=20261001_rekursion"></script>
-  <script src="main_hub.js?v=20260930_gegenueberstellung"></script>
+  <script src="integralrechnung.js?v=20261007_integral"></script>
+  <script src="main_hub.js?v=20261007_integral"></script>
 </body>
 </html>
+

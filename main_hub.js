@@ -50,6 +50,13 @@ const FAECHER_DATA = {
         title: 'Trassierung (Knick- & Sprungfrei)',
         badge: 'Interaktiver Canvas',
         desc: 'Rampen- und Trassenübergänge knickfrei (gleiche Steigung) und sprungfrei (gleicher Funktionswert) mit interaktiver Canvas-Simulation konstruieren.'
+      },
+      {
+        id: 'mathe-integral',
+        num: '05',
+        title: 'Integralrechnung (AH S. 2 & S. 4)',
+        badge: '∫ Interaktiv',
+        desc: 'Bestände näherungsweise aus Änderungsgraphen rekonstruieren (Dreiecke, Trapeze), Stammfunktionen bestimmen, Konstante c über Anfangsbestand berechnen – mit interaktiven Canvas-Visualisierungen.'
       }
     ]
   },
@@ -629,6 +636,8 @@ function openTopic(fachId, topicId, pushHistory = true) {
     setTimeout(loadLevelData, 60);
   } else if (topicId === 'mathe-steckbrief' && typeof renderSteckbriefContent === 'function') {
     renderSteckbriefContent();
+  } else if (topicId === 'mathe-integral' && typeof renderIntegralrechnungModule === 'function') {
+    setTimeout(renderIntegralrechnungModule, 60);
   } else if (topicId === 'politik-flashcards' && typeof renderActiveFlashcard === 'function') {
     renderActiveFlashcard();
   } else if (topicId === 'politik-notizen' && typeof loadUserPolitikNotes === 'function') {
@@ -2165,4 +2174,40 @@ function toggleAllDeutschAnswers() {
   document.querySelectorAll('.btn-toggle-quiz').forEach(b => {
     b.textContent = allDeutschRevealed ? 'Antwort verbergen' : 'Antwort anzeigen';
   });
+}
+
+// ─────────────────────────────────────────────────────────────
+// INTEGRALRECHNUNG HELPER FUNCTIONS
+// ─────────────────────────────────────────────────────────────
+
+function showIntegralSol(spanId, text) {
+  const el = document.getElementById(spanId);
+  if (!el) return;
+  el.textContent = ' ✓ ' + text;
+  el.style.display = 'inline';
+}
+
+function showIntegralSolKatex(btn, latexStr) {
+  // Find or create answer div after the button
+  let ansDiv = btn.nextElementSibling;
+  if (!ansDiv || !ansDiv.classList.contains('integral-katex-ans')) {
+    ansDiv = document.createElement('div');
+    ansDiv.className = 'integral-katex-ans';
+    ansDiv.style.cssText = 'margin-top:0.35rem;padding:0.3rem 0.6rem;background:var(--bg-subtle);border-radius:6px;font-size:0.88rem;color:var(--text-secondary);';
+    btn.after(ansDiv);
+  }
+  // Toggle
+  if (ansDiv.style.display === 'none' || ansDiv.innerHTML === '') {
+    ansDiv.innerHTML = '✓ <span class="katex-sol"></span>';
+    ansDiv.style.display = '';
+    try {
+      katex.render(latexStr, ansDiv.querySelector('.katex-sol'), { displayMode: false, throwOnError: false });
+    } catch(e) {
+      ansDiv.querySelector('.katex-sol').textContent = latexStr;
+    }
+    btn.textContent = 'Verstecken';
+  } else {
+    ansDiv.style.display = 'none';
+    btn.textContent = 'Lösung';
+  }
 }
