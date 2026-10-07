@@ -1470,13 +1470,85 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
 
         <!-- PANE 1: S.2 NÄHERUNG -->
         <div id="integral-pane-s2">
+
+          <!-- ════ GROSSES ERKLÄRUNGSFELD ════ -->
+          <div class="p-card" style="border-left:4px solid #38bdf8;margin-bottom:1.2rem;">
+            <h3 style="color:#38bdf8;margin:0 0 0.8rem 0;">💡 Was ist hier überhaupt gefragt? – Schritt-für-Schritt-Erklärung</h3>
+
+            <div style="display:grid;gap:0.8rem;">
+
+              <!-- Schritt 1 -->
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">
+                  📊 Schritt 1: Was zeigt der Graph?
+                </div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Der Graph zeigt die <strong>Änderungsrate</strong> – also z.B. wie schnell die Bakterienkultur <em>gerade</em> wächst (in mm²/h).<br>
+                  Das ist <strong>NICHT</strong> der Bestand selbst! Es ist nur das Tempo, mit dem er sich ändert.<br>
+                  <span style="color:#38bdf8;">→ Wenn die Kurve bei +2 liegt, wächst die Kultur gerade mit 2 mm²/h.</span><br>
+                  <span style="color:#f87171;">→ Wenn die Kurve bei −1 liegt, schrumpft sie gerade mit 1 mm²/h.</span>
+                </p>
+              </div>
+
+              <!-- Schritt 2 -->
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">
+                  📐 Schritt 2: Wie berechne ich den Bestand?
+                </div>
+                <p style="margin:0 0 0.5rem 0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Der <strong>Bestand B(t)</strong> = Anfangsbestand + <em>Fläche</em> zwischen dem Graphen und der x-Achse.<br>
+                  Weil wir keine Formel haben, legen wir <strong>geometrische Formen</strong> so in den Graphen, dass sie die Fläche möglichst gut abdecken:
+                </p>
+                <div style="display:flex;gap:0.7rem;flex-wrap:wrap;font-size:0.85rem;">
+                  <div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:7px;padding:0.4rem 0.8rem;color:#92400e;">
+                    🔺 <strong>Dreieck</strong> bei Flächen die spitz zulaufen<br>
+                    <span style="font-size:0.78rem;">A = ½ · Breite · Höhe</span>
+                  </div>
+                  <div style="background:#ede9fe;border:1px solid #a78bfa;border-radius:7px;padding:0.4rem 0.8rem;color:#5b21b6;">
+                    ⬡ <strong>Trapez</strong> wenn eine Seite nicht Null ist<br>
+                    <span style="font-size:0.78rem;">A = ½ · (a+b) · Höhe</span>
+                  </div>
+                  <div style="background:#dcfce7;border:1px solid #34d399;border-radius:7px;padding:0.4rem 0.8rem;color:#065f46;">
+                    ▭ <strong>Rechteck</strong> bei flachen, geraden Bereichen<br>
+                    <span style="font-size:0.78rem;">A = Breite · Höhe</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Schritt 3 -->
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">
+                  ⚠️ Schritt 3: Vorzeichen NICHT vergessen!
+                </div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  <span style="display:inline-block;background:#dbeafe;border-radius:5px;padding:0.15rem 0.5rem;color:#1d4ed8;font-weight:600;margin-right:0.3rem;">Fläche ÜBER x-Achse</span> → <strong style="color:#38bdf8;">PLUS</strong> → Bestand steigt<br>
+                  <span style="display:inline-block;background:#fee2e2;border-radius:5px;padding:0.15rem 0.5rem;color:#dc2626;font-weight:600;margin-right:0.3rem;">Fläche UNTER x-Achse</span> → <strong style="color:#f87171;">MINUS</strong> → Bestand sinkt<br><br>
+                  <strong>Beispiel aus dem Buch (Infokästchen S.2):</strong><br>
+                  B(1) = 0 + <span style="color:#38bdf8;">Dreieck oberhalb</span> = 0 + 0,5 · 0,9 · 2 = <strong>0,9 mm²</strong><br>
+                  B(1,3) = 0,9 + <span style="color:#38bdf8;">weiteres Stück</span> + 0,5 · 0,3 · 2 = <strong>1,2 mm²</strong><br>
+                  B(1,8) = 1,2 <span style="color:#f87171;">− Trapez unterhalb</span> = 1,2 − 0,8 = <strong>0,4 mm²</strong>
+                </p>
+              </div>
+
+              <!-- Schritt 4 -->
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">
+                  🧮 Schritt 4: Kästchen zählen als Alternative
+                </div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Statt geometrischer Formen kannst du auch einfach Kästchen zählen.<br>
+                  <strong>Aber Achtung mit den Einheiten:</strong><br>
+                  Ein Kästchen ist 0,1 h breit und 0,5 mm²/h hoch.<br>
+                  → Fläche = 0,1 h · 0,5 mm²/h = <strong>0,05 mm²</strong> pro Kästchen.<br>
+                  Kästchen oberhalb: positiv zählen | Kästchen unterhalb: negativ zählen.
+                </p>
+              </div>
+
+            </div><!-- /grid -->
+          </div><!-- /erklaerung -->
+
           <div class="p-card" style="border-left:4px solid #f87171; background:var(--bg-subtle); margin-bottom:1.2rem;">
-            <h3 style="color:#f87171;margin:0 0 0.5rem 0;">🔴 Näherungsweise Flächenberechnung (Infokästchen AH S.2)</h3>
-            <p style="font-size:0.88rem;color:var(--text-secondary);margin:0 0 0.6rem 0;">
-              Der <strong>Bestand</strong> (mm² Bakterienkultur) = Fläche zwischen Änderungsgraph &amp; x-Achse.<br>
-              <span style="color:#38bdf8;">■</span> Fläche <em>oberhalb</em> x-Achse = Bestand <strong>steigt</strong> &nbsp;|&nbsp;
-              <span style="color:#f87171;">■</span> Fläche <em>unterhalb</em> = Bestand <strong>sinkt</strong>
-            </p>
+            <h3 style="color:#f87171;margin:0 0 0.5rem 0;">🔴 Formeln auf einen Blick</h3>
             <div style="display:flex;gap:1rem;flex-wrap:wrap;font-size:0.85rem;">
               <div class="formula-chip">Dreieck: <span class="katex-render" data-display="false" data-latex="A = \tfrac{1}{2} \cdot b \cdot h"></span></div>
               <div class="formula-chip">Trapez: <span class="katex-render" data-display="false" data-latex="A = \tfrac{1}{2}(a+c)\cdot h"></span></div>
@@ -1486,11 +1558,9 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
           </div>
 
           <div class="p-card" style="margin-bottom:1.2rem;">
-            <h4 style="margin:0 0 0.5rem 0;">Visualisierung: Beispiel Infokästchen (AH S.2 oben) – Bakterienkultur</h4>
+            <h4 style="margin:0 0 0.5rem 0;">📈 Visualisierung: Beispiel aus dem roten Infokästchen (AH S.2)</h4>
+            <p style="font-size:0.83rem;color:var(--text-muted);margin:0 0 0.6rem 0;">Die blaue Kurve ist der Änderungsgraph. 🟡 Goldenes Dreieck = Näherung der Fläche oberhalb | 🟣 Lila Trapez = Näherung der Fläche unterhalb.</p>
             <canvas id="integral-canvas-bakteria" width="680" height="260" style="width:100%;max-width:680px;display:block;border-radius:8px;"></canvas>
-            <div style="font-size:0.82rem;color:var(--text-muted);margin-top:0.5rem;">
-              🟡 Goldenes Dreieck ≈ Fläche oberhalb (Bestand steigt) &nbsp;|&nbsp; 🟣 Lila Trapez ≈ Fläche unterhalb (Bestand sinkt)
-            </div>
           </div>
 
           <div class="p-card" style="margin-bottom:1rem;">
@@ -1538,6 +1608,69 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
 
         <!-- PANE 2: S.4 STAMMFUNKTIONEN -->
         <div id="integral-pane-s4" style="display:none;">
+
+          <!-- ════ ERKLÄRUNGSFELD S.4 ════ -->
+          <div class="p-card" style="border-left:4px solid #a78bfa;margin-bottom:1.2rem;">
+            <h3 style="color:#a78bfa;margin:0 0 0.8rem 0;">💡 Was ist eine Stammfunktion? – Schritt-für-Schritt</h3>
+            <div style="display:grid;gap:0.8rem;">
+
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">🔄 Grundidee: Ableiten rückwärts</div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Du kennst das Ableiten: aus f(x) = x² wird f'(x) = 2x.<br>
+                  <strong>Das Integrieren macht das Gegenteil</strong>: Aus f(x) = 2x wird F(x) = x².<br>
+                  F(x) heißt <strong>Stammfunktion</strong> von f(x). Es gilt immer: <strong>F'(x) = f(x)</strong><br>
+                  <span style="color:#a78bfa;">→ Die Ableitung der Stammfunktion ergibt wieder die ursprüngliche Funktion!</span>
+                </p>
+              </div>
+
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">📏 Die Potenzregel – das einzige was du brauchst</div>
+                <div style="font-size:0.88rem;color:var(--text-secondary);line-height:1.8;">
+                  <strong>Merksatz: Exponent um 1 erhöhen, dann durch den neuen Exponenten dividieren.</strong><br>
+                  <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.4rem;">
+                    <div style="background:#ede9fe;border-radius:7px;padding:0.4rem 0.8rem;color:#5b21b6;font-size:0.85rem;">
+                      f(x) = x³ &nbsp;→&nbsp; <strong>F(x) = x⁴ / 4 = ¼x⁴</strong><br>
+                      <span style="font-size:0.75rem;">(Exponent 3 → 4, dann ÷4)</span>
+                    </div>
+                    <div style="background:#ede9fe;border-radius:7px;padding:0.4rem 0.8rem;color:#5b21b6;font-size:0.85rem;">
+                      f(x) = x⁻² &nbsp;→&nbsp; <strong>F(x) = x⁻¹ / (−1) = −x⁻¹</strong><br>
+                      <span style="font-size:0.75rem;">(Exponent −2 → −1, dann ÷(−1))</span>
+                    </div>
+                    <div style="background:#ede9fe;border-radius:7px;padding:0.4rem 0.8rem;color:#5b21b6;font-size:0.85rem;">
+                      f(x) = 5x² &nbsp;→&nbsp; <strong>F(x) = 5 · x³/3 = 5/3 · x³</strong><br>
+                      <span style="font-size:0.75rem;">(Konstante bleibt, Exponent 2→3, ÷3)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">➕ Summenregel – mehrere Terme kein Problem</div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Wenn f(x) aus mehreren Termen besteht, integriere einfach <strong>jeden Term einzeln</strong>.<br>
+                  Beispiel: f(x) = 3x² + 5<br>
+                  &nbsp;&nbsp;→ F(x) = 3 · x³/3 + 5x = <strong>x³ + 5x</strong>
+                </p>
+              </div>
+
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;border:2px solid #a78bfa;">
+                <div style="font-size:1rem;font-weight:700;color:#a78bfa;margin-bottom:0.4rem;">⚡ Das +c – warum und wie?</div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Beim Ableiten fallen Konstanten weg: Aus F(x) = x² + 7 wird f(x) = 2x.<br>
+                  Deshalb gibt es <strong>unendlich viele</strong> Stammfunktionen: x², x²+5, x²−3 sind alle Stammfunktionen von 2x.<br><br>
+                  <strong>Wie bestimmt man c?</strong><br>
+                  Man benutzt einen <strong>bekannten Punkt P(x₀ | y₀)</strong> auf dem Bestandsgraphen:<br>
+                  Einsetzen: F(x₀) = y₀ → Gleichung nach c auflösen.<br><br>
+                  <strong>Beispiel:</strong> F(x) = x² + c, Punkt P(2 | 7)<br>
+                  → F(2) = 4 + c = 7 → c = 3 → <strong>F(x) = x² + 3</strong><br><br>
+                  Besonders einfach: Wenn P(0 | y₀) gegeben → c = y₀ direkt!
+                </p>
+              </div>
+
+            </div>
+          </div>
+
           <div class="p-card" style="border-left:4px solid #a78bfa;margin-bottom:1.2rem;">
             <h3 style="color:#a78bfa;margin:0 0 0.5rem 0;">∫ Stammfunktion = Umkehrung der Ableitung</h3>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;flex-wrap:wrap;">
