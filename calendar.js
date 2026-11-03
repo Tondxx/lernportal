@@ -352,6 +352,96 @@ const TONDA_KLAUSUREN = [
   }
 ];
 
+// --- Datumslogik: Status, Hero und Badges werden aus dem heutigen Datum berechnet,
+//     nie von Hand gepflegt (sonst veralten "morgen"/"geschrieben"-Texte). ---
+const KLAUSUR_FACH_IDS = {
+  'Mathematik': 'mathe',
+  'Politik-Wirtschaft': 'politik',
+  'Physik': 'physik',
+  'Informatik': 'informatik',
+  'Deutsch': 'deutsch',
+  'Englisch': 'englisch',
+  'Geschichte': 'geschichte',
+  'Darstellendes Spiel': 'ds'
+};
+
+function parseKlausurDate(dateStr) {
+  const [d, m, y] = dateStr.split('.').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function klausurDaysUntil(k) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return Math.round((parseKlausurDate(k.dateStr) - today) / 86400000);
+}
+
+function klausurCountdownText(days) {
+  if (days < 0) return 'Geschrieben';
+  if (days === 0) return 'HEUTE';
+  if (days === 1) return 'MORGEN';
+  return `in ${days} Tagen`;
+}
+
+function klausurWeekday(k) {
+  return parseKlausurDate(k.dateStr).toLocaleDateString('de-DE', { weekday: 'long' });
+}
+
+function refreshKlausurStatus() {
+  TONDA_KLAUSUREN.forEach(k => {
+    const d = klausurDaysUntil(k);
+    k.status = d < 0 ? 'done' : d <= 1 ? 'urgent' : d <= 7 ? 'soon' : 'upcoming';
+  });
+}
+
+function getNextKlausuren(n = 1) {
+  return TONDA_KLAUSUREN
+    .filter(k => klausurDaysUntil(k) >= 0)
+    .sort((a, b) => parseKlausurDate(a.dateStr) - parseKlausurDate(b.dateStr))
+    .slice(0, n);
+}
+
+function buildKlausurHeroHtml() {
+  const [next, after] = getNextKlausuren(2);
+  if (!next) {
+    return `<div class="urgent-hero-box"><div class="urgent-left"><h2 class="urgent-title">🎉 Keine offenen Klausuren im Plan</h2></div></div>`;
+  }
+  const days = klausurDaysUntil(next);
+  const fachId = KLAUSUR_FACH_IDS[next.subject];
+  const openAction = fachId ? `openFach('${fachId}')` : `navigateTo('kalender')`;
+  const afterHtml = after ? `
+          <span class="nu-label">Danach:</span>
+          <div class="nu-card" style="border-left: 3px solid ${after.color};">
+            <strong>${after.subject} (${after.course})</strong>
+            <span>${klausurWeekday(after)}, ${after.dateStr} • ${after.period} Stunde • Raum ${after.room}</span>
+          </div>` : '';
+  return `
+    <div class="urgent-hero-box" style="border-left-color: ${next.color};">
+      <div class="urgent-left">
+        <div class="urgent-alert-pill" style="color: ${next.color}; border-color: ${next.color};">
+          <span class="status-dot" style="background: ${next.color};"></span>
+          <strong>NÄCHSTE KLAUSUR: ${klausurCountdownText(days).toUpperCase()}</strong>
+        </div>
+        <h2 class="urgent-title">${next.subject} (${next.course})</h2>
+        <div class="urgent-meta-grid">
+          <div class="um-item">📅 <strong>${klausurWeekday(next)}, ${next.dateStr}</strong></div>
+          <div class="um-item">⏰ <strong>${next.period} Stunde</strong> (Raum: <strong>${next.room}</strong>)</div>
+          <div class="um-item">👨‍🏫 Lehrer: <strong>${next.teacher}</strong></div>
+          <div class="um-item">🎯 Fokus: <strong>${next.topic}</strong></div>
+        </div>
+      </div>
+      <div class="urgent-right">
+        <div class="next-up-preview">${afterHtml}</div>
+        <button class="btn-hero-study" style="background: ${next.color}; border-color: ${next.color};" onclick="${openAction}">
+          ${next.subject} jetzt vorbereiten &rarr;
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+refreshKlausurStatus();
+
 let currentCalendarFilter = 'pending'; // 'pending' default: offene Klausuren
 
 function renderCalendarView() {
@@ -378,14 +468,15 @@ function renderCalendarView() {
     let statusBadge = '';
     let cardClass = 'cal-card';
 
+    const cd = klausurCountdownText(klausurDaysUntil(k));
     if (k.status === 'done') {
-      statusBadge = '<span class="k-badge k-badge-done">✅ Geschrieben (11.09.)</span>';
+      statusBadge = '<span class="k-badge k-badge-done">✅ Geschrieben</span>';
       cardClass += ' cal-card-done';
     } else if (k.status === 'urgent') {
-      statusBadge = '<span class="k-badge k-badge-urgent">🚨 Morgen (15.09.)</span>';
+      statusBadge = `<span class="k-badge k-badge-urgent">🚨 ${cd} (${k.dateStr.slice(0, 5)})</span>`;
       cardClass += ' cal-card-urgent';
     } else if (k.status === 'soon') {
-      statusBadge = '<span class="k-badge k-badge-soon">⚡ Diesen Freitag (18.09.)</span>';
+      statusBadge = `<span class="k-badge k-badge-soon">⚡ ${cd} (${k.dateStr.slice(0, 5)})</span>`;
       cardClass += ' cal-card-soon';
     } else {
       statusBadge = `<span class="k-badge k-badge-pending">KW ${k.kw}</span>`;
@@ -417,12 +508,9 @@ function renderCalendarView() {
           </div>
         </div>
         <div class="cal-card-right">
-          ${k.subject === 'Mathematik' ? 
-            `<button class="btn-cal-action btn-cal-math" onclick="switchMainTab('mathe')">📐 Mathe-Thema 1</button>` :
-            (k.subject === 'Politik-Wirtschaft' ?
-              `<button class="btn-cal-action btn-cal-highlight" onclick="switchMainTab('politik')">🏛️ Politik lernen</button>` :
-              `<span class="cal-future-tag">12. Jg.</span>`
-            )
+          ${KLAUSUR_FACH_IDS[k.subject] && k.status !== 'done' ?
+            `<button class="btn-cal-action btn-cal-highlight" onclick="openFach('${KLAUSUR_FACH_IDS[k.subject]}')">${k.subject} lernen &rarr;</button>` :
+            `<span class="cal-future-tag">${k.status === 'done' ? 'erledigt' : '12. Jg.'}</span>`
           }
         </div>
       </div>
@@ -436,35 +524,7 @@ function renderUrgentKlausurHero() {
   const hero = document.getElementById('urgentKlausurHero');
   if (!hero) return;
 
-  hero.innerHTML = `
-    <div class="urgent-hero-box">
-      <div class="urgent-left">
-        <div class="urgent-alert-pill">
-          <span class="status-dot"></span>
-          <strong>NÄCHSTE KLAUSUR: MORGEN!</strong>
-        </div>
-        <h2 class="urgent-title">🏛️ Politik-Wirtschaft (pw25-Hf)</h2>
-        <div class="urgent-meta-grid">
-          <div class="um-item">📅 <strong>Dienstag, 15.09.2026</strong></div>
-          <div class="um-item">⏰ <strong>1. Stunde</strong> (Raum: <strong>R1</strong>)</div>
-          <div class="um-item">👨‍🏫 Lehrer: <strong>Hf</strong></div>
-          <div class="um-item">🎯 Fokus: <strong>Klausur 1 (12.1)</strong></div>
-        </div>
-      </div>
-      <div class="urgent-right">
-        <div class="next-up-preview">
-          <span class="nu-label">Direkt am Freitag folgt:</span>
-          <div class="nu-card">
-            <strong>⚡ PH12-Lh (Physik eA)</strong>
-            <span>Freitag, 18.09.2026 • 1. Stunde • Raum NW1</span>
-          </div>
-        </div>
-        <button class="btn-hero-study" onclick="switchMainTab('politik')">
-          Jetzt Politik-Klausur vorbereiten &rarr;
-        </button>
-      </div>
-    </div>
-  `;
+  hero.innerHTML = buildKlausurHeroHtml();
 }
 
 function filterCalendar(filterType, btnEl) {

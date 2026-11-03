@@ -91,7 +91,7 @@ const FAECHER_DATA = {
         num: '03',
         title: '3D-Begriffstrainer (Karteikarten)',
         badge: '8 Karteikarten',
-        desc: 'Interaktive Karteikarten mit Wendeeffekt zum Einprägen aller Schlüsselbegriffe und Definitionen für die morgige Klausur.'
+        desc: 'Interaktive Karteikarten mit Wendeeffekt zum Einprägen aller Schlüsselbegriffe und Definitionen für die kommende Klausur.'
       },
       {
         id: 'politik-spickzettel',
@@ -266,7 +266,7 @@ const FAECHER_DATA = {
         id: 'deutsch-sandmann',
         num: '01',
         title: 'E.T.A. Hoffmann: Der Sandmann – Klausur-Mastery',
-        badge: '🚨 Klausur morgen!',
+        badge: 'Klausur 1 · Archiv',
         desc: 'Erstes & zweites Augenpaar (Clara vs. Olimpia / Kindheit vs. Coppola), dialektische Auseinandersetzung (AFB III), Freud, Formulierungshilfen & Zitate.'
       }
     ]
@@ -398,6 +398,28 @@ const FAECHER_DATA = {
     ]
   }
 };
+
+// Klausurstatus je Fach aus dem Klausurkalender (calendar.js) ableiten – nie von Hand pflegen
+function refreshExamStatusFromCalendar() {
+  if (typeof getNextKlausuren !== 'function' || typeof TONDA_KLAUSUREN === 'undefined') return;
+  const upcoming = getNextKlausuren(TONDA_KLAUSUREN.length);
+  Object.entries(KLAUSUR_FACH_IDS).forEach(([subject, fachId]) => {
+    const fach = FAECHER_DATA[fachId];
+    if (!fach) return;
+    const next = upcoming.find(k => k.subject === subject);
+    if (!next) {
+      fach.examStatus = '✅ Alle Klausuren im Plan geschrieben';
+      return;
+    }
+    const days = klausurDaysUntil(next);
+    const icon = days <= 1 ? '🚨' : days <= 7 ? '⚡' : '⏳';
+    fach.examStatus = `${icon} Nächste Klausur ${klausurCountdownText(days)}: ${klausurWeekday(next)}, ${next.dateStr} (${next.period} Std., ${next.room})`;
+    (fach.topics || []).forEach(t => {
+      if (/^(englisch|geschichte|ds)-klausur$/.test(t.id)) t.badge = `Klausur ${next.dateStr.slice(0, 5)}`;
+    });
+  });
+}
+refreshExamStatusFromCalendar();
 
 // --- 2. NAVIGATION STATE ---
 const navState = {
@@ -730,38 +752,10 @@ function updateBreadcrumbs() {
 
 // --- 6. DASHBOARD RENDERER ---
 function renderDashboard() {
-  // 1. Klausur Hero (Deutsch Morgen)
+  // 1. Klausur Hero: immer die nächste Klausur laut Klausurkalender (calendar.js)
   const heroEl = document.getElementById('dashHeroUrgent');
   if (heroEl) {
-    heroEl.innerHTML = `
-      <div class="urgent-hero-box" style="border-left-color: var(--accent-deutsch);">
-        <div class="urgent-left">
-          <div class="urgent-alert-pill" style="background: var(--accent-deutsch-bg); color: var(--accent-deutsch); border-color: var(--accent-deutsch-border);">
-            <span class="status-dot" style="background: var(--accent-deutsch);"></span>
-            <strong>NÄCHSTE KLAUSUR: MORGEN! (DONNERSTAG, 01.10.2026)</strong>
-          </div>
-          <h2 class="urgent-title">📖 Deutsch gA (de48-Hh) &bull; E.T.A. Hoffmann: Der Sandmann</h2>
-          <div class="urgent-meta-grid">
-            <div class="um-item">📅 <strong>Donnerstag, 01.10.2026</strong></div>
-            <div class="um-item">⏰ <strong>1. Stunde</strong> (Raum: <strong>R3</strong>)</div>
-            <div class="um-item">👩‍🏫 Lehrerin: <strong>Fr. Heinrich (Hh)</strong></div>
-            <div class="um-item">🎯 <strong>Augenpaare (Clara vs. Olimpia) &bull; Dialektische Auseinandersetzung (AFB III)</strong></div>
-          </div>
-        </div>
-        <div class="urgent-right">
-          <div class="next-up-preview">
-            <span class="nu-label">Klausur-Fokus:</span>
-            <div class="nu-card" style="border-left: 3px solid var(--accent-deutsch);">
-              <strong>👁️ Erstes &amp; zweites Augenpaar</strong>
-              <span>Rollentausch &bull; Psychologie &bull; Freud</span>
-            </div>
-          </div>
-          <button class="btn-hero-study" onclick="openTopic('deutsch', 'deutsch-sandmann')" style="background: var(--accent-deutsch); border-color: var(--accent-deutsch); box-shadow: 0 4px 14px rgba(185, 28, 28, 0.4);">
-            📖 Sandmann-Klausurmodul jetzt öffnen &rarr;
-          </button>
-        </div>
-      </div>
-    `;
+    heroEl.innerHTML = buildKlausurHeroHtml();
   }
 
   // 2. Widget: Mein Schultag heute

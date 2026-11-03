@@ -126,6 +126,7 @@ function renderMatrix(latex, el) {
 }
 
 function loadLevelData() {
+  if (!document.getElementById('page-title')) return; // Matching-Seite nicht im DOM (Hub-Seite)
   const data = DATASETS[currentLevel];
   document.getElementById('page-title').innerText = data.title;
   document.getElementById('page-desc').innerText = data.desc;

@@ -7405,6 +7405,94 @@ input[type=range]::-webkit-slider-thumb:hover {
   }
 }
 
+
+/* ═══════════════════════════════════════════════════════════
+   INTEGRALRECHNUNG MODULE STYLES  (AH S.2 & S.4)
+   ═══════════════════════════════════════════════════════════ */
+
+/* Small pill-like formula chips */
+.formula-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.7rem;
+  background: var(--bg-subtle, #f0f9ff);
+  border: 1px solid var(--border-subtle, #bae6fd);
+  border-radius: 8px;
+  font-size: 0.84rem;
+  color: var(--text-secondary, #444);
+  white-space: nowrap;
+}
+
+/* Small action button used in integral exercises */
+.btn-sm {
+  display: inline-block;
+  padding: 0.18rem 0.55rem;
+  font-size: 0.78rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle, #e2e8f0);
+  background: var(--bg-card, #fff);
+  color: var(--text-primary, #1e293b);
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  vertical-align: middle;
+  margin-left: 0.25rem;
+}
+.btn-sm:hover {
+  background: var(--accent-mathe-bg, #e0f2fe);
+  border-color: var(--accent-mathe, #0284c7);
+  color: var(--accent-mathe, #0284c7);
+}
+.btn-sm:active { transform: scale(0.95); }
+
+/* Compact text input for integral exercises */
+.integral-input {
+  display: inline-block;
+  padding: 0.18rem 0.45rem;
+  font-size: 0.82rem;
+  border: 1px solid var(--border-subtle, #e2e8f0);
+  border-radius: 6px;
+  background: var(--bg-card, #fff);
+  color: var(--text-primary, #1e293b);
+  vertical-align: middle;
+  margin: 0 0.15rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.integral-input:focus {
+  border-color: var(--accent-mathe, #0284c7);
+  box-shadow: 0 0 0 2px rgba(2,132,199,0.12);
+}
+
+/* Shown solution text */
+.integral-sol {
+  font-size: 0.81rem;
+  font-weight: 600;
+  margin-left: 0.3rem;
+}
+
+/* Dark theme overrides */
+[data-theme="dark"] .formula-chip {
+  background: rgba(56,189,248,0.08);
+  border-color: rgba(56,189,248,0.2);
+  color: var(--text-secondary, #94a3b8);
+}
+[data-theme="dark"] .integral-input {
+  background: var(--bg-card, #161b22);
+  border-color: var(--border-subtle, #30363d);
+  color: var(--text-primary, #e6edf3);
+}
+[data-theme="dark"] .btn-sm {
+  background: var(--bg-card, #161b22);
+  border-color: var(--border-subtle, #30363d);
+  color: var(--text-primary, #e6edf3);
+}
+[data-theme="dark"] .btn-sm:hover {
+  background: rgba(56,189,248,0.12);
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
 </style>
 </head>
 <body>
@@ -8826,6 +8914,307 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
         </div>
       </div>
     </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- MATHE TOPIC 5: INTEGRALRECHNUNG (AH S. 2 & S. 4)                     -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-mathe-integral" class="topic-module-box">
+      <div class="steckbrief-container">
+        <header class="sb-header">
+          <div class="sb-header-left">
+            <span class="page-pill" style="background:#e0f2fe; color:#0284c7; border-color:#7dd3fc;">AH S. 2 &amp; S. 4</span>
+            <span class="topic-pill">Integralrechnung</span>
+            <h1 class="sb-title">Bestände rekonstruieren &amp; Stammfunktionen</h1>
+            <div class="schar-sub-tabs" style="margin-top:0.6rem;">
+              <button class="sub-tab-btn active" id="integral-tab-s2" onclick="switchIntegralTab('s2')">
+                📐 S. 2 · Näherung (Flächen)
+              </button>
+              <button class="sub-tab-btn" id="integral-tab-s4" onclick="switchIntegralTab('s4')">
+                ∫ S. 4 · Stammfunktionen
+              </button>
+              <button class="sub-tab-btn" id="integral-tab-stammcheck" onclick="switchIntegralTab('stammcheck')">
+                ✔️ Aufgaben-Check (S. 4 Nr. 1–3)
+              </button>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <img src="integral_seite2_naeherung.jpg" alt="Arbeitsheft S.2" style="height:54px;border-radius:6px;border:1px solid var(--border-subtle);margin-right:6px;cursor:pointer;" onclick="this.style.height=this.style.height==='180px'?'54px':'180px'" title="Klicken zum Vergrößern">
+            <img src="integral_seite4_stammfunktionen.png" alt="Arbeitsheft S.4" style="height:54px;border-radius:6px;border:1px solid var(--border-subtle);cursor:pointer;" onclick="this.style.height=this.style.height==='180px'?'54px':'180px'" title="Klicken zum Vergrößern">
+          </div>
+        </header>
+
+        <!-- PANE 1: S.2 NÄHERUNG -->
+        <div id="integral-pane-s2">
+
+          <!-- ════ GROSSES ERKLÄRUNGSFELD ════ -->
+          <div class="p-card" style="border-left:4px solid #38bdf8;margin-bottom:1.2rem;">
+            <h3 style="color:#38bdf8;margin:0 0 0.8rem 0;">💡 Was ist hier überhaupt gefragt? – Schritt-für-Schritt-Erklärung</h3>
+
+            <div style="display:grid;gap:0.8rem;">
+
+              <!-- Schritt 1 -->
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">
+                  📊 Schritt 1: Was zeigt der Graph?
+                </div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Der Graph zeigt die <strong>Änderungsrate</strong> – also z.B. wie schnell die Bakterienkultur <em>gerade</em> wächst (in mm²/h).<br>
+                  Das ist <strong>NICHT</strong> der Bestand selbst! Es ist nur das Tempo, mit dem er sich ändert.<br>
+                  <span style="color:#38bdf8;">→ Wenn die Kurve bei +2 liegt, wächst die Kultur gerade mit 2 mm²/h.</span><br>
+                  <span style="color:#f87171;">→ Wenn die Kurve bei −1 liegt, schrumpft sie gerade mit 1 mm²/h.</span>
+                </p>
+              </div>
+
+              <!-- Schritt 2 -->
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">
+                  📐 Schritt 2: Wie berechne ich den Bestand?
+                </div>
+                <p style="margin:0 0 0.5rem 0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Der <strong>Bestand B(t)</strong> = Anfangsbestand + <em>Fläche</em> zwischen dem Graphen und der x-Achse.<br>
+                  Weil wir keine Formel haben, legen wir <strong>geometrische Formen</strong> so in den Graphen, dass sie die Fläche möglichst gut abdecken:
+                </p>
+                <div style="display:flex;gap:0.7rem;flex-wrap:wrap;font-size:0.85rem;">
+                  <div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:7px;padding:0.4rem 0.8rem;color:#92400e;">
+                    🔺 <strong>Dreieck</strong> bei Flächen die spitz zulaufen<br>
+                    <span style="font-size:0.78rem;">A = ½ · Breite · Höhe</span>
+                  </div>
+                  <div style="background:#ede9fe;border:1px solid #a78bfa;border-radius:7px;padding:0.4rem 0.8rem;color:#5b21b6;">
+                    ⬡ <strong>Trapez</strong> wenn eine Seite nicht Null ist<br>
+                    <span style="font-size:0.78rem;">A = ½ · (a+b) · Höhe</span>
+                  </div>
+                  <div style="background:#dcfce7;border:1px solid #34d399;border-radius:7px;padding:0.4rem 0.8rem;color:#065f46;">
+                    ▭ <strong>Rechteck</strong> bei flachen, geraden Bereichen<br>
+                    <span style="font-size:0.78rem;">A = Breite · Höhe</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Schritt 3 -->
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">
+                  ⚠️ Schritt 3: Vorzeichen NICHT vergessen!
+                </div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  <span style="display:inline-block;background:#dbeafe;border-radius:5px;padding:0.15rem 0.5rem;color:#1d4ed8;font-weight:600;margin-right:0.3rem;">Fläche ÜBER x-Achse</span> → <strong style="color:#38bdf8;">PLUS</strong> → Bestand steigt<br>
+                  <span style="display:inline-block;background:#fee2e2;border-radius:5px;padding:0.15rem 0.5rem;color:#dc2626;font-weight:600;margin-right:0.3rem;">Fläche UNTER x-Achse</span> → <strong style="color:#f87171;">MINUS</strong> → Bestand sinkt<br><br>
+                  <strong>Beispiel aus dem Buch (Infokästchen S.2):</strong><br>
+                  B(1) = 0 + <span style="color:#38bdf8;">Dreieck oberhalb</span> = 0 + 0,5 · 0,9 · 2 = <strong>0,9 mm²</strong><br>
+                  B(1,3) = 0,9 + <span style="color:#38bdf8;">weiteres Stück</span> + 0,5 · 0,3 · 2 = <strong>1,2 mm²</strong><br>
+                  B(1,8) = 1,2 <span style="color:#f87171;">− Trapez unterhalb</span> = 1,2 − 0,8 = <strong>0,4 mm²</strong>
+                </p>
+              </div>
+
+              <!-- Schritt 4 -->
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">
+                  🧮 Schritt 4: Kästchen zählen als Alternative
+                </div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Statt geometrischer Formen kannst du auch einfach Kästchen zählen.<br>
+                  <strong>Aber Achtung mit den Einheiten:</strong><br>
+                  Ein Kästchen ist 0,1 h breit und 0,5 mm²/h hoch.<br>
+                  → Fläche = 0,1 h · 0,5 mm²/h = <strong>0,05 mm²</strong> pro Kästchen.<br>
+                  Kästchen oberhalb: positiv zählen | Kästchen unterhalb: negativ zählen.
+                </p>
+              </div>
+
+            </div><!-- /grid -->
+          </div><!-- /erklaerung -->
+
+          <div class="p-card" style="border-left:4px solid #f87171; background:var(--bg-subtle); margin-bottom:1.2rem;">
+            <h3 style="color:#f87171;margin:0 0 0.5rem 0;">🔴 Formeln auf einen Blick</h3>
+            <div style="display:flex;gap:1rem;flex-wrap:wrap;font-size:0.85rem;">
+              <div class="formula-chip">Dreieck: <span class="katex-render" data-display="false" data-latex="A = \tfrac{1}{2} \cdot b \cdot h"></span></div>
+              <div class="formula-chip">Trapez: <span class="katex-render" data-display="false" data-latex="A = \tfrac{1}{2}(a+c)\cdot h"></span></div>
+              <div class="formula-chip">Rechteck: <span class="katex-render" data-display="false" data-latex="A = b \cdot h"></span></div>
+              <div class="formula-chip" style="background:var(--bg-card);">1 Kästchen = 0,1h · 0,5mm²/h = <strong>0,05 mm²</strong></div>
+            </div>
+          </div>
+
+          <div class="p-card" style="margin-bottom:1.2rem;">
+            <h4 style="margin:0 0 0.5rem 0;">📈 Visualisierung: Beispiel aus dem roten Infokästchen (AH S.2)</h4>
+            <p style="font-size:0.83rem;color:var(--text-muted);margin:0 0 0.6rem 0;">Die blaue Kurve ist der Änderungsgraph. 🟡 Goldenes Dreieck = Näherung der Fläche oberhalb | 🟣 Lila Trapez = Näherung der Fläche unterhalb.</p>
+            <canvas id="integral-canvas-bakteria" width="680" height="260" style="width:100%;max-width:680px;display:block;border-radius:8px;"></canvas>
+          </div>
+
+          <div class="p-card" style="margin-bottom:1rem;">
+            <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:0.8rem;">
+              <h4 style="margin:0;">Aufgabe 1 – Näherungsweise Bestand bestimmen (Anfangsbestand = 0)</h4>
+              <label style="font-size:0.83rem;cursor:pointer;display:flex;align-items:center;gap:0.3rem;">
+                <input type="checkbox" id="integral-show-shapes" onchange="renderAufgabe1()">
+                Geometrische Näherungen einblenden
+              </label>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;flex-wrap:wrap;">
+              <div>
+                <canvas id="integral-canvas-1a" width="440" height="240" style="width:100%;border-radius:8px;"></canvas>
+                <div style="font-size:0.82rem;margin-top:0.5rem;color:var(--text-secondary);">
+                  <strong>a)</strong>
+                  <div style="margin-top:0.3rem;">t=2: B(2)≈<input class="integral-input" id="in-1a-b2" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1a-b2','≈ 3,9 mm² (Dreieck: ½·2,5·3,1)')">Lsg</button> <span id="sol-1a-b2" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                  <div style="margin-top:0.25rem;">t=3: B(3)≈<input class="integral-input" id="in-1a-b3" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1a-b3','≈ 3,4 mm²')">Lsg</button> <span id="sol-1a-b3" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                  <div style="margin-top:0.25rem;">t=7: B(7)≈<input class="integral-input" id="in-1a-b7" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1a-b7','≈ 2,1 mm²')">Lsg</button> <span id="sol-1a-b7" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                </div>
+              </div>
+              <div>
+                <canvas id="integral-canvas-1b" width="440" height="240" style="width:100%;border-radius:8px;"></canvas>
+                <div style="font-size:0.82rem;margin-top:0.5rem;color:var(--text-secondary);">
+                  <strong>b)</strong>
+                  <div style="margin-top:0.3rem;">t=1,5: B(1,5)≈<input class="integral-input" id="in-1b-b15" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1b-b15','≈ 1,4 mm²')">Lsg</button> <span id="sol-1b-b15" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                  <div style="margin-top:0.25rem;">t=2: B(2)≈<input class="integral-input" id="in-1b-b2" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1b-b2','≈ 1,9 mm²')">Lsg</button> <span id="sol-1b-b2" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                  <div style="margin-top:0.25rem;">t=3: B(3)≈<input class="integral-input" id="in-1b-b3" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1b-b3','≈ 1,9 mm²')">Lsg</button> <span id="sol-1b-b3" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-card">
+            <h4 style="margin:0 0 0.6rem 0;">Aufgabe 2 – Populationsentwicklung von Rehen (AH S.2)</h4>
+            <div style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.7rem;">
+              Änderung der Tierzahl pro Jahr: positiver Bereich → Wachstum, negativer Bereich → Schrumpfung.
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.85rem;">
+              <div><strong>a) Wann war die Population am größten?</strong> <input class="integral-input" id="in-2a" placeholder="Jahr?" style="width:80px;margin:0 0.4rem;"> <button class="btn-sm" onclick="showIntegralSol('sol-2a','Jahr ≈ 40 (Nullstelle des Änderungsgraphen)')">Lösung</button> <span id="sol-2a" class="integral-sol" style="display:none;color:#34d399;"></span></div>
+              <div><strong>b) Wachstum in ersten 30 Jahren ≈</strong> <input class="integral-input" id="in-2b" placeholder="? Tiere" style="width:90px;margin:0 0.4rem;"> <button class="btn-sm" onclick="showIntegralSol('sol-2b','≈ ½·30·100 = 1 500 Tiere (Dreieck)')">Lösung</button> <span id="sol-2b" class="integral-sol" style="display:none;color:#34d399;"></span></div>
+              <div><strong>c) Schrumpfung t=35 bis 60 ≈</strong> <input class="integral-input" id="in-2c" placeholder="? Tiere" style="width:90px;margin:0 0.4rem;"> <button class="btn-sm" onclick="showIntegralSol('sol-2c','≈ ½·25·200 = 2 500 Tiere (Dreieck unterhalb x-Achse)')">Lösung</button> <span id="sol-2c" class="integral-sol" style="display:none;color:#34d399;"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: S.4 STAMMFUNKTIONEN -->
+        <div id="integral-pane-s4" style="display:none;">
+
+          <!-- ════ ERKLÄRUNGSFELD S.4 ════ -->
+          <div class="p-card" style="border-left:4px solid #a78bfa;margin-bottom:1.2rem;">
+            <h3 style="color:#a78bfa;margin:0 0 0.8rem 0;">💡 Was ist eine Stammfunktion? – Schritt-für-Schritt</h3>
+            <div style="display:grid;gap:0.8rem;">
+
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">🔄 Grundidee: Ableiten rückwärts</div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Du kennst das Ableiten: aus f(x) = x² wird f'(x) = 2x.<br>
+                  <strong>Das Integrieren macht das Gegenteil</strong>: Aus f(x) = 2x wird F(x) = x².<br>
+                  F(x) heißt <strong>Stammfunktion</strong> von f(x). Es gilt immer: <strong>F'(x) = f(x)</strong><br>
+                  <span style="color:#a78bfa;">→ Die Ableitung der Stammfunktion ergibt wieder die ursprüngliche Funktion!</span>
+                </p>
+              </div>
+
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">📏 Die Potenzregel – das einzige was du brauchst</div>
+                <div style="font-size:0.88rem;color:var(--text-secondary);line-height:1.8;">
+                  <strong>Merksatz: Exponent um 1 erhöhen, dann durch den neuen Exponenten dividieren.</strong><br>
+                  <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.4rem;">
+                    <div style="background:#ede9fe;border-radius:7px;padding:0.4rem 0.8rem;color:#5b21b6;font-size:0.85rem;">
+                      f(x) = x³ &nbsp;→&nbsp; <strong>F(x) = x⁴ / 4 = ¼x⁴</strong><br>
+                      <span style="font-size:0.75rem;">(Exponent 3 → 4, dann ÷4)</span>
+                    </div>
+                    <div style="background:#ede9fe;border-radius:7px;padding:0.4rem 0.8rem;color:#5b21b6;font-size:0.85rem;">
+                      f(x) = x⁻² &nbsp;→&nbsp; <strong>F(x) = x⁻¹ / (−1) = −x⁻¹</strong><br>
+                      <span style="font-size:0.75rem;">(Exponent −2 → −1, dann ÷(−1))</span>
+                    </div>
+                    <div style="background:#ede9fe;border-radius:7px;padding:0.4rem 0.8rem;color:#5b21b6;font-size:0.85rem;">
+                      f(x) = 5x² &nbsp;→&nbsp; <strong>F(x) = 5 · x³/3 = 5/3 · x³</strong><br>
+                      <span style="font-size:0.75rem;">(Konstante bleibt, Exponent 2→3, ÷3)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">➕ Summenregel – mehrere Terme kein Problem</div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Wenn f(x) aus mehreren Termen besteht, integriere einfach <strong>jeden Term einzeln</strong>.<br>
+                  Beispiel: f(x) = 3x² + 5<br>
+                  &nbsp;&nbsp;→ F(x) = 3 · x³/3 + 5x = <strong>x³ + 5x</strong>
+                </p>
+              </div>
+
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;border:2px solid #a78bfa;">
+                <div style="font-size:1rem;font-weight:700;color:#a78bfa;margin-bottom:0.4rem;">⚡ Das +c – warum und wie?</div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Beim Ableiten fallen Konstanten weg: Aus F(x) = x² + 7 wird f(x) = 2x.<br>
+                  Deshalb gibt es <strong>unendlich viele</strong> Stammfunktionen: x², x²+5, x²−3 sind alle Stammfunktionen von 2x.<br><br>
+                  <strong>Wie bestimmt man c?</strong><br>
+                  Man benutzt einen <strong>bekannten Punkt P(x₀ | y₀)</strong> auf dem Bestandsgraphen:<br>
+                  Einsetzen: F(x₀) = y₀ → Gleichung nach c auflösen.<br><br>
+                  <strong>Beispiel:</strong> F(x) = x² + c, Punkt P(2 | 7)<br>
+                  → F(2) = 4 + c = 7 → c = 3 → <strong>F(x) = x² + 3</strong><br><br>
+                  Besonders einfach: Wenn P(0 | y₀) gegeben → c = y₀ direkt!
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="p-card" style="border-left:4px solid #a78bfa;margin-bottom:1.2rem;">
+            <h3 style="color:#a78bfa;margin:0 0 0.5rem 0;">∫ Stammfunktion = Umkehrung der Ableitung</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;flex-wrap:wrap;">
+              <div><h4 style="margin:0 0 0.3rem 0;font-size:0.9rem;">Potenzregel</h4><div class="formula-chip"><span class="katex-render" data-display="true" data-latex="f(x)=x^n \;\Rightarrow\; F(x)=\frac{x^{n+1}}{n+1}+c"></span></div></div>
+              <div><h4 style="margin:0 0 0.3rem 0;font-size:0.9rem;">Konstanter Faktor</h4><div class="formula-chip"><span class="katex-render" data-display="true" data-latex="f(x)=a\cdot x^n \;\Rightarrow\; F(x)=a\cdot\frac{x^{n+1}}{n+1}+c"></span></div></div>
+              <div><h4 style="margin:0 0 0.3rem 0;font-size:0.9rem;">Summenregel</h4><div class="formula-chip"><span class="katex-render" data-display="true" data-latex="h=f+g \;\Rightarrow\; H=F+G+c"></span></div></div>
+              <div><h4 style="margin:0 0 0.3rem 0;font-size:0.9rem;">Konstante c = Anfangsbestand</h4><div class="formula-chip"><span class="katex-render" data-display="true" data-latex="F(0)=c=\text{Anfangsbestand}"></span></div></div>
+            </div>
+          </div>
+
+          <div class="p-card" style="margin-bottom:1rem;">
+            <h4 style="margin:0 0 0.6rem 0;">Visualisierung: Änderungsrate f(x) ↔ Stammfunktion F(x)</h4>
+            <p style="font-size:0.82rem;color:var(--text-muted);margin:0 0 0.6rem 0;">Links: f(x) (Ableitung / Änderungsrate) &nbsp;|&nbsp; Rechts: F(x) (Stammfunktion / Bestand)</p>
+            <canvas id="stammfunktion-demo-canvas" width="680" height="220" style="width:100%;max-width:680px;display:block;border-radius:8px;margin-bottom:0.3rem;"></canvas>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.8rem;">Beispiel: f(x) = 2x &nbsp;→&nbsp; F(x) = x²</div>
+            <canvas id="stammfunktion-demo-canvas2" width="680" height="220" style="width:100%;max-width:680px;display:block;border-radius:8px;"></canvas>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem;">Beispiel: f(x) = 3x² &nbsp;→&nbsp; F(x) = x³</div>
+          </div>
+
+          <div class="p-card" style="background:var(--bg-subtle);">
+            <h4 style="margin:0 0 0.5rem 0;">Spezialregeln</h4>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;font-size:0.85rem;">
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int \sin(x)\,dx = -\cos(x)+c"></span></div>
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int \cos(x)\,dx = \sin(x)+c"></span></div>
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int \frac{1}{x}\,dx = \ln|x|+c"></span></div>
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int e^x\,dx = e^x+c"></span></div>
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int a\,dx = a\cdot x+c"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: AUFGABEN-CHECK -->
+        <div id="integral-pane-stammcheck" style="display:none;">
+          <div class="p-card" style="margin-bottom:1rem;">
+            <h4 style="margin:0 0 0.8rem 0;">Nr. 1 – Eine Stammfunktion (S.4)</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0.7rem;font-size:0.85rem;">
+              <div class="steckbrief-condition-card"><div class="sc-label">a) <span class="katex-render" data-display="false" data-latex="f(x)=x^4"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{1}{5}x^5')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">b) <span class="katex-render" data-display="false" data-latex="f(x)=x^{-2}"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-x^{-1}=-\\frac{1}{x}')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">c) <span class="katex-render" data-display="false" data-latex="f(x)=3x^4-2x-2"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{3}{5}x^5-x^2-2x')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">e) <span class="katex-render" data-display="false" data-latex="f(x)=12x^4"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{12}{5}x^5')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">g) <span class="katex-render" data-display="false" data-latex="f(x)=\frac{1}{4}x^2"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{1}{12}x^3')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">h) <span class="katex-render" data-display="false" data-latex="f(x)=3\sin(x)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-3\\cos(x)')">Lösung</button></div>
+            </div>
+          </div>
+
+          <div class="p-card" style="margin-bottom:1rem;">
+            <h4 style="margin:0 0 0.8rem 0;">Nr. 2 – Alle Stammfunktionen (+c) (S.4)</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0.7rem;font-size:0.85rem;">
+              <div class="steckbrief-condition-card"><div class="sc-label">a) <span class="katex-render" data-display="false" data-latex="f(x)=x^5"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{1}{6}x^6+c')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">b) <span class="katex-render" data-display="false" data-latex="f(x)=\frac{1}{3}x^{-2}"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-\\frac{1}{3}x^{-1}+c')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">c) <span class="katex-render" data-display="false" data-latex="f(x)=2x^2-\frac{1}{x^3}"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{2}{3}x^3+\\frac{1}{2}x^{-2}+c')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">d) <span class="katex-render" data-display="false" data-latex="f(x)=\sin(x)+1"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-\\cos(x)+x+c')">Lösung</button></div>
+            </div>
+          </div>
+
+          <div class="p-card">
+            <h4 style="margin:0 0 0.8rem 0;">Nr. 3 – Stammfunktion durch Punkt P bestimmen (S.4)</h4>
+            <p style="font-size:0.83rem;color:var(--text-muted);margin:0 0 0.7rem 0;">Allgemeine Stammfunktion F(x)+c bestimmen → c mit P(x|y) ausrechnen.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:0.7rem;font-size:0.85rem;">
+              <div class="steckbrief-condition-card"><div class="sc-label">a) <span class="katex-render" data-display="false" data-latex="f(x)=x^{-3},\;P(1|5)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-\\frac{1}{2}x^{-2}+5{,}5')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">b) <span class="katex-render" data-display="false" data-latex="f(x)=2x^5,\;P(0|-2)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{1}{3}x^6-2')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">d) <span class="katex-render" data-display="false" data-latex="f(x)=x^{1/3},\;P(8|-2)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{3}{4}x^{4/3}-14')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">g) <span class="katex-render" data-display="false" data-latex="f(x)=\frac{12}{x^2},\;P(0{,}5|4)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-\\frac{12}{x}+28')">Lösung</button></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /topic-mathe-integral -->
 
     <!-- --------------------------------------------------------------------- -->
     <!-- POLITIK TOPIC 1: OPERATOREN (AFB I - III)                             -->
@@ -10579,6 +10968,96 @@ const TONDA_KLAUSUREN = [
   }
 ];
 
+// --- Datumslogik: Status, Hero und Badges werden aus dem heutigen Datum berechnet,
+//     nie von Hand gepflegt (sonst veralten "morgen"/"geschrieben"-Texte). ---
+const KLAUSUR_FACH_IDS = {
+  'Mathematik': 'mathe',
+  'Politik-Wirtschaft': 'politik',
+  'Physik': 'physik',
+  'Informatik': 'informatik',
+  'Deutsch': 'deutsch',
+  'Englisch': 'englisch',
+  'Geschichte': 'geschichte',
+  'Darstellendes Spiel': 'ds'
+};
+
+function parseKlausurDate(dateStr) {
+  const [d, m, y] = dateStr.split('.').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function klausurDaysUntil(k) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return Math.round((parseKlausurDate(k.dateStr) - today) / 86400000);
+}
+
+function klausurCountdownText(days) {
+  if (days < 0) return 'Geschrieben';
+  if (days === 0) return 'HEUTE';
+  if (days === 1) return 'MORGEN';
+  return `in ${days} Tagen`;
+}
+
+function klausurWeekday(k) {
+  return parseKlausurDate(k.dateStr).toLocaleDateString('de-DE', { weekday: 'long' });
+}
+
+function refreshKlausurStatus() {
+  TONDA_KLAUSUREN.forEach(k => {
+    const d = klausurDaysUntil(k);
+    k.status = d < 0 ? 'done' : d <= 1 ? 'urgent' : d <= 7 ? 'soon' : 'upcoming';
+  });
+}
+
+function getNextKlausuren(n = 1) {
+  return TONDA_KLAUSUREN
+    .filter(k => klausurDaysUntil(k) >= 0)
+    .sort((a, b) => parseKlausurDate(a.dateStr) - parseKlausurDate(b.dateStr))
+    .slice(0, n);
+}
+
+function buildKlausurHeroHtml() {
+  const [next, after] = getNextKlausuren(2);
+  if (!next) {
+    return `<div class="urgent-hero-box"><div class="urgent-left"><h2 class="urgent-title">🎉 Keine offenen Klausuren im Plan</h2></div></div>`;
+  }
+  const days = klausurDaysUntil(next);
+  const fachId = KLAUSUR_FACH_IDS[next.subject];
+  const openAction = fachId ? `openFach('${fachId}')` : `navigateTo('kalender')`;
+  const afterHtml = after ? `
+          <span class="nu-label">Danach:</span>
+          <div class="nu-card" style="border-left: 3px solid ${after.color};">
+            <strong>${after.subject} (${after.course})</strong>
+            <span>${klausurWeekday(after)}, ${after.dateStr} • ${after.period} Stunde • Raum ${after.room}</span>
+          </div>` : '';
+  return `
+    <div class="urgent-hero-box" style="border-left-color: ${next.color};">
+      <div class="urgent-left">
+        <div class="urgent-alert-pill" style="color: ${next.color}; border-color: ${next.color};">
+          <span class="status-dot" style="background: ${next.color};"></span>
+          <strong>NÄCHSTE KLAUSUR: ${klausurCountdownText(days).toUpperCase()}</strong>
+        </div>
+        <h2 class="urgent-title">${next.subject} (${next.course})</h2>
+        <div class="urgent-meta-grid">
+          <div class="um-item">📅 <strong>${klausurWeekday(next)}, ${next.dateStr}</strong></div>
+          <div class="um-item">⏰ <strong>${next.period} Stunde</strong> (Raum: <strong>${next.room}</strong>)</div>
+          <div class="um-item">👨‍🏫 Lehrer: <strong>${next.teacher}</strong></div>
+          <div class="um-item">🎯 Fokus: <strong>${next.topic}</strong></div>
+        </div>
+      </div>
+      <div class="urgent-right">
+        <div class="next-up-preview">${afterHtml}</div>
+        <button class="btn-hero-study" style="background: ${next.color}; border-color: ${next.color};" onclick="${openAction}">
+          ${next.subject} jetzt vorbereiten &rarr;
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+refreshKlausurStatus();
+
 let currentCalendarFilter = 'pending'; // 'pending' default: offene Klausuren
 
 function renderCalendarView() {
@@ -10605,14 +11084,15 @@ function renderCalendarView() {
     let statusBadge = '';
     let cardClass = 'cal-card';
 
+    const cd = klausurCountdownText(klausurDaysUntil(k));
     if (k.status === 'done') {
-      statusBadge = '<span class="k-badge k-badge-done">✅ Geschrieben (11.09.)</span>';
+      statusBadge = '<span class="k-badge k-badge-done">✅ Geschrieben</span>';
       cardClass += ' cal-card-done';
     } else if (k.status === 'urgent') {
-      statusBadge = '<span class="k-badge k-badge-urgent">🚨 Morgen (15.09.)</span>';
+      statusBadge = `<span class="k-badge k-badge-urgent">🚨 ${cd} (${k.dateStr.slice(0, 5)})</span>`;
       cardClass += ' cal-card-urgent';
     } else if (k.status === 'soon') {
-      statusBadge = '<span class="k-badge k-badge-soon">⚡ Diesen Freitag (18.09.)</span>';
+      statusBadge = `<span class="k-badge k-badge-soon">⚡ ${cd} (${k.dateStr.slice(0, 5)})</span>`;
       cardClass += ' cal-card-soon';
     } else {
       statusBadge = `<span class="k-badge k-badge-pending">KW ${k.kw}</span>`;
@@ -10644,12 +11124,9 @@ function renderCalendarView() {
           </div>
         </div>
         <div class="cal-card-right">
-          ${k.subject === 'Mathematik' ? 
-            `<button class="btn-cal-action btn-cal-math" onclick="switchMainTab('mathe')">📐 Mathe-Thema 1</button>` :
-            (k.subject === 'Politik-Wirtschaft' ?
-              `<button class="btn-cal-action btn-cal-highlight" onclick="switchMainTab('politik')">🏛️ Politik lernen</button>` :
-              `<span class="cal-future-tag">12. Jg.</span>`
-            )
+          ${KLAUSUR_FACH_IDS[k.subject] && k.status !== 'done' ?
+            `<button class="btn-cal-action btn-cal-highlight" onclick="openFach('${KLAUSUR_FACH_IDS[k.subject]}')">${k.subject} lernen &rarr;</button>` :
+            `<span class="cal-future-tag">${k.status === 'done' ? 'erledigt' : '12. Jg.'}</span>`
           }
         </div>
       </div>
@@ -10663,35 +11140,7 @@ function renderUrgentKlausurHero() {
   const hero = document.getElementById('urgentKlausurHero');
   if (!hero) return;
 
-  hero.innerHTML = `
-    <div class="urgent-hero-box">
-      <div class="urgent-left">
-        <div class="urgent-alert-pill">
-          <span class="status-dot"></span>
-          <strong>NÄCHSTE KLAUSUR: MORGEN!</strong>
-        </div>
-        <h2 class="urgent-title">🏛️ Politik-Wirtschaft (pw25-Hf)</h2>
-        <div class="urgent-meta-grid">
-          <div class="um-item">📅 <strong>Dienstag, 15.09.2026</strong></div>
-          <div class="um-item">⏰ <strong>1. Stunde</strong> (Raum: <strong>R1</strong>)</div>
-          <div class="um-item">👨‍🏫 Lehrer: <strong>Hf</strong></div>
-          <div class="um-item">🎯 Fokus: <strong>Klausur 1 (12.1)</strong></div>
-        </div>
-      </div>
-      <div class="urgent-right">
-        <div class="next-up-preview">
-          <span class="nu-label">Direkt am Freitag folgt:</span>
-          <div class="nu-card">
-            <strong>⚡ PH12-Lh (Physik eA)</strong>
-            <span>Freitag, 18.09.2026 • 1. Stunde • Raum NW1</span>
-          </div>
-        </div>
-        <button class="btn-hero-study" onclick="switchMainTab('politik')">
-          Jetzt Politik-Klausur vorbereiten &rarr;
-        </button>
-      </div>
-    </div>
-  `;
+  hero.innerHTML = buildKlausurHeroHtml();
 }
 
 function filterCalendar(filterType, btnEl) {
@@ -12724,6 +13173,7 @@ function renderMatrix(latex, el) {
 }
 
 function loadLevelData() {
+  if (!document.getElementById('page-title')) return; // Matching-Seite nicht im DOM (Hub-Seite)
   const data = DATASETS[currentLevel];
   document.getElementById('page-title').innerText = data.title;
   document.getElementById('page-desc').innerText = data.desc;
@@ -21099,6 +21549,528 @@ for jahre in [0, 1, 2, 3, 4, 5, 10]:
 
 </script>
   <script>
+// --- integralrechnung.js ---
+// ============================================================
+// INTEGRALRECHNUNG.JS  –  Mathe-Lernportal Modul 05
+// Arbeitsheft S. 2 (Näherung) & S. 4 (Stammfunktionen)
+// Interaktive Canvas-Visualisierungen + Aufgaben-Checks
+// ============================================================
+
+// ─────────────────────────────────────────────────────────────
+// SECTION A: SEITE 2 – Näherungsweise Flächenberechnung
+// Bakterienkultur-Graph  f(t) = Wachstumsrate in mm²/h
+// ─────────────────────────────────────────────────────────────
+
+let integralCanvas1 = null;
+let integralCtx1 = null;
+let integral2Canvas = null;
+let integral2Ctx = null;
+
+// The bacteria growth function (smooth approximation of the book graph)
+// Peaks around t=0.9, crosses zero at t≈0.2 and t≈1.75, negative trough around t=2.4
+function bakteriaF(t) {
+  // Smooth bell-like curve matching the textbook graph (S.2 example)
+  // rises from 0 at t=0, peak ~2 at t=0.9, back to 0 at ~1.75, negative ~-1 at t=2.4, back to 0 at ~3
+  return 4.2 * t * Math.exp(-2.2 * t) * Math.sin(Math.PI * t * 0.72) * 3.1
+         - 0.4 * Math.max(0, t - 1.8) * Math.exp(-0.9 * (t - 1.8));
+}
+
+// Simpler, more faithful approximation based on textbook values
+// B(1) = 0.9mm², B(1.3) = 1.2mm², B(1.8) = 0.4mm²
+function bakteriaFv2(t) {
+  if (t < 0) return 0;
+  if (t <= 1.75) {
+    // Positive hump: rises from 0, peaks around 0.9h at ~2 mm²/h, returns to 0 at 1.75
+    return 3.0 * t * (1.75 - t) * Math.exp(-0.3 * t);
+  } else {
+    // Negative trough: goes to about -1 at t=2.4, back near 0 by t=3
+    return -2.2 * (t - 1.75) * Math.exp(-1.5 * (t - 1.75));
+  }
+}
+
+// Exercise 1a: the larger bell curve (0–8h, peak ~3 at t≈1)
+function aufgabe1aF(t) {
+  if (t < 0 || t > 8) return 0;
+  // Positive hump 0-2h, dips below around 3-8h
+  const pos = 3.5 * t * Math.exp(-1.1 * t);
+  const neg = -0.7 * Math.max(0, t - 2.5) * Math.exp(-0.5 * (t - 2.5));
+  return pos + neg;
+}
+
+// Exercise 1b: small positive bell (0–4h, peak ~1 at t≈1.2)
+function aufgabe1bF(t) {
+  if (t < 0 || t > 4) return 0;
+  return 1.3 * t * Math.exp(-0.9 * t) * Math.sin(Math.PI * t / 3.5);
+}
+
+// ─── Canvas helper ────────────────────────────────────────────
+function drawIntegralCanvas(canvasId, fn, tMin, tMax, yMin, yMax, fillShapes, title, xUnit, yUnit) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const PAD = { top: 36, right: 20, bottom: 48, left: 52 };
+  const plotW = W - PAD.left - PAD.right;
+  const plotH = H - PAD.top - PAD.bottom;
+
+  // Map data coords → canvas pixels
+  function toX(t) { return PAD.left + (t - tMin) / (tMax - tMin) * plotW; }
+  function toY(y) { return PAD.top + (1 - (y - yMin) / (yMax - yMin)) * plotH; }
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Background
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const bg = isDark ? '#1e2329' : '#ffffff';
+  const gridCol = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
+  const axisCol = isDark ? '#8b99a9' : '#555';
+  const textCol = isDark ? '#c9d1d9' : '#333';
+  const curveCol = '#38bdf8';
+  const fillPosCol = 'rgba(56,189,248,0.28)';
+  const fillNegCol = 'rgba(248,113,113,0.28)';
+  const shapeStroke = '#f59e0b';
+  const shapeFill = 'rgba(245,158,11,0.18)';
+
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Title
+  ctx.fillStyle = textCol;
+  ctx.font = 'bold 12px system-ui';
+  ctx.textAlign = 'center';
+  ctx.fillText(title, W / 2, 18);
+
+  // Grid
+  const tStep = (tMax - tMin) / 10;
+  const yStep = (yMax - yMin) / 8;
+  ctx.strokeStyle = gridCol;
+  ctx.lineWidth = 1;
+  for (let t = tMin; t <= tMax + 0.001; t += tStep) {
+    ctx.beginPath(); ctx.moveTo(toX(t), PAD.top); ctx.lineTo(toX(t), PAD.top + plotH); ctx.stroke();
+  }
+  for (let y = yMin; y <= yMax + 0.001; y += yStep) {
+    ctx.beginPath(); ctx.moveTo(PAD.left, toY(y)); ctx.lineTo(PAD.left + plotW, toY(y)); ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = axisCol;
+  ctx.lineWidth = 1.5;
+  // x-axis (at y=0)
+  const y0 = toY(0);
+  ctx.beginPath(); ctx.moveTo(PAD.left, y0); ctx.lineTo(PAD.left + plotW, y0); ctx.stroke();
+  // y-axis
+  ctx.beginPath(); ctx.moveTo(toX(tMin), PAD.top); ctx.lineTo(toX(tMin), PAD.top + plotH); ctx.stroke();
+
+  // Fill under curve (positive = blue, negative = red)
+  const steps = 300;
+  const dt = (tMax - tMin) / steps;
+  ctx.beginPath();
+  ctx.moveTo(toX(tMin), y0);
+  for (let i = 0; i <= steps; i++) {
+    const t = tMin + i * dt;
+    ctx.lineTo(toX(t), toY(fn(t)));
+  }
+  ctx.lineTo(toX(tMax), y0);
+  ctx.closePath();
+  // Use clip for pos/neg coloring via two passes
+  ctx.save();
+  // Positive fill
+  ctx.beginPath();
+  ctx.rect(PAD.left, PAD.top, plotW, y0 - PAD.top);
+  ctx.clip();
+  ctx.beginPath();
+  ctx.moveTo(toX(tMin), y0);
+  for (let i = 0; i <= steps; i++) {
+    const t = tMin + i * dt;
+    ctx.lineTo(toX(t), toY(fn(t)));
+  }
+  ctx.lineTo(toX(tMax), y0);
+  ctx.closePath();
+  ctx.fillStyle = fillPosCol;
+  ctx.fill();
+  ctx.restore();
+  ctx.save();
+  // Negative fill
+  ctx.beginPath();
+  ctx.rect(PAD.left, y0, plotW, PAD.top + plotH - y0);
+  ctx.clip();
+  ctx.beginPath();
+  ctx.moveTo(toX(tMin), y0);
+  for (let i = 0; i <= steps; i++) {
+    const t = tMin + i * dt;
+    ctx.lineTo(toX(t), toY(fn(t)));
+  }
+  ctx.lineTo(toX(tMax), y0);
+  ctx.closePath();
+  ctx.fillStyle = fillNegCol;
+  ctx.fill();
+  ctx.restore();
+
+  // Draw geometric approximation shapes
+  if (fillShapes && fillShapes.length > 0) {
+    fillShapes.forEach(shape => {
+      ctx.save();
+      if (shape.type === 'triangle') {
+        const [p1, p2, p3] = shape.points;
+        ctx.beginPath();
+        ctx.moveTo(toX(p1[0]), toY(p1[1]));
+        ctx.lineTo(toX(p2[0]), toY(p2[1]));
+        ctx.lineTo(toX(p3[0]), toY(p3[1]));
+        ctx.closePath();
+        ctx.fillStyle = shapeFill;
+        ctx.fill();
+        ctx.strokeStyle = shapeStroke;
+        ctx.lineWidth = 1.8;
+        ctx.stroke();
+        // Area label
+        if (shape.label) {
+          const cx = (toX(p1[0]) + toX(p2[0]) + toX(p3[0])) / 3;
+          const cy = (toY(p1[1]) + toY(p2[1]) + toY(p3[1])) / 3;
+          ctx.fillStyle = shapeStroke;
+          ctx.font = 'bold 10px system-ui';
+          ctx.textAlign = 'center';
+          ctx.fillText(shape.label, cx, cy);
+        }
+      } else if (shape.type === 'trapezoid') {
+        const [p1, p2, p3, p4] = shape.points;
+        ctx.beginPath();
+        ctx.moveTo(toX(p1[0]), toY(p1[1]));
+        ctx.lineTo(toX(p2[0]), toY(p2[1]));
+        ctx.lineTo(toX(p3[0]), toY(p3[1]));
+        ctx.lineTo(toX(p4[0]), toY(p4[1]));
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(167,139,250,0.2)';
+        ctx.fill();
+        ctx.strokeStyle = '#a78bfa';
+        ctx.lineWidth = 1.8;
+        ctx.stroke();
+        if (shape.label) {
+          const cx = (toX(p1[0]) + toX(p2[0]) + toX(p3[0]) + toX(p4[0])) / 4;
+          const cy = (toY(p1[1]) + toY(p2[1]) + toY(p3[1]) + toY(p4[1])) / 4;
+          ctx.fillStyle = '#a78bfa';
+          ctx.font = 'bold 10px system-ui';
+          ctx.textAlign = 'center';
+          ctx.fillText(shape.label, cx, cy);
+        }
+      } else if (shape.type === 'rect') {
+        const [t1, t2, h] = shape.dims; // t1, t2, height (signed)
+        const x1 = toX(t1), x2 = toX(t2);
+        const rectY0 = toY(0), rectH = toY(0) - toY(h);
+        ctx.fillStyle = 'rgba(52,211,153,0.2)';
+        ctx.fillRect(Math.min(x1,x2), Math.min(rectY0, rectY0-rectH), Math.abs(x2-x1), Math.abs(rectH));
+        ctx.strokeStyle = '#34d399';
+        ctx.lineWidth = 1.8;
+        ctx.strokeRect(Math.min(x1,x2), Math.min(rectY0, rectY0-rectH), Math.abs(x2-x1), Math.abs(rectH));
+        if (shape.label) {
+          ctx.fillStyle = '#34d399';
+          ctx.font = 'bold 10px system-ui';
+          ctx.textAlign = 'center';
+          ctx.fillText(shape.label, (x1+x2)/2, rectY0 - rectH/2);
+        }
+      }
+      ctx.restore();
+    });
+  }
+
+  // Draw the curve on top
+  ctx.beginPath();
+  ctx.strokeStyle = curveCol;
+  ctx.lineWidth = 2.5;
+  for (let i = 0; i <= steps; i++) {
+    const t = tMin + i * dt;
+    const x = toX(t), y = toY(fn(t));
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // Axis tick labels
+  ctx.fillStyle = textCol;
+  ctx.font = '10px system-ui';
+  ctx.textAlign = 'center';
+  const tickCountX = Math.round((tMax - tMin) / tStep);
+  for (let i = 0; i <= tickCountX; i++) {
+    const t = tMin + i * tStep;
+    const xp = toX(t);
+    ctx.fillText(t.toFixed(t < 10 ? 1 : 0), xp, PAD.top + plotH + 14);
+    ctx.beginPath(); ctx.strokeStyle = axisCol; ctx.lineWidth = 1;
+    ctx.moveTo(xp, y0 - 3); ctx.lineTo(xp, y0 + 3); ctx.stroke();
+  }
+  ctx.textAlign = 'right';
+  const tickCountY = 8;
+  for (let i = 0; i <= tickCountY; i++) {
+    const yv = yMin + i * yStep;
+    ctx.fillText(yv.toFixed(1), PAD.left - 6, toY(yv) + 4);
+  }
+
+  // Axis labels
+  ctx.fillStyle = textCol;
+  ctx.font = 'italic 11px system-ui';
+  ctx.textAlign = 'center';
+  ctx.fillText(xUnit || 'Zeit in h', PAD.left + plotW / 2, H - 6);
+  ctx.save();
+  ctx.translate(13, PAD.top + plotH / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText(yUnit || 'Wachstumsrate in mm²/h', 0, 0);
+  ctx.restore();
+}
+
+// ─────────────────────────────────────────────────────────────
+// SECTION B: SEITE 4 – Stammfunktionen + Visualisierung
+// ─────────────────────────────────────────────────────────────
+
+// Map of exercise exercises for Stammfunktionen-Aufgaben S.4
+const stammfunktionAufgaben = {
+  aufg1: [
+    { f: 'f(x) = x⁴',          tex: 'x^4',          F: 'F(x) = \\\\frac{1}{5}x^5',          hint: 'Exponent +1, durch neuen Exponent dividieren' },
+    { f: 'f(x) = x⁻²',         tex: 'x^{-2}',       F: 'F(x) = -x^{-1} = -\\\\frac{1}{x}',  hint: 'n=-2 → Exponent wird -1, teile durch -1' },
+    { f: 'f(x) = 3x⁴ − 2x − 2', tex: '3x^4 - 2x - 2', F: 'F(x) = \\\\frac{3}{5}x^5 - x^2 - 2x', hint: 'Summenregel: jeden Term einzeln integrieren' },
+    { f: 'f(x) = ⅔x³ + 1,2·(1/x)', tex: '\\\\tfrac{2}{3}x^3 + 1{,}2x^{-1}', F: 'F(x) = \\\\frac{1}{6}x^4 + 1{,}2\\\\ln|x|', hint: '1/x → ln|x|' },
+    { f: 'f(x) = 12x⁴',        tex: '12x^4',        F: 'F(x) = \\\\frac{12}{5}x^5',          hint: 'Konstanter Faktor bleibt, Exponent +1 → ÷5' },
+    { f: 'f(x) = ⅔x⁻⁵',        tex: '\\\\tfrac{2}{3}x^{-5}', F: 'F(x) = -\\\\frac{1}{6}x^{-4}', hint: 'n=-5 → F = ⅔·x⁻⁴/(-4) = -1/6 · x⁻⁴' },
+    { f: 'f(x) = ¼x²',         tex: '\\\\tfrac{1}{4}x^2',    F: 'F(x) = \\\\frac{1}{12}x^3',  hint: '¼ · 1/3 = 1/12' },
+    { f: 'f(x) = 3 sin(x)',    tex: '3\\\\sin(x)',   F: 'F(x) = -3\\\\cos(x)',               hint: 'Stammfunktion von sin(x) ist −cos(x)' },
+  ],
+  aufg2: [
+    { f: 'f(x) = x⁵',          tex: 'x^5',           F: 'F(x) = \\\\frac{1}{6}x^6 + c',      hint: '+ c nicht vergessen!' },
+    { f: 'f(x) = ⅓x⁻²',        tex: '\\\\tfrac{1}{3}x^{-2}', F: 'F(x) = -\\\\frac{1}{3}x^{-1} + c', hint: 'n=-2: teile durch -1, also ×(-1)' },
+    { f: 'f(x) = 2x² − 1/x³',  tex: '2x^2 - x^{-3}', F: 'F(x) = \\\\frac{2}{3}x^3 + \\\\frac{1}{2}x^{-2} + c', hint: '−x⁻³ integriert: −x⁻²/(−2) = +½x⁻²' },
+    { f: 'f(x) = sin(x) + 1',  tex: '\\\\sin(x) + 1',  F: 'F(x) = -\\\\cos(x) + x + c',      hint: '1 integriert zu x' },
+  ]
+};
+
+// Draw Stammfunktion visualization: f(x) and F(x) side-by-side
+function drawStammfunktionViz(canvasId, fFn, FFn, xMin, xMax, labelF, labelFbig) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const halfW = W / 2;
+  const PAD = { top: 30, right: 15, bottom: 36, left: 42 };
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const bg = isDark ? '#1e2329' : '#ffffff';
+  const textCol = isDark ? '#c9d1d9' : '#333';
+  const axisCol = isDark ? '#8b99a9' : '#666';
+  const gridCol = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Divider
+  ctx.strokeStyle = isDark ? '#30363d' : '#ddd';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(halfW, 0); ctx.lineTo(halfW, H); ctx.stroke();
+
+  function drawPanel(offsetX, fn, color, fillColor, label, yLabel) {
+    const pW = halfW - PAD.left - PAD.right;
+    const pH = H - PAD.top - PAD.bottom;
+    // Auto range y
+    const steps = 200;
+    const dt = (xMax - xMin) / steps;
+    let yMin = Infinity, yMax = -Infinity;
+    for (let i = 0; i <= steps; i++) {
+      const v = fn(xMin + i * dt);
+      if (isFinite(v)) { yMin = Math.min(yMin, v); yMax = Math.max(yMax, v); }
+    }
+    const yRange = yMax - yMin || 1;
+    yMin -= yRange * 0.12; yMax += yRange * 0.12;
+
+    function tx(x) { return offsetX + PAD.left + (x - xMin) / (xMax - xMin) * pW; }
+    function ty(y) { return PAD.top + (1 - (y - yMin) / (yMax - yMin)) * pH; }
+
+    const y0 = ty(0);
+
+    // Grid
+    ctx.strokeStyle = gridCol; ctx.lineWidth = 1;
+    const xStep = (xMax - xMin) / 8;
+    for (let x = xMin; x <= xMax + 0.001; x += xStep) {
+      ctx.beginPath(); ctx.moveTo(tx(x), PAD.top); ctx.lineTo(tx(x), PAD.top + pH); ctx.stroke();
+    }
+    const yStep2 = (yMax - yMin) / 6;
+    for (let y = yMin; y <= yMax + 0.001; y += yStep2) {
+      ctx.beginPath(); ctx.moveTo(offsetX + PAD.left, ty(y)); ctx.lineTo(offsetX + PAD.left + pW, ty(y)); ctx.stroke();
+    }
+
+    // Axes
+    ctx.strokeStyle = axisCol; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(offsetX + PAD.left, y0); ctx.lineTo(offsetX + PAD.left + pW, y0); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(tx(0), PAD.top); ctx.lineTo(tx(0), PAD.top + pH); ctx.stroke();
+
+    // Fill
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(tx(xMin), y0);
+    for (let i = 0; i <= steps; i++) {
+      const x = xMin + i * dt;
+      const v = fn(x);
+      if (isFinite(v)) ctx.lineTo(tx(x), ty(v));
+    }
+    ctx.lineTo(tx(xMax), y0);
+    ctx.closePath();
+    ctx.fillStyle = fillColor;
+    ctx.fill();
+    ctx.restore();
+
+    // Curve
+    ctx.beginPath(); ctx.strokeStyle = color; ctx.lineWidth = 2.5;
+    let first = true;
+    for (let i = 0; i <= steps; i++) {
+      const x = xMin + i * dt;
+      const v = fn(x);
+      if (!isFinite(v)) { first = true; continue; }
+      if (first) { ctx.moveTo(tx(x), ty(v)); first = false; }
+      else ctx.lineTo(tx(x), ty(v));
+    }
+    ctx.stroke();
+
+    // Labels
+    ctx.fillStyle = textCol; ctx.font = 'bold 12px system-ui'; ctx.textAlign = 'center';
+    ctx.fillText(label, offsetX + PAD.left + pW / 2, 18);
+
+    // Y label
+    ctx.font = '9px system-ui'; ctx.textAlign = 'right';
+    const yStep3 = (yMax - yMin) / 6;
+    for (let y = yMin; y <= yMax + 0.001; y += yStep3) {
+      if (Math.abs(ty(y) - y0) > 6)
+        ctx.fillText(y.toFixed(1), offsetX + PAD.left - 4, ty(y) + 3);
+    }
+    ctx.textAlign = 'center';
+    for (let x = xMin; x <= xMax + 0.001; x += xStep) {
+      ctx.fillText(x.toFixed(0), tx(x), y0 + 14);
+    }
+  }
+
+  drawPanel(0, fFn, '#38bdf8', 'rgba(56,189,248,0.2)', `f(x) = ${labelF}  (Ableitung / Änderungsrate)`, 'f(x)');
+  drawPanel(halfW, FFn, '#a78bfa', 'rgba(167,139,250,0.15)', `F(x) = ${labelFbig}  (Stammfunktion / Bestand)`, 'F(x)');
+}
+
+// ─────────────────────────────────────────────────────────────
+// SECTION C: AUFGABE 1 interaktiver Checker
+// ─────────────────────────────────────────────────────────────
+let currentIntegralTab = 's2';
+
+function switchIntegralTab(tab) {
+  currentIntegralTab = tab;
+  ['s2', 's4', 'stammcheck'].forEach(t => {
+    const btn = document.getElementById('integral-tab-' + t);
+    const pane = document.getElementById('integral-pane-' + t);
+    if (btn) btn.classList.toggle('active', t === tab);
+    if (pane) pane.style.display = t === tab ? '' : 'none';
+  });
+  if (tab === 's2') {
+    setTimeout(() => {
+      renderBakteriaNaeherung();
+      renderAufgabe1();
+    }, 30);
+  } else if (tab === 's4') {
+    setTimeout(renderStammfunktionDemo, 30);
+  } else if (tab === 'stammcheck') {
+    renderStammCheck();
+  }
+}
+
+function renderBakteriaNaeherung() {
+  // Draw the demonstration canvas (like the red info-box in the book)
+  const shapes = [
+    {
+      type: 'triangle',
+      points: [[0.2, 0], [0.75, 2.0], [1.75, 0]],
+      label: '▲ 1,55mm²'
+    },
+    {
+      type: 'trapezoid',
+      points: [[1.75, 0], [1.75, -0.5], [3.0, -1.0], [3.0, 0]],
+      label: '▼ −1,09mm²'
+    }
+  ];
+  drawIntegralCanvas(
+    'integral-canvas-bakteria',
+    bakteriaFv2,
+    0, 3.2, -1.5, 2.5,
+    shapes,
+    'Beispiel (Infokästchen): Näherung mit Dreieck & Trapez',
+    'Zeit in h',
+    'Wachstumsrate in mm²/h'
+  );
+}
+
+function renderAufgabe1() {
+  const showShapes = document.getElementById('integral-show-shapes') && document.getElementById('integral-show-shapes').checked;
+
+  const shapesA = showShapes ? [
+    { type: 'triangle', points: [[0, 0], [1.1, 3.1], [2.5, 0]], label: '▲≈3,9' },
+    { type: 'trapezoid', points: [[2.5, 0], [2.5, -0.5], [5.5, -0.65], [5.5, 0]], label: '▼≈−1,8' },
+  ] : [];
+  const shapesB = showShapes ? [
+    { type: 'triangle', points: [[0, 0], [1.2, 1.1], [3.5, 0]], label: '▲≈1,9' },
+  ] : [];
+
+  drawIntegralCanvas('integral-canvas-1a', aufgabe1aF, 0, 8, -1.0, 3.8, shapesA,
+    'Aufgabe 1a: Wachstumsrate f(t) – Bestimmung von B(2), B(3), B(7)', 'Zeit in h', 'Wachstumsrate mm²/h');
+  drawIntegralCanvas('integral-canvas-1b', aufgabe1bF, 0, 4, -0.5, 1.5, shapesB,
+    'Aufgabe 1b: Wachstumsrate f(t) – Bestimmung von B(1,5), B(2), B(3)', 'Zeit in h', 'Wachstumsrate mm²/h');
+}
+
+function renderStammfunktionDemo() {
+  // Demo: f(x) = 2x  →  F(x) = x²
+  const fFn = x => 2 * x;
+  const FFn = x => x * x;
+  drawStammfunktionViz('stammfunktion-demo-canvas', fFn, FFn, -3, 3, '2x', 'x²  (c=0)');
+
+  // Demo 2: f(x) = 3x² → F(x) = x³
+  const fFn2 = x => 3 * x * x;
+  const FFn2 = x => x * x * x;
+  drawStammfunktionViz('stammfunktion-demo-canvas2', fFn2, FFn2, -2, 2, '3x²', 'x³  (c=0)');
+}
+
+function renderStammCheck() {
+  // Already rendered via HTML
+}
+
+// ─────────────────────────────────────────────────────────────
+// SECTION D: Aufgabe 3 – Stammfunktion durch Punkt (S.4 Nr.3)
+// ─────────────────────────────────────────────────────────────
+
+function checkStammAufgabe(inputId, answerId, correctF, pointX, pointY) {
+  const input = document.getElementById(inputId);
+  const ansDiv = document.getElementById(answerId);
+  if (!input || !ansDiv) return;
+  const val = input.value.trim();
+  // Try to evaluate F(pointX) and check it matches pointY
+  ansDiv.innerHTML = `
+    <div class="integral-answer-block">
+      <div class="integral-answer-formula">
+        <span class="katex-render" data-display="false" data-latex="${correctF}"></span>
+      </div>
+      <div class="integral-answer-check">
+        Probe: F(${pointX}) = ${pointY} ✓
+      </div>
+    </div>
+  `;
+  ansDiv.style.display = '';
+  if (typeof renderKatex === 'function') renderKatex();
+  else if (window.katex) {
+    ansDiv.querySelectorAll('.katex-render').forEach(el => {
+      try {
+        katex.render(el.dataset.latex, el, { displayMode: el.dataset.display === 'true', throwOnError: false });
+      } catch(e) {}
+    });
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// SECTION E: Main render / init
+// ─────────────────────────────────────────────────────────────
+
+function renderIntegralrechnungModule() {
+  switchIntegralTab('s2');
+}
+
+// Called when the topic is opened
+window.renderIntegralrechnungModule = renderIntegralrechnungModule;
+
+</script>
+  <script>
 // --- main_hub.js ---
 // =========================================================================
 // Global Navigation, Theming & Hub Router for Tonda's Learning Dashboard
@@ -21152,6 +22124,13 @@ const FAECHER_DATA = {
         title: 'Trassierung (Knick- & Sprungfrei)',
         badge: 'Interaktiver Canvas',
         desc: 'Rampen- und Trassenübergänge knickfrei (gleiche Steigung) und sprungfrei (gleicher Funktionswert) mit interaktiver Canvas-Simulation konstruieren.'
+      },
+      {
+        id: 'mathe-integral',
+        num: '05',
+        title: 'Integralrechnung (AH S. 2 & S. 4)',
+        badge: '∫ Interaktiv',
+        desc: 'Bestände näherungsweise aus Änderungsgraphen rekonstruieren (Dreiecke, Trapeze), Stammfunktionen bestimmen, Konstante c über Anfangsbestand berechnen – mit interaktiven Canvas-Visualisierungen.'
       }
     ]
   },
@@ -21186,7 +22165,7 @@ const FAECHER_DATA = {
         num: '03',
         title: '3D-Begriffstrainer (Karteikarten)',
         badge: '8 Karteikarten',
-        desc: 'Interaktive Karteikarten mit Wendeeffekt zum Einprägen aller Schlüsselbegriffe und Definitionen für die morgige Klausur.'
+        desc: 'Interaktive Karteikarten mit Wendeeffekt zum Einprägen aller Schlüsselbegriffe und Definitionen für die kommende Klausur.'
       },
       {
         id: 'politik-spickzettel',
@@ -21361,7 +22340,7 @@ const FAECHER_DATA = {
         id: 'deutsch-sandmann',
         num: '01',
         title: 'E.T.A. Hoffmann: Der Sandmann – Klausur-Mastery',
-        badge: '🚨 Klausur morgen!',
+        badge: 'Klausur 1 · Archiv',
         desc: 'Erstes & zweites Augenpaar (Clara vs. Olimpia / Kindheit vs. Coppola), dialektische Auseinandersetzung (AFB III), Freud, Formulierungshilfen & Zitate.'
       }
     ]
@@ -21493,6 +22472,28 @@ const FAECHER_DATA = {
     ]
   }
 };
+
+// Klausurstatus je Fach aus dem Klausurkalender (calendar.js) ableiten – nie von Hand pflegen
+function refreshExamStatusFromCalendar() {
+  if (typeof getNextKlausuren !== 'function' || typeof TONDA_KLAUSUREN === 'undefined') return;
+  const upcoming = getNextKlausuren(TONDA_KLAUSUREN.length);
+  Object.entries(KLAUSUR_FACH_IDS).forEach(([subject, fachId]) => {
+    const fach = FAECHER_DATA[fachId];
+    if (!fach) return;
+    const next = upcoming.find(k => k.subject === subject);
+    if (!next) {
+      fach.examStatus = '✅ Alle Klausuren im Plan geschrieben';
+      return;
+    }
+    const days = klausurDaysUntil(next);
+    const icon = days <= 1 ? '🚨' : days <= 7 ? '⚡' : '⏳';
+    fach.examStatus = `${icon} Nächste Klausur ${klausurCountdownText(days)}: ${klausurWeekday(next)}, ${next.dateStr} (${next.period} Std., ${next.room})`;
+    (fach.topics || []).forEach(t => {
+      if (/^(englisch|geschichte|ds)-klausur$/.test(t.id)) t.badge = `Klausur ${next.dateStr.slice(0, 5)}`;
+    });
+  });
+}
+refreshExamStatusFromCalendar();
 
 // --- 2. NAVIGATION STATE ---
 const navState = {
@@ -21731,6 +22732,8 @@ function openTopic(fachId, topicId, pushHistory = true) {
     setTimeout(loadLevelData, 60);
   } else if (topicId === 'mathe-steckbrief' && typeof renderSteckbriefContent === 'function') {
     renderSteckbriefContent();
+  } else if (topicId === 'mathe-integral' && typeof renderIntegralrechnungModule === 'function') {
+    setTimeout(renderIntegralrechnungModule, 60);
   } else if (topicId === 'politik-flashcards' && typeof renderActiveFlashcard === 'function') {
     renderActiveFlashcard();
   } else if (topicId === 'politik-notizen' && typeof loadUserPolitikNotes === 'function') {
@@ -21823,38 +22826,10 @@ function updateBreadcrumbs() {
 
 // --- 6. DASHBOARD RENDERER ---
 function renderDashboard() {
-  // 1. Klausur Hero (Deutsch Morgen)
+  // 1. Klausur Hero: immer die nächste Klausur laut Klausurkalender (calendar.js)
   const heroEl = document.getElementById('dashHeroUrgent');
   if (heroEl) {
-    heroEl.innerHTML = `
-      <div class="urgent-hero-box" style="border-left-color: var(--accent-deutsch);">
-        <div class="urgent-left">
-          <div class="urgent-alert-pill" style="background: var(--accent-deutsch-bg); color: var(--accent-deutsch); border-color: var(--accent-deutsch-border);">
-            <span class="status-dot" style="background: var(--accent-deutsch);"></span>
-            <strong>NÄCHSTE KLAUSUR: MORGEN! (DONNERSTAG, 01.10.2026)</strong>
-          </div>
-          <h2 class="urgent-title">📖 Deutsch gA (de48-Hh) &bull; E.T.A. Hoffmann: Der Sandmann</h2>
-          <div class="urgent-meta-grid">
-            <div class="um-item">📅 <strong>Donnerstag, 01.10.2026</strong></div>
-            <div class="um-item">⏰ <strong>1. Stunde</strong> (Raum: <strong>R3</strong>)</div>
-            <div class="um-item">👩‍🏫 Lehrerin: <strong>Fr. Heinrich (Hh)</strong></div>
-            <div class="um-item">🎯 <strong>Augenpaare (Clara vs. Olimpia) &bull; Dialektische Auseinandersetzung (AFB III)</strong></div>
-          </div>
-        </div>
-        <div class="urgent-right">
-          <div class="next-up-preview">
-            <span class="nu-label">Klausur-Fokus:</span>
-            <div class="nu-card" style="border-left: 3px solid var(--accent-deutsch);">
-              <strong>👁️ Erstes &amp; zweites Augenpaar</strong>
-              <span>Rollentausch &bull; Psychologie &bull; Freud</span>
-            </div>
-          </div>
-          <button class="btn-hero-study" onclick="openTopic('deutsch', 'deutsch-sandmann')" style="background: var(--accent-deutsch); border-color: var(--accent-deutsch); box-shadow: 0 4px 14px rgba(185, 28, 28, 0.4);">
-            📖 Sandmann-Klausurmodul jetzt öffnen &rarr;
-          </button>
-        </div>
-      </div>
-    `;
+    heroEl.innerHTML = buildKlausurHeroHtml();
   }
 
   // 2. Widget: Mein Schultag heute
@@ -23269,6 +24244,43 @@ function toggleAllDeutschAnswers() {
   });
 }
 
+// ─────────────────────────────────────────────────────────────
+// INTEGRALRECHNUNG HELPER FUNCTIONS
+// ─────────────────────────────────────────────────────────────
+
+function showIntegralSol(spanId, text) {
+  const el = document.getElementById(spanId);
+  if (!el) return;
+  el.textContent = ' ✓ ' + text;
+  el.style.display = 'inline';
+}
+
+function showIntegralSolKatex(btn, latexStr) {
+  // Find or create answer div after the button
+  let ansDiv = btn.nextElementSibling;
+  if (!ansDiv || !ansDiv.classList.contains('integral-katex-ans')) {
+    ansDiv = document.createElement('div');
+    ansDiv.className = 'integral-katex-ans';
+    ansDiv.style.cssText = 'margin-top:0.35rem;padding:0.3rem 0.6rem;background:var(--bg-subtle);border-radius:6px;font-size:0.88rem;color:var(--text-secondary);';
+    btn.after(ansDiv);
+  }
+  // Toggle
+  if (ansDiv.style.display === 'none' || ansDiv.innerHTML === '') {
+    ansDiv.innerHTML = '✓ <span class="katex-sol"></span>';
+    ansDiv.style.display = '';
+    try {
+      katex.render(latexStr, ansDiv.querySelector('.katex-sol'), { displayMode: false, throwOnError: false });
+    } catch(e) {
+      ansDiv.querySelector('.katex-sol').textContent = latexStr;
+    }
+    btn.textContent = 'Verstecken';
+  } else {
+    ansDiv.style.display = 'none';
+    btn.textContent = 'Lösung';
+  }
+}
+
 </script>
 </body>
 </html>
+
