@@ -45,6 +45,9 @@ Fächer im Portal: Mathe eA, Physik eA, Informatik eA, Politik-Wirtschaft gA, De
 - **Datenschutz:** `.env`, `data/private/` und `iserv_*.json` nie ins Git, in Logs oder in Chat-Ausgaben.
 - **Nach jeder Änderung:** Eintrag in `../Lernlog.md`, Themenstand im Fach-README anpassen.
 
+## Abitur-Aufgaben als Vorlage (nur lokal, nie im Portal)
+Für Mathe, Physik und Informatik liegen offizielle Zentralabitur-Aufgaben samt Erwartungshorizonten lokal unter `../Faecher/<Fach>/01_Material/abitur-niedersachsen/`; Profil und Aufgabenformat in `../Faecher/<Fach>/04_Klausurvorbereitung/abi-niveau.md`. Im Portal entstehen **nur eigene neue Aufgaben** im Abi-Stil („angelehnt an Zentralabitur Niedersachsen <Jahr>“, mit BE/AFB und eigenem Erwartungshorizont, als „nicht offizielle Lösung“ gekennzeichnet). Das Portal-Repo ist öffentlich: **keine Originalaufgaben und keine leicht abgewandelten Kopien** dort ablegen.
+
 ## GitHub: alles landet automatisch dort
 - Remote: `https://github.com/Tondxx/lernportal.git` (Branch `main`, **öffentlich**, GitHub Pages: https://tondxx.github.io/lernportal/). Alles, was nicht in der `.gitignore` steht, ist damit öffentlich sichtbar – keine privaten Inhalte ins Portal legen.
 - **Claude:** Hooks in `~/.claude/settings.json` führen nach jeder Datei-Änderung im Portal und am Ende jeder Antwort `../_tools/autopush.ps1` aus (bundle → commit → push).
