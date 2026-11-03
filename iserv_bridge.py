@@ -9,8 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-SCHOOL_DIR = os.path.dirname(BASE_DIR)
-FILES_DIR = os.path.join(SCHOOL_DIR, "iserv_files")
+FILES_DIR = os.path.join(BASE_DIR, "data", "private", "iserv_files")
 CACHE_FILE = os.path.join(BASE_DIR, "iserv_tasks.json")
 CONFIG_FILE = os.path.join(BASE_DIR, "iserv_config.json")
 ENV_FILE = os.path.join(BASE_DIR, ".env")

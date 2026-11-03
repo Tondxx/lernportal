@@ -7,9 +7,11 @@ import sys
 
 PORT = 8000
 PORTAL_DIR = os.path.dirname(os.path.abspath(__file__))
-SCHOOL_DIR = os.path.dirname(PORTAL_DIR)
-MATHE1_DIR = os.path.join(SCHOOL_DIR, "mathe1")
-NOTES_FILE = os.path.join(SCHOOL_DIR, "meine_mitschriften.json")
+LERNEN_DIR = os.path.dirname(PORTAL_DIR)
+PRIVATE_DIR = os.path.join(PORTAL_DIR, "data", "private")
+MATHE1_DIR = os.path.join(LERNEN_DIR, "Faecher", "Mathe", "01_Material", "mathe1")
+NOTES_FILE = os.path.join(PRIVATE_DIR, "meine_mitschriften.json")
+os.makedirs(PRIVATE_DIR, exist_ok=True)
 
 class RobustTCPServer(socketserver.TCPServer):
     allow_reuse_address = True

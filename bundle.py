@@ -1,7 +1,6 @@
 import os
 
-portal_dir = r"c:\Users\beutl\Desktop\school\mathe-lernportal"
-school_dir = r"c:\Users\beutl\Desktop\school"
+portal_dir = os.path.dirname(os.path.abspath(__file__))
 
 with open(os.path.join(portal_dir, "index.html"), "r", encoding="utf-8") as f:
     html = f.read()
@@ -28,7 +27,7 @@ if os.path.exists(katex_js_path):
         k_js = f.read()
     html_bundled = html_bundled.replace('<script src="katex.min.js"></script>', f'<script>\n// KaTeX JS Offline\n{k_js}\n</script>')
 
-scripts = ["calendar.js", "politik.js", "timetable.js", "steckbrief.js", "schar.js", "matching.js", "user_content.js", "physik.js", "seminarfach.js", "informatik.js", "main_hub.js"]
+scripts = ["calendar.js", "politik.js", "timetable.js", "steckbrief.js", "schar.js", "matching.js", "user_content.js", "physik.js", "seminarfach.js", "informatik.js", "integralrechnung.js", "main_hub.js"]
 for s in scripts:
     with open(os.path.join(portal_dir, s), "r", encoding="utf-8") as f:
         js = f.read()
@@ -37,12 +36,8 @@ for s in scripts:
         html_bundled = html_bundled[:m.start()] + f'<script>\n// --- {s} ---\n{js}\n</script>' + html_bundled[m.end():]
 
 target1 = os.path.join(portal_dir, "tonda-oberstufe.html")
-target2 = os.path.join(school_dir, "tonda-oberstufe.html")
 
 with open(target1, "w", encoding="utf-8") as f:
-    f.write(html_bundled)
-
-with open(target2, "w", encoding="utf-8") as f:
     f.write(html_bundled)
 
 print(f"Bundled successfully! Total size: {len(html_bundled)} bytes")
