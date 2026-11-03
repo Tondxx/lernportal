@@ -24452,6 +24452,19 @@ async function saveIservConfig(event) {
   const fb = document.getElementById('cfgFeedback');
   const btn = document.getElementById('btnSaveConfig');
 
+  // Zugangsdaten nur an den eigenen lokalen Server senden – nie an GitHub Pages oder fremde Hosts
+  const host = window.location.hostname;
+  const isLocalHost = window.location.protocol === 'file:' || host === 'localhost' || host === '127.0.0.1' || host === '[::1]';
+  if (!isLocalHost) {
+    if (fb) {
+      fb.style.display = 'block';
+      fb.style.background = 'var(--bg-subtle)';
+      fb.style.color = 'var(--accent-urgent)';
+      fb.textContent = '⚠️ Diese Seite läuft nicht lokal (' + host + '). Es wurde nichts gesendet. Starte start.bat und öffne http://localhost:8000, dann erneut speichern.';
+    }
+    return;
+  }
+
   if (btn) btn.disabled = true;
   if (fb) {
     fb.style.display = 'block';
@@ -24481,7 +24494,9 @@ async function saveIservConfig(event) {
   } catch (err) {
     if (fb) {
       fb.style.color = 'var(--accent-urgent)';
-      fb.textContent = '⚠️ ' + err.message + ' (Stelle sicher, dass server.py läuft)';
+      fb.textContent = err instanceof SyntaxError
+        ? '⚠️ Der Server hat keine JSON-Antwort geschickt – die Seite wird nicht von server.py ausgeliefert. Starte start.bat und öffne http://localhost:8000.'
+        : '⚠️ ' + err.message + ' (Stelle sicher, dass server.py läuft)';
     }
   } finally {
     if (btn) btn.disabled = false;
