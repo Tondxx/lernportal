@@ -45,6 +45,13 @@ Fächer im Portal: Mathe eA, Physik eA, Informatik eA, Politik-Wirtschaft gA, De
 - **Datenschutz:** `.env`, `data/private/` und `iserv_*.json` nie ins Git, in Logs oder in Chat-Ausgaben.
 - **Nach jeder Änderung:** Eintrag in `../Lernlog.md`, Themenstand im Fach-README anpassen.
 
+## GitHub: alles landet automatisch dort
+- Remote: `https://github.com/Tondxx/lernportal.git` (Branch `main`, **öffentlich**, GitHub Pages: https://tondxx.github.io/lernportal/). Alles, was nicht in der `.gitignore` steht, ist damit öffentlich sichtbar – keine privaten Inhalte ins Portal legen.
+- **Claude:** Hooks in `~/.claude/settings.json` führen nach jeder Datei-Änderung im Portal und am Ende jeder Antwort `../_tools/autopush.ps1` aus (bundle → commit → push).
+- **Alle anderen KIs (Codex, Gemini, Cursor …):** Nach jeder Änderung im Portal selbst ausführen: `powershell -NoProfile -ExecutionPolicy Bypass -File C:\Users\beutl\Lernen\_tools\autopush.ps1 -Manual`
+- Das Skript bricht ab, wenn Privates (`.env`, `data/private`, IServ-Dateien/-Cache, Mitschriften) in den Änderungen auftaucht, und schreibt `../_tools/autopush.log`. Bei „FEHLER" im Log: Ursache beheben, nicht umgehen.
+- Git liegt unter `C:\Program Files\Git\cmd\git.exe` (nicht im PATH jeder Shell).
+
 ## Offene Verbesserungen (Ideen)
 - Aufgaben-Generator: einheitliches Aufgabenformat (Thema, Schwierigkeit, Lösungsweg, Bewertung) für alle Fächer.
 - Fortschrittsspeicher, der in `../Faecher/*/README.md` zurückgespiegelt wird (damit KIs den Lernstand kennen).
