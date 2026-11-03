@@ -57,6 +57,13 @@ const FAECHER_DATA = {
         title: 'Integralrechnung (AH S. 2 & S. 4)',
         badge: '∫ Interaktiv',
         desc: 'Bestände näherungsweise aus Änderungsgraphen rekonstruieren (Dreiecke, Trapeze), Stammfunktionen bestimmen, Konstante c über Anfangsbestand berechnen – mit interaktiven Canvas-Visualisierungen.'
+      },
+      {
+        id: 'mathe-integral-kurs',
+        num: '06',
+        title: 'Integralrechnung komplett: Erklärung + Abi-Übungen',
+        badge: 'Klausur-Fokus',
+        desc: 'Vollständige Erklärung (Bestand, Ober-/Untersumme, Hauptsatz, Stammfunktionen, Flächen, Graph von f und F) mit interaktiven Demos, 7 Teil-A-Aufgaben und einer Teil-B-Aufgabe im Abi-Stil mit Erwartungshorizont und Auswertung.'
       }
     ]
   },
@@ -660,6 +667,8 @@ function openTopic(fachId, topicId, pushHistory = true) {
     renderSteckbriefContent();
   } else if (topicId === 'mathe-integral' && typeof renderIntegralrechnungModule === 'function') {
     setTimeout(renderIntegralrechnungModule, 60);
+  } else if (topicId === 'mathe-integral-kurs' && typeof renderIntegralKurs === 'function') {
+    setTimeout(renderIntegralKurs, 60);
   } else if (topicId === 'politik-flashcards' && typeof renderActiveFlashcard === 'function') {
     renderActiveFlashcard();
   } else if (topicId === 'politik-notizen' && typeof loadUserPolitikNotes === 'function') {
