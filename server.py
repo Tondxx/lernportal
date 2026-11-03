@@ -7,6 +7,9 @@ import sys
 
 PORT = 8000
 PORTAL_DIR = os.path.dirname(os.path.abspath(__file__))
+# Abhängigkeiten (requests, beautifulsoup4) liegen in libs/ – unabhängig von Benutzer-Site-Packages
+# und davon, ob start.bat normal oder als Administrator gestartet wurde.
+sys.path.insert(0, os.path.join(PORTAL_DIR, "libs"))
 LERNEN_DIR = os.path.dirname(PORTAL_DIR)
 PRIVATE_DIR = os.path.join(PORTAL_DIR, "data", "private")
 MATHE1_DIR = os.path.join(LERNEN_DIR, "Faecher", "Mathe", "01_Material", "mathe1")

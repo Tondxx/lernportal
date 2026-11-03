@@ -26,3 +26,6 @@ __pycache__/
 .idea/
 Thumbs.db
 Desktop.ini
+
+# Lokal vendorte Python-Pakete (pip --target libs)
+libs/

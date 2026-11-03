@@ -1,10 +1,12 @@
 import os
+import sys
 import json
 import time
 import re
 import html
 import urllib.parse
 from datetime import datetime
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "libs"))
 import requests
 from bs4 import BeautifulSoup
 
