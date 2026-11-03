@@ -27,6 +27,7 @@ Aufgaben werden **nicht** als Markdown in `Faecher/*/03_Aufgaben/` bearbeitet, s
 | `physik.js`, `informatik.js`, `integralrechnung.js`, `politik.js`, `seminarfach.js` | Fach-Module (Aufgaben, Erklärungen) |
 | `parts/` | Teile des Physik-Moduls (Ordner, Skills, UI-Renderer, `simulations.js` = Canvas-Simulationen) |
 | `schar.js`, `matching.js` | Mathe: Kurvenscharen, Zuordnungsaufgaben |
+| `integral_kurs.js` (Modul 06), `schar_kurs.js` (Modul 07) | Mathe: „Integralrechnung komplett“ und „Funktionsscharen & Ortskurven“ mit Erklärung, interaktiven Demos, Teil-A/B-Aufgaben (Daten-Objekte `TASKS_A/B` mit `parts`, `sol`, `nums`, `fig`), Auswertung. `integral_kurs.js` stellt `window.IKLib` bereit (Mathe-Rendering, Aufgaben-Engine, Fortschritt in localStorage `ik_progress_v1`); weitere Module registrieren sich mit `IKLib.register(...)`. |
 | `calendar.js`, `timetable.js`, `steckbrief.js` | Kalender, Stundenplan, Steckbrief |
 | `user_content.js` | Upload/Ablage eigener Mitschriften |
 | `style.css` | Gesamtes Design |

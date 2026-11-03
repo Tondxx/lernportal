@@ -102,6 +102,9 @@
       .ik-num { width: 110px; }
       .ik-export { width: 100%; min-height: 120px; font-family: ui-monospace, Consolas, monospace; font-size: 0.78rem; border-radius: 8px; border: 1px solid var(--border-subtle); background: var(--bg-subtle); color: var(--text-primary); padding: 0.5rem; }
       .ik-disp { display: block; overflow-x: auto; }
+      .ik-fig { width: 100%; max-width: 600px; display: block; margin: 0.5rem 0; border-radius: 8px; border: 1px solid var(--border-subtle); }
+      .ik-chip { display: inline-block; padding: 0.15rem 0.55rem; margin: 0.1rem; border-radius: 999px; border: 1px solid var(--border-subtle); background: var(--bg-subtle); font-size: 0.8rem; cursor: pointer; color: var(--text-primary); }
+      .ik-chip:hover { border-color: #38bdf8; }
     `;
     document.head.appendChild(st);
   }
@@ -301,6 +304,103 @@
     }
   }
 
+  // ---------- Demo 4: Aufzug (Geschwindigkeit → Position) ----------
+  const AZ_PTS = [[0, 0], [3, 4], [7, 4], [9, 0], [10, 0], [12, -4], [18, -4], [21, 0]];
+  function azV(t) {
+    for (let i = 0; i < AZ_PTS.length - 1; i++) {
+      const [x0, y0] = AZ_PTS[i], [x1, y1] = AZ_PTS[i + 1];
+      if (t >= x0 && t <= x1) return y0 + (y1 - y0) * (t - x0) / (x1 - x0);
+    }
+    return 0;
+  }
+  function azS(t) {
+    let s = 0;
+    for (let i = 0; i < AZ_PTS.length - 1; i++) {
+      const [x0, y0] = AZ_PTS[i], [x1, y1] = AZ_PTS[i + 1];
+      if (t >= x1) { s += (y0 + y1) / 2 * (x1 - x0); }
+      else if (t > x0) { const v = y0 + (y1 - y0) * (t - x0) / (x1 - x0); s += (y0 + v) / 2 * (t - x0); break; }
+      else break;
+    }
+    return s;
+  }
+  function drawAufzug() {
+    const c1 = document.getElementById('ik-az-v'), c2 = document.getElementById('ik-az-s');
+    if (!c1 || !c2) return;
+    const t = +document.getElementById('ik-az-t').value;
+    document.getElementById('ik-az-tval').textContent = fmt(t);
+    let S = plotSetup(c1, 0, 22, -5.5, 5.5);
+    if (t > 0) fillSigned(S, azV, () => 0, 0, t, 'rgba(56,189,248,0.45)', 'rgba(248,113,113,0.45)');
+    drawCurve(S, azV, 0, 21, '#0284c7', 2.6);
+    S.ctx.strokeStyle = '#f59e0b'; S.ctx.lineWidth = 1.5; S.ctx.setLineDash([5, 4]);
+    S.ctx.beginPath(); S.ctx.moveTo(S.X(t), S.P.t); S.ctx.lineTo(S.X(t), S.P.t + S.ph); S.ctx.stroke(); S.ctx.setLineDash([]);
+    S.ctx.fillStyle = S.col.text; S.ctx.font = 'bold 12px system-ui'; S.ctx.textAlign = 'left';
+    S.ctx.fillText('v(t) in m/s (Änderungsrate)', S.P.l + 8, S.P.t + 12);
+    S = plotSetup(c2, 0, 22, -10, 28);
+    drawCurve(S, azS, 0, 21, '#7c3aed', 2.6);
+    S.ctx.fillStyle = '#f59e0b';
+    S.ctx.beginPath(); S.ctx.arc(S.X(t), S.Y(azS(t)), 5.5, 0, 2 * Math.PI); S.ctx.fill();
+    S.ctx.fillStyle = S.col.text; S.ctx.font = 'bold 12px system-ui'; S.ctx.textAlign = 'left';
+    S.ctx.fillText('s(t) in m (Bestand: Höhe zum Start)', S.P.l + 8, S.P.t + 12);
+    const out = document.getElementById('ik-az-out');
+    if (out) {
+      const v = azV(t);
+      out.innerHTML = 't = <b>' + fmt(t) + ' s</b> &nbsp;·&nbsp; v(t) = <b>' + fmtN(v, 2) + ' m/s</b> (' + (v > 0.001 ? 'fährt nach oben' : v < -0.001 ? 'fährt nach unten' : 'hält') + ') &nbsp;·&nbsp; Höhe s(t) = <b>' + fmtN(azS(t), 2) +
+        ' m</b> = orientierte Fläche unter v von 0 bis t.<br>Knickstellen: s(3)=6, s(7)=22, s(9)=26 (Maximum), s(12)=22, s(18)=−2, s(21)=−8 (Minimum).';
+    }
+  }
+
+  // ---------- Demo 5: Intervall-Explorer für f(x) = −2x + 10 ----------
+  const IV_F = x => -2 * x + 10;
+  const IV_ANTI = x => -x * x + 10 * x;
+  function drawIntervall() {
+    const c = document.getElementById('ik-iv');
+    if (!c) return;
+    const a = +document.getElementById('ik-iv-a').value, b = +document.getElementById('ik-iv-b').value;
+    document.getElementById('ik-iv-aval').textContent = fmt(a);
+    document.getElementById('ik-iv-bval').textContent = fmt(b);
+    const S = plotSetup(c, -1, 11.5, -14, 16);
+    fillSigned(S, IV_F, () => 0, Math.min(a, b), Math.max(a, b), 'rgba(56,189,248,0.45)', 'rgba(248,113,113,0.45)');
+    drawCurve(S, IV_F, -1, 11.5, '#0284c7', 2.6);
+    S.ctx.strokeStyle = '#f59e0b'; S.ctx.lineWidth = 1.5; S.ctx.setLineDash([5, 4]);
+    [a, b].forEach(v => { S.ctx.beginPath(); S.ctx.moveTo(S.X(v), S.P.t); S.ctx.lineTo(S.X(v), S.P.t + S.ph); S.ctx.stroke(); });
+    S.ctx.setLineDash([]);
+    S.ctx.fillStyle = S.col.text; S.ctx.font = 'bold 12px system-ui'; S.ctx.textAlign = 'left';
+    S.ctx.fillText('f(x) = −2x + 10', S.P.l + 8, S.P.t + 12);
+    const out = document.getElementById('ik-iv-out');
+    if (out) {
+      const val = IV_ANTI(b) - IV_ANTI(a);
+      out.innerHTML = '∫ von ' + fmt(a) + ' bis ' + fmt(b) + ' von (−2x + 10) dx = F(' + fmt(b) + ') − F(' + fmt(a) + ') = (' + fmt(IV_ANTI(b)) + ') − (' + fmt(IV_ANTI(a)) + ') = <b>' + fmt(val) +
+        '</b><br>Blau = Zunahme, rot = Abnahme des Bestands. Stammfunktion F(x) = −x² + 10x (Nullstelle von f bei x = 5: danach nimmt der Bestand ab).';
+    }
+  }
+  function setIntervall(a, b) {
+    document.getElementById('ik-iv-a').value = a; document.getElementById('ik-iv-b').value = b; drawIntervall();
+  }
+
+  // ---------- Diagramme in Aufgaben ----------
+  // fig: { kind: 'fn' | 'pw', f | pts, xmin, xmax, ymin, ymax, title }
+  function drawFig(canvas, fig) {
+    if (!canvas || !fig) return;
+    const S = plotSetup(canvas, fig.xmin, fig.xmax, fig.ymin, fig.ymax);
+    if (fig.kind === 'pw') {
+      const { ctx, X, Y } = S;
+      ctx.beginPath(); ctx.strokeStyle = '#dc2626'; ctx.lineWidth = 2.6;
+      fig.pts.forEach((p, i) => { if (i === 0) ctx.moveTo(X(p[0]), Y(p[1])); else ctx.lineTo(X(p[0]), Y(p[1])); });
+      ctx.stroke();
+      ctx.fillStyle = '#dc2626';
+      fig.pts.forEach(p => { ctx.beginPath(); ctx.arc(X(p[0]), Y(p[1]), 3.2, 0, 2 * Math.PI); ctx.fill(); });
+    } else {
+      drawCurve(S, fig.f, fig.xmin, fig.xmax, '#0284c7', 2.6);
+    }
+    if (fig.title) {
+      S.ctx.fillStyle = S.col.text; S.ctx.font = 'bold 12px system-ui'; S.ctx.textAlign = 'left';
+      S.ctx.fillText(fig.title, S.P.l + 8, S.P.t + 12);
+    }
+  }
+  function drawTaskFigs(tasks) {
+    tasks.forEach(t => { if (t.fig) drawFig(document.getElementById('fig-' + t.id), t.fig); });
+  }
+
   // ---------- Erklärungs-Abschnitte ----------
   const SECTIONS = [
     {
@@ -487,6 +587,85 @@ $$A=\int_a^b\bigl(f(x)-g(x)\bigr)\,dx\qquad(f\text{ oben}),$$
   <li><b>Teil B (GTR/CAS):</b> Modellierung, Rechnerergebnis mit Ansatz notieren (z. B. $\int_0^4 r(t)\,dt\approx 95{,}04$), Ergebnisse interpretieren.</li>
   <li>Operatoren beachten: <i>Zeigen/Nachweisen</i> (alle Schritte), <i>Berechnen</i> (Ansatz + Ergebnis), <i>Begründen/Beurteilen</i> (Argument in Worten).</li>
 </ul></div>`
+    },
+    {
+      id: 'sec10', title: '10 · Unterrichtstyp: Bestand aus einem Geschwindigkeitsgraphen (Aufzug)',
+      html: String.raw`
+<p>Gegeben ist die <b>Änderungsrate</b> – hier die Geschwindigkeit $v(t)$ in m/s (positiv = nach oben) – als Graph aus Strecken. Gesucht ist der <b>Bestand</b>, hier die Höhe $s(t)$ relativ zur Startposition.</p>
+<ol>
+  <li><b>Vorzeichen lesen:</b> $v>0$ nach oben, $v<0$ nach unten, $v=0$ Halt.</li>
+  <li><b>Flächen bestimmen:</b> Rechteck $b\cdot h$, Dreieck $\tfrac12 g\,h$, Trapez $\tfrac{a+c}{2}\cdot h$. Flächen <b>unter</b> der $t$-Achse zählen <b>negativ</b>.</li>
+  <li><b>Tabelle:</b> Position an einer Knickstelle = Position davor + orientierte Fläche des Abschnitts.</li>
+  <li><b>Bestandsgraph zeichnen:</b> Wo $v>0$ ist, steigt $s$; wo $v<0$ ist, fällt $s$; bei $v=0$ ist $s$ waagerecht. Konstante Geschwindigkeit ⇒ $s$ ist eine Gerade; linear wachsende Geschwindigkeit ⇒ $s$ ist ein Parabelbogen (die Steigung von $s$ ist $v$).</li>
+  <li><b>Höchste/tiefste Stelle:</b> an den Stellen, wo $v$ das Vorzeichen wechselt, und an den Rändern. Werte aus der Tabelle vergleichen.</li>
+  <li><b>Verschiebung ≠ Gesamtweg:</b> Verschiebung = Summe der <i>orientierten</i> Flächen. Nach oben zurückgelegte Strecke = Summe der positiven Flächen, nach unten zurückgelegte Strecke = Summe der <i>Beträge</i> der negativen Flächen.</li>
+</ol>
+<div class="ik-demo">
+  <div class="ik-controls">
+    <label>Zeit t = <b id="ik-az-tval">3</b> s
+      <input type="range" id="ik-az-t" min="0" max="21" step="0.25" value="3" oninput="ikDrawAufzug()"></label>
+  </div>
+  <div class="ik-pair">
+    <canvas id="ik-az-v" width="440" height="300"></canvas>
+    <canvas id="ik-az-s" width="440" height="300"></canvas>
+  </div>
+  <div class="ik-readout" id="ik-az-out"></div>
+</div>`
+    },
+    {
+      id: 'sec11', title: '11 · Unterrichtstyp: Integralschreibweise & Hauptsatz am Beispiel f(x) = −2x + 10',
+      html: String.raw`
+<p>Eine Zu- und Abflussrate sei $f(x)=-2x+10$. Die Bestandsänderung in einem Beobachtungsintervall $[a;b]$ ist der <b>orientierte Flächeninhalt</b> unter dem Graphen. Die Integralschreibweise fasst das zusammen:</p>
+$$\int_a^b (-2x+10)\,dx=\bigl[-x^2+10x\bigr]_a^b=F(b)-F(a)$$
+<p><b>Vorgehen wie im Unterricht (Tabelle):</b></p>
+<ol>
+  <li>Intervall $[a;b]$ festlegen und den Graphen skizzieren; Fläche markieren (blau = Zunahme, rot = Abnahme).</li>
+  <li>Eine Stammfunktion bestimmen: $F(x)=-x^2+10x$.</li>
+  <li>Grenzen einsetzen: $F(b)$ und $F(a)$ berechnen.</li>
+  <li>Differenz bilden: $\int_a^b f\,dx=F(b)-F(a)$ und als Bestandsänderung deuten.</li>
+</ol>
+<table class="ik-table">
+  <tr><th>Intervall</th><th>$F(b)$</th><th>$F(a)$</th><th>Bestandsänderung</th></tr>
+  <tr><td>$[0;4]$</td><td>$24$</td><td>$0$</td><td>$+24$</td></tr>
+  <tr><td>$[1;6]$</td><td>$24$</td><td>$9$</td><td>$+15$</td></tr>
+  <tr><td>$[2;8]$</td><td>$16$</td><td>$16$</td><td>$0$</td></tr>
+  <tr><td>$[5;10]$</td><td>$0$</td><td>$25$</td><td>$-25$</td></tr>
+</table>
+<p>Bei $[2;8]$ heben sich Zu- und Abnahme genau auf: Der Bestand ist am Ende so groß wie am Anfang, obwohl zwischendurch Wasser zu- und abgeflossen ist. Bei $[5;10]$ liegt der ganze Graph unter der $x$-Achse (ab $x=5$ ist $f<0$), die Bestandsänderung ist negativ.</p>
+<div class="ik-demo">
+  <div class="ik-controls">
+    <span>Beispiele:
+      <span class="ik-chip" onclick="ikSetIv(0,4)">[0; 4]</span>
+      <span class="ik-chip" onclick="ikSetIv(1,6)">[1; 6]</span>
+      <span class="ik-chip" onclick="ikSetIv(2,8)">[2; 8]</span>
+      <span class="ik-chip" onclick="ikSetIv(5,10)">[5; 10]</span>
+      <span class="ik-chip" onclick="ikSetIv(0,10)">[0; 10]</span></span>
+    <label>untere Grenze a = <b id="ik-iv-aval">0</b>
+      <input type="range" id="ik-iv-a" min="-1" max="11" step="0.5" value="0" oninput="ikDrawIntervall()"></label>
+    <label>obere Grenze b = <b id="ik-iv-bval">4</b>
+      <input type="range" id="ik-iv-b" min="-1" max="11" step="0.5" value="4" oninput="ikDrawIntervall()"></label>
+  </div>
+  <canvas id="ik-iv" width="640" height="300"></canvas>
+  <div class="ik-readout" id="ik-iv-out"></div>
+</div>`
+    },
+    {
+      id: 'sec12', title: '12 · Unterrichtstyp: Polynom-Bestandsaufgaben (Tierbestand, Hochbehälter) – Fragenkatalog',
+      html: String.raw`
+<p>Typisch ist eine <b>Änderungsrate</b> $f$ als Polynom in Faktorform (z. B. $f(t)=0{,}5\,t\,(t-7)(t-11)$) und ein <b>Anfangsbestand</b> $B(0)$. Der Bestand ist $B(t)=B(0)+\int_0^t f(s)\,ds$. Die Standardfragen und ihre Lösungswege:</p>
+<table class="ik-table">
+  <tr><th>Frage</th><th>Lösungsweg</th></tr>
+  <tr><td>Wann nimmt der Bestand zu/ab? (Begründen)</td><td>Nullstellen von $f$, <b>Vorzeichen von $f$</b> in jedem Teilintervall (Graph oder Probe-Wert). $f>0\Rightarrow B$ steigt, $f<0\Rightarrow B$ fällt.</td></tr>
+  <tr><td>Wann ist der Bestand maximal/minimal, wie groß?</td><td>$f=0$ mit Vorzeichenwechsel $+\to-$ (Maximum) bzw. $-\to+$ (Minimum); <b>Randwerte mitprüfen</b>; Werte mit $B(t)=B(0)+\int_0^t f$ berechnen und vergleichen.</td></tr>
+  <tr><td>Wann ist die Änderungsrate maximal/minimal?</td><td>$f'(t)=0$, Art mit $f''$ oder Vorzeichenwechsel; <b>Randwerte</b> $f(a),f(b)$ vergleichen. (Gesucht ist der Extremwert von $f$, nicht von $B$!)</td></tr>
+  <tr><td>Bestand zu einer Zeit $t_0$</td><td>$B(t_0)=B(0)+\int_0^{t_0}f(s)\,ds$ (Teil B: Integralbefehl).</td></tr>
+  <tr><td>Wann beträgt der Bestand genau $c$? (mehrere Lösungen)</td><td>$B(t)=c$ lösen (Rechner). Mehrere Lösungen, weil $B$ nicht monoton ist: Am Verlauf von $B$ (steigt, fällt, steigt) erläutern, wie oft der Wert $c$ erreicht wird.</td></tr>
+  <tr><td>Mittlere Änderungsrate von $B$ auf $[a;b]$</td><td>$\dfrac{B(b)-B(a)}{b-a}=\dfrac1{b-a}\int_a^b f(t)\,dt$. Deutung: gleichmäßige Zu-/Abnahme pro Zeiteinheit.</td></tr>
+  <tr><td>Durchschnittlicher <b>Bestand</b> auf $[a;b]$</td><td>$\dfrac1{b-a}\int_a^b B(t)\,dt$ – Mittelwert der <i>Bestandsfunktion</i> (nicht mit der mittleren Änderungsrate verwechseln!).</td></tr>
+  <tr><td>Rechteck/Parallelogramm im Graphen: Inhalt $A(u)$, Maximum</td><td>Seitenlängen als Funktionswerte/Differenzen in $u$ ausdrücken, $A(u)$ aufstellen, $A'(u)=0$, Art prüfen, Randwerte/Definitionsbereich, Antwortsatz. Bei Punktsymmetrie von $f$ zu $(x_0|y_0)$ gilt $f(x_0+u)-y_0=-(f(x_0-u)-y_0)$.</td></tr>
+</table>
+<div class="ik-box ok"><b>Beispiel (Zuwachsrate eines Tierbestands):</b> $f(t)=0{,}25\,t\,(t-6)(t-12)$, $0\le t\le12$, $B(0)=20$.<br>
+Vorzeichen: $+$ auf $(0;6)$, $-$ auf $(6;12)$ ⇒ $B$ steigt bis $t=6$, fällt danach. $B(6)=20+0{,}25\bigl[\tfrac{t^4}{4}-6t^3+36t^2\bigr]_0^6=101$, $B(12)=20$. Maximaler Bestand 101 nach 6 Jahren; minimal ist 20 (Anfang und Ende).</div>`
     }
   ];
 
@@ -575,6 +754,44 @@ $$A=\int_a^b\bigl(f(x)-g(x)\bigr)\,dx\qquad(f\text{ oben}),$$
           <p>Alternativ rechnerisch: Mit einer Stammfunktion $F$ von $f$ ist $F(x)-F(0)$ ungerade, daher $\int_{-a}^{0}f=F(0)-F(-a)=F(a)-F(0)=\int_0^a f$.</p>
           <ul><li>Aussage wahr (1 BE)</li><li>Symmetrie-Argument (1 BE)</li><li>Zerlegung des Integrals (1 BE)</li></ul>` }
       ]
+    },
+    {
+      id: 'A8', sec: 'sec10', title: 'Bestand aus dem Geschwindigkeitsgraphen (Aufzug-Typ)', afb: 'I–II', ops: 'Angeben, Bestimmen, Berechnen',
+      fig: { kind: 'pw', pts: AZ_PTS, xmin: 0, xmax: 22, ymin: -5, ymax: 5, title: 'v(t) in m/s (positiv = Aufzug fährt nach oben)' },
+      intro: String.raw`Der Graph zeigt modellhaft die Geschwindigkeit $v$ eines Lastenaufzugs (in m/s) in Abhängigkeit von der Zeit $t$ (in s). Zum Zeitpunkt $t=0$ befindet sich der Aufzug im Erdgeschoss (Höhe 0 m). Die Knickpunkte liegen bei $t=0;3;7;9;10;12;18;21$.`,
+      parts: [
+        { id: 'A8a', label: 'a)', be: 2, text: String.raw`Geben Sie die Zeitintervalle an, in denen der Aufzug nach oben fährt, hält und nach unten fährt.`,
+          sol: String.raw`<p>Nach oben ($v>0$): $0<t<9$. Halt ($v=0$): $9\le t\le10$ (sowie am Ende bei $t=21$). Nach unten ($v<0$): $10<t<21$.</p><ul><li>Fahrt nach oben (1 BE)</li><li>Halt und Fahrt nach unten (1 BE)</li></ul>` },
+        { id: 'A8b', label: 'b)', be: 2, text: String.raw`Der Aufzug erreicht seine höchste Stelle. Geben Sie an, wann das der Fall ist, und wie hoch diese Stelle über dem Start liegt.`,
+          nums: [{ label: 'Höhe in m', ans: 26, tol: 0.05 }],
+          sol: String.raw`<p>$v$ wechselt bei $t=9$ von $+$ nach $0$ (Halt bis $t=10$), danach fährt er nach unten. Höchste Stelle: für $9\le t\le10$ bei <b>26 m</b>.</p><p>Fläche von 0 bis 9: Dreieck $\tfrac12\cdot3\cdot4=6$, Rechteck $4\cdot4=16$, Dreieck $\tfrac12\cdot2\cdot4=4$ ⇒ $6+16+4=26$.</p><ul><li>Zeitraum $9\le t\le10$ (1 BE)</li><li>Höhe 26 m (1 BE)</li></ul>` },
+        { id: 'A8c', label: 'c)', be: 2, text: String.raw`Geben Sie an, wann der Aufzug die tiefste Stelle erreicht, und wie tief sie relativ zum Start liegt.`,
+          nums: [{ label: 'Höhe in m', ans: -8, tol: 0.05 }],
+          sol: String.raw`<p>Nach unten fährt er bis $t=21$; danach hält er. Tiefste Stelle bei $t=21$ s, <b>8 m unter dem Start</b> (Höhe $-8$ m): Von 26 m aus geht es um $4+24+6=34$ m nach unten.</p><ul><li>Zeitpunkt $t=21$ (1 BE)</li><li>Höhe $-8$ m (1 BE)</li></ul>` },
+        { id: 'A8d', label: 'd)', be: 3, text: String.raw`Vervollständigen Sie die Tabelle der Höhe $s(t)$ (in m, zurückgelegte Strecke mit Vorzeichen relativ zum Start) und zeichnen Sie den Bestandsgraphen.`,
+          nums: [{ label: 's(3)', ans: 6, tol: 0.05 }, { label: 's(7)', ans: 22, tol: 0.05 }, { label: 's(9)', ans: 26, tol: 0.05 }, { label: 's(10)', ans: 26, tol: 0.05 },
+                 { label: 's(12)', ans: 22, tol: 0.05 }, { label: 's(18)', ans: -2, tol: 0.05 }, { label: 's(21)', ans: -8, tol: 0.05 }],
+          sol: String.raw`<table class="ik-table"><tr><th>$t$ in s</th><th>0</th><th>3</th><th>7</th><th>9</th><th>10</th><th>12</th><th>18</th><th>21</th></tr><tr><th>$s(t)$ in m</th><td>0</td><td>6</td><td>22</td><td>26</td><td>26</td><td>22</td><td>−2</td><td>−8</td></tr></table>
+          <p>Abschnittsflächen: $\tfrac12\cdot3\cdot4=6$; $4\cdot4=16$; $\tfrac12\cdot2\cdot4=4$; $0$; $\tfrac12\cdot2\cdot(-4)=-4$; $6\cdot(-4)=-24$; $\tfrac12\cdot3\cdot(-4)=-6$.</p><p>Bestandsgraph: Parabelbogen (steigend) von (0|0) bis (3|6), Gerade bis (7|22), Parabelbogen bis (9|26), waagerecht bis (10|26), danach fallend (Parabelbogen, Gerade, Parabelbogen) bis (21|−8).</p>
+          <ul><li>Abschnittsflächen richtig mit Vorzeichen (1 BE)</li><li>Tabellenwerte (1 BE)</li><li>Verlauf des Bestandsgraphen (1 BE)</li></ul>` },
+        { id: 'A8e', label: 'e)', be: 3, text: String.raw`Bestimmen Sie mit den Flächenformeln für Dreieck, Rechteck und Trapez die insgesamt nach oben und die insgesamt nach unten zurückgelegte Strecke.`,
+          nums: [{ label: 'nach oben (m)', ans: 26, tol: 0.05 }, { label: 'nach unten (m)', ans: 34, tol: 0.05 }],
+          sol: String.raw`<p>Nach oben: $6+16+4=26$ m. Nach unten: $|-4|+|-24|+|-6|=34$ m. Verschiebung insgesamt: $26-34=-8$ m (passt zu $s(21)=-8$).</p><ul><li>nach oben 26 m (1 BE)</li><li>nach unten 34 m (1 BE)</li><li>Beträge für den Weg nach unten, Probe mit $s(21)$ (1 BE)</li></ul>` }
+      ]
+    },
+    {
+      id: 'A9', sec: 'sec11', title: 'Integral und Hauptsatz: Intervall-Tabelle', afb: 'I–II', ops: 'Bestimmen, Berechnen, Deuten',
+      fig: { kind: 'fn', f: x => 3 * x - 9, xmin: -1, xmax: 8, ymin: -13, ymax: 15, title: 'f(x) = 3x − 9' },
+      intro: String.raw`Eine Änderungsrate wird durch $f(x)=3x-9$ beschrieben.`,
+      parts: [
+        { id: 'A9a', label: 'a)', be: 2, text: String.raw`Bestimmen Sie eine Stammfunktion $F$ von $f$.`,
+          sol: String.raw`<p>$F(x)=\tfrac32x^2-9x$ (Probe: $F'(x)=3x-9$ ✓).</p><ul><li>$\tfrac32x^2$ (1 BE)</li><li>$-9x$ (1 BE)</li></ul>` },
+        { id: 'A9b', label: 'b)', be: 4, text: String.raw`Berechnen Sie $\displaystyle\int_0^2 f\,dx$, $\displaystyle\int_1^5 f\,dx$, $\displaystyle\int_2^3 f\,dx$ und $\displaystyle\int_3^7 f\,dx$.`,
+          nums: [{ label: '[0;2]', ans: -12, tol: 0.02 }, { label: '[1;5]', ans: 0, tol: 0.02 }, { label: '[2;3]', ans: -1.5, tol: 0.02 }, { label: '[3;7]', ans: 24, tol: 0.02 }],
+          sol: String.raw`<p>$F(0)=0$, $F(2)=-12$, $F(1)=-7{,}5$, $F(5)=-7{,}5$, $F(3)=-13{,}5$, $F(7)=10{,}5$.</p><p>$\int_0^2 f=F(2)-F(0)=-12$; &nbsp;$\int_1^5 f=F(5)-F(1)=0$; &nbsp;$\int_2^3 f=F(3)-F(2)=-1{,}5$; &nbsp;$\int_3^7 f=F(7)-F(3)=24$.</p><ul><li>je Integral 1 BE (Einsetzen und Differenz)</li></ul>` },
+        { id: 'A9c', label: 'c)', be: 2, text: String.raw`Deuten Sie das Ergebnis $\int_1^5 f(x)\,dx=0$ als Bestandsänderung.`,
+          sol: String.raw`<p>$f$ hat die Nullstelle $x=3$. Von $x=1$ bis $3$ ist $f<0$: der Bestand nimmt um 6 ab; von $3$ bis $5$ ist $f>0$: er nimmt um genau 6 zu. Die Bestandsänderung insgesamt ist 0, der Bestand bei $x=5$ ist gleich groß wie bei $x=1$.</p><ul><li>Vorzeichenwechsel bei $x=3$ (1 BE)</li><li>Abnahme = Zunahme, Gesamtänderung 0 (1 BE)</li></ul>` }
+      ]
     }
   ];
 
@@ -608,6 +825,53 @@ Zu Beginn sind bereits 100 m³ im Becken, Wasser fließt nur zu (kein Abfluss). 
           <p><b>Antwort:</b> Das Becken läuft ab etwa 8,9 Stunden nach Regenbeginn über, weil der Bestand gegen 260 m³ strebt und die Kapazität von 250 m³ überschreitet.</p>
           <ul><li>Monotonie von $B$ begründet (1 BE)</li><li>Grenzwert 260 m³ bzw. $B(12)>250$ (2 BE)</li><li>Zeitpunkt $t\approx8{,}94$ (2 BE)</li><li>Antwortsatz mit Bezug zur Kapazität (1 BE)</li></ul>` }
       ]
+    },
+    {
+      id: 'B2', sec: 'sec12', title: 'Tierbestand mit Parallelogramm (Unterrichtstyp, Rechner erlaubt)', afb: 'II–III', ops: 'Begründen, Bestimmen, Ermitteln, Zeigen',
+      fig: { kind: 'fn', f: t => 0.25 * t * (t - 6) * (t - 12), xmin: 0, xmax: 12, ymin: -26, ymax: 26, title: 'g(t) = 0,25·t·(t − 6)·(t − 12)  (Zuwachsrate in Tieren pro Jahr)' },
+      intro: String.raw`<b>Hilfsmittel: GTR/CAS.</b> Die Zuwachsrate eines Tierbestands in einem Schutzgebiet wird 12 Jahre lang aufgezeichnet und durch $g(t)=0{,}25\,t\,(t-6)(t-12)$ beschrieben ($t$ in Jahren, $g(t)$ in Tieren pro Jahr, $0\le t\le12$). Zu Beginn der Aufzeichnung gab es 20 Tiere.`,
+      parts: [
+        { id: 'B2a', label: 'a)', be: 4, text: String.raw`Begründen Sie anhand des Graphen von $g$, in welchen Zeiträumen der Bestand zu- bzw. abnimmt.`,
+          sol: String.raw`<p>$g$ hat die Nullstellen $0$, $6$, $12$. Auf $(0;6)$ ist $g>0$ (z. B. $g(3)=0{,}25\cdot3\cdot(-3)(-9)=20{,}25$), auf $(6;12)$ ist $g<0$ (z. B. $g(9)=0{,}25\cdot9\cdot3\cdot(-3)=-20{,}25$).</p><p>Da $g$ die Änderungsrate des Bestands ist: Der Bestand <b>nimmt zu</b> von 0 bis 6 Jahre und <b>nimmt ab</b> von 6 bis 12 Jahre.</p><ul><li>Nullstellen (1 BE)</li><li>Vorzeichen auf beiden Intervallen (2 BE)</li><li>Zusammenhang Änderungsrate ↔ Bestand (1 BE)</li></ul>` },
+        { id: 'B2b', label: 'b)', be: 5, text: String.raw`Bestimmen Sie, wann der Bestand maximal ist und wie groß er dann ist. Geben Sie auch den geringsten Bestand an.`,
+          nums: [{ label: 'größter Bestand', ans: 101, tol: 0.2 }, { label: 'kleinster Bestand', ans: 20, tol: 0.2 }],
+          sol: String.raw`<p>$B(t)=20+\int_0^t g(s)\,ds=20+\tfrac1{16}t^4-\tfrac32t^3+9t^2$.</p><p>Maximum bei $t=6$ ($g$ wechselt von $+$ nach $-$): $B(6)=20+81-324+324=101$ Tiere. Randwerte: $B(0)=20$, $B(12)=20+1296-2592+1296=20$. Der Bestand ist am größten nach 6 Jahren (101 Tiere), am geringsten zu Beginn und am Ende (20 Tiere).</p><ul><li>$B(t)$ mit Anfangsbestand (2 BE)</li><li>Maximum bei $t=6$, $B(6)=101$ (2 BE)</li><li>Randwerte, Minimum 20 (1 BE)</li></ul>` },
+        { id: 'B2c', label: 'c)', be: 4, text: String.raw`Wann ist die Zuwachsrate maximal, wann minimal? Wie groß sind die Raten?`,
+          nums: [{ label: 'max. Rate', ans: 20.78, tol: 0.05 }, { label: 'min. Rate', ans: -20.78, tol: 0.05 }],
+          sol: String.raw`<p>$g(t)=0{,}25(t^3-18t^2+72t)$, $g'(t)=0{,}75(t^2-12t+24)=0\Rightarrow t=6\pm\sqrt{12}\approx2{,}54;\;9{,}46$.</p><p>$g''(t)=0{,}75(2t-12)$: bei $t=6-\sqrt{12}$ negativ ⇒ Maximum, $g\approx20{,}78$; bei $t=6+\sqrt{12}$ positiv ⇒ Minimum, $g\approx-20{,}78$ (exakt $\pm12\sqrt3$). Randwerte $g(0)=g(12)=0$ sind kleiner im Betrag.</p><ul><li>$g'(t)=0$ (2 BE)</li><li>Art der Extrema (1 BE)</li><li>Werte $\pm20{,}78$ (1 BE)</li></ul>` },
+        { id: 'B2d', label: 'd)', be: 4, text: String.raw`Ermitteln Sie den durchschnittlichen Tierbestand während der 12 Jahre.`,
+          nums: [{ label: 'Tiere', ans: 63.2, tol: 0.1 }],
+          sol: String.raw`<p>Durchschnittlicher <b>Bestand</b> = Mittelwert der Bestandsfunktion: $\dfrac1{12}\displaystyle\int_0^{12}B(t)\,dt=\dfrac1{12}\Bigl[20t+\tfrac1{80}t^5-\tfrac38t^4+3t^3\Bigr]_0^{12}=\dfrac{758{,}4}{12}=63{,}2$.</p><p>Im Durchschnitt gab es 63,2 Tiere. (Achtung: Nicht $\frac1{12}\int g$ – das wäre die mittlere Änderungsrate, hier $0$.)</p><ul><li>Ansatz $\frac1{12}\int_0^{12}B$ (1 BE)</li><li>Stammfunktion von $B$ (1 BE)</li><li>Ergebnis 63,2 mit Einheit (2 BE)</li></ul>` },
+        { id: 'B2e', label: 'e)', be: 7, text: String.raw`Für $0<u<6$ sind $A(6-u\,|\,g(6-u))$, $B(6-u\,|\,0)$, $C(6+u\,|\,g(6+u))$ und $D(6+u\,|\,0)$ die Eckpunkte eines Vierecks. Zeigen Sie, dass $ABCD$ für jedes $u$ ein Parallelogramm ist, und ermitteln Sie einen Term für den Flächeninhalt $A(u)$.`,
+          sol: String.raw`<p>$g(6-u)=0{,}25(6-u)(-u)(-6-u)=0{,}25\,u\,(36-u^2)=9u-\tfrac14u^3$ und $g(6+u)=0{,}25(6+u)\,u\,(u-6)=-(9u-\tfrac14u^3)$ ($g$ ist punktsymmetrisch zu $(6|0)$).</p><p>$\overrightarrow{AB}=\begin{pmatrix}0\\-g(6-u)\end{pmatrix}$ und $\overrightarrow{DC}=\begin{pmatrix}0\\g(6+u)\end{pmatrix}=\begin{pmatrix}0\\-g(6-u)\end{pmatrix}$. Also $\overrightarrow{AB}=\overrightarrow{DC}$ ⇒ $ABCD$ ist ein Parallelogramm.</p><p>Grundseite $\overline{AB}$ (vertikal) hat die Länge $9u-\tfrac14u^3$, die Höhe ist der Abstand der parallelen Seiten, $2u$. Flächeninhalt: $A(u)=2u\bigl(9u-\tfrac14u^3\bigr)=18u^2-\tfrac12u^4$.</p>
+          <ul><li>Funktionswerte $g(6\mp u)$ (2 BE)</li><li>Vektoren gleich ⇒ Parallelogramm (2 BE)</li><li>Seitenlänge und Höhe (1 BE)</li><li>$A(u)=18u^2-\tfrac12u^4$ (2 BE)</li></ul>` },
+        { id: 'B2f', label: 'f)', be: 4, text: String.raw`Bestimmen Sie den Wert von $u$, für den der Flächeninhalt maximal wird, und geben Sie den maximalen Flächeninhalt an.`,
+          nums: [{ label: 'u', ans: 4.24, tol: 0.02 }, { label: 'A in FE', ans: 162, tol: 0.2 }],
+          sol: String.raw`<p>$A'(u)=36u-2u^3=2u(18-u^2)=0\Rightarrow u=\sqrt{18}=3\sqrt2\approx4{,}24$ (mit $0<u<6$).</p><p>$A''(u)=36-6u^2$, $A''(\sqrt{18})=36-108<0$ ⇒ Maximum. Randwerte: $A(0)=0$, $A(6)=648-648=0$. $A(\sqrt{18})=18\cdot18-\tfrac12\cdot324=162$.</p><p>Der Flächeninhalt ist für $u\approx4{,}24$ am größten und beträgt <b>162 FE</b>.</p><ul><li>$A'(u)=0$, $u=\sqrt{18}$ (2 BE)</li><li>Art des Extremums/Randwerte (1 BE)</li><li>$A_{max}=162$ mit Antwortsatz (1 BE)</li></ul>` }
+      ]
+    },
+    {
+      id: 'B3', sec: 'sec12', title: 'Pegel im Rückhaltebecken (Änderungsrate vom Grad 4, Unterrichtstyp)', afb: 'II–III', ops: 'Beschreiben, Ermitteln, Bestimmen, Berechnen, Erläutern',
+      fig: { kind: 'fn', f: t => 0.01 * t * (t - 8) * (t - 16) * (t - 24), xmin: 0, xmax: 24, ymin: -45, ymax: 30, title: 'z(t) in m³/h (Änderungsrate des Volumens)' },
+      intro: String.raw`<b>Hilfsmittel: GTR/CAS.</b> Die Änderungsrate des Wasservolumens in einem Rückhaltebecken wird für $0\le t\le24$ ($t$ in Stunden nach Beobachtungsbeginn, $z(t)$ in m³ pro Stunde) modelliert durch
+$$z(t)=0{,}01\,t\,(t-8)(t-16)(t-24).$$
+Zu Beginn ($t=0$) befinden sich 400 m³ Wasser im Becken.`,
+      parts: [
+        { id: 'B3a', label: 'a)', be: 3, text: String.raw`Beschreiben Sie anhand des Graphen von $z$, in welchen Zeiträumen das Volumen zu- bzw. abnimmt, und deuten Sie den Verlauf im Sachzusammenhang.`,
+          sol: String.raw`<p>Nullstellen bei $t=0,8,16,24$. $z<0$ auf $(0;8)$ und $(16;24)$, $z>0$ auf $(8;16)$.</p><p>Das Volumen <b>nimmt ab</b> in den ersten 8 Stunden (mehr Wasser wird entnommen als zufließt), <b>nimmt zu</b> von 8 bis 16 Stunden und <b>nimmt wieder ab</b> von 16 bis 24 Stunden.</p><ul><li>Vorzeichen von $z$ (2 BE)</li><li>Deutung im Sachzusammenhang (1 BE)</li></ul>` },
+        { id: 'B3b', label: 'b)', be: 5, text: String.raw`Ermitteln Sie die maximale Zuflussrate und die maximale Entnahmerate. Begründen Sie, warum es für die maximale Entnahmerate zwei Zeitpunkte gibt.`,
+          nums: [{ label: 'max. Zufluss (m³/h)', ans: 23.04, tol: 0.05 }, { label: 'max. Entnahme (m³/h)', ans: 40.96, tol: 0.05 }],
+          sol: String.raw`<p>Mit $u=t-12$ gilt $z=0{,}01\,(u^2-144)(u^2-16)=0{,}01\,(u^4-160u^2+2304)$ – der Graph ist <b>achsensymmetrisch zu $t=12$</b>.</p><p>$z'(t)=0\Rightarrow u=0$ oder $u^2=80$. Bei $t=12$: Hochpunkt, $z(12)=0{,}01\cdot2304=23{,}04$ m³/h (<b>maximale Zuflussrate</b>). Bei $t=12\mp\sqrt{80}\approx3{,}06;\;20{,}94$: Tiefpunkte mit $z=-40{,}96$ m³/h (<b>maximale Entnahmerate 40,96 m³/h</b>).</p><p>Zwei Zeitpunkte wegen der <b>Symmetrie</b> des Graphen zu $t=12$ (zwei gleich tiefe Tiefpunkte).</p><ul><li>$z'(t)=0$, Extremstellen (2 BE)</li><li>$z(12)=23{,}04$ (1 BE)</li><li>Entnahmerate 40,96 (1 BE)</li><li>Begründung Symmetrie (1 BE)</li></ul>` },
+        { id: 'B3c', label: 'c)', be: 6, text: String.raw`Bestimmen Sie einen Term der Funktion $V$, die das Wasservolumen zum Zeitpunkt $t$ angibt. Ermitteln Sie das größte und das kleinste Wasservolumen im Betrachtungszeitraum.`,
+          nums: [{ label: 'größtes V (m³)', ans: 400, tol: 0.1 }, { label: 'kleinstes V (m³)', ans: 105.09, tol: 0.1 }],
+          sol: String.raw`<p>$z(t)=0{,}01\,(t^4-48t^3+704t^2-3072t)$, also</p>$$V(t)=400+0{,}01\Bigl(\tfrac15t^5-12t^4+\tfrac{704}{3}t^3-1536t^2\Bigr).$$<p>$V'=z=0$ bei $t=0,8,16,24$: $V(0)=400$, $V(8)\approx192{,}47$ (lokales Minimum, $z$: $-\to+$), $V(16)\approx312{,}62$ (lokales Maximum, $+\to-$), $V(24)\approx105{,}09$.</p><p>Größtes Volumen: <b>400 m³</b> bei $t=0$ (Randwert); kleinstes Volumen: <b>≈ 105,09 m³</b> bei $t=24$ (Randwert).</p><ul><li>Term $V(t)$ mit Anfangswert (2 BE)</li><li>Kandidaten $t=0,8,16,24$ (1 BE)</li><li>Werte berechnet (2 BE)</li><li>Vergleich der Werte inkl. Ränder (1 BE)</li></ul>` },
+        { id: 'B3d', label: 'd)', be: 3, text: String.raw`Berechnen Sie die mittlere Änderungsrate des Wasservolumens zwischen $t=0$ und $t=24$ und interpretieren Sie den Wert.`,
+          nums: [{ label: 'm³/h', ans: -12.29, tol: 0.03 }],
+          sol: String.raw`<p>$\dfrac{V(24)-V(0)}{24-0}=\dfrac{105{,}088-400}{24}\approx-12{,}29$ m³/h.</p><p>Im Mittel nimmt das Volumen in den 24 Stunden um etwa 12,29 m³ pro Stunde ab.</p><ul><li>Differenzenquotient (1 BE)</li><li>Wert $-12{,}29$ (1 BE)</li><li>Interpretation (1 BE)</li></ul>` },
+        { id: 'B3e', label: 'e)', be: 5, text: String.raw`Ermitteln Sie alle Zeitpunkte, zu denen sich genau 300 m³ Wasser im Becken befinden. Erläutern Sie anhand des Verlaufs von $V$, warum die Gleichung mehrere Lösungen hat.`,
+          nums: [{ label: 't₁ (h)', ans: 3.39, tol: 0.05 }, { label: 't₂ (h)', ans: 14.36, tol: 0.05 }, { label: 't₃ (h)', ans: 17.54, tol: 0.05 }],
+          sol: String.raw`<p>$V(t)=300$ (Rechner, Schnittpunkte von $V$ mit $y=300$): $t_1\approx3{,}39$ h, $t_2\approx14{,}36$ h, $t_3\approx17{,}54$ h.</p><p>Begründung: $V$ ist nicht monoton. Es fällt von 400 auf $V(8)\approx192{,}47$ (überschreitet die 300 einmal nach unten), steigt auf $V(16)\approx312{,}62>300$ (einmal nach oben) und fällt danach wieder auf $\approx105{,}09$ (noch einmal nach unten). Der Wert 300 liegt zwischen den lokalen Extremwerten, deshalb wird er drei Mal erreicht.</p><ul><li>Ansatz $V(t)=300$ (1 BE)</li><li>drei Lösungen (2 BE)</li><li>Erläuterung mit lokalen Extrema (2 BE)</li></ul>` }
+      ]
     }
   ];
 
@@ -637,8 +901,9 @@ Zu Beginn sind bereits 100 m³ im Becken, Wasser fließt nur zu (kein Abfluss). 
     return '<div class="ik-task" id="task-' + t.id + '">' +
       '<h3>Aufgabe ' + t.id + ' · ' + escAttr(t.title) + '</h3>' +
       '<div class="ik-meta">' + taskMax(t) + ' BE · Anforderungsbereich ' + t.afb + ' · Operatoren: ' + t.ops +
-      ' · <span id="tsum-' + t.id + '">' + taskScore(t, prog) + '/' + taskMax(t) + ' BE</span> · Wiederholen: <a href="#" onclick="ikGoSection(\'' + t.sec + '\');return false;">Abschnitt ' + t.sec.replace('sec', '') + '</a></div>' +
+      ' · <span id="tsum-' + t.id + '">' + taskScore(t, prog) + '/' + taskMax(t) + ' BE</span> · Wiederholen: <a href="#" onclick="IKLib.go(\'' + (t.mod || 'ik') + '\',\'' + t.sec + '\');return false;">Abschnitt ' + t.sec.replace('sec', '') + '</a></div>' +
       '<div>' + M(t.intro) + '</div>' +
+      (t.fig ? '<canvas class="ik-fig" id="fig-' + t.id + '" width="600" height="280"></canvas>' : '') +
       t.parts.map(p => renderPart(t, p, prog)).join('') +
       '</div>';
   }
@@ -649,7 +914,7 @@ Zu Beginn sind bereits 100 m³ im Becken, Wasser fließt nur zu (kein Abfluss). 
     return '<div class="ik-card accent">' +
       '<p><b>So lernst du hier:</b> Erst die Abschnitte 1–9 durcharbeiten (die Demos zum Ausprobieren sind interaktiv), dann <b>Teil A</b> (ohne Hilfsmittel) und <b>Teil B</b> (mit Rechner) lösen, die Musterlösung <u>erst nach</u> eigenem Versuch öffnen und ehrlich Punkte vergeben. Unter „Auswertung“ siehst du Stärken und Schwächen und bekommst eine Fehlerliste.</p>' +
       '<p><b>Bezug zum Abitur (eA):</b> In den Aufgaben des Zentralabiturs Niedersachsen tauchen Integrale z. B. als kurze Teil-A-Aufgaben auf (Integral einer trigonometrischen Funktion, Stammfunktion aus dem Graphen erkennen, Aussagen über Flächen und Umkehrfunktionen beurteilen). Die Aufgaben hier sind <b>eigene Aufgaben im Abi-Stil</b> – Musterlösungen sind keine offiziellen Lösungsvorgaben des Landes Niedersachsen.</p>' +
-      '<p style="color:var(--text-muted);font-size:0.8rem;">Stoffumfang: Standard-Oberstufe + Arbeitsheft S. 2/S. 4. Abgleich mit dem Unterricht/IServ folgt, sobald das Material aus IServ vorliegt.</p></div>' + secs;
+      '<p style="color:var(--text-muted);font-size:0.8rem;">Stoffumfang abgeglichen mit dem IServ-Material (Gruppe MA11): Bestände rekonstruieren (Aufzug), Integral und Hauptsatz (f(x) = −2x + 10), Tierbestand, Hochbehälter. Die Aufgaben dazu sind eigene Varianten mit anderen Zahlen. Zu Funktionsscharen und Ortskurven gibt es das eigene Modul 07.</p></div>' + secs;
   }
   function renderTeil(tasks, intro) {
     const prog = loadProgress();
@@ -657,9 +922,11 @@ Zu Beginn sind bereits 100 m³ im Becken, Wasser fließt nur zu (kein Abfluss). 
   }
 
   function renderAuswertung() {
+    return renderAuswertungFor([['Teil A (ohne Hilfsmittel)', TASKS_A], ['Teil B (mit GTR/CAS)', TASKS_B]], 'Integralrechnung', 'ik');
+  }
+  function renderAuswertungFor(groups, label, mod) {
     const prog = loadProgress();
-    const groups = [['Teil A (ohne Hilfsmittel)', TASKS_A], ['Teil B (mit GTR/CAS)', TASKS_B]];
-    let html = '<div class="ik-card accent"><p>Hier siehst du, was du erreicht hast. Aufgaben, die du noch nicht bewertet hast, zählen als 0 BE.</p></div>';
+    let html ='<div class="ik-card accent"><p>Hier siehst du, was du erreicht hast. Aufgaben, die du noch nicht bewertet hast, zählen als 0 BE.</p></div>';
     let allMax = 0, allGot = 0;
     groups.forEach(([name, tasks]) => {
       let gm = 0, gg = 0;
@@ -669,7 +936,7 @@ Zu Beginn sind bereits 100 m³ im Becken, Wasser fließt nur zu (kein Abfluss). 
         gm += m; gg += g;
         const pct = Math.round(100 * g / m);
         rows += '<tr><td>' + t.id + ' · ' + escAttr(t.title) + '</td><td>' + g + '/' + m + '</td><td><div class="ik-bar"><span style="width:' + pct + '%"></span></div></td><td>' +
-          (pct < 60 ? '<a href="#" onclick="ikGoSection(\'' + t.sec + '\');return false;">Abschnitt ' + t.sec.replace('sec', '') + ' wiederholen</a>' : '✓') + '</td></tr>';
+          (pct < 60 ? '<a href="#" onclick="IKLib.go(\'' + (t.mod || mod) + '\',\'' + t.sec + '\');return false;">Abschnitt ' + t.sec.replace('sec', '') + ' wiederholen</a>' : '✓') + '</td></tr>';
       });
       allMax += gm; allGot += gg;
       html += '<div class="ik-card"><h3 style="margin:0 0 0.4rem">' + name + ' – ' + gg + ' / ' + gm + ' BE (' + Math.round(100 * gg / gm) + ' %)</h3><table class="ik-table"><tr><th>Aufgabe</th><th>BE</th><th>Stand</th><th>Tipp</th></tr>' + rows + '</table></div>';
@@ -682,12 +949,12 @@ Zu Beginn sind bereits 100 m³ im Becken, Wasser fließt nur zu (kein Abfluss). 
     const lines = [];
     groups.forEach(([name, tasks]) => tasks.forEach(t => t.parts.forEach(p => {
       if (prog[p.id] !== undefined && prog[p.id] < p.be) {
-        lines.push('| ' + today + ' | Integralrechnung | ' + p.id + ' (' + t.title + ') – ' + prog[p.id] + '/' + p.be + ' BE | siehe Musterlösung im Portal, Abschnitt ' + t.sec.replace('sec', '') + ' | nein |');
+        lines.push('| ' + today + ' | ' + label + ' | ' + p.id + ' (' + t.title + ') – ' + prog[p.id] + '/' + p.be + ' BE | siehe Musterlösung im Portal, Abschnitt ' + t.sec.replace('sec', '') + ' | nein |');
       }
     })));
     html += '<div class="ik-card"><h3 style="margin:0 0 0.4rem">Fehlerliste (Markdown)</h3><p>Zeilen für Teilaufgaben mit Punktverlust. Kopiere sie in <code>Faecher/Mathe/04_Klausurvorbereitung/fehlerliste.md</code>.</p>' +
       '<textarea class="ik-export" id="ik-export" readonly>' + (lines.length ? lines.join('\n') : 'Noch keine Teilaufgabe mit Punktverlust bewertet.') + '</textarea>' +
-      '<div class="ik-row"><button class="btn-sm" onclick="ikCopyExport()">Kopieren</button> <button class="btn-sm" onclick="ikResetProgress()">Fortschritt zurücksetzen</button> <span class="ik-fb" id="ik-export-fb"></span></div></div>';
+      '<div class="ik-row"><button class="btn-sm" onclick="ikCopyExport()">Kopieren</button> <button class="btn-sm" onclick="IKLib.reset(\'' + mod + '\')">Fortschritt dieses Moduls zurücksetzen</button> <span class="ik-fb" id="ik-export-fb"></span></div></div>';
     return html;
   }
 
@@ -698,8 +965,8 @@ Zu Beginn sind bereits 100 m³ im Becken, Wasser fließt nur zu (kein Abfluss). 
     const tabs = [['erklaerung', '📘 Erklärung'], ['teilA', '✏️ Übung Teil A'], ['teilB', '🖩 Übung Teil B'], ['auswertung', '🏁 Auswertung']];
     const body =
       currentTab === 'erklaerung' ? renderErklaerung() :
-      currentTab === 'teilA' ? renderTeil(TASKS_A, '<b>Teil A – ohne Hilfsmittel</b> (kein Taschenrechner, keine Formelsammlung). 35 BE, Richtwert 5 BE ≈ 5–8 Minuten. Erst eigenständig lösen, dann Musterlösung öffnen.') :
-      currentTab === 'teilB' ? renderTeil(TASKS_B, '<b>Teil B – mit GTR/CAS und Formelsammlung.</b> Aufgabe im Stil der Analysis-Aufgaben (hier 22 BE). Rechnerergebnisse immer mit Ansatz und Antwortsatz notieren.') :
+      currentTab === 'teilA' ? renderTeil(TASKS_A, '<b>Teil A – ohne Hilfsmittel</b> (kein Taschenrechner, keine Formelsammlung). A1–A7: Abi-Kurzaufgaben (je 5 BE, ≈ 5–8 Minuten). A8–A9: Aufgabentypen aus dem Unterricht (Bestand aus Geschwindigkeitsgraph, Intervall-Tabelle mit Hauptsatz). Insgesamt 55 BE. Erst eigenständig lösen, dann Musterlösung öffnen.') :
+      currentTab === 'teilB' ? renderTeil(TASKS_B, '<b>Teil B – mit GTR/CAS und Formelsammlung.</b> Drei Anwendungsaufgaben im Stil der Analysis-Aufgaben: B1 Rückhaltebecken (22 BE), B2 Tierbestand mit Parallelogramm (28 BE), B3 Pegel mit Polynom 4. Grades (22 BE) – B2 und B3 entsprechen den Aufgabentypen aus dem Unterricht (Hochbehälter, Tierbestand). Rechnerergebnisse immer mit Ansatz und Antwortsatz notieren.') :
       renderAuswertung();
     root.innerHTML =
       '<div class="ik-wrap">' +
@@ -710,8 +977,10 @@ Zu Beginn sind bereits 100 m³ im Becken, Wasser fließt nur zu (kein Abfluss). 
       body + '</div>';
     renderMath(root);
     if (currentTab === 'erklaerung') {
-      drawRiemann(); drawHauptsatz(); drawFlaeche();
+      drawRiemann(); drawHauptsatz(); drawFlaeche(); drawAufzug(); drawIntervall();
     }
+    if (currentTab === 'teilA') drawTaskFigs(TASKS_A);
+    if (currentTab === 'teilB') drawTaskFigs(TASKS_B);
   }
 
   // ---------- Öffentliche Handler (von onclick genutzt) ----------
@@ -720,6 +989,9 @@ Zu Beginn sind bereits 100 m³ im Becken, Wasser fließt nur zu (kein Abfluss). 
   window.ikDrawRiemann = drawRiemann;
   window.ikDrawHauptsatz = drawHauptsatz;
   window.ikDrawFlaeche = drawFlaeche;
+  window.ikDrawAufzug = drawAufzug;
+  window.ikDrawIntervall = drawIntervall;
+  window.ikSetIv = setIntervall;
   window.ikGoSection = function (id) {
     currentTab = 'erklaerung';
     renderRoot();
@@ -732,7 +1004,7 @@ Zu Beginn sind bereits 100 m³ im Becken, Wasser fließt nur zu (kein Abfluss). 
   };
   window.ikCheckNums = function (partId) {
     let part = null;
-    [...TASKS_A, ...TASKS_B].forEach(t => t.parts.forEach(p => { if (p.id === partId) part = p; }));
+    IKLib.allTasks().forEach(t => t.parts.forEach(p => { if (p.id === partId) part = p; }));
     if (!part) return;
     const fb = document.getElementById('fb-' + partId);
     let ok = 0, filled = 0;
@@ -753,7 +1025,7 @@ Zu Beginn sind bereits 100 m³ im Becken, Wasser fließt nur zu (kein Abfluss). 
     saveProgress(prog);
     const partEl = document.getElementById('part-' + partId);
     if (partEl) partEl.querySelectorAll('.ik-score button').forEach((b, i) => b.classList.toggle('on', i === val));
-    [...TASKS_A, ...TASKS_B].forEach(t => {
+    IKLib.allTasks().forEach(t => {
       if (t.parts.some(p => p.id === partId)) {
         const s = document.getElementById('tsum-' + t.id);
         if (s) s.textContent = taskScore(t, prog) + '/' + taskMax(t) + ' BE';
@@ -769,9 +1041,27 @@ Zu Beginn sind bereits 100 m³ im Becken, Wasser fließt nur zu (kein Abfluss). 
     try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
     if (fb) { fb.className = 'ik-fb ' + (ok ? 'ok' : 'no'); fb.textContent = ok ? 'Kopiert.' : 'Bitte mit Strg+C kopieren.'; }
   };
-  window.ikResetProgress = function () {
-    if (!confirm('Gesamten Integral-Fortschritt wirklich zurücksetzen?')) return;
-    saveProgress({});
-    renderRoot();
+  window.ikResetProgress = function () { IKLib.reset('ik'); };
+
+  // ---------- Gemeinsame Bibliothek für weitere Module (z. B. schar_kurs.js) ----------
+  const registry = { tasks: [], modules: {} };
+  window.IKLib = {
+    M, renderMath, plotSetup, drawCurve, fillSigned, simpson, fmt, fmtN, injectStyles,
+    loadProgress, saveProgress, taskMax, taskScore, renderTask, renderTeil, renderAuswertungFor,
+    drawFig, drawTaskFigs, registry,
+    allTasks: function () { return registry.tasks; },
+    register: function (mod, tasks, api) {
+      tasks.forEach(t => { t.mod = mod; registry.tasks.push(t); });
+      registry.modules[mod] = api;
+    },
+    go: function (mod, id) { if (registry.modules[mod]) registry.modules[mod].goSection(id); },
+    reset: function (mod) {
+      if (!confirm('Fortschritt dieses Moduls wirklich zurücksetzen?')) return;
+      const prog = loadProgress();
+      registry.tasks.filter(t => t.mod === mod).forEach(t => t.parts.forEach(p => { delete prog[p.id]; }));
+      saveProgress(prog);
+      if (registry.modules[mod]) registry.modules[mod].render();
+    }
   };
+  IKLib.register('ik', TASKS_A.concat(TASKS_B), { goSection: window.ikGoSection, render: renderRoot });
 })();

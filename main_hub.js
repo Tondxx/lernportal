@@ -63,7 +63,14 @@ const FAECHER_DATA = {
         num: '06',
         title: 'Integralrechnung komplett: Erklärung + Abi-Übungen',
         badge: 'Klausur-Fokus',
-        desc: 'Vollständige Erklärung (Bestand, Ober-/Untersumme, Hauptsatz, Stammfunktionen, Flächen, Graph von f und F) mit interaktiven Demos, 7 Teil-A-Aufgaben und einer Teil-B-Aufgabe im Abi-Stil mit Erwartungshorizont und Auswertung.'
+        desc: 'Vollständige Erklärung (Bestand, Ober-/Untersumme, Hauptsatz, Stammfunktionen, Flächen, Graph von f und F, Aufzug, Intervall-Tabelle, Tierbestand/Hochbehälter) mit 5 interaktiven Demos, 9 Teil-A-Aufgaben und 3 Teil-B-Aufgaben im Abi-Stil mit Erwartungshorizont und Auswertung.'
+      },
+      {
+        id: 'mathe-schar-kurs',
+        num: '07',
+        title: 'Funktionsscharen & Ortskurven komplett',
+        badge: 'Klausur-Fokus',
+        desc: 'Schar-Katalog (Nullstellen, Symmetrie, Extrem-/Wendepunkte, Parameter, Tangente, Fläche), Ortskurven-Verfahren mit Beispielen, interaktives Ortskurven-Labor, Schar aus Steckbrief, 9 Teil-A- und 3 Teil-B-Aufgaben mit Erwartungshorizont.'
       }
     ]
   },
@@ -669,6 +676,8 @@ function openTopic(fachId, topicId, pushHistory = true) {
     setTimeout(renderIntegralrechnungModule, 60);
   } else if (topicId === 'mathe-integral-kurs' && typeof renderIntegralKurs === 'function') {
     setTimeout(renderIntegralKurs, 60);
+  } else if (topicId === 'mathe-schar-kurs' && typeof renderSchar07 === 'function') {
+    setTimeout(renderSchar07, 60);
   } else if (topicId === 'politik-flashcards' && typeof renderActiveFlashcard === 'function') {
     renderActiveFlashcard();
   } else if (topicId === 'politik-notizen' && typeof loadUserPolitikNotes === 'function') {
