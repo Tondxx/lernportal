@@ -6,6 +6,7 @@
   <title>Tonda Beutler &bull; Oberstufen-Portal (Jahrgang 12)</title>
   <!-- KaTeX for crisp formulas without raw dollar signs (Local fast loading with CDN fallback) -->
   <link rel="stylesheet" href="katex.min.css">
+  <link rel="stylesheet" href="katex-fonts.css?v=1">
   <script src="katex.min.js"></script>
   <!-- Early theme initialization to avoid flash of unstyled theme -->
   <script>
@@ -18,7 +19,8 @@
       } catch (e) {}
     })();
   </script>
-  <link rel="stylesheet" href="style.css?v=20260930_gegenueberstellung">
+  <link rel="stylesheet" href="style.css?v=20261105_navfix">
+  <link rel="stylesheet" href="mathe_trainer.css?v=20261105_5">
 </head>
 <body>
 
@@ -1331,7 +1333,7 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
             <div class="trio-slot" id="slot-2">
               <div class="slot-badge badge-2">②</div>
               <span class="slot-arr">➔</span>
-              <select id="sel_m_2" onchange="onDropdownChange(2)">
+              <select id="sel_m_5" onchange="onDropdownChange(2)">
                 <option value="">Matrix?</option>
                 <option value="A">Matrix A</option>
                 <option value="B">Matrix B</option>
@@ -1339,7 +1341,7 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
                 <option value="D">Matrix D</option>
               </select>
               <span class="slot-plus">+</span>
-              <select id="sel_g_2" onchange="onDropdownChange(2)">
+              <select id="sel_g_5" onchange="onDropdownChange(2)">
                 <option value="">Graph?</option>
                 <option value="I">Graph I</option>
                 <option value="II">Graph II</option>
@@ -1351,7 +1353,7 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
             <div class="trio-slot" id="slot-3">
               <div class="slot-badge badge-3">③</div>
               <span class="slot-arr">➔</span>
-              <select id="sel_m_3" onchange="onDropdownChange(3)">
+              <select id="sel_m_5" onchange="onDropdownChange(3)">
                 <option value="">Matrix?</option>
                 <option value="A">Matrix A</option>
                 <option value="B">Matrix B</option>
@@ -1359,7 +1361,7 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
                 <option value="D">Matrix D</option>
               </select>
               <span class="slot-plus">+</span>
-              <select id="sel_g_3" onchange="onDropdownChange(3)">
+              <select id="sel_g_5" onchange="onDropdownChange(3)">
                 <option value="">Graph?</option>
                 <option value="I">Graph I</option>
                 <option value="II">Graph II</option>
@@ -1371,7 +1373,7 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
             <div class="trio-slot" id="slot-4">
               <div class="slot-badge badge-4">④</div>
               <span class="slot-arr">➔</span>
-              <select id="sel_m_4" onchange="onDropdownChange(4)">
+              <select id="sel_m_5" onchange="onDropdownChange(4)">
                 <option value="">Matrix?</option>
                 <option value="A">Matrix A</option>
                 <option value="B">Matrix B</option>
@@ -1379,7 +1381,7 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
                 <option value="D">Matrix D</option>
               </select>
               <span class="slot-plus">+</span>
-              <select id="sel_g_4" onchange="onDropdownChange(4)">
+              <select id="sel_g_5" onchange="onDropdownChange(4)">
                 <option value="">Graph?</option>
                 <option value="I">Graph I</option>
                 <option value="II">Graph II</option>
@@ -1740,6 +1742,15 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
 
       </div>
     </div><!-- /topic-mathe-integral -->
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- MATHE TOPIC 0: MATHE-KLAUSURTRAINER (neues Design, "Start hier")       -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-mathe-trainer" class="topic-module-box">
+      <div class="steckbrief-container">
+        <div id="mt-root"></div>
+      </div>
+    </div><!-- /topic-mathe-trainer -->
 
     <!-- --------------------------------------------------------------------- -->
     <!-- MATHE TOPIC 6: INTEGRALRECHNUNG KOMPLETT (Erklärung + Abi-Übungen)    -->
@@ -2661,7 +2672,7 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
               Zwei gleiche Ladungen von je <code>Q = 10 nC</code> stoßen sich mit <code>F = 1 mN</code> ab. Welchen Abstand haben sie?
             </div>
             <button class="btn-reveal-card" onclick="toggleSolution('solAb10_2', this)">👁️ L&ouml;sungsschritte aufdecken</button>
-            <div class="task-solution-container" id="solAb10_2">
+            <div class="task-solution-container" id="solAb10_5">
               <div class="katex-render" data-latex="r = \sqrt{\frac{1}{4\pi\varepsilon_0} \cdot \frac{Q^2}{F}} = \sqrt{\frac{8{,}988\cdot 10^9 \cdot (10^{-8})^2}{10^{-3}}} \approx 0{,}030\,\text{m} = 3{,}0\,\text{cm}"></div>
             </div>
           </div>
@@ -2673,7 +2684,7 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
               Zwei Kugeln mit <code>Q<sub>1</sub> = +8 &mu;C</code> und <code>Q<sub>2</sub> = -2 &mu;C</code> berühren sich kurz. Wie groß ist die Ladung danach?
             </div>
             <button class="btn-reveal-card" onclick="toggleSolution('solAb10_3', this)">👁️ L&ouml;sungsschritte aufdecken</button>
-            <div class="task-solution-container" id="solAb10_3">
+            <div class="task-solution-container" id="solAb10_5">
               <div class="katex-render" data-latex="Q' = \frac{Q_1 + Q_2}{2} = \frac{+8\,\mu\text{C} + (-2\,\mu\text{C})}{2} = +3\,\mu\text{C}"></div>
               <p style="margin-top:0.4rem;">Jede Kugel trägt danach +3 &mu;C. Kraft schlägt in Abstoßung um!</p>
             </div>
@@ -2686,7 +2697,7 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
               Ein Pendel (<code>m = 2,0 g</code>, <code>q = 50 nC</code>) wird um <code>&alpha; = 12&deg;</code> ausgelenkt. Berechne die Feldstärke <code>E</code>.
             </div>
             <button class="btn-reveal-card" onclick="toggleSolution('solAb10_4', this)">👁️ L&ouml;sungsschritte aufdecken</button>
-            <div class="task-solution-container" id="solAb10_4">
+            <div class="task-solution-container" id="solAb10_5">
               <div class="katex-render" data-latex="E = \frac{m \cdot g \cdot \tan(\alpha)}{q} = \frac{0{,}002\,\text{kg} \cdot 9{,}81\,\frac{\text{m}}{\text{s}^2} \cdot \tan(12^\circ)}{50 \cdot 10^{-9}\,\text{C}} \approx 83{,}4\,\frac{\text{kV}}{\text{m}}"></div>
             </div>
           </div>
@@ -3168,7 +3179,9 @@ ightarrow$ Nathanael verfällt ihr restlos.</li>
   <script src="integralrechnung.js?v=20261007_integral"></script>
   <script src="integral_kurs.js?v=20261104_kurs2"></script>
   <script src="schar_kurs.js?v=20261104_schar"></script>
-  <script src="main_hub.js?v=20261104_schar"></script>
+  <script src="mathe_trainer_content.js?v=20261105_5"></script>
+  <script src="mathe_trainer.js?v=20261105_5"></script>
+  <script src="main_hub.js?v=20261105_5"></script>
 </body>
 </html>
 

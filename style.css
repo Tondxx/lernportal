@@ -7464,3 +7464,8 @@ input[type=range]::-webkit-slider-thumb:hover {
   border-color: #38bdf8;
   color: #38bdf8;
 }
+
+/* Navigation: kein horizontaler Seiten-Überlauf mehr auf schmaleren Bildschirmen (5.11.2026) */
+.nav-right { flex-wrap: wrap; justify-content: flex-end; }
+@media (max-width: 1500px) { .student-badge { display: none; } }
+@media (max-width: 1180px) { .portal-nav { flex-wrap: wrap; } .theme-seg-btn span:last-child { display: none; } }

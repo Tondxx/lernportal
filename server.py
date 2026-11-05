@@ -14,9 +14,13 @@ LERNEN_DIR = os.path.dirname(PORTAL_DIR)
 PRIVATE_DIR = os.path.join(PORTAL_DIR, "data", "private")
 MATHE1_DIR = os.path.join(LERNEN_DIR, "Faecher", "Mathe", "01_Material", "mathe1")
 NOTES_FILE = os.path.join(PRIVATE_DIR, "meine_mitschriften.json")
+# Antworten aus dem Mathe-Klausurtrainer (privat, nicht in Git) - zum spaeteren Korrigieren
+MATHE_ANSWERS_FILE = os.path.join(PRIVATE_DIR, "mathe_antworten.json")
 os.makedirs(PRIVATE_DIR, exist_ok=True)
 
-class RobustTCPServer(socketserver.TCPServer):
+class RobustTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+    # Mehrere Anfragen gleichzeitig (der Browser haelt Verbindungen offen; sonst haengt der Server)
+    daemon_threads = True
     allow_reuse_address = True
     
     def handle_error(self, request, client_address):
@@ -119,6 +123,18 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_json({"notes": {}})
             return
 
+        # API: gespeicherte Antworten des Mathe-Trainers laden
+        if self.path == '/api/mathe-answers':
+            if os.path.exists(MATHE_ANSWERS_FILE):
+                try:
+                    with open(MATHE_ANSWERS_FILE, 'r', encoding='utf-8') as f:
+                        self.send_json(json.load(f))
+                except Exception as e:
+                    self.send_json({"error": str(e), "answers": {}}, 500)
+            else:
+                self.send_json({"answers": {}})
+            return
+
         return super().do_GET()
 
     def do_POST(self):
@@ -197,6 +213,19 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 with open(NOTES_FILE, 'w', encoding='utf-8') as f:
                     json.dump(data, f, ensure_ascii=False, indent=2)
                 self.send_json({"status": "ok", "message": "Notizen erfolgreich gespeichert"})
+            except Exception as e:
+                self.send_json({"status": "error", "message": str(e)}, 500)
+            return
+
+        # Antworten des Mathe-Trainers speichern (Datei: data/private/mathe_antworten.json)
+        if self.path == '/api/mathe-answers':
+            try:
+                data = json.loads(post_data.decode('utf-8'))
+                tmp = MATHE_ANSWERS_FILE + '.tmp'
+                with open(tmp, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, ensure_ascii=False, indent=2)
+                os.replace(tmp, MATHE_ANSWERS_FILE)
+                self.send_json({"status": "ok"})
             except Exception as e:
                 self.send_json({"status": "error", "message": str(e)}, 500)
             return

@@ -13,6 +13,20 @@ import re
 # Replace <link rel="stylesheet" href="style.css..."> with <style>...</style>
 html_bundled = re.sub(r'<link rel="stylesheet" href="style\.css(?:\?[^"]*)?">', f'<style>\n{css}\n</style>', html)
 
+# Mathe-Klausurtrainer CSS einbetten
+mt_css_path = os.path.join(portal_dir, "mathe_trainer.css")
+if os.path.exists(mt_css_path):
+    with open(mt_css_path, "r", encoding="utf-8") as f:
+        mt_css = f.read()
+    html_bundled = re.sub(r'<link rel="stylesheet" href="mathe_trainer\.css(?:\?[^"]*)?">', lambda m: "<style>" + chr(10) + mt_css + chr(10) + "</style>", html_bundled)
+
+# KaTeX-Schriften-CSS (CDN, kleine Datei) einbetten
+kf_path = os.path.join(portal_dir, "katex-fonts.css")
+if os.path.exists(kf_path):
+    with open(kf_path, "r", encoding="utf-8") as f:
+        kf = f.read()
+    html_bundled = re.sub(r'<link rel="stylesheet" href="katex-fonts\.css(?:\?[^"]*)?">', lambda m: "<style>" + chr(10) + kf + chr(10) + "</style>", html_bundled)
+
 # Inline KaTeX CSS if available locally
 katex_css_path = os.path.join(portal_dir, "katex.min.css")
 if os.path.exists(katex_css_path):
@@ -27,7 +41,7 @@ if os.path.exists(katex_js_path):
         k_js = f.read()
     html_bundled = html_bundled.replace('<script src="katex.min.js"></script>', f'<script>\n// KaTeX JS Offline\n{k_js}\n</script>')
 
-scripts = ["calendar.js", "politik.js", "timetable.js", "steckbrief.js", "schar.js", "matching.js", "user_content.js", "physik.js", "seminarfach.js", "informatik.js", "integralrechnung.js", "integral_kurs.js", "schar_kurs.js", "main_hub.js"]
+scripts = ["calendar.js", "politik.js", "timetable.js", "steckbrief.js", "schar.js", "matching.js", "user_content.js", "physik.js", "seminarfach.js", "informatik.js", "integralrechnung.js", "integral_kurs.js", "schar_kurs.js", "mathe_trainer_content.js", "mathe_trainer.js", "main_hub.js"]
 for s in scripts:
     with open(os.path.join(portal_dir, s), "r", encoding="utf-8") as f:
         js = f.read()

@@ -24,6 +24,13 @@ const FAECHER_DATA = {
     desc: 'Analysis, Kurvenanpassung, Steckbriefaufgaben, Funktionsscharen, LGS & Gauß-Verfahren, Trassierung.',
     topics: [
       {
+        id: 'mathe-trainer',
+        num: '00',
+        title: 'Mathe-Klausurtrainer (Start hier)',
+        badge: 'Klausur-Fokus',
+        desc: 'Einfach erklärt (Integral, Bestand, Scharen, Ortskurven), Aufgaben im Abi-Stil mit Tipps, Probeklausur mit Stoppuhr (90 min) und Spickzettel.'
+      },
+      {
         id: 'mathe-steckbrief',
         num: '01',
         title: 'Steckbrief-Bedingungen (S. 18)',
@@ -674,6 +681,8 @@ function openTopic(fachId, topicId, pushHistory = true) {
     renderSteckbriefContent();
   } else if (topicId === 'mathe-integral' && typeof renderIntegralrechnungModule === 'function') {
     setTimeout(renderIntegralrechnungModule, 60);
+  } else if (topicId === 'mathe-trainer' && typeof renderMatheTrainer === 'function') {
+    setTimeout(renderMatheTrainer, 30);
   } else if (topicId === 'mathe-integral-kurs' && typeof renderIntegralKurs === 'function') {
     setTimeout(renderIntegralKurs, 60);
   } else if (topicId === 'mathe-schar-kurs' && typeof renderSchar07 === 'function') {
@@ -1025,6 +1034,12 @@ function renderFachDetail(fachId) {
       return;
     }
 
+    // Mathe: eigenes, aufgeräumtes Layout (Klausurtrainer groß, ältere Module eingeklappt)
+    if (fachId === 'mathe') {
+      renderMatheHub(gridEl, fach);
+      return;
+    }
+
     // If the subject has hierarchical stations, render drill-down folders
     if (fach.stations && fach.stations.length > 0) {
       gridEl.className = 'themen-stations-container';
@@ -1189,6 +1204,61 @@ function renderFachDetail(fachId) {
       }
     }
   }
+}
+
+// --- MATHE: Fach-Startseite (Klausurtrainer als Hauptsache, alte Module eingeklappt) ---
+function openMatheTrainer(tab) {
+  if (typeof mtSetTab === 'function') mtSetTab(tab);
+  openTopic('mathe', 'mathe-trainer');
+}
+
+function renderMatheHub(gridEl, fach) {
+  gridEl.className = 'mt-fach';
+  gridEl.style.display = 'block';
+  const others = (fach.topics || []).filter(t => t.id !== 'mathe-trainer');
+  const cards = others.map(t => `
+    <div class="thema-card" onclick="openTopic('${fach.id}', '${t.id}')">
+      <div>
+        <div class="thema-head"><span class="thema-num-badge">${t.badge || ('Thema ' + t.num)}</span><span style="font-size:0.75rem;color:var(--text-muted);">#${t.num}</span></div>
+        <div class="thema-title">${t.title}</div>
+        <div class="thema-desc">${t.desc}</div>
+      </div>
+      <button class="btn-open-thema" onclick="event.stopPropagation(); openTopic('${fach.id}', '${t.id}')">Modul öffnen &rarr;</button>
+    </div>`).join('');
+  gridEl.innerHTML = `
+    <div class="mt-fach-hero">
+      <span class="mt-fach-badge">Klausur-Fokus</span>
+      <h3>Mathe-Klausurtrainer</h3>
+      <p>Alles für die Klausur an einem Ort: <b>einfach erklärt</b>, Aufgaben im <b>Abi-Stil</b> mit Tipps, <b>Probeklausur mit Stoppuhr</b> und Spickzettel. Themen: Integral &amp; Bestand, Funktionsscharen &amp; Ortskurven.</p>
+      <div class="mt-fach-actions">
+        <button class="mt-fach-btn primary" onclick="openMatheTrainer('start')">🎯 Start &amp; Tagesplan</button>
+        <button class="mt-fach-btn" onclick="openMatheTrainer('verstehen')">🧠 Verstehen</button>
+        <button class="mt-fach-btn" onclick="openMatheTrainer('ueben')">✏️ Üben</button>
+        <button class="mt-fach-btn" onclick="openMatheTrainer('klausur')">⏱ Probeklausur</button>
+        <button class="mt-fach-btn" onclick="openMatheTrainer('spick')">📄 Spickzettel</button>
+      </div>
+    </div>
+    <details class="mt-fach-more">
+      <summary>Weitere Module (ältere, ausführliche Kurse zum Nachschlagen) · ${others.length}</summary>
+      <div class="themen-grid" style="display:grid;margin-top:0.8rem;">${cards}</div>
+    </details>
+    <div id="subjectInlineUserDocs_${fach.id}" style="width:100%;margin-top:1rem;"></div>`;
+  if (typeof renderSubjectUserDocuments === 'function') {
+    renderSubjectUserDocuments(fach.id, `subjectInlineUserDocs_${fach.id}`);
+  }
+}
+
+// --- NAV: Klausur-Pill oben rechts immer aus dem Kalender berechnen (nie von Hand pflegen) ---
+function refreshNavExamPill() {
+  const pill = document.querySelector('.exam-pill-urgent');
+  if (!pill || typeof getNextKlausuren !== 'function') return;
+  const next = getNextKlausuren(1)[0];
+  if (!next) { pill.style.display = 'none'; return; }
+  const days = klausurDaysUntil(next);
+  const fachId = KLAUSUR_FACH_IDS[next.subject];
+  pill.style.cssText = `background:${next.color}22;color:${next.color};border-color:${next.color}66;cursor:pointer;`;
+  pill.onclick = () => (fachId ? openFach(fachId) : navigateTo('kalender'));
+  pill.innerHTML = `<span class="status-dot" style="background:${next.color};"></span><strong>${klausurCountdownText(days)}: ${next.subject}-Klausur</strong>`;
 }
 
 function filterStations(stationId, btnEl) {
@@ -2152,6 +2222,7 @@ function refreshCurrentFolder() {
 window.addEventListener('DOMContentLoaded', () => {
   const theme = getInitialTheme();
   setTheme(theme);
+  refreshNavExamPill();
   navigateTo('dashboard');
   initIservModule();
   checkPrivacyLockOnLoad();
