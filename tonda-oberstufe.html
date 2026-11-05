@@ -23093,6 +23093,9 @@ Vorzeichen: $+$ auf $(0;6)$, $-$ auf $(6;12)$ ⇒ $B$ steigt bis $t=6$, fällt d
       intro: String.raw`Gegeben ist $f(x)=x^2-4$. Die Funktion $F$ ist die Stammfunktion von $f$ mit $F(0)=3$.`,
       parts: [
         { id: 'A2a', label: 'a)', be: 3, text: String.raw`Bestimmen Sie die Extremstellen von $F$ und entscheiden Sie jeweils, ob ein Hoch- oder Tiefpunkt vorliegt – <b>ohne</b> $F$ explizit zu berechnen.`,
+          hints: [String.raw`Es gilt $F'=f$. Die Steigung von $F$ ist also der Funktionswert von $f$. Wo ist $f(x)=0$? (Gleichung $x^2-4=0$ lösen.)`,
+                  String.raw`Teste ein $x$ links, zwischen und rechts der Nullstellen in $f$: $f(-3)$, $f(0)$, $f(3)$. Positiv heißt: $F$ steigt. Negativ heißt: $F$ fällt.`,
+                  String.raw`$F$ steigt, fällt, steigt. Wo es von „steigt“ auf „fällt“ wechselt, ist ein <b>Hochpunkt</b>; von „fällt“ auf „steigt“ ein <b>Tiefpunkt</b>.`],
           sol: String.raw`<p>$F'(x)=f(x)=0\Rightarrow x=\pm2$.</p><p>$f$ ist eine nach oben geöffnete Parabel: Bei $x=-2$ wechselt $f$ von $+$ nach $-$ ⇒ <b>Hochpunkt</b> von $F$. Bei $x=2$ wechselt $f$ von $-$ nach $+$ ⇒ <b>Tiefpunkt</b> von $F$.</p>
           <ul><li>Nullstellen von $f$ als notwendige Bedingung für $F'$ (1 BE)</li><li>Hochpunkt bei $x=-2$ mit Vorzeichenwechsel (1 BE)</li><li>Tiefpunkt bei $x=2$ (1 BE)</li></ul>` },
         { id: 'A2b', label: 'b)', be: 2, text: String.raw`Zeigen Sie, dass der Graph von $F$ im Punkt $(0|3)$ einen Wendepunkt besitzt.`,
@@ -23153,6 +23156,9 @@ Vorzeichen: $+$ auf $(0;6)$, $-$ auf $(6;12)$ ⇒ $B$ steigt bis $t=6$, fällt d
         { id: 'A7a', label: 'a)', be: 2, text: String.raw`Ist $f$ stetig auf $[a;b]$ und gilt $\displaystyle\int_a^b f(x)\,dx=0$, so ist $f(x)=0$ für alle $x\in[a;b]$.`,
           sol: String.raw`<p><b>Falsch.</b> Gegenbeispiel: $f(x)=x$ auf $[-1;1]$: $\int_{-1}^1x\,dx=\bigl[\tfrac12x^2\bigr]_{-1}^{1}=0$, aber $f\neq0$. (Flächenanteile oberhalb und unterhalb der Achse heben sich auf.)</p><ul><li>Aussage falsch (1 BE)</li><li>tragfähiges Gegenbeispiel (1 BE)</li></ul>` },
         { id: 'A7b', label: 'b)', be: 3, text: String.raw`Ist $f$ gerade (d. h. $f(-x)=f(x)$), so gilt $\displaystyle\int_{-a}^{a}f(x)\,dx=2\int_0^a f(x)\,dx$ für $a>0$.`,
+          hints: [String.raw`Gerade heißt: der Graph ist <b>spiegelbildlich zur $y$-Achse</b> (Beispiel $x^2$). Die linke Hälfte sieht genauso aus wie die rechte.`,
+                  String.raw`Teile das Integral an der $0$: $\int_{-a}^{a}=\int_{-a}^{0}+\int_0^a$. Beide Stücke sind gleich groß, denn die Fläche links ist das Spiegelbild der Fläche rechts.`,
+                  String.raw`Zahlenprobe mit $f(x)=x^2$, $a=1$: $\int_{-1}^{1}x^2dx=\tfrac23$ und $2\int_0^1x^2dx=2\cdot\tfrac13=\tfrac23$ ✓`],
           sol: String.raw`<p><b>Wahr.</b> Der Graph einer geraden Funktion ist symmetrisch zur $y$-Achse. Die orientierte Fläche über $[-a;0]$ ist deshalb gleich der über $[0;a]$. Mit der Zerlegung $\int_{-a}^{a}=\int_{-a}^{0}+\int_0^a$ folgt die Behauptung.</p>
           <p>Alternativ rechnerisch: Mit einer Stammfunktion $F$ von $f$ ist $F(x)-F(0)$ ungerade, daher $\int_{-a}^{0}f=F(0)-F(-a)=F(a)-F(0)=\int_0^a f$.</p>
           <ul><li>Aussage wahr (1 BE)</li><li>Symmetrie-Argument (1 BE)</li><li>Zerlegung des Integrals (1 BE)</li></ul>` }
@@ -23167,6 +23173,8 @@ Vorzeichen: $+$ auf $(0;6)$, $-$ auf $(6;12)$ ⇒ $B$ steigt bis $t=6$, fällt d
           sol: String.raw`<p>Nach oben ($v>0$): $0<t<9$. Halt ($v=0$): $9\le t\le10$ (sowie am Ende bei $t=21$). Nach unten ($v<0$): $10<t<21$.</p><ul><li>Fahrt nach oben (1 BE)</li><li>Halt und Fahrt nach unten (1 BE)</li></ul>` },
         { id: 'A8b', label: 'b)', be: 2, text: String.raw`Der Aufzug erreicht seine höchste Stelle. Geben Sie an, wann das der Fall ist, und wie hoch diese Stelle über dem Start liegt.`,
           nums: [{ label: 'Höhe in m', ans: 26, tol: 0.05 }],
+          hints: [String.raw`Höhe = Fläche zwischen $v$-Graph und $t$-Achse (von $t=0$ an). Solange $v>0$, fährt er nach oben. Wann hört das auf?`,
+                  String.raw`Die Fläche von $0$ bis $9$ ist <b>ein Trapez</b>: lange Seite $9$ (unten, von $0$ bis $9$), kurze Seite $4$ (oben, von $3$ bis $7$), Höhe $4$. Formel: $\frac{a+c}{2}\cdot h=\frac{9+4}{2}\cdot4$.`],
           sol: String.raw`<p>$v$ wechselt bei $t=9$ von $+$ nach $0$ (Halt bis $t=10$), danach fährt er nach unten. Höchste Stelle: für $9\le t\le10$ bei <b>26 m</b>.</p><p>Fläche von 0 bis 9: Dreieck $\tfrac12\cdot3\cdot4=6$, Rechteck $4\cdot4=16$, Dreieck $\tfrac12\cdot2\cdot4=4$ ⇒ $6+16+4=26$.</p><ul><li>Zeitraum $9\le t\le10$ (1 BE)</li><li>Höhe 26 m (1 BE)</li></ul>` },
         { id: 'A8c', label: 'c)', be: 2, text: String.raw`Geben Sie an, wann der Aufzug die tiefste Stelle erreicht, und wie tief sie relativ zum Start liegt.`,
           nums: [{ label: 'Höhe in m', ans: -8, tol: 0.05 }],
