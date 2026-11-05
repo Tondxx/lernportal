@@ -24263,9 +24263,19 @@ Beim Auto: <b>Tacho = Rate</b>, <b>Kilometerstand = Bestand</b>.`,
           { h: 'Erste Ableitung nach x', t: String.raw`$(x^3)'=3x^2$ und $(3kx)'=3k$. Also $f_k'(x)=3x^2-3k$.` },
           { h: 'Zweite Ableitung', t: String.raw`$f_k''(x)=6x$. ($3k$ ist eine Konstante und fällt weg.)` },
           { h: 'Symmetrie', t: String.raw`Nur ungerade Potenzen ($x^3$ und $x^1$) ⇒ punktsymmetrisch zum Ursprung.` },
-          { h: 'Nullstellen (nur falls gefragt)', t: String.raw`Jeder Summand hat ein $x$, darum geht es mit Ausklammern: $x\,(x^2-3k)=0\Rightarrow x=0$ oder $x=\pm\sqrt{3k}$. Bei Funktionen mit einem Zusatz-Summanden (z. B. $+5$) funktioniert das nicht, dann löst du die Gleichung anders. Das Schwere in einer Schar sind aber nicht die Nullstellen.` }
+          { h: 'Nullstellen (nur falls gefragt)', t: String.raw`Das kommt gleich im Kasten „Nullstellen einer Schar – einfach erklärt“ direkt unter diesem Beispiel.` }
         ]
       },
+      extraAfter: String.raw`<div class="mt-call"><div class="mt-call-h">Nullstellen einer Schar – einfach erklärt</div>
+<p><b>Nullstelle heißt:</b> $f_k(x)=0$ setzen und nach $x$ auflösen – genau wie bei einer normalen Funktion. Das $k$ ist dabei nur eine Zahl, die stehen bleibt. Du brauchst <b>kein Ausklammern</b>, nur diese vier Fälle:</p>
+<div class="mt-scroll"><table class="mt-table"><tr><th>Aussehen</th><th>Was du tust</th><th>Beispiel</th></tr>
+<tr><td>nur $x^2$ und eine Zahl</td><td>Nach $x^2$ umstellen, dann Wurzel ziehen ($\pm$ nicht vergessen)</td><td>$x^2-k=0\Rightarrow x^2=k\Rightarrow x=\pm\sqrt k$ <br>(nur für $k>0$)</td></tr>
+<tr><td>$k$ steht vor dem $x^2$</td><td>Erst durch $k$ teilen, dann Wurzel</td><td>$kx^2-8=0\Rightarrow x^2=\frac8k\Rightarrow x=\pm\sqrt{\frac8k}$</td></tr>
+<tr><td>nur $x$ (linear)</td><td>Nach $x$ auflösen wie sonst</td><td>$2x-k=0\Rightarrow x=\frac k2$</td></tr>
+<tr><td>$x^2$, $x$ und Zahl</td><td>pq-Formel (oder Rechner). Unter der Wurzel steht $k$.</td><td>$x^2-4x+k=0\Rightarrow x=2\pm\sqrt{4-k}$</td></tr>
+<tr><td>schon in Klammern gegeben</td><td>Jede Klammer $=0$ setzen (Nullprodukt)</td><td>$(x-1)(x-k)=0\Rightarrow x=1$ oder $x=k$</td></tr></table></div>
+<p><b>Das Wichtigste bei Scharen: Wann gibt es überhaupt Nullstellen?</b> Eine Wurzel gibt es nur, wenn darunter keine negative Zahl steht. Beim pq-Beispiel: $4-k\ge0$, also $k\le4$. Für $k<4$ hast du zwei Nullstellen, für $k=4$ eine, für $k>4$ keine. Genau das ist die typische „Für welche $k$ …?“-Frage.</p>
+<p><b>Hinweis zu Funktionen 3. Grades</b> wie $x^3-3kx$: Hier steht meist schon die Faktorform in der Aufgabe (z. B. in der Abi-Aufgabe 2021 die Schar $x(x-a)(x-2a)$), oder du rechnest in Teil B mit dem Rechner. Selbst umformen musst du dann nicht.</p></div>`,
       fehler: [
         String.raw`Nach $k$ statt nach $x$ ableiten: $(kx)'=k$, nicht $x$.`,
         String.raw`$k$ mit einer Variablen verwechseln und versuchen, $k$ „auszurechnen“. $k$ bleibt als Buchstabe stehen.`,
@@ -24275,6 +24285,9 @@ Beim Auto: <b>Tacho = Rate</b>, <b>Kilometerstand = Bestand</b>.`,
       test: [
         { q: String.raw`Ableitung von $f_k(x)=3kx^2+k^2$ nach $x$?`, a: String.raw`$f_k'(x)=6kx$ (der Summand $k^2$ ist eine Konstante und fällt weg).` },
         { q: String.raw`$f_k(x)=x^2-kx$. Was ist $f_k(3)$?`, a: String.raw`$9-3k$.` },
+        { q: String.raw`Nullstellen von $f_k(x)=x^2-9k$ mit $k>0$?`, a: String.raw`$x^2=9k\Rightarrow x=\pm3\sqrt k$.` },
+        { q: String.raw`$f_k(x)=3x-6k$. Nullstelle?`, a: String.raw`$3x=6k\Rightarrow x=2k$.` },
+        { q: String.raw`$g_k(x)=x^2-4x+k$ hat die Nullstellen $x=2\pm\sqrt{4-k}$. Für welche $k$ gibt es keine Nullstelle?`, a: String.raw`Wenn $4-k<0$, also $k>4$.` },
         { q: String.raw`Was ist $f_k'(x)$ für $f_k(x)=kx^3-x$?`, a: String.raw`$3kx^2-1$.` }
       ],
       tasks: ['SA1']
