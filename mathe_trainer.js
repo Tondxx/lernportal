@@ -109,7 +109,7 @@
 
   const ALL_EXAM_TASKS = D.EXAM1.tasks;
   // Aufgaben mit e-Funktion / ln werden ausgeblendet (noch nicht im Unterricht); sie liegen weiter in Modul 06.
-  const HIDDEN = ['A1', 'A5', 'B1'];
+  const HIDDEN = ['A1', 'A5', 'B1', 'SB2'];
   function practiceTasks() {
     return (D.EXTRA || []).concat(L.allTasks().filter(t => (t.mod === 'ik' || t.mod === 'sk') && HIDDEN.indexOf(t.id) < 0));
   }

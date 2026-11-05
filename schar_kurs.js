@@ -269,12 +269,13 @@ Soll $A=\tfrac{27}{4}$ gelten: $\tfrac{a^4}{12}=\tfrac{27}{4}\Rightarrow a^4=81\
   const TASKS_A = [
     {
       id: 'SA1', sec: 'sec2', title: 'Nullstellen, Symmetrie, Hochpunkt', afb: 'I–II', ops: 'Angeben, Begründen, Zeigen',
-      intro: String.raw`Gegeben ist die Funktionenschar $g_a$ mit $g_a(x)=x^3-a^2x$, $a>0$.`,
+      intro: String.raw`Gegeben ist die Funktionenschar $g_a$ mit $g_a(x)=x\,(x-a)(x+a)=x^3-a^2x$, $a>0$.`,
       parts: [
         { id: 'SA1a', label: 'a)', be: 2, text: String.raw`Geben Sie die Nullstellen von $g_a$ an und begründen Sie, dass jeder Graph punktsymmetrisch zum Ursprung ist.`,
-          sol: String.raw`<p>$g_a(x)=x\,(x^2-a^2)=x(x-a)(x+a)$ ⇒ Nullstellen $x=0$, $x=a$, $x=-a$.</p><p>$g_a$ enthält nur ungerade Potenzen von $x$: $g_a(-x)=-x^3+a^2x=-g_a(x)$ ⇒ punktsymmetrisch zum Ursprung.</p><ul><li>Nullstellen (1 BE)</li><li>Symmetrie mit $g_a(-x)=-g_a(x)$ (1 BE)</li></ul>` },
-        { id: 'SA1b', label: 'b)', be: 3, text: String.raw`Zeigen Sie, dass der Graph von $g_a$ bei $x=-\dfrac{a}{\sqrt3}$ einen Hochpunkt hat, und geben Sie dessen $y$-Koordinate an.`,
-          sol: String.raw`<p>$g_a'(x)=3x^2-a^2=0\Rightarrow x=\pm\frac{a}{\sqrt3}$. $g_a''(x)=6x$, also $g_a''\bigl(-\frac{a}{\sqrt3}\bigr)=-\frac{6a}{\sqrt3}<0$ ⇒ Hochpunkt.</p><p>$g_a\bigl(-\tfrac{a}{\sqrt3}\bigr)=-\frac{a^3}{3\sqrt3}+\frac{a^3}{\sqrt3}=\frac{2a^3}{3\sqrt3}=\frac{2\sqrt3}{9}a^3$.</p><ul><li>$g_a'=0$, $x=-\frac a{\sqrt3}$ (1 BE)</li><li>$g_a''<0$ (1 BE)</li><li>$y=\frac{2\sqrt3}{9}a^3$ (1 BE)</li></ul>` }
+          sol: String.raw`<p>$g_a(x)=x(x-a)(x+a)$ steht in Klammerform da: jeden Faktor $=0$ setzen ⇒ Nullstellen $x=0$, $x=a$, $x=-a$.</p><p>$g_a$ enthält nur ungerade Potenzen von $x$: $g_a(-x)=-x^3+a^2x=-g_a(x)$ ⇒ punktsymmetrisch zum Ursprung.</p><ul><li>Nullstellen (1 BE)</li><li>Symmetrie mit $g_a(-x)=-g_a(x)$ (1 BE)</li></ul>` },
+        { id: 'SA1b', label: 'b)', be: 3, text: String.raw`Bestimmen Sie $g_a'(x)$ und $g_a''(x)$ und zeigen Sie, dass der Graph von $g_a$ genau einen Wendepunkt hat. Geben Sie ihn an.`,
+          hints: [String.raw`Ableiten nach $x$: $a$ bleibt wie eine Zahl stehen. $g_a(x)=x^3-a^2x$ ⇒ $g_a'(x)=3x^2-a^2$.`, String.raw`Wendestelle: $g_a''(x)=0$ lösen, dann $g_a'''(x)\neq0$ prüfen. $y$-Koordinate mit $g_a$ ausrechnen.`],
+          sol: String.raw`<p>$g_a'(x)=3x^2-a^2$, $g_a''(x)=6x$, $g_a'''(x)=6$.</p><p>$g_a''(x)=0\Rightarrow x=0$, und $g_a'''(0)=6\neq0$ ⇒ Wendestelle. $g_a(0)=0$ ⇒ Wendepunkt $W(0|0)$ (für jedes $a$ derselbe Punkt, und es ist der einzige).</p><ul><li>$g_a'$ und $g_a''$ (1 BE)</li><li>$g_a''=0$, $x=0$, $g_a'''\neq0$ (1 BE)</li><li>$W(0|0)$ (1 BE)</li></ul>` }
       ]
     },
     {
@@ -346,7 +347,7 @@ Soll $A=\tfrac{27}{4}$ gelten: $\tfrac{a^4}{12}=\tfrac{27}{4}\Rightarrow a^4=81\
       id: 'SA8', sec: 'sec4', title: 'Sattelpunkt und Ortskurve', afb: 'II–III', ops: 'Zeigen, Bestimmen',
       intro: String.raw`Gegeben ist $f_a(x)=x^3-3ax^2+3a^2x$, $a\in\mathbb R$.`,
       parts: [
-        { id: 'SA8a', label: 'a)', be: 3, text: String.raw`Zeigen Sie, dass der Graph von $f_a$ genau einen Wendepunkt besitzt, der zugleich Sattelpunkt ist, und geben Sie ihn an.`,
+        { id: 'SA8a', label: 'a)', be: 3, text: String.raw`Zeigen Sie, dass der Graph von $f_a$ genau einen Wendepunkt besitzt, der zugleich Sattelpunkt ist, und geben Sie ihn an. <i>Hinweis:</i> Es gilt $f_a'(x)=3(x-a)^2$.`,
           sol: String.raw`<p>$f_a'(x)=3x^2-6ax+3a^2=3(x-a)^2$, $f_a''(x)=6x-6a$, $f_a'''(x)=6\neq0$.</p><p>$f_a''(x)=0\Leftrightarrow x=a$ (mit $f_a'''\ne0$ ⇒ Wendestelle). Wegen $f_a'(a)=0$ ist die Tangente waagerecht: <b>Sattelpunkt</b>. $f_a(a)=a^3-3a^3+3a^3=a^3$ ⇒ $S_a(a\,|\,a^3)$.</p><ul><li>$f_a''=0$, $x=a$ (1 BE)</li><li>Wendestelle begründet (1 BE)</li><li>$f_a'(a)=0$ und $y=a^3$ (1 BE)</li></ul>` },
         { id: 'SA8b', label: 'b)', be: 2, text: String.raw`Bestimmen Sie die Ortskurve der Sattelpunkte $S_a$.`,
           sol: String.raw`<p>$x=a$, $y=a^3$ ⇒ $y=x^3$. <b>Ortskurve: $y=x^3$</b> ($x\in\mathbb R$).</p><ul><li>$a=x$ (1 BE)</li><li>$y=x^3$ (1 BE)</li></ul>` }
@@ -383,9 +384,7 @@ $$z_k(t)=0{,}01\,t\,(t-k)(t-2k)(t-3k),\qquad k>0.$$
           sol: String.raw`<p>$x=1{,}5k\Rightarrow k=\frac{x}{1{,}5}$. $y=0{,}005625\,k^4=0{,}005625\cdot\frac{x^4}{5{,}0625}=\frac{x^4}{900}$ (denn $5{,}0625\cdot\frac{1}{900}=0{,}005625$).</p><p><b>Ortskurve: $y=\frac1{900}x^4$, $x>0$.</b></p><ul><li>$k=\frac x{1{,}5}$ (1 BE)</li><li>$k^4=\frac{x^4}{5{,}0625}$ (1 BE)</li><li>Gleichung $y=\frac{1}{900}x^4$ (1 BE)</li><li>Definitionsbereich $x>0$ (1 BE)</li></ul>` },
         { id: 'SB1d', label: 'd)', be: 3, text: String.raw`Der Behälter wird so betrieben, dass die maximale Zuflussrate 12 Stunden nach Beobachtungsbeginn erreicht wird. Bestimmen Sie $k$ und geben Sie die zugehörige Funktion an.`,
           nums: [{ label: 'k', ans: 8, tol: 0.01 }],
-          sol: String.raw`<p>Maximale Zuflussrate = Hochpunkt bei $t=1{,}5k=12\Rightarrow k=8$. Funktion: $z(t)=0{,}01\,t(t-8)(t-16)(t-24)$ ($0\le t\le24$, siehe Aufgabe B3 im Integral-Modul).</p><ul><li>$1{,}5k=12$ (1 BE)</li><li>$k=8$ (1 BE)</li><li>Funktionsterm (1 BE)</li></ul>` },
-        { id: 'SB1e', label: 'e)', be: 4, text: String.raw`Bestimmen Sie die Koordinaten der beiden Tiefpunkte von $z_k$ in Abhängigkeit von $k$ und geben Sie für $k=8$ die maximale Entnahmerate an.`,
-          sol: String.raw`<p>Mit $u=t-1{,}5k$: $z_k'=0{,}01\,u\,(4u^2-5k^2)=0\Rightarrow u=0$ oder $u=\pm\frac{\sqrt5}{2}k$. Tiefpunkte bei $t=\bigl(1{,}5\pm\frac{\sqrt5}{2}\bigr)k$, $z_k''=0{,}01\cdot10k^2>0$.</p><p>$z_k=0{,}01\bigl(u^2-\tfrac94k^2\bigr)\bigl(u^2-\tfrac14k^2\bigr)=0{,}01\,(-k^2)(k^2)=-0{,}01k^4$ ⇒ $T_{1,2}\bigl((1{,}5\pm\frac{\sqrt5}{2})k\,|\,-0{,}01k^4\bigr)$.</p><p>$k=8$: $t\approx3{,}06$ h und $t\approx20{,}94$ h mit $z=-0{,}01\cdot4096=-40{,}96$ m³/h ⇒ <b>maximale Entnahmerate 40,96 m³/h</b>.</p><ul><li>Extremstellen (1 BE)</li><li>Tiefpunkt-Koordinaten (2 BE)</li><li>Wert für $k=8$ (1 BE)</li></ul>` }
+          sol: String.raw`<p>Maximale Zuflussrate = Hochpunkt bei $t=1{,}5k=12\Rightarrow k=8$. Funktion: $z(t)=0{,}01\,t(t-8)(t-16)(t-24)$ ($0\le t\le24$, siehe Aufgabe B3 im Integral-Modul).</p><ul><li>$1{,}5k=12$ (1 BE)</li><li>$k=8$ (1 BE)</li><li>Funktionsterm (1 BE)</li></ul>` }
       ]
     },
     {

@@ -167,9 +167,9 @@ Beim Auto: <b>Tacho = Rate</b>, <b>Kilometerstand = Bestand</b>.`,
 <p><b>2. In einem Zug</b> (so schreibt man es kurz): $$A=\int_a^b|f(x)|\,dx$$ „Integral über den Betrag der Funktion“ = Gesamtfläche, alles positiv gezählt. Im Taschenrechner (Teil B) kannst du das direkt eingeben (abs). <b>Ohne Rechner</b> rechnest du trotzdem Stück für Stück an den Nullstellen.</p>
 <p class="mt-muted">Nicht verwechseln: Die Schreibweise $F(x)\big|_a^b$ (Strich mit Grenzen rechts) ist nur eine andere Form von $\bigl[F(x)\bigr]_a^b=F(b)-F(a)$ – kein Betrag.</p></div>`,
       beispiel: {
-        q: String.raw`Bestimme das Integral <b>und</b> den Flächeninhalt für $f(x)=x^3-4x$ auf $[-2;3]$.`,
+        q: String.raw`Bestimme das Integral <b>und</b> den Flächeninhalt für $f(x)=x^3-4x=x(x-2)(x+2)$ auf $[-2;3]$.`,
         steps: [
-          { h: 'Nullstellen', t: String.raw`$x^3-4x=x(x-2)(x+2)$ ⇒ $x=-2,\;0,\;2$. Im Intervall liegen $0$ und $2$ innen ⇒ drei Teilstücke: $[-2;0]$, $[0;2]$, $[2;3]$.` },
+          { h: 'Nullstellen (aus der Klammerform ablesen)', t: String.raw`$x(x-2)(x+2)=0$ ⇒ $x=0$, $x=2$, $x=-2$. Im Intervall liegen $0$ und $2$ innen ⇒ drei Teilstücke: $[-2;0]$, $[0;2]$, $[2;3]$.` },
           { h: 'Stammfunktion', t: String.raw`$F(x)=\tfrac14x^4-2x^2$ ($x^3$: neue Hochzahl 4, $1:4$; $-4x$: neue Hochzahl 2, $-4:2=-2$). Werte: $F(-2)=-4$, $F(0)=0$, $F(2)=-4$, $F(3)=\tfrac{81}4-18=2{,}25$.` },
           { h: 'Teilintegrale', t: String.raw`$I_1=F(0)-F(-2)=4$ &nbsp;·&nbsp; $I_2=F(2)-F(0)=-4$ &nbsp;·&nbsp; $I_3=F(3)-F(2)=6{,}25$.` },
           { h: 'Integral (mit Vorzeichen)', t: String.raw`$4-4+6{,}25=\mathbf{6{,}25}$ – die Stücke heben sich teilweise auf.` },
@@ -540,13 +540,13 @@ Beim Auto: <b>Tacho = Rate</b>, <b>Kilometerstand = Bestand</b>.`,
       // ------------------------------------------------------------ A3
       {
         id: 'MP1-A3', teil: 'A', topic: 'schar', lesson: 'L9', title: 'Schar: Tiefpunkt und Ortskurve', afb: 'II', ops: 'Bestimmen, Zeigen',
-        intro: String.raw`Gegeben ist die Funktionenschar $f_k$ mit $f_k(x)=x^3-3kx^2$, $k>0$.`,
+        intro: String.raw`Gegeben ist die Funktionenschar $f_k$ mit $f_k(x)=x^3-3kx^2=x^2\,(x-3k)$, $k>0$.`,
         parts: [
           { id: 'MP1-A3a', label: 'a)', be: 2, text: String.raw`Bestimmen Sie die Nullstellen von $f_k$ und erläutern Sie, was die doppelte Nullstelle für den Graphen bedeutet.`,
-            hints: [String.raw`Klammere $x^2$ aus.`, String.raw`Eine doppelte Nullstelle hat keinen Vorzeichenwechsel.`],
+            hints: [String.raw`Die Funktion steht schon in Klammern: $x^2\,(x-3k)$. Setze $x^2=0$ und $x-3k=0$.`, String.raw`Eine doppelte Nullstelle hat keinen Vorzeichenwechsel.`],
             sol: String.raw`<p>$f_k(x)=x^2\,(x-3k)$ ⇒ $x=0$ (doppelt) und $x=3k$.</p><p>An der doppelten Nullstelle $x=0$ <b>berührt</b> der Graph die $x$-Achse (kein Vorzeichenwechsel von $f_k$); dort liegt ein Extrempunkt.</p><ul><li>Nullstellen $0$ und $3k$ (1 BE)</li><li>Deutung „berührt die Achse“ (1 BE)</li></ul>` },
           { id: 'MP1-A3b', label: 'b)', be: 3, text: String.raw`Zeigen Sie, dass der Graph von $f_k$ den Tiefpunkt $T_k(2k\,|\,-4k^3)$ besitzt.`,
-            hints: [String.raw`Ableitung nach $x$: $k$ bleibt wie eine Zahl stehen. Klammere in $f_k'$ aus.`, String.raw`Für die Art: $f_k''(2k)$ – ist es wegen $k>0$ positiv?`],
+            hints: [String.raw`Ableitung nach $x$: $k$ bleibt wie eine Zahl stehen. Du erhältst $f_k'(x)=3x^2-6kx=3x\,(x-2k)$. Setze die Klammern gleich $0$.`, String.raw`Für die Art: $f_k''(2k)$ – ist es wegen $k>0$ positiv?`],
             sol: String.raw`<p>$f_k'(x)=3x^2-6kx=3x\,(x-2k)=0\Rightarrow x=0$ oder $x=2k$.</p><p>$f_k''(x)=6x-6k$, also $f_k''(2k)=6k>0$ ⇒ Tiefpunkt. $f_k(2k)=8k^3-12k^3=-4k^3$.</p><ul><li>$f_k'=0$, $x=2k$ (1 BE)</li><li>$f_k''(2k)=6k>0$ (1 BE)</li><li>$y=-4k^3$ (1 BE)</li></ul>` },
           { id: 'MP1-A3c', label: 'c)', be: 2, text: String.raw`Bestimmen Sie eine Gleichung der Ortskurve, auf der alle Tiefpunkte $T_k$ liegen.`,
             hints: [String.raw`Löse $x=2k$ nach $k$ auf.`, String.raw`Setze das Ergebnis in $y=-4k^3$ ein.`],
@@ -663,11 +663,11 @@ Beim Auto: <b>Tacho = Rate</b>, <b>Kilometerstand = Bestand</b>.`,
     {
       id: 'E3', teil: 'A', topic: 'integral', lesson: 'L4', title: 'Integral 0, aber Fläche nicht 0', afb: 'II', ops: 'Bestimmen, Berechnen, Begründen',
       fig: { kind: 'fn', f: x => x * x * x - 3 * x * x + 2 * x, xmin: -0.5, xmax: 2.5, ymin: -1, ymax: 1, title: 'f(x) = x³ − 3x² + 2x' },
-      intro: String.raw`Gegeben ist $f(x)=x^3-3x^2+2x$.`,
+      intro: String.raw`Gegeben ist $f(x)=x^3-3x^2+2x=x\,(x-1)(x-2)$.`,
       parts: [
         { id: 'E3a', label: 'a)', be: 2, text: String.raw`Bestimmen Sie die Nullstellen von $f$.`,
-          hints: [String.raw`Klammere $x$ aus: $f(x)=x\,(x^2-3x+2)$.`, String.raw`$x^2-3x+2=(x-1)(x-2)$.`],
-          sol: String.raw`<p>$f(x)=x(x^2-3x+2)=x(x-1)(x-2)$ ⇒ $x=0$, $x=1$, $x=2$.</p><ul><li>Ausklammern (1 BE)</li><li>drei Nullstellen (1 BE)</li></ul>` },
+          hints: [String.raw`Die Funktion steht in Klammerform da: $x\,(x-1)(x-2)$. Jeden Faktor gleich $0$ setzen und ablesen (Vorzeichen umdrehen).`],
+          sol: String.raw`<p>$f(x)=x(x-1)(x-2)$ ⇒ $x=0$, $x=1$, $x=2$ (jeden Faktor $=0$ setzen).</p><ul><li>Faktoren gleich $0$ gesetzt (1 BE)</li><li>drei Nullstellen (1 BE)</li></ul>` },
         { id: 'E3b', label: 'b)', be: 2, text: String.raw`Berechnen Sie $\displaystyle\int_0^2 f(x)\,dx$.`,
           nums: [{ label: 'Wert', ans: 0, tol: 0.01 }],
           hints: [String.raw`$F(x)=\tfrac14x^4-x^3+x^2$.`],
