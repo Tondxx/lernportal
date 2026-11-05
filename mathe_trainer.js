@@ -200,8 +200,8 @@
     { id: 'p2', min: 20, title: 'Lektion 2 + 3: Aufleiten & Integral', desc: 'Stammfunktionen bilden, F(b) − F(a) rechnen. Selbsttests machen.', go: ['verstehen', 'L2'] },
     { id: 'p3', min: 15, title: 'Lektion 4 + 5: Fläche & Graph f ↔ F', desc: 'Nullstellen beachten; aus f auf F schließen.', go: ['verstehen', 'L4'] },
     { id: 'p4', min: 25, title: 'Lektion 6: Bestandsaufgaben + 1 Aufgabe', desc: 'Das Komplett-Rezept. Demo ausprobieren, dann Aufgabe B2 üben.', go: ['verstehen', 'L6'] },
-    { id: 'p5', min: 25, title: 'Lektion 7–9: Schar, Extrempunkte, Ortskurve', desc: 'Mit k rechnen wie mit einer Zahl; Ortskurve in 4 Schritten.', go: ['verstehen', 'L7'] },
-    { id: 'p6', min: 15, title: 'Lektion 10 + 2 Schar-Aufgaben', desc: 'Parameter bestimmen; dann Aufgaben SA4 und SA5.', go: ['verstehen', 'L10'] },
+    { id: 'p5', min: 30, title: 'Lektion 7–9: Schar, Extrempunkte, Ortskurve', desc: 'Mit k rechnen wie mit einer Zahl; Ortskurve in 3 Schritten.', go: ['verstehen', 'L7'] },
+    { id: 'p6', min: 25, title: 'Lektion 11: Steckbrief → Schar → Tangente → Dreieck', desc: 'Der Typ aus deiner Beispielklausur. Danach Aufgabe SB3 üben. (Lektion 10 „Für welches k“ ist kurz.)', go: ['verstehen', 'L11'] },
     { id: 'p7', min: 90, title: 'Probeklausur unter Echtbedingungen', desc: '90 Minuten, Handy weg, Teil A ohne Rechner. Danach ehrlich bewerten.', go: ['klausur', null] },
     { id: 'p8', min: 25, title: 'Fehler nacharbeiten + Spickzettel lesen', desc: 'Schwächste Aufgabe nochmal rechnen. Spickzettel einmal komplett lesen.', go: ['spick', null] },
     { id: 'p9', min: 5, title: 'Taschenrechner prüfen, Sachen packen, früh schlafen', desc: 'Batterien? Modus „Bogenmaß“ nur bei sin/cos nötig. Schlaf schlägt Mehr-Lernen.', go: null }
@@ -213,7 +213,8 @@
     { cls: 'integral', chip: '∫ Integral', title: 'Graph von f ↔ Graph von F', text: 'Aus dem Graphen Hoch-, Tief- und Wendepunkte von F lesen.', les: 'L5' },
     { cls: 'schar', chip: '📈 Schar', title: 'Schar untersuchen', text: 'Nullstellen, Symmetrie, Extrem- und Wendepunkte mit k.', les: 'L8' },
     { cls: 'ort', chip: '🧭 Ortskurve', title: 'Ortskurve bestimmen', text: 'k aus x auflösen, in y einsetzen. Hochbehälter-Typ.', les: 'L9' },
-    { cls: 'schar', chip: '📈 Schar', title: 'k bestimmen & Schar aus Steckbrief', text: '„Für welches k gilt …?“ und fehlende Bedingung.', les: 'L10' }
+    { cls: 'schar', chip: '📈 Schar', title: 'Schar aus Steckbrief, Tangente, Dreieck', text: 'Beispielklausur-Typ: LGS → Schar → Tangente → Dreieck → mittlere Änderungsrate.', les: 'L11' },
+    { cls: 'schar', chip: '📈 Schar', title: 'k bestimmen', text: '„Für welches k gilt …?“', les: 'L10' }
   ];
 
   function viewStart() {

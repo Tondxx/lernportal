@@ -277,33 +277,35 @@ Beim Auto: <b>Tacho = Rate</b>, <b>Kilometerstand = Bestand</b>.`,
       title: 'Funktionsschar: Funktion mit Regler',
       short: 'k ist nur eine Zahl, die du (noch) nicht kennst.',
       demo: null,
-      idee: String.raw`Eine <b>Funktionenschar</b> $f_k$ ist eine ganze Familie von Funktionen. Der <b>Parameter</b> $k$ ist ein Regler: Für jedes $k$ bekommst du eine andere Funktion der gleichen „Sorte“.`,
-      bild: String.raw`$k$ ist ein <b>Schieberegler</b>. Stellst du $k=2$ ein, hast du eine ganz normale Funktion. Dein Trick in der Klausur: <b>Rechne mit $k$ wie mit einer ganz normalen Zahl</b> (wie die 5 in $5x^2$) – du bekommst am Ende Ergebnisse, in denen $k$ vorkommt.`,
+      idee: String.raw`Eine <b>Funktionenschar</b> ist eine Funktion mit einem <b>Extra-Buchstaben</b>, meist $k$ oder $t$ oder $a$. Beispiel: $f_k(x)=x^3-3kx$. Für jede Zahl, die du für $k$ einsetzt, bekommst du eine eigene normale Funktion.`,
+      bild: String.raw`$k$ ist ein <b>Schieberegler</b>. Stellst du $k=2$ ein, ist $f_2(x)=x^3-6x$ – eine ganz normale Funktion. Stellst du $k=5$ ein, ist es $f_5(x)=x^3-15x$. <b>Dein einziger Trick:</b> Rechne mit $k$ wie mit einer ganz normalen Zahl (wie die 5 in $5x^2$) und lass es einfach stehen.`,
       rezept: [
-        String.raw`<b>Ausklammern / Faktorform:</b> So siehst du Nullstellen sofort. Beispiel: $x^4-2kx^2=x^2(x^2-2k)$.`,
-        String.raw`<b>Nullstellen:</b> Jeden Faktor $=0$ setzen. Bedingungen an $k$ beachten (z. B. $\sqrt{2k}$ gibt es nur für $k>0$).`,
-        String.raw`<b>Symmetrie:</b> nur gerade Potenzen ⇒ achsensymmetrisch zur $y$-Achse; nur ungerade ⇒ punktsymmetrisch zum Ursprung.`,
-        String.raw`<b>Ableiten nur nach $x$:</b> $k$ bleibt als Konstante. Beispiel: $(2kx^2)'=4kx$ und $(k^2)'=0$.`
+        String.raw`<b>$k$ bleibt als Buchstabe stehen.</b> Du kannst nichts „ausrechnen“, was $k$ enthält – du schreibst es mit.`,
+        String.raw`<b>Ableiten immer nach $x$.</b> $k$ verhält sich wie eine Zahl: $(3kx)'=3k$, und $(k^2)'=0$ (wie $(25)'=0$).`,
+        String.raw`<b>Einsetzen:</b> $f_k(2)$ heißt: überall $x$ durch 2 ersetzen. Das Ergebnis darf $k$ enthalten.`,
+        String.raw`<b>Bedingung beachten:</b> Steht im Text „$k>0$“, gilt das für die ganze Aufgabe. Es entscheidet später, ob eine Wurzel $\sqrt k$ existiert.`
       ],
       beispiel: {
-        q: String.raw`Gegeben ist $f_k(x)=x^4-2kx^2$ mit $k>0$. Bestimme Nullstellen, Symmetrie und $f_k'(x)$.`,
+        q: String.raw`Gegeben ist $f_k(x)=x^3-3kx$ mit $k>0$. Berechne $f_2(1)$, $f_k(2)$, $f_k'(x)$ und $f_k''(x)$.`,
         steps: [
-          { h: 'Ausklammern', t: String.raw`$f_k(x)=x^2\,(x^2-2k)$.` },
-          { h: 'Nullstellen', t: String.raw`$x^2=0\Rightarrow x=0$ (doppelt). $x^2=2k\Rightarrow x=\pm\sqrt{2k}$ (existiert, weil $k>0$).` },
-          { h: 'Symmetrie', t: String.raw`Nur gerade Potenzen ($x^4$, $x^2$): $f_k(-x)=f_k(x)$ ⇒ achsensymmetrisch zur $y$-Achse.` },
-          { h: 'Ableitung', t: String.raw`$f_k'(x)=4x^3-4kx=4x\,(x^2-k)$. ($k$ bleibt stehen wie eine Zahl.)` }
+          { h: 'k = 2 einsetzen (normale Funktion)', t: String.raw`$f_2(x)=x^3-6x$. Also $f_2(1)=1-6=-5$.` },
+          { h: 'x = 2 einsetzen, k stehen lassen', t: String.raw`$f_k(2)=2^3-3k\cdot2=8-6k$. ($k$ bleibt im Ergebnis.)` },
+          { h: 'Erste Ableitung nach x', t: String.raw`$(x^3)'=3x^2$ und $(3kx)'=3k$. Also $f_k'(x)=3x^2-3k$.` },
+          { h: 'Zweite Ableitung', t: String.raw`$f_k''(x)=6x$. ($3k$ ist eine Konstante und fällt weg.)` },
+          { h: 'Symmetrie', t: String.raw`Nur ungerade Potenzen ($x^3$ und $x^1$) ⇒ punktsymmetrisch zum Ursprung.` },
+          { h: 'Nullstellen (nur falls gefragt)', t: String.raw`Jeder Summand hat ein $x$, darum geht es mit Ausklammern: $x\,(x^2-3k)=0\Rightarrow x=0$ oder $x=\pm\sqrt{3k}$. Bei Funktionen mit einem Zusatz-Summanden (z. B. $+5$) funktioniert das nicht, dann löst du die Gleichung anders. Das Schwere in einer Schar sind aber nicht die Nullstellen.` }
         ]
       },
       fehler: [
-        String.raw`Nach $k$ statt nach $x$ ableiten (z. B. $(kx)'=x$ ✗ – richtig: $(kx)'=k$).`,
-        String.raw`Nicht ausklammern und dann umständlich mit der Formel für quadratische Gleichungen arbeiten.`,
-        String.raw`Bedingung $k>0$ (oder $k\ne0$) im Aufgabentext übersehen.`,
-        String.raw`Bei „doppelter Nullstelle“ nicht merken: Der Graph <b>berührt</b> die Achse, er schneidet sie nicht.`
+        String.raw`Nach $k$ statt nach $x$ ableiten: $(kx)'=k$, nicht $x$.`,
+        String.raw`$k$ mit einer Variablen verwechseln und versuchen, $k$ „auszurechnen“. $k$ bleibt als Buchstabe stehen.`,
+        String.raw`Den Summanden $k^2$ beim Ableiten behalten – er ist eine Konstante und wird $0$.`,
+        String.raw`Bedingung wie $k>0$ im Aufgabentext übersehen.`
       ],
       test: [
         { q: String.raw`Ableitung von $f_k(x)=3kx^2+k^2$ nach $x$?`, a: String.raw`$f_k'(x)=6kx$ (der Summand $k^2$ ist eine Konstante und fällt weg).` },
-        { q: String.raw`Nullstellen von $g_a(x)=x(x-a)(x+a)$?`, a: String.raw`$x=0$, $x=a$, $x=-a$.` },
-        { q: String.raw`Was bedeutet eine doppelte Nullstelle für den Graphen?`, a: String.raw`Der Graph berührt die $x$-Achse (kein Vorzeichenwechsel).` }
+        { q: String.raw`$f_k(x)=x^2-kx$. Was ist $f_k(3)$?`, a: String.raw`$9-3k$.` },
+        { q: String.raw`Was ist $f_k'(x)$ für $f_k(x)=kx^3-x$?`, a: String.raw`$3kx^2-1$.` }
       ],
       tasks: ['SA1']
     },
@@ -312,34 +314,37 @@ Beim Auto: <b>Tacho = Rate</b>, <b>Kilometerstand = Bestand</b>.`,
       id: 'L8', group: 'schar', num: 8, min: 12,
       title: 'Extrem- und Wendepunkte mit Parameter',
       short: 'Wie immer – nur mit k im Gepäck.',
-      idee: String.raw`Extrem- und Wendepunkte einer Schar berechnest du <b>genau wie sonst</b>. Das Ergebnis sind Koordinaten, die von $k$ abhängen, z. B. $T_k(\sqrt k\,|\,-k^2)$.`,
-      bild: String.raw`Der Tiefpunkt ist eine <b>Perle</b> auf dem Graphen. Drehst du am Regler $k$, rutscht die Perle mit – ihre Koordinaten sind Formeln in $k$.`,
+      idee: String.raw`Extrem- und Wendepunkte einer Schar berechnest du <b>genau wie bei jeder normalen Funktion</b>. Der Unterschied: Am Ende stehen in den Koordinaten Formeln mit $k$, z. B. $T(\sqrt k\,|\,-2k\sqrt k)$.`,
+      bild: String.raw`Der Tiefpunkt ist eine <b>Perle</b> auf dem Graphen. Drehst du am Regler $k$, rutscht die Perle mit – ihre Koordinaten sind deshalb Formeln in $k$.`,
       rezept: [
         String.raw`<b>Ableitungen bilden:</b> $f_k'$ und $f_k''$ (nach $x$).`,
-        String.raw`<b>Notwendig:</b> $f_k'(x)=0$ lösen – ausklammern!`,
-        String.raw`<b>Hinreichend:</b> $f_k''$ an den Stellen prüfen. $f_k''<0$: Hochpunkt; $f_k''>0$: Tiefpunkt. Das Vorzeichen kann von $k$ abhängen – nutze $k>0$.`,
-        String.raw`<b>$y$-Koordinate:</b> $x$-Wert in $f_k$ einsetzen (nicht in $f_k'$!).`,
-        String.raw`<b>Wendepunkt:</b> $f_k''(x)=0$, dann $f_k'''(x)\neq0$ (oder Vorzeichenwechsel von $f_k''$), $y$ aus $f_k$.`
+        String.raw`<b>Notwendig:</b> $f_k'(x)=0$ setzen und nach $x$ lösen. Das sind die Kandidaten für Extremstellen.`,
+        String.raw`<b>Hoch oder Tief?</b> Setze die Kandidaten in $f_k''$ ein: $f_k''<0$ ⇒ Hochpunkt (Berg), $f_k''>0$ ⇒ Tiefpunkt (Tal). Das Vorzeichen kann von $k$ abhängen – nutze die Bedingung ($k>0$).`,
+        String.raw`<b>$y$-Koordinate:</b> $x$-Wert in <b>$f_k$</b> einsetzen (nicht in $f_k'$!).`,
+        String.raw`<b>Wendepunkt:</b> $f_k''(x)=0$ lösen, dann prüfen $f_k'''(x)\neq0$, $y$ wieder aus $f_k$.`
       ],
       beispiel: {
-        q: String.raw`$f_k(x)=x^4-2kx^2$, $k>0$. Bestimme Extrem- und Wendepunkte.`,
+        q: String.raw`$f_k(x)=x^3-3kx$, $k>0$. Bestimme Extrem- und Wendepunkte.`,
         steps: [
-          { h: 'Ableitungen', t: String.raw`$f_k'(x)=4x^3-4kx$, &nbsp; $f_k''(x)=12x^2-4k$.` },
-          { h: 'Notwendige Bedingung', t: String.raw`$4x(x^2-k)=0\Rightarrow x=0$ oder $x=\pm\sqrt k$.` },
-          { h: 'Art der Extrempunkte', t: String.raw`$f_k''(0)=-4k<0$ ⇒ <b>Hochpunkt</b>. &nbsp; $f_k''(\pm\sqrt k)=12k-4k=8k>0$ ⇒ <b>Tiefpunkte</b>.` },
-          { h: 'y-Koordinaten', t: String.raw`$f_k(0)=0$. &nbsp; $f_k(\pm\sqrt k)=k^2-2k\cdot k=-k^2$. ⇒ $H(0|0)$, $T_{1,2}(\pm\sqrt k\,|\,-k^2)$.` },
-          { h: 'Wendepunkte', t: String.raw`$f_k''(x)=0\Rightarrow x^2=\tfrac k3\Rightarrow x=\pm\sqrt{k/3}$; $f_k(\pm\sqrt{k/3})=\tfrac{k^2}9-\tfrac{2k^2}3=-\tfrac59k^2$. ⇒ $W_{1,2}\bigl(\pm\sqrt{k/3}\,|\,-\tfrac59k^2\bigr)$.` }
+          { h: 'Ableitungen', t: String.raw`$f_k'(x)=3x^2-3k$, &nbsp; $f_k''(x)=6x$, &nbsp; $f_k'''(x)=6$.` },
+          { h: 'Notwendig: f′ = 0', t: String.raw`$3x^2-3k=0\Rightarrow x^2=k\Rightarrow x=\sqrt k$ oder $x=-\sqrt k$ (beides existiert, weil $k>0$).` },
+          { h: 'Hoch oder Tief?', t: String.raw`$f_k''(\sqrt k)=6\sqrt k>0$ ⇒ <b>Tiefpunkt</b>. &nbsp; $f_k''(-\sqrt k)=-6\sqrt k<0$ ⇒ <b>Hochpunkt</b>.` },
+          { h: 'y-Koordinaten (mit f, nicht f′)', t: String.raw`$f_k(\sqrt k)=(\sqrt k)^3-3k\sqrt k=k\sqrt k-3k\sqrt k=-2k\sqrt k$. &nbsp; $f_k(-\sqrt k)=+2k\sqrt k$.<br>⇒ $T(\sqrt k\,|\,-2k\sqrt k)$ und $H(-\sqrt k\,|\,2k\sqrt k)$.` },
+          { h: 'Wendepunkt', t: String.raw`$f_k''(x)=6x=0\Rightarrow x=0$, $f_k'''(0)=6\neq0$ ✓. $f_k(0)=0$ ⇒ $W(0\,|\,0)$ – für jedes $k$ derselbe Punkt.` }
         ]
       },
+      extraAfter: String.raw`<div class="mt-call ort"><div class="mt-call-h">Wenn du f″ nicht magst: Hoch/Tief über das Vorzeichen von f′</div>
+<p>$f_k'(x)=3x^2-3k$ ist eine nach oben geöffnete Parabel mit Nullstellen $\pm\sqrt k$. Links von $-\sqrt k$ ist $f_k'>0$ ($f_k$ steigt), dazwischen $f_k'<0$ ($f_k$ fällt), rechts $f_k'>0$ ($f_k$ steigt). Wechsel „steigt → fällt“ bei $-\sqrt k$ ⇒ Hochpunkt, „fällt → steigt“ bei $\sqrt k$ ⇒ Tiefpunkt. Dasselbe Prinzip wie bei „Graph von $f$ ↔ Stammfunktion $F$“: <b>Vorzeichenwechsel</b>.</p></div>`,
       fehler: [
         String.raw`$y$-Koordinate mit $f_k'$ statt $f_k$ ausrechnen.`,
-        String.raw`Die Art des Extremums vergessen oder ohne Begründung angeben.`,
-        String.raw`Vorzeichen von $f_k''$ falsch: $12k-4k=8k$, nicht $16k$ – langsam rechnen!`,
-        String.raw`Den Punkt $x=0$ übersehen, weil man nach $x$ geteilt hat (stattdessen ausklammern).`
+        String.raw`Die Art des Extremums (Hoch/Tief) vergessen oder ohne Begründung angeben.`,
+        String.raw`Wurzel ziehen und das Minus vergessen: $x^2=k$ hat <b>zwei</b> Lösungen $\pm\sqrt k$.`,
+        String.raw`Bei $(\sqrt k)^3$ stolpern: $(\sqrt k)^3=k\sqrt k$.`
       ],
       test: [
-        { q: String.raw`Warum klammert man bei $f_k'(x)=4x^3-4kx$ aus statt durch $x$ zu teilen?`, a: String.raw`Beim Teilen geht die Lösung $x=0$ verloren.` },
-        { q: String.raw`Mit welcher Funktion rechnest du die $y$-Koordinate eines Extrempunkts?`, a: String.raw`Mit der Ausgangsfunktion $f_k$.` }
+        { q: String.raw`Mit welcher Funktion rechnest du die $y$-Koordinate eines Extrempunkts?`, a: String.raw`Mit der Ausgangsfunktion $f_k$.` },
+        { q: String.raw`$f_k''(x_0)=-5k$ mit $k>0$. Hoch- oder Tiefpunkt?`, a: String.raw`Negativ ⇒ Hochpunkt.` },
+        { q: String.raw`$x^2=k$ mit $k>0$ – wie viele Lösungen?`, a: String.raw`Zwei: $x=\sqrt k$ und $x=-\sqrt k$.` }
       ],
       tasks: ['SA1', 'SA8']
     },
@@ -347,73 +352,121 @@ Beim Auto: <b>Tacho = Rate</b>, <b>Kilometerstand = Bestand</b>.`,
     {
       id: 'L9', group: 'schar', num: 9, min: 15,
       title: 'Ortskurve – die Spur eines Punktes',
-      short: 'In 4 Schritten k verschwinden lassen.',
+      short: 'In 3 Schritten k verschwinden lassen.',
       demo: 'ortskurve',
       idee: String.raw`Wandert ein Punkt (z. B. der Tiefpunkt $T_k$), wenn du $k$ veränderst, hinterlässt er eine <b>Spur</b>. Die Kurve, auf der alle diese Punkte liegen, heißt <b>Ortskurve</b>. Ihre Gleichung hat <b>kein $k$</b> mehr: $y=\dots(x)$.`,
-      bild: String.raw`Stell dir vor, du ziehst langsam am Regler $k$ und der Hochpunkt hinterlässt eine <b>Leuchtspur</b>. Diese Spur ist die Ortskurve. Im Demo darunter siehst du genau das.`,
+      bild: String.raw`Stell dir vor, du ziehst langsam am Regler $k$ und der Tiefpunkt hinterlässt eine <b>Leuchtspur</b>. Diese Spur ist die Ortskurve. Im Demo darunter siehst du genau das.`,
       rezept: [
-        String.raw`<b>Punkt in $k$ aufschreiben:</b> $x=\dots k\dots$ und $y=\dots k\dots$ (aus der Extrem-/Wendepunktrechnung).`,
+        String.raw`<b>Punkt aufschreiben.</b> Der Extrempunkt aus der letzten Aufgabe hat die Form $P(x\,|\,y)$, beide mit $k$: $x=\dots k\dots$ und $y=\dots k\dots$.`,
         String.raw`<b>Die $x$-Gleichung nach $k$ auflösen:</b> $k=\dots x\dots$.`,
-        String.raw`<b>In die $y$-Gleichung einsetzen:</b> Jetzt ist $k$ verschwunden: $y=\dots(x)$. Das ist die Ortskurve.`,
-        String.raw`<b>Bereich angeben</b> (aus der Bedingung an $k$, z. B. $k>0\Rightarrow x>0$) und <b>Probe</b> mit einem konkreten $k$.`
+        String.raw`<b>In die $y$-Gleichung einsetzen:</b> Jedes $k$ wird durch den $x$-Ausdruck ersetzt. Jetzt steht kein $k$ mehr da: $y=\dots(x)$. Fertig.`,
+        String.raw`<b>Bereich + Probe:</b> Wo darf $x$ liegen (z. B. $k>0\Rightarrow x>0$)? Probe: Wähle ein $k$, rechne den Punkt aus und setze ihn in die Ortskurve ein.`
       ],
       beispiel: {
-        q: String.raw`Tiefpunkte der Schar $f_k(x)=x^4-2kx^2$: $T(\sqrt k\,|\,-k^2)$. Bestimme die Ortskurve.`,
+        q: String.raw`Aus Lektion 8: Der Tiefpunkt von $f_k(x)=x^3-3kx$ ist $T(\sqrt k\,|\,-2k\sqrt k)$. Bestimme die Ortskurve.`,
         steps: [
-          { h: 'x und y in k', t: String.raw`$x=\sqrt k$ &nbsp;und&nbsp; $y=-k^2$.` },
-          { h: 'Nach k auflösen', t: String.raw`$x=\sqrt k\Rightarrow k=x^2$.` },
-          { h: 'Einsetzen', t: String.raw`$y=-k^2=-(x^2)^2=-x^4$.` },
-          { h: 'Ergebnis und Probe', t: String.raw`Ortskurve: $\boxed{y=-x^4}$. Probe: $k=4$ ⇒ $T(2\,|\,-16)$ und $-2^4=-16$ ✓ (der linke Tiefpunkt $(-\sqrt k|-k^2)$ liegt wegen $(-x)^4=x^4$ ebenfalls auf der Kurve).` }
+          { h: 'x und y aufschreiben', t: String.raw`$x=\sqrt k$ &nbsp;und&nbsp; $y=-2k\sqrt k$.` },
+          { h: 'x nach k auflösen', t: String.raw`$x=\sqrt k$. Beide Seiten quadrieren: $k=x^2$.` },
+          { h: 'In y einsetzen', t: String.raw`$y=-2k\sqrt k=-2\cdot x^2\cdot x=-2x^3$. (Statt $k$ steht $x^2$, statt $\sqrt k$ steht $x$.)` },
+          { h: 'Bereich und Probe', t: String.raw`Ortskurve: $\boxed{y=-2x^3}$ für $x>0$ (denn $x=\sqrt k>0$). Probe: $k=4\Rightarrow T(2\,|\,-16)$ und $-2\cdot2^3=-16$ ✓.` }
         ]
       },
-      extraAfter: String.raw`<div class="mt-call ort"><div class="mt-call-h">Hochbehälter-Typ (Scharfaktor x = c·k)</div>
-<p>Wenn $x=c\cdot k$ (z. B. $x=1{,}5k$), dann ist $k=\dfrac{x}{c}$. Beispiel: $f_k(t)=0{,}05\,t(t-k)(t-2k)(t-3k)$ hat den Hochpunkt $H\bigl(1{,}5k\,|\,0{,}028125\,k^4\bigr)$. Aus $x=1{,}5k$ folgt $k=\frac{x}{1{,}5}$, und $y=0{,}028125\cdot\frac{x^4}{1{,}5^4}=\dfrac{x^4}{180}$. Ortskurve: $y=\frac1{180}x^4$ ($x>0$).</p></div>
-<div class="mt-call ort"><div class="mt-call-h">Noch ein Beispiel (Scheitelpunkt einer Parabelschar)</div>
-<p>$f_t(x)=x^2-6tx+8t^2=(x-3t)^2-t^2$ ⇒ $S(3t\,|\,-t^2)$. $x=3t\Rightarrow t=\frac x3$ ⇒ $y=-\bigl(\frac x3\bigr)^2=-\dfrac{x^2}{9}$. Ortskurve: $y=-\frac19x^2$.</p></div>`,
+      extraAfter: String.raw`<div class="mt-call ort"><div class="mt-call-h">Noch ein Beispiel (einfacher Fall: Parabelschar)</div>
+<p>$f_k(x)=x^2-4kx+3=(x-2k)^2+3-4k^2$ ⇒ Scheitelpunkt $S(2k\,|\,3-4k^2)$. $x=2k\Rightarrow k=\frac x2$ ⇒ $y=3-4\bigl(\frac x2\bigr)^2=3-x^2$. Ortskurve: $y=3-x^2$.</p></div>
+<div class="mt-call ort"><div class="mt-call-h">Hochbehälter-Typ (Scharfaktor x = c·k)</div>
+<p>Wenn $x=c\cdot k$ (z. B. $x=1{,}5k$), dann ist $k=\dfrac{x}{c}$. Beispiel: $f_k(t)=0{,}05\,t(t-k)(t-2k)(t-3k)$ hat den Hochpunkt $H\bigl(1{,}5k\,|\,0{,}028125\,k^4\bigr)$. Aus $x=1{,}5k$ folgt $k=\frac{x}{1{,}5}$, und $y=0{,}028125\cdot\frac{x^4}{1{,}5^4}=\dfrac{x^4}{180}$. Ortskurve: $y=\frac1{180}x^4$ ($x>0$).</p></div>`,
       fehler: [
         String.raw`$k$ in der Antwort stehen lassen – eine Ortskurve enthält nur $x$ und $y$.`,
+        String.raw`Beim Einsetzen nur einen Teil ersetzen, z. B. $k$ ersetzen, aber $\sqrt k$ nicht.`,
         String.raw`Nach dem Auflösen $k=\frac{x}{c}$ den Bruch beim Potenzieren nicht mitpotenzieren: $\bigl(\frac{x}{1{,}5}\bigr)^4=\frac{x^4}{1{,}5^4}$.`,
-        String.raw`Den Definitionsbereich ($k>0\Rightarrow x>0$) vergessen.`,
-        String.raw`Statt der Ortskurve die Gleichung eines <b>einzelnen</b> Graphen angeben.`
+        String.raw`Den Definitionsbereich ($k>0\Rightarrow x>0$) vergessen.`
       ],
       test: [
         { q: String.raw`Ein Hochpunkt hat die Koordinaten $H(k\,|\,4k^3)$. Welche Ortskurve?`, a: String.raw`$x=k$ einsetzen: $y=4x^3$ (für $k>0$: $x>0$).` },
-        { q: String.raw`Ein Punkt hat $x=2k$ und $y=k^2$. Welche Ortskurve?`, a: String.raw`$k=\frac x2$ ⇒ $y=\bigl(\frac x2\bigr)^2=\frac14x^2$.` }
+        { q: String.raw`Ein Punkt hat $x=2k$ und $y=k^2$. Welche Ortskurve?`, a: String.raw`$k=\frac x2$ ⇒ $y=\bigl(\frac x2\bigr)^2=\frac14x^2$.` },
+        { q: String.raw`Ein Punkt hat $x=\sqrt k$ und $y=k+1$. Welche Ortskurve?`, a: String.raw`$k=x^2$ ⇒ $y=x^2+1$ (für $x>0$).` }
       ],
       tasks: ['SA2', 'SA3', 'SA9']
     },
     // ------------------------------------------------------------ L10
     {
-      id: 'L10', group: 'schar', num: 10, min: 12,
-      title: 'Parameter bestimmen & Schar aus Steckbrief',
-      short: '„Für welches k gilt …?“ und „eine Bedingung fehlt“.',
-      idee: String.raw`Bei „Bestimme $k$ so, dass …“ übersetzt du die Bedingung in eine <b>Gleichung für $k$</b> und löst sie. Bei Steckbriefaufgaben, in denen <b>eine Bedingung fehlt</b>, bleibt ein Parameter übrig – dann entsteht eine Schar.`,
-      bild: String.raw`„Bestimme $k$“ heißt: <b>Stelle den Regler so ein, dass die Bedingung stimmt.</b> Beim Steckbrief: Du hast zu wenige Hinweise für genau <i>eine</i> Funktion – deshalb passen viele, und sie bilden eine Schar.`,
+      id: 'L10', group: 'schar', num: 10, min: 10,
+      title: 'Für welches k gilt …?',
+      short: 'Bedingung in eine Gleichung für k verwandeln.',
+      idee: String.raw`Bei „Bestimme $k$ so, dass …“ übersetzt du die Bedingung in eine <b>Gleichung, in der nur $k$ unbekannt ist</b>, und löst sie.`,
+      bild: String.raw`„Bestimme $k$“ heißt: <b>Stelle den Regler so ein, dass die Bedingung stimmt.</b>`,
       rezept: [
-        String.raw`<b>Bedingung übersetzen:</b> „Punkt $P(x_0|y_0)$ liegt auf dem Graphen“ ⇒ $f_k(x_0)=y_0$. „Waagerechte Tangente bei $x_0$“ ⇒ $f_k'(x_0)=0$. „Extremwert ist $y_0$“ ⇒ $y$-Koordinate $=y_0$. „Fläche $=A_0$“ ⇒ Integral $=A_0$.`,
+        String.raw`<b>Bedingung übersetzen:</b> „Punkt $P(x_0|y_0)$ liegt auf dem Graphen“ ⇒ $f_k(x_0)=y_0$. „Waagerechte Tangente bei $x_0$“ ⇒ $f_k'(x_0)=0$. „Steigung $m$ bei $x_0$“ ⇒ $f_k'(x_0)=m$. „Fläche $=A_0$“ ⇒ Integral $=A_0$.`,
         String.raw`<b>Gleichung nach $k$ lösen.</b>`,
-        String.raw`<b>Prüfen:</b> passt $k$ zur Vorgabe (z. B. $k>0$)? Unpassende Lösungen streichen.`,
-        String.raw`<b>Schar aus Steckbrief:</b> Gleichungssystem aufstellen, so weit lösen wie möglich, den freien Parameter $t$ nennen und überall einsetzen.`
+        String.raw`<b>Prüfen:</b> passt $k$ zur Vorgabe (z. B. $k>0$)? Unpassende Lösungen streichen. Probe durch Einsetzen.`
       ],
       beispiel: {
-        q: String.raw`(1) $f_k(x)=x^3-kx$. Für welches $k$ geht der Graph durch $P(2|-4)$? &nbsp; (2) Eine Parabel $f(x)=ax^2+bx+c$ hat ihren Scheitel bei $x=2$ und es gilt $f(0)=1$. Gib die Schar an.`,
+        q: String.raw`$f_k(x)=x^3-kx$. Für welches $k$ geht der Graph durch $P(2|-4)$?`,
         steps: [
-          { h: '(1) Bedingung als Gleichung', t: String.raw`$f_k(2)=-4\Rightarrow 8-2k=-4$.` },
-          { h: '(1) Lösen', t: String.raw`$-2k=-12\Rightarrow k=6$. Probe: $f_6(2)=8-12=-4$ ✓.` },
-          { h: '(2) Bedingungen aufschreiben', t: String.raw`Scheitel bei $x=2$: $f'(2)=0\Rightarrow4a+b=0$. &nbsp; $f(0)=1\Rightarrow c=1$.` },
-          { h: '(2) Parameter wählen', t: String.raw`Aus $4a+b=0$ folgt $b=-4a$. Es bleibt $a$ frei ⇒ <b>Schar</b> $f_a(x)=ax^2-4ax+1$ (mit $a\ne0$, sonst wäre es keine Parabel).` }
+          { h: 'Bedingung als Gleichung', t: String.raw`$f_k(2)=-4\Rightarrow 8-2k=-4$.` },
+          { h: 'Lösen', t: String.raw`$-2k=-12\Rightarrow k=6$.` },
+          { h: 'Probe', t: String.raw`$f_6(2)=8-12=-4$ ✓.` }
         ]
       },
       fehler: [
         String.raw`Bedingung nicht in eine Gleichung übersetzt, sondern „irgendwie“ gerechnet.`,
-        String.raw`Bei $k^2=9$ nur $k=3$ nehmen und $k=-3$ nicht prüfen (oder umgekehrt).`,
-        String.raw`Die Randbedingung ($k>0$, $a\ne0$) nicht prüfen.`
+        String.raw`Bei $k^2=9$ nur $k=3$ nehmen und $k=-3$ nicht prüfen.`,
+        String.raw`Die Randbedingung ($k>0$) nicht prüfen.`
       ],
       test: [
-        { q: String.raw`$f_k(x)=kx^2-4x$ soll bei $x=1$ eine waagerechte Tangente haben. Wie lautet die Gleichung für $k$?`, a: String.raw`$f_k'(1)=2k-4=0\Rightarrow k=2$.` },
-        { q: String.raw`Wie erkennst du in einem Steckbrief-LGS, dass eine Schar entsteht?`, a: String.raw`Es gibt weniger unabhängige Gleichungen als Unbekannte – ein Parameter bleibt frei.` }
+        { q: String.raw`$f_k(x)=kx^2-4x$ soll bei $x=1$ eine waagerechte Tangente haben. Welche Gleichung für $k$?`, a: String.raw`$f_k'(1)=2k-4=0\Rightarrow k=2$.` },
+        { q: String.raw`Der Graph von $f_k(x)=kx^2+1$ geht durch $(2|9)$. Welches $k$?`, a: String.raw`$4k+1=9\Rightarrow k=2$.` }
       ],
-      tasks: ['SA4', 'SA5', 'SA7', 'SB3']
+      tasks: ['SA4', 'SA7']
+    },
+    // ------------------------------------------------------------ L11
+    {
+      id: 'L11', group: 'schar', num: 11, min: 20,
+      title: 'Steckbrief → Schar → Tangente → Dreieck',
+      short: 'Der Aufgabentyp aus deiner Beispielklausur, Schritt für Schritt.',
+      idee: String.raw`In deiner Beispielklausur kommt immer derselbe Ablauf: (a) <b>Steckbrief → Schar</b> bestimmen, (b) <b>für welche Werte</b> alles stimmt, (c) <b>Tangente</b>, (d) <b>Dreieck mit den Achsen</b>, (e) <b>mittlere Änderungsrate</b>. Jeder Schritt ist für sich leicht – es zählt nur die Reihenfolge.`,
+      bild: String.raw`Du bekommst z. B. <b>3 Hinweise</b>, brauchst aber <b>4 Zahlen</b> ($a,b,c,d$). Eine Zahl bleibt übrig – sie bleibt als Buchstabe stehen und ist der Regler der Schar.`,
+      rezept: [
+        String.raw`<b>Ansatz aufschreiben:</b> $f(x)=ax^3+bx^2+cx+d$, &nbsp; $f'(x)=3ax^2+2bx+c$, &nbsp; $f''(x)=6ax+2b$.`,
+        String.raw`<b>Jeden Hinweis in eine Gleichung übersetzen:</b> Extremum bei $x_0$ ⇒ $f'(x_0)=0$. Wendepunkt bei $x_0$ ⇒ $f''(x_0)=0$. Punkt $(x_0|y_0)$ ⇒ $f(x_0)=y_0$.`,
+        String.raw`<b>Lösen von der leichtesten Gleichung aus:</b> Eine Gleichung nach einem Buchstaben auflösen, in die nächste einsetzen, usw. Alles durch einen Buchstaben ausdrücken (z. B. $a$). Der bleibt stehen.`,
+        String.raw`<b>Schar hinschreiben</b> und eine Probe machen.`,
+        String.raw`<b>„Für welche $a$ stimmt das?“</b> Prüfe: Wendestelle ⇒ $f''$ wechselt das Vorzeichen. Extremum ⇒ $f''(x_0)\neq0$. Außerdem $a\neq0$, sonst ist die Funktion nicht mehr 3. Grades.`,
+        String.raw`<b>Tangente an $x_0$:</b> $t(x)=f(x_0)+f'(x_0)\,(x-x_0)$.`,
+        String.raw`<b>Dreieck mit den Achsen:</b> $y$-Achsenabschnitt $=t(0)$, $x$-Achsenabschnitt aus $t(x)=0$. Fläche $A=\tfrac12\cdot|x_s|\cdot|y_s|$.`,
+        String.raw`<b>Mittlere Änderungsrate auf $[u;v]$:</b> $\dfrac{f(v)-f(u)}{v-u}$ (Steigung der Sekante).`
+      ],
+      beispiel: {
+        q: String.raw`Eine ganzrationale Funktion 3. Grades hat bei $x=1$ ein lokales Extremum und bei $x=3$ einen Wendepunkt mit dem Funktionswert $0$. (a) Bestimme die Schar $f_a$. (b) Für welche $a$ stimmen alle Bedingungen? (c) Tangente an $f_1$ bei $x=2$. (d) Dreieck mit den Achsen. (e) Mittlere Änderungsrate von $f_1$ auf $[0;3]$.`,
+        steps: [
+          { h: '(a) Ansatz und Ableitungen', t: String.raw`$f=ax^3+bx^2+cx+d$, $f'=3ax^2+2bx+c$, $f''=6ax+2b$.` },
+          { h: '(a) Hinweise → Gleichungen', t: String.raw`Extremum bei 1: $f'(1)=0\Rightarrow 3a+2b+c=0$ &nbsp;(I)<br>Wendepunkt bei 3: $f''(3)=0\Rightarrow 18a+2b=0$ &nbsp;(II)<br>$f(3)=0\Rightarrow 27a+9b+3c+d=0$ &nbsp;(III)` },
+          { h: '(a) Lösen: von (II) aus', t: String.raw`(II): $b=-9a$. &nbsp; In (I): $3a-18a+c=0\Rightarrow c=15a$. &nbsp; In (III): $27a-81a+45a+d=0\Rightarrow d=9a$.` },
+          { h: '(a) Schar hinschreiben', t: String.raw`$f_a(x)=ax^3-9ax^2+15ax+9a$, &nbsp; $a\neq0$.` },
+          { h: '(b) Für welche a?', t: String.raw`$f_a'(x)=3a(x-1)(x-5)$ und $f_a''(x)=6a(x-3)$. $f_a''$ wechselt bei $x=3$ das Vorzeichen (für $a\neq0$) ⇒ Wendestelle ✓. $f_a''(1)=-12a\neq0$ ⇒ Extremum bei $x=1$ ✓. Für $a=0$ wäre $f=0$ kein 3. Grad. ⇒ <b>für alle $a\neq0$</b>.` },
+          { h: '(c) Tangente für a = 1 bei x = 2', t: String.raw`$f_1(x)=x^3-9x^2+15x+9$, $f_1'(x)=3x^2-18x+15$. $f_1(2)=8-36+30+9=11$, $f_1'(2)=12-36+15=-9$. &nbsp; $t(x)=11-9(x-2)=\boxed{-9x+29}$.` },
+          { h: '(d) Dreieck', t: String.raw`$y$-Achsenabschnitt: $t(0)=29$. $x$-Achsenabschnitt: $-9x+29=0\Rightarrow x=\frac{29}{9}$. &nbsp; $A=\tfrac12\cdot\tfrac{29}{9}\cdot29=\dfrac{841}{18}\approx46{,}7$.` },
+          { h: '(e) Mittlere Änderungsrate', t: String.raw`$f_1(0)=9$, $f_1(3)=27-81+45+9=0$. &nbsp; $\dfrac{0-9}{3-0}=\boxed{-3}$.` }
+        ]
+      },
+      extraAfter: String.raw`<div class="mt-call ort"><div class="mt-call-h">Wenn du bei „Lösen“ festhängst</div>
+<p>Keine Panik: Gleichungen wie $18a+2b=0$ lösen sich in einem Schritt zu $b=-9a$. Gehe immer so vor: <b>Welche Gleichung hat die wenigsten Buchstaben?</b> Die zuerst nach einem Buchstaben auflösen. Wenn du dich festfährst, kannst du in Teil B mit dem GTR/CAS rechnen (Matrix oder solve). In Teil A bekommst du meist Kontrollwerte und die Zahlen sind einfach.</p></div>
+<div class="mt-call ort"><div class="mt-call-h">Welchen Buchstaben bleibt frei?</div>
+<p>Das darfst du entscheiden. Bei dir kann es $a$ sein (wie hier) oder die Konstante $d=t$. Dann sieht die Schar etwas anders aus, ist aber dieselbe Funktionenmenge. Wichtig: Eine Zahl bleibt stehen, alles andere wird in ihr ausgedrückt.</p></div>`,
+      fehler: [
+        String.raw`Aus Extremum $f'(x_0)=0$ und aus Wendepunkt $f''(x_0)=0$ verwechseln.`,
+        String.raw`Beim Wendepunkt „Funktionswert 0“ vergessen: das ist die dritte Gleichung $f(3)=0$.`,
+        String.raw`Bei der Tangente $f(x_0)$ vergessen: $t(x)=f(x_0)+f'(x_0)(x-x_0)$, nicht nur $f'(x_0)(x-x_0)$.`,
+        String.raw`Beim Dreieck die Achsenabschnitte als Punkte angeben. Du brauchst nur ihre <b>Längen</b>.`,
+        String.raw`Mittlere Änderungsrate mit der Ableitung verwechseln. Sie ist ein <b>Bruch aus zwei Funktionswerten</b>.`
+      ],
+      test: [
+        { q: String.raw`Wie übersetzt du „Wendepunkt bei $x=3$ mit Funktionswert $0$“?`, a: String.raw`$f''(3)=0$ und $f(3)=0$.` },
+        { q: String.raw`Tangente an $f$ bei $x_0=1$ mit $f(1)=5$, $f'(1)=2$?`, a: String.raw`$t(x)=5+2(x-1)=2x+3$.` },
+        { q: String.raw`Die Tangente $t(x)=2x+6$ schneidet die Achsen. Dreiecksfläche?`, a: String.raw`$y$: $6$. $x$: $2x+6=0\Rightarrow x=-3$. $A=\tfrac12\cdot3\cdot6=9$.` },
+        { q: String.raw`Mittlere Änderungsrate von $f(x)=x^2$ auf $[1;3]$?`, a: String.raw`$\dfrac{9-1}{3-1}=4$.` }
+      ],
+      tasks: ['SA5', 'SB3']
     }
   ];
 
