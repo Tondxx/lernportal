@@ -230,14 +230,14 @@
     const pool = recallPool(force).slice(0, 5);
     const head = `<div class="page-head"><span class="kicker">Abruf · ca. 3 Min.</span><h2 class="h-1">Was weißt du noch?</h2><p class="muted">Karten aus Lektionen, die du schon verstanden hast. Richtig: Sie kommen in 1, 3, 7, 21 Tagen wieder. Falsch: morgen.</p></div>`;
     if (!pool.length && !force && recallPool(true).length) {
-      return { title: 'Abruf', back: '#/', nav: 'heute', focus: true, html: `<div ${subjStyle(ms)} class="rise">${head}<div class="empty">Heute ist keine Karte fällig. Genau so soll es sein: Karten kommen erst wieder, kurz bevor du sie vergessen würdest (nach 1, 3, 7, 21 Tagen).</div><a class="btn block" href="#/abruf/alle">${icon('flip')}Trotzdem ein paar Karten üben</a></div>` };
+      return { title: 'Abruf', back: '#/wiederholen', nav: 'wdh', focus: true, html: `<div ${subjStyle(ms)} class="rise">${head}<div class="empty">Heute ist keine Karte fällig. Genau so soll es sein: Karten kommen erst wieder, kurz bevor du sie vergessen würdest (nach 1, 3, 7, 21 Tagen).</div><a class="btn block" href="#/abruf/alle">${icon('flip')}Trotzdem ein paar Karten üben</a></div>` };
     }
     if (!pool.length) {
       const nl = LESSONS.find(l => !state.done[l.id]);
-      return { title: 'Abruf', back: '#/', nav: 'heute', focus: true, html: `<div ${subjStyle(ms)} class="rise">${head}<div class="empty">Noch keine Karten. Abfragen kann man nur, was man schon einmal gelernt hat.</div>${nl ? `<a class="btn primary block" href="#/lektion/${nl.id}">Lektion ${nl.num} lernen ${icon('arrow', 'go')}</a>` : ''}</div>` };
+      return { title: 'Abruf', back: '#/wiederholen', nav: 'wdh', focus: true, html: `<div ${subjStyle(ms)} class="rise">${head}<div class="empty">Noch keine Karten. Abfragen kann man nur, was man schon einmal gelernt hat.</div>${nl ? `<a class="btn primary block" href="#/lektion/${nl.id}">Lektion ${nl.num} lernen ${icon('arrow', 'go')}</a>` : ''}</div>` };
     }
     return {
-      title: 'Abruf', back: '#/', nav: 'heute', focus: true,
+      title: 'Abruf', back: '#/wiederholen', nav: 'wdh', focus: true,
       html: `<div ${subjStyle(ms)} class="rise">${head}<div id="flashHost"></div></div>`,
       after(root) {
         flash($('#flashHost', root), pool, {
@@ -732,6 +732,7 @@
     if (a === 'aufgabe') return ['aufgabe', b];
     if (a === 'abruf') return ['abruf', b];
     if (a === 'fehlerjagd') return ['fehlerjagd'];
+    if (a === 'wiederholen') return ['wiederholen'];
     if (a === 'jagd') return ['jagd', b];
     if (a === 'session') return ['session', b];
     if (a === 'ordner') return ['ordner', b];
@@ -772,7 +773,7 @@
   }
 
   function setNav(name) {
-    const items = ['heute', 'faecher', 'plan'];
+    const items = ['heute', 'wdh', 'faecher', 'plan'];
     const idx = Math.max(0, items.indexOf(name));
     $$('[data-route]').forEach(a => a.toggleAttribute('aria-current', false));
     $$('[data-route]').forEach(a => { if (a.dataset.route === name) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });

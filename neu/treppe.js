@@ -177,71 +177,111 @@
     });
   }
 
+  // Entwurf der Selbstkorrektur (bis „Speichern“): übersteht Seitenwechsel und Zurückgehen in diesem Tab
+  const draftKey = (LR, id) => `lr:draft:${LR.activeId()}:${id}`;
+  function draftGet(LR, id) { try { return JSON.parse(sessionStorage.getItem(draftKey(LR, id)) || 'null'); } catch (e) { return null; } }
+  function draftSet(LR, id, d) { try { if (d) sessionStorage.setItem(draftKey(LR, id), JSON.stringify(d)); else sessionStorage.removeItem(draftKey(LR, id)); } catch (e) { /* egal */ } }
+
   // Selbstkorrektur: Sicherheit → Erwartungshorizont abhaken → BE → Fehlertypen → speichern
   function selfCheck(ctx, host, part, opts, done) {
     const { M, icon, LR } = ctx;
     const B = api(ctx);
+    const n = part.schritte.length;
+    const draft = draftGet(LR, part.id) || {};
     let conf = 0;
+    const rating = {}, ftSel = {};
+    const keep = () => draftSet(LR, part.id, { conf, rating, ft: ftSel });
     host.innerHTML = `<div class="sc">
       <div class="sc-conf"><span class="kicker">Bevor du die Lösung siehst</span><p class="sc-q">Wie sicher bist du, dass deine Lösung stimmt?</p>
         <div class="conf">${['unsicher', 'ziemlich sicher', 'sehr sicher'].map((l, i) => `<button type="button" data-conf="${i + 1}"><b>${i + 1}</b>${l}</button>`).join('')}</div></div>
       <div class="sc-ewh" hidden></div></div>`;
     host.hidden = false;
-    host.querySelectorAll('[data-conf]').forEach(b => b.addEventListener('click', () => {
-      conf = +b.dataset.conf;
-      host.querySelectorAll('[data-conf]').forEach(x => { x.classList.toggle('on', x === b); x.disabled = true; });
-      showEwh();
-    }));
+    const pickConf = (v, silent) => {
+      conf = v;
+      host.querySelectorAll('[data-conf]').forEach(x => { x.classList.toggle('on', +x.dataset.conf === v); x.disabled = true; });
+      keep();
+      showEwh(silent);
+    };
+    host.querySelectorAll('[data-conf]').forEach(b => b.addEventListener('click', () => pickConf(+b.dataset.conf)));
 
-    function showEwh() {
+    function showEwh(silent) {
       const ewh = host.querySelector('.sc-ewh');
-      const rating = {};
-      ewh.innerHTML = `<div class="sc-title"><span class="kicker">Erwartungshorizont · ${part.be} BE</span><p class="muted">Vergleiche Schritt für Schritt mit deinem Blatt und hake ehrlich ab.</p></div>
+      ewh.innerHTML = `<div class="sc-title"><span class="kicker">Erwartungshorizont · ${part.be} BE</span><p class="muted">Vergleiche jeden Schritt mit deinem Blatt und tippe an, wie er bei dir war. Bei „fast“ oder „fehlte“ kannst du sagen, woran es lag.</p></div>
         <div class="rw">${part.schritte.map((st, i) => B.step(st, i, {
           casFold: opts.casFold,
           body: st.kern ? `<div class="rw-math prose">${M(st.rechnung)}</div>` : undefined, // Kernpunkte (Text statt Rechnung)
           after: `<div class="rate3" role="group" aria-label="Wie war dein Schritt?">${[['hatte ich', 'full'], ['fast', 'half'], ['fehlte', 'none']].map(([l, v]) => `<button type="button" data-rate="${i}" data-v="${v}">${l}</button>`).join('')}</div>
-            <div class="ftype" data-ft="${i}" hidden><span class="kicker">Was war los?</span><div class="ft-chips">${FTYPES.map(f => `<button type="button" data-ftv="${f}">${f}</button>`).join('')}</div></div>`
+            <div class="ftype" data-ft="${i}" hidden><span class="kicker">Woran lag es? (optional)</span><div class="ft-chips">${FTYPES.map(f => `<button type="button" data-ftv="${f}">${f}</button>`).join('')}</div></div>`
         })).join('')}</div>
-        <div class="sc-result" hidden></div>`;
+        <div class="sc-result"></div>
+        <div class="sc-prog" role="status"></div>`;
       ewh.hidden = false;
-      ewh.scrollIntoView({ behavior: ctx.reduced ? 'auto' : 'smooth', block: 'start' });
-      const ftSel = {};
-      ewh.querySelectorAll('[data-rate]').forEach(b => b.addEventListener('click', () => {
-        const i = +b.dataset.rate;
-        rating[i] = b.dataset.v;
-        ewh.querySelectorAll(`[data-rate="${i}"]`).forEach(x => x.classList.toggle('on', x === b));
-        ewh.querySelector(`[data-ft="${i}"]`).hidden = b.dataset.v === 'full';
-        update();
-      }));
+      if (!silent) ewh.scrollIntoView({ behavior: ctx.reduced ? 'auto' : 'smooth', block: 'start' });
+      const stepEl = i => ewh.querySelectorAll('.rw > .rw-step')[i];
+      const rate = (i, v, scroll) => {
+        rating[i] = v;
+        ewh.querySelectorAll(`[data-rate="${i}"]`).forEach(x => x.classList.toggle('on', x.dataset.v === v));
+        ewh.querySelector(`[data-ft="${i}"]`).hidden = v === 'full';
+        stepEl(i).classList.add('rated');
+        keep(); update();
+        if (scroll && v === 'full') nextOpen(i);
+      };
+      const nextOpen = i => { // zum nächsten noch nicht bewerteten Schritt, sonst zum Ergebnis
+        const j = part.schritte.findIndex((_, k) => k > i && !rating[k]);
+        const el = j >= 0 ? stepEl(j) : ewh.querySelector('.sc-result');
+        if (el) setTimeout(() => el.scrollIntoView({ behavior: ctx.reduced ? 'auto' : 'smooth', block: j >= 0 ? 'center' : 'start' }), 120);
+      };
+      ewh.querySelectorAll('[data-rate]').forEach(b => b.addEventListener('click', () => rate(+b.dataset.rate, b.dataset.v, true)));
       ewh.querySelectorAll('[data-ftv]').forEach(b => b.addEventListener('click', () => {
         const i = +b.closest('[data-ft]').dataset.ft;
         ftSel[i] = ftSel[i] === b.dataset.ftv ? null : b.dataset.ftv;
         b.parentElement.querySelectorAll('button').forEach(x => x.classList.toggle('on', x.dataset.ftv === ftSel[i]));
+        keep();
+        if (ftSel[i]) nextOpen(i);
       }));
       function update() {
-        const res = ewh.querySelector('.sc-result');
-        if (Object.keys(rating).length < part.schritte.length) { res.hidden = true; return; }
+        const res = ewh.querySelector('.sc-result'), prog = ewh.querySelector('.sc-prog');
+        const k = Object.keys(rating).length;
+        if (k < n) {
+          res.innerHTML = `<div class="sc-open"><p><b>${k} von ${n} Schritten bewertet.</b> Bewerte alle Schritte, dann siehst du deine Punkte und kannst speichern.</p>
+            ${k > 0 ? `<button class="btn small" type="button" data-rest>${icon('check')}Alle übrigen: hatte ich</button>` : ''}</div>`;
+          const rb = res.querySelector('[data-rest]');
+          if (rb) rb.onclick = () => { part.schritte.forEach((_, i) => { if (!rating[i]) rate(i, 'full', false); }); res.scrollIntoView({ behavior: ctx.reduced ? 'auto' : 'smooth', block: 'start' }); };
+          prog.hidden = false;
+          prog.innerHTML = `<span class="sc-prog-bar"><i style="width:${Math.round(k / n * 100)}%"></i></span><span>${k} von ${n} bewertet</span>`;
+          return;
+        }
+        prog.hidden = false;
+        prog.innerHTML = `<span class="sc-prog-bar"><i style="width:100%"></i></span><button type="button" class="link" data-tores>Alles bewertet · zum Speichern</button>`;
+        prog.querySelector('[data-tores]').onclick = () => res.scrollIntoView({ behavior: ctx.reduced ? 'auto' : 'smooth', block: 'start' });
         const pts = part.schritte.reduce((a, st, i) => a + (rating[i] === 'full' ? st.punkte : rating[i] === 'half' ? st.punkte / 2 : 0), 0);
         const pct = Math.round(pts / part.be * 100);
         const hyper = conf === 3 && pct < 60;
-        res.hidden = false;
         res.innerHTML = `<div class="score-big"><div><b class="num">${fmt(pts)}</b><span>von ${part.be} BE</span></div><div class="np"><b class="num">${notenpunkte(pct)}</b><span>Notenpunkte</span></div></div>
-          ${hyper ? `<p class="hyper">${icon('alert')}Du warst dir sicher, aber es hat nicht gestimmt. Genau solche Fehler merkt man sich am besten. Diese Aufgabe kommt bald wieder.</p>` : ''}
+          ${hyper ? `<p class="hyper">${icon('alert')}Du warst dir sicher, aber es hat nicht gestimmt. Genau solche Fehler merkt man sich am besten. Sie kommen sofort in die Fehlerjagd.</p>` : ''}
           <p class="dim np-note">Umrechnung nach der üblichen Oberstufen-Tabelle (95 % = 15 NP … 20 % = 1 NP). Deine Lehrkraft kann abweichen.</p>
           <button class="btn primary block" type="button" data-save>${icon('check')}Ergebnis speichern</button>`;
         res.querySelector('[data-save]').onclick = () => {
           // Besondere Aufgaben (opts.kind) melden sich als „extra“, normale Aufgaben als „practice“
           if (opts.kind) LR.log('extra', `${opts.topic}:${opts.kind}`, { topic: opts.topic, kind: opts.kind, pct: Math.round(pts / part.be * 100), pts, max: part.be, conf });
           else LR.log('practice', part.id, { pts, max: part.be, conf, topic: opts.topic });
+          const nMiss = part.schritte.filter((st, i) => rating[i] !== 'full').length;
           part.schritte.forEach((st, i) => { if (rating[i] !== 'full') LR.log('mistake', `${part.id}:${i}`, { typ: ftSel[i] || null, rating: rating[i], topic: opts.topic, conf }); });
+          draftSet(LR, part.id, null);
           ewh.querySelectorAll('button').forEach(x => { x.disabled = true; });
-          res.querySelector('[data-save]').outerHTML = `<p class="saved">${icon('check')}Gespeichert${Object.values(rating).some(r => r !== 'full') ? '. Fehler sind für die Fehlerjagd vorgemerkt.' : '.'}</p>`;
+          prog.remove();
+          res.querySelector('[data-save]').outerHTML = `<p class="saved">${icon('check')}<span>Gespeichert.${nMiss ? ` ${nMiss === 1 ? 'Der Schritt ist' : `${nMiss} Schritte sind`} jetzt in der <a class="link" href="#/fehlerjagd">Fehlerjagd</a> und ${nMiss === 1 ? 'kommt' : 'kommen'} ${conf === 3 ? 'sofort' : 'morgen'} wieder.` : ''}</span></p>`;
           done(pts, part.be);
         };
       }
+      // Entwurf wiederherstellen (z. B. nach Zurückgehen)
+      Object.keys(draft.rating || {}).forEach(i => rate(+i, draft.rating[i], false));
+      Object.keys(draft.ft || {}).forEach(i => { if (draft.ft[i]) { ftSel[i] = draft.ft[i]; ewh.querySelectorAll(`[data-ft="${i}"] [data-ftv]`).forEach(x => x.classList.toggle('on', x.dataset.ftv === draft.ft[i])); } });
+      update();
     }
+    if (draft.conf) pickConf(draft.conf, true);
   }
+  const hasDraft = (LR, id) => !!(draftGet(LR, id) || {}).conf;
 
   // ------------------------------------------------------------ Demo: Tangente gleitet über den Graphen
   function demoTangente(host, def, ctx) {
@@ -509,6 +549,7 @@
         const nOk = Object.values(cpRes).filter(Boolean).length;
         host.insertAdjacentHTML('afterbegin', `<p class="cp-sum">${icon('target')}Deine eingetippten Zwischenergebnisse: <b>${nOk} von ${p.checkpoints.length}</b> richtig.</p>`);
       };
+      if (hasDraft(LR, p.id)) root.querySelector('#toEwh').click(); // angefangene Bewertung wieder öffnen
     }
 
     if (st.typ === 'abi') {
@@ -537,6 +578,7 @@
             }
           });
         };
+        if (hasDraft(LR, p.id)) root.querySelector(`[data-ewh="${pi}"]`).click(); // angefangene Bewertung wieder öffnen
       });
     }
   }
@@ -544,6 +586,6 @@
   // Werkzeugkasten für extras.js (Blurting, Fehler finden, Erläutern, Deuten, Notation)
   window.LRTreppe = Object.assign(T, {
     progress, notenpunkte, parseNum, NAMES, PASS,
-    kit: { api, bindMcq, bindCheckpoints, selfCheck, bindAsk, toast, near, fmt, FTYPES }
+    kit: { api, bindMcq, bindCheckpoints, selfCheck, hasDraft, bindAsk, toast, near, fmt, FTYPES }
   });
 })();

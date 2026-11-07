@@ -105,7 +105,7 @@
       ${later.length ? `<section class="section"><h3 class="h-2" style="margin-bottom:12px">Kommt später wieder</h3><div class="list">${later.map(x => row(x, false)).join('')}</div></section>` : ''}
       ${h.lost.length ? `<section class="section"><h3 class="h-2" style="margin-bottom:6px">Aufgaben mit verlorenen Punkten</h3><p class="row-sub" style="margin-bottom:12px">Nochmal auf Papier rechnen und neu bewerten. Mehr Punkte als vorher zählt fürs Fehler-Segment.</p><div class="list">${h.lost.map(({ t, p, v }) => `<a class="row" href="#/aufgabe/${t.id}"><span class="row-main"><span class="row-title">${esc(t.title)} · ${esc(p.label)}</span><span class="row-sub">${v} von ${p.be} BE</span></span>${icon('right', 'chev')}</a>`).join('')}</div></section>` : ''}
     </div>`;
-    return { title: 'Fehlerjagd', back: '#/', nav: 'heute', html };
+    return { title: 'Fehlerjagd', back: '#/wiederholen', nav: 'wdh', html };
   }
 
   // ------------------------------------------------------------ Fehlerjagd: ein Fehler
@@ -114,7 +114,7 @@
     const h = huntState();
     const x = ref ? h.open.find(m => m.ref === ref) : h.due[0];
     if (!x) {
-      return { title: 'Fehlerjagd', back: '#/fehlerjagd', nav: 'heute', focus: true, html: `<div class="rise"><div class="done-wrap"><div class="done-badge">${icon('check')}</div><h2 class="h-1">Alles gejagt für heute.</h2><p class="muted">${h.open.length ? `Noch ${h.open.length} offen, sie kommen an späteren Tagen wieder.` : 'Keine offenen Fehler.'}</p>${sessionBack()}<a class="btn" href="#/fehlerjagd">Zur Übersicht</a></div></div>` };
+      return { title: 'Fehlerjagd', back: '#/fehlerjagd', nav: 'wdh', focus: true, html: `<div class="rise"><div class="done-wrap"><div class="done-badge">${icon('check')}</div><h2 class="h-1">Alles gejagt für heute.</h2><p class="muted">${h.open.length ? `Noch ${h.open.length} offen, sie kommen an späteren Tagen wieder.` : 'Keine offenen Fehler.'}</p>${sessionBack()}<a class="btn" href="#/fehlerjagd">Zur Übersicht</a></div></div>` };
     }
     const inf = x.info;
     const pos = h.due.findIndex(m => m.ref === x.ref);
@@ -146,7 +146,7 @@
       ${body}
       <div id="huntRes" class="finish" hidden></div></div>`;
     return {
-      title: 'Fehlerjagd', back: '#/fehlerjagd', nav: 'heute', focus: true, html,
+      title: 'Fehlerjagd', back: '#/fehlerjagd', nav: 'wdh', focus: true, html,
       after(root) {
         const sr = $('#showRev', root);
         if (sr) sr.onclick = () => { $('#rev', root).hidden = false; sr.remove(); $('#rate', root).hidden = false; $('#rev', root).scrollIntoView({ behavior: A.reduced ? 'auto' : 'smooth', block: 'center' }); };
@@ -232,7 +232,7 @@
   function sessionPick() {
     const { icon } = A;
     const tile = (id, ic) => `<button class="sess-pick" type="button" data-sstart="${id}"><span class="next-ico">${icon(ic)}</span><span class="row-main"><span class="row-title">${MODES[id].name}</span><span class="row-sub">${MODES[id].kurz}</span></span>${icon('arrow', 'go')}</button>`;
-    return { title: 'Session', back: '#/', nav: 'heute', html: `<div class="rise"><div class="page-head"><span class="kicker">Session</span><h2 class="h-display">Wie viel Zeit hast du?</h2><p class="muted">Die Uhr läuft oben in der Kopfzeile mit, auch wenn du in eine Lektion wechselst.</p></div>
+    return { title: 'Session', back: '#/wiederholen', nav: 'wdh', html: `<div class="rise"><div class="page-head"><span class="kicker">Session</span><h2 class="h-display">Wie viel Zeit hast du?</h2><p class="muted">Die Uhr läuft oben in der Kopfzeile mit, auch wenn du in eine Lektion wechselst.</p></div>
       <h3 class="h-2 sess-h">Kurz</h3><div class="sess-picks">${tile('m3', 'flip')}${tile('m10', 'play')}${tile('m20', 'target')}</div>
       <h3 class="h-2 sess-h">Fokusblock</h3><div class="sess-picks">${tile('f60', 'clock')}${tile('f90', 'clock')}</div>
       <p class="row-sub" style="margin-top:14px">Im Fokusblock: Handy weg, eine Sache zur Zeit. Die Pausen sind Teil des Lernens.</p></div>` };
@@ -277,7 +277,7 @@
         ${sum.can.length ? `<div class="can"><span class="kicker">Das kannst du jetzt</span><ul>${sum.can.map(c => `<li>${icon('check')}<span>${esc(c)}</span></li>`).join('')}</ul></div>` : `<p class="muted">Auch eine Session ohne große Sprünge zählt: Du warst da, das baut die Gewohnheit.</p>`}
         ${tm ? `<div class="tomorrow"><span class="kicker">Morgen starte ich bei</span><a class="row-title" href="${tm.href}">${esc(tm.title)}</a></div>` : ''}
         <button class="btn primary" type="button" data-sclose>${icon('check')}Fertig</button></div></div>`;
-      return { title: 'Session', back: '#/', nav: 'heute', html };
+      return { title: 'Session', back: '#/wiederholen', nav: 'wdh', html };
     }
     const ph = mode.phases[s.i], P = PH[ph[0]];
     const left = phaseLeft(s);
@@ -292,7 +292,7 @@
       ${isPause ? `<div class="pause-card"><p class="prose">Steh auf, trink etwas, schau aus dem Fenster. Kein Scrollen: Dein Kopf sortiert gerade, was du gelernt hast.</p></div>` : phaseSuggestion(ph[0])}
       <div class="sess-ctrl"><button class="btn${left <= 0 ? ' primary' : ''}" type="button" data-snext>${left <= 0 ? 'Zeit um · ' : ''}Weiter zu: ${nextName} ${icon('arrow', 'go')}</button>
         <button class="link" type="button" data-send>Session jetzt beenden</button></div></div>`;
-    return { title: 'Session', back: '#/', nav: 'heute', html };
+    return { title: 'Session', back: '#/wiederholen', nav: 'wdh', html };
   }
 
   // Uhr: Kopfzeilen-Chip + Zeit auf der Session-Seite, jede Sekunde
@@ -329,6 +329,31 @@
     tick();
   }
 
+
+  // ------------------------------------------------------------ Wiederholen (Übersicht, eigener Menüpunkt)
+  function hub() {
+    const { icon, esc } = A;
+    const h = huntState();
+    const due = dueCards(false).length, nxt = nextDueDate();
+    const s = running();
+    const sess = s ? `<a class="sess-run" href="#/session"><span class="sess-dot"></span><span class="row-main"><span class="row-title">${esc(MODES[s.mode].name)} läuft</span><span class="row-sub">${PH[MODES[s.mode].phases[s.i][0]].name} · ${phaseLeft(s) <= 0 ? 'Zeit um' : mmss(phaseLeft(s)) + ' übrig'}</span></span><span class="btn small primary">Weiter ${icon('arrow', 'go')}</span></a>`
+      : `<div class="time-pick"><span class="kicker">Session starten</span><div class="tp-chips"><a class="chip" href="#/session/m3">3 Min.</a><a class="chip" href="#/session/m10">10 Min.</a><a class="chip" href="#/session/m20">20 Min.</a><a class="chip" href="#/session">Fokusblock</a></div></div>`;
+    const html = `<div class="rise">
+      <div class="page-head"><span class="kicker">Wiederholen</span><h2 class="h-display">Dranbleiben.</h2><p class="muted">Hier hältst du frisch, was du schon gelernt hast, und räumst deine Fehler weg.</p></div>
+      ${sess}
+      <div class="wdh-grid">
+        <a class="wdh-card" href="#/abruf" style="--c:var(--info)"><span class="next-ico">${icon('flip')}</span><span class="kicker">Abruf</span>
+          <b class="num">${due}</b><span class="row-title">${due === 1 ? 'Karte' : 'Karten'} heute fällig</span>
+          <span class="row-sub">${due ? 'Erst im Kopf antworten, dann umdrehen.' : nxt ? `Nächste Karte ${niceDay(nxt)}.` : 'Karten entstehen, wenn du eine Lektion als verstanden speicherst.'}</span></a>
+        <a class="wdh-card" href="#/fehlerjagd" style="--c:var(--warn)"><span class="next-ico">${icon('target')}</span><span class="kicker">Fehlerjagd</span>
+          <b class="num">${h.due.length}</b><span class="row-title">${h.due.length === 1 ? 'Fehler' : 'Fehler'} heute dran</span>
+          <span class="row-sub">${h.open.length} offen · ${h.fixed.length} behoben${h.lost.length ? ` · ${h.lost.length} Aufgaben mit verlorenen Punkten` : ''}</span></a>
+      </div>
+      <p class="row-sub wdh-how">${icon('info')}So funktioniert es: Richtig gewusste Karten kommen nach 1, 3, 7 und 21 Tagen wieder, falsche morgen. Fehler aus deiner Selbstkorrektur („fast“, „fehlte“) kommen nach einem Tag in die Fehlerjagd, zweimal richtig an verschiedenen Tagen = behoben.</p>
+    </div>`;
+    return { title: 'Wiederholen', nav: 'wdh', html };
+  }
+
   // ------------------------------------------------------------ Für die Startseite
   function heuteInfo() {
     const h = huntState();
@@ -341,6 +366,7 @@
       A.R.fehlerjagd = fehlerjagd;
       A.R.jagd = jagd;
       A.R.session = sessionView;
+      A.R.wiederholen = hub;
       wire();
     },
     dueCards, heuteInfo, huntState, running, MODES
