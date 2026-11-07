@@ -27,26 +27,35 @@
   }
   const prose = html => `<div class="prose">${M(html)}</div>`;
 
-  // ------------------------------------------------------------ Zustand (localStorage, mit Importen aus dem alten Portal)
-  const LS = 'neu_state_v1';
+  // Nutzereingaben (Profilnamen) nie roh als HTML einsetzen (Portalplan 10.6)
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  // ------------------------------------------------------------ Profil & Zustand (pro Profil, Portalplan 11.1)
+  const me = LR.active();
   function loadState() {
-    let s = null;
-    try { s = JSON.parse(localStorage.getItem(LS) || 'null'); } catch (e) { /* ohne Speicher */ }
-    if (!s || typeof s !== 'object') s = { done: {}, scores: {}, answers: {}, last: null, planTab: 'klausuren', week: 'all' };
-    try { // gelernte Lektionen aus dem bisherigen Mathe-Trainer übernehmen
-      const old = JSON.parse(localStorage.getItem('mt_state_v1') || 'null');
-      if (old && old.done) Object.keys(old.done).forEach(k => { if (old.done[k] && s.done[k] === undefined) s.done[k] = true; });
-    } catch (e) { /* egal */ }
+    const s = LR.loadState();
+    ['done', 'scores', 'answers'].forEach(k => { if (!s[k] || typeof s[k] !== 'object') s[k] = {}; });
+    if (!s.planTab) s.planTab = 'klausuren';
+    if (!s.week) s.week = 'all';
+    const first = LR.profiles()[0];
+    if (me && first && first.id === me.id) {
+      try { // nur das erste Profil übernimmt gelernte Lektionen aus dem alten Mathe-Trainer
+        const old = JSON.parse(localStorage.getItem('mt_state_v1') || 'null');
+        if (old && old.done) Object.keys(old.done).forEach(k => { if (old.done[k] && s.done[k] === undefined) s.done[k] = true; });
+      } catch (e) { /* egal */ }
+    }
     return s;
   }
-  const state = loadState();
-  const save = () => { try { localStorage.setItem(LS, JSON.stringify(state)); } catch (e) { /* egal */ } };
+  const state = me ? loadState() : { done: {}, scores: {}, answers: {} };
+  const save = () => { if (me) LR.saveState(state); };
+  const myCourses = me && me.courses && me.courses.length ? new Set(me.courses) : null;
+  const mine = id => !myCourses || !id || myCourses.has(id);
 
   // ------------------------------------------------------------ Klausuren / Stundenplan
   const exams = (typeof TONDA_KLAUSUREN !== 'undefined' ? TONDA_KLAUSUREN : []).map(k => {
     const fid = (typeof KLAUSUR_FACH_IDS !== 'undefined' && KLAUSUR_FACH_IDS[k.subject]) || null;
     return Object.assign({}, k, { fid, days: klausurDaysUntil(k), date: parseKlausurDate(k.dateStr) });
-  }).sort((a, b) => a.date - b.date);
+  }).filter(k => mine(k.fid)).sort((a, b) => a.date - b.date);
   const upcoming = exams.filter(k => k.days >= 0);
   const examsOf = id => upcoming.filter(k => k.fid === id);
   const daysText = d => d === 0 ? 'Heute' : d === 1 ? 'Morgen' : `in ${d} Tagen`;
@@ -62,7 +71,7 @@
     const out = [];
     for (let p = 1; p <= 9; p++) {
       const cell = (typeof SCHEDULE_DATA !== 'undefined' && SCHEDULE_DATA[p] && SCHEDULE_DATA[p][dayKey]) || [];
-      cell.forEach(sl => { if (week === 'all' || !sl.week || sl.week === week) out.push(Object.assign({ p }, sl)); });
+      cell.forEach(sl => { const sj = subjOfCourse(sl.course); if ((week === 'all' || !sl.week || sl.week === week) && (!sj || mine(sj.id))) out.push(Object.assign({ p }, sl)); });
     }
     return out;
   }
@@ -102,49 +111,143 @@
   // ------------------------------------------------------------ Ansichten
   const R = {};
 
-  // ---- Heute
+  // ---- Heute (Portalplan Abschnitt 8: eine Frage – was jetzt?)
+  const MONTHS_LONG = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+
+  // Abruf-Karten aus verstandenen Lektionen: zuletzt falsch > nie gefragt > am längsten her
+  function recallPool() {
+    if (!mine('mathe')) return [];
+    const last = {};
+    LR.events().forEach(e => { if (e.type === 'recall') last[e.ref] = e; });
+    const pool = [];
+    LESSONS.forEach(l => {
+      if (!state.done[l.id]) return;
+      (l.test || []).forEach((c, i) => {
+        const ref = `${l.id}:${i}`, e = last[ref];
+        pool.push({ ref, q: c.q, a: c.a, lesson: l, pr: !e ? 1 : (e.data && e.data.ok === false ? 0 : 2), t: e ? e.t : 0 });
+      });
+    });
+    return pool.sort((a, b) => a.pr - b.pr || a.t - b.t);
+  }
+  // Teilaufgaben, bei denen Punkte gefehlt haben (Fehler-Segment des Rings)
+  function lostParts() {
+    const out = [];
+    if (!mine('mathe')) return out;
+    TASKS.forEach(t => t.parts.forEach(p => { const v = state.scores[p.id]; if (v !== undefined && v < (p.be || 0)) out.push({ t, p, v }); }));
+    return out;
+  }
+
+  // Nächster Schritt: fälliger Abruf > angefangene Lektion > Fehler ausbessern > neue Lektion > Üben
+  function nextStep(st) {
+    const ms = byId.mathe;
+    if (!mine('mathe') || !LESSONS.length) return null;
+    const pool = recallPool();
+    if (!st.ring.seg[0] && pool.length >= 3) return { kicker: 'Abruf', title: `${Math.min(5, pool.length)} Karten aus deinen Lektionen`, sub: 'Erst im Kopf antworten, dann umdrehen. Was du nicht wusstest, kommt zuerst wieder.', min: 3, href: '#/abruf', s: ms, ic: 'flip' };
+    const cont = state.last && LESSONS.find(l => l.id === state.last.id && !state.done[l.id]);
+    if (cont) return { kicker: 'Weiter, wo du aufgehört hast', title: `Lektion ${cont.num}: ${cont.title}`, sub: cont.short, min: cont.min, href: `#/lektion/${cont.id}`, s: ms, ic: 'play' };
+    const lost = lostParts();
+    if (!st.ring.seg[2] && lost.length) { const { t, p, v } = lost[0]; return { kicker: 'Fehler ausbessern', title: `${t.title} · ${p.label}`, sub: `Beim letzten Mal ${v} von ${p.be} BE. Rechne den Teil nochmal auf Papier und hol dir die fehlenden Punkte.`, min: 8, href: `#/aufgabe/${t.id}`, s: ms, ic: 'target' }; }
+    const nl = LESSONS.find(l => !state.done[l.id]);
+    if (nl) return { kicker: 'Neu lernen', title: `Lektion ${nl.num}: ${nl.title}`, sub: nl.short, min: nl.min, href: `#/lektion/${nl.id}`, s: ms, ic: 'play' };
+    const open = TASKS.find(t => t.parts.some(p => state.scores[p.id] === undefined));
+    if (open) return { kicker: 'Üben', title: open.title, sub: `Teil ${open.teil} · ${taskMax(open)} BE · auf Papier lösen, dann ehrlich bewerten`, min: 15, href: `#/aufgabe/${open.id}`, s: ms, ic: 'pencil' };
+    return { kicker: 'Wiederholen', title: 'Abruf aus allen Lektionen', sub: 'Alles einmal geschafft. Jetzt hält Wiederholen es frisch.', min: 3, href: '#/abruf', s: ms, ic: 'flip' };
+  }
+
+  const SEG = [['Abruf', 'var(--info)'], ['Neu', 'var(--ok)'], ['Fehler', 'var(--warn)']];
+  function goalRing(seg, size = 116) {
+    const L = 100 / 3, gap = 3.5;
+    const arc = (i, cls) => `<circle class="${cls}" style="--c:${SEG[i][1]};--d:${i * 0.18}s" cx="50" cy="50" r="42" pathLength="100" stroke-dasharray="${(L - gap).toFixed(2)} ${(100 - L + gap).toFixed(2)}" stroke-dashoffset="${(-i * L - gap / 2).toFixed(2)}"/>`;
+    const done = seg.filter(Boolean).length;
+    return `<div class="goal-ring" style="--size:${size}px" role="img" aria-label="Ziel-Ring: ${done} von 3 Segmenten">
+      <svg viewBox="0 0 100 100">${seg.map((_, i) => arc(i, 'g-track')).join('')}${seg.map((on, i) => on ? arc(i, 'g-on') : '').join('')}</svg>
+      <div class="mid"><b class="num">${done}</b><span class="kicker">von 3</span></div></div>`;
+  }
+  function heat(st) {
+    const cal = LR.calendar(st, 4);
+    return `<div class="heat" role="img" aria-label="Lerntage der letzten vier Wochen">${['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'].map(d => `<span class="heat-h">${d}</span>`).join('')}${cal.map(c => `<span class="hc l${c.lvl}${c.freeze ? ' fz' : ''}${c.today ? ' td' : ''}${c.future ? ' fu' : ''}" title="${c.k.split('-').reverse().join('.')}: ${c.n} ${c.n === 1 ? 'Aktion' : 'Aktionen'}${c.freeze ? ' · Schutz-Tag' : ''}"></span>`).join('')}</div>`;
+  }
+
   R.heute = () => {
-    const next = upcoming[0];
-    const ns = next && byId[next.fid];
+    const st = LR.stats(LR.events());
     const now = new Date();
-    let h = '';
-    h += `<div class="page-head"><span class="kicker">${WD[now.getDay()]}, ${now.getDate()}. ${['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'][now.getMonth()]}</span><h2 class="h-display">Hallo Tonda.</h2></div>`;
     const blocks = [];
+    const head = `<div class="page-head"><span class="kicker">${WD[now.getDay()]}, ${now.getDate()}. ${MONTHS_LONG[now.getMonth()]}</span>
+      <h2 class="h-display">${st.comeback ? 'Willkommen zurück' : 'Hallo'}, ${esc(me.name)}.</h2>
+      ${st.comeback ? '<p class="muted">Schön, dass du wieder da bist. Fünf Minuten reichen heute völlig.</p>' : ''}</div>`;
 
+    // 1) Nächster Schritt – eine große Karte, ein Knopf
+    const ns = nextStep(st);
+    blocks.push(ns ? `<a class="next" href="${ns.href}" ${subjStyle(ns.s)}>
+        <div class="next-top"><span class="next-ico">${icon(ns.ic)}</span><span class="kicker">Nächster Schritt · ${ns.s.name.replace(/ (eA|gA)$/, '')}</span><span class="chip">${icon('clock')}${ns.min} Min.</span></div>
+        <h3 class="h-1 next-title">${ns.title}</h3>
+        <p class="muted next-sub">${ns.sub}</p>
+        <span class="btn primary next-btn">Start ${icon('arrow', 'go')}</span></a>`
+      : `<div class="next" style="--subj:var(--accent)"><span class="kicker">Nächster Schritt</span><h3 class="h-1 next-title">Noch keine Inhalte für deine Kurse</h3><p class="muted next-sub">Die Lerninhalte für alle Fächer kommen, sobald das Fundament des Lernraums steht.</p></div>`);
+
+    // 2) Ziel-Ring + Streak + Kalender
+    const r = st.ring;
+    const goalRow = (i, have, need, txt) => `<li class="${have >= need ? 'done' : ''}" style="--c:${SEG[i][1]}"><span class="g-dot">${icon('check')}</span><span class="row-main"><span class="row-title">${SEG[i][0]}</span><span class="row-sub">${txt}</span></span><span class="g-n">${Math.min(have, need)}/${need}</span></li>`;
+    blocks.push(`<section class="daily">
+      <div class="card goal">${goalRing(r.seg)}
+        <ul class="goal-list">
+          ${goalRow(0, r.recall, LR.GOAL.recall, 'Karten aus dem Kopf beantworten')}
+          ${goalRow(1, r.learn, LR.GOAL.learn, 'eine Lektion oder Aufgabe')}
+          ${goalRow(2, r.fix, LR.GOAL.fix, 'verlorene Punkte zurückholen')}
+        </ul></div>
+      <div class="card streakbox">
+        <div class="streak-top"><div><span class="kicker">Abi-Training · Tag ${st.trainingDays || 1}</span>
+          <div class="streak-n"><b class="num" data-count="${st.streak}">${st.streak}</b><span>${st.streak === 1 ? 'Tag' : 'Tage'} in Folge</span></div></div>
+          <span class="chip ${st.freezeWeek === 'bereit' ? 'ok' : ''}" title="Ein verpasster Tag pro Woche lässt den Streak nicht reißen.">${icon('shield')}Schutz ${st.freezeWeek}</span></div>
+        ${heat(st)}
+        <div class="row-sub streak-foot">${st.best > st.streak ? `Bestwert ${st.best} Tage · ` : ''}Ein Segment am Tag reicht für den Streak.</div>
+      </div></section>`);
+
+    // 3) Eine Zeile: nächste Klausur
+    const next = upcoming[0];
     if (next) {
-      const p = Math.max(0.05, 1 - next.days / 28);
-      blocks.push(`<section class="hero" ${subjStyle(ns)}>
-        ${ring(p, { size: 148, color: ns ? ns.color : '', center: `<span class="num" data-count="${next.days}">${next.days}</span><span class="kicker">${next.days === 1 ? 'Tag' : 'Tage'}</span>` })}
-        <div class="hero-body">
-          <span class="kicker">Nächste Klausur</span>
-          <h3 class="h-1">${ns ? ns.name : next.subject}</h3>
-          <p class="muted">${next.topic}</p>
-          <div class="hero-meta"><span class="chip">${icon('cal')}${WD[next.date.getDay()].slice(0, 2)}, ${next.dateStr.slice(0, 6)}</span><span class="chip">${icon('clock')}${next.period} Stunde</span><span class="chip">Raum ${next.room}</span></div>
-          ${ns ? `<a class="btn primary" href="#/fach/${ns.id}">Vorbereiten ${icon('arrow', 'go')}</a>` : ''}
-        </div></section>`);
+      const s = byId[next.fid];
+      blocks.push(`<a class="exam-line" ${next.fid ? `href="#/fach/${next.fid}/klausur"` : ''} ${subjStyle(s)}><span class="dot"></span><span class="row-main"><span class="row-title">${s ? s.name.replace(/ (eA|gA)$/, '') : next.subject}-Klausur ${next.days === 0 ? 'heute' : next.days === 1 ? 'morgen' : daysText(next.days)}</span><span class="row-sub">${WD[next.date.getDay()]}, ${next.dateStr.slice(0, 6)} · ${next.period} Stunde · Raum ${next.room}</span></span>${icon('right', 'chev')}</a>`);
     }
 
-    const nl = nextLesson();
-    if (nl) {
-      const ms = byId.mathe;
-      blocks.push(`<a class="cont" href="#/lektion/${nl.id}" ${subjStyle(ms)}>
-        <div class="cont-ico">${icon('play')}</div>
-        <div class="row-main"><span class="kicker">Weiter lernen · ${ms.name}</span><span class="row-title" style="font-size:18px">Lektion ${nl.num}: ${nl.title}</span><span class="row-sub">${nl.min} Min. · ${lessonsDone()} von ${LESSONS.length} Lektionen verstanden</span></div>
-        ${icon('right', 'chev')}</a>`);
-    }
-
-    // Tagesplan: heute oder nächster Schultag
+    // 4) Unterricht heute / nächster Schultag (nur eigene Kurse)
     let off = 0, dk = DAYKEYS[now.getDay()];
     while ((!['Mo', 'Di', 'Mi', 'Do', 'Fr'].includes(dk) || !daySlots(dk, 'all').length) && off < 7) { off++; dk = DAYKEYS[(now.getDay() + off) % 7]; }
     const groups = groupSlots(daySlots(dk, 'all'));
-    const label = off === 0 ? 'Heute im Unterricht' : off === 1 ? 'Morgen im Unterricht' : `${WD[(now.getDay() + off) % 7]} im Unterricht`;
-    blocks.push(`<section><div class="section-head"><h3 class="h-2">${label}</h3><a class="chip" href="#/plan">Stundenplan ${icon('right')}</a></div>
-      <div class="day">${groups.map(g => { const s = subjOfCourse(g.course); return `<div class="slot" ${subjStyle(s)}><span class="kicker">${rangeText(g)}${g.week ? ' · ' + g.week + '-Woche' : ''}</span><b>${s ? s.name.replace(/ (eA|gA)$/, '') : g.course}</b><span class="row-sub">${g.teacher} · ${g.room}</span></div>`; }).join('')}</div></section>`);
+    if (groups.length) {
+      const label = off === 0 ? 'Heute im Unterricht' : off === 1 ? 'Morgen im Unterricht' : `${WD[(now.getDay() + off) % 7]} im Unterricht`;
+      blocks.push(`<section><div class="section-head"><h3 class="h-2">${label}</h3><a class="chip" href="#/plan">Plan ${icon('right')}</a></div>
+        <div class="day">${groups.map(g => { const s = subjOfCourse(g.course); return `<div class="slot" ${subjStyle(s)}><span class="kicker">${rangeText(g)}${g.week ? ' · ' + g.week + '-Woche' : ''}</span><b>${s ? s.name.replace(/ (eA|gA)$/, '') : g.course}</b><span class="row-sub">${g.teacher} · ${g.room}</span></div>`; }).join('')}</div></section>`);
+    }
 
-    blocks.push(`<section><div class="section-head"><h3 class="h-2">Als Nächstes</h3><a class="chip" href="#/plan">Alle Klausuren ${icon('right')}</a></div>
-      <div class="list">${upcoming.slice(0, 4).map(k => examRow(k)).join('')}</div></section>`);
+    return { title: 'Heute', html: `${head}<div class="rise stack" style="display:flex;flex-direction:column;gap:22px">${blocks.map((b, i) => rise(b, i)).join('')}</div>`, nav: 'heute' };
+  };
 
-    return { title: 'Heute', html: `${h}<div class="rise stack" style="display:flex;flex-direction:column;gap:30px">${blocks.map((b, i) => rise(b, i)).join('')}</div>`, nav: 'heute' };
+  // ---- Abruf (kurz, zählt fürs Ring-Segment „Abruf“)
+  R.abruf = () => {
+    const ms = byId.mathe;
+    const pool = recallPool().slice(0, 5);
+    const head = `<div class="page-head"><span class="kicker">Abruf · ca. 3 Min.</span><h2 class="h-1">Was weißt du noch?</h2><p class="muted">Karten aus Lektionen, die du schon verstanden hast. Erst im Kopf antworten, dann umdrehen.</p></div>`;
+    if (!pool.length) {
+      const nl = LESSONS.find(l => !state.done[l.id]);
+      return { title: 'Abruf', back: '#/', nav: 'heute', focus: true, html: `<div ${subjStyle(ms)} class="rise">${head}<div class="empty">Noch keine Karten. Abfragen kann man nur, was man schon einmal gelernt hat.</div>${nl ? `<a class="btn primary block" href="#/lektion/${nl.id}">Lektion ${nl.num} lernen ${icon('arrow', 'go')}</a>` : ''}</div>` };
+    }
+    return {
+      title: 'Abruf', back: '#/', nav: 'heute', focus: true,
+      html: `<div ${subjStyle(ms)} class="rise">${head}<div id="flashHost"></div></div>`,
+      after(root) {
+        flash($('#flashHost', root), pool, {
+          end: (known, total, okCards) => {
+            const st = LR.stats(LR.events());
+            const titles = [...new Set(okCards.map(c => c.lesson.title))].slice(0, 3);
+            return `<div class="done-wrap"><div class="done-badge">${icon('check')}</div><h3 class="h-1">${known} von ${total} gewusst</h3>
+              ${titles.length ? `<div class="can"><span class="kicker">Das kannst du jetzt</span><ul>${titles.map(t => `<li>${icon('check')}<span>${t}</span></li>`).join('')}</ul></div>` : '<p class="muted">Die Karten kommen beim nächsten Abruf zuerst wieder. Genau so lernt man sie.</p>'}
+              <p class="muted">Ziel-Ring heute: ${st.ring.done} von 3${st.ring.seg[0] ? ' · Abruf geschafft' : ''}.</p>
+              <a class="btn primary" href="#/">Zurück zu Heute ${icon('arrow', 'go')}</a></div>`;
+          }
+        });
+      }
+    };
   };
 
   function examRow(k) {
@@ -158,7 +261,7 @@
 
   // ---- Fächer
   R.faecher = () => {
-    const order = SUBJECTS.slice().sort((a, b) => {
+    const order = SUBJECTS.filter(s => mine(s.id)).sort((a, b) => {
       const ea = examsOf(a.id)[0], eb = examsOf(b.id)[0];
       return (ea ? ea.days : 9999) - (eb ? eb.days : 9999);
     });
@@ -169,7 +272,7 @@
         <div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="mono">${mono(s)}</div>${e ? `<span class="chip ${e.days <= 3 ? 'bad' : e.days <= 10 ? 'warn' : ''}">${daysText(e.days)}</span>` : ''}</div>
         <div><div class="tile-name">${s.name}</div><div class="tile-foot"><span>${s.teacher} · ${s.room}${st}</span>${icon('right')}</div></div></a>`;
     });
-    return { title: 'Fächer', nav: 'faecher', html: `<div class="page-head"><span class="kicker">Jahrgang 12</span><h2 class="h-display">Deine Fächer</h2><p class="muted">Sortiert nach der nächsten Klausur.</p></div><div class="grid cols rise">${tiles.map((t, i) => rise(t, Math.min(i, 8))).join('')}</div>` };
+    return { title: 'Fächer', nav: 'faecher', html: `<div class="page-head"><span class="kicker">Jahrgang 12</span><h2 class="h-display">Deine Fächer</h2><p class="muted">Deine Kurse, sortiert nach der nächsten Klausur. <button class="link" type="button" data-action="edit-profile">Kurse ändern</button></p></div><div class="grid cols rise">${tiles.map((t, i) => rise(t, Math.min(i, 8))).join('')}</div>` };
   };
 
   // ---- Fach
@@ -365,10 +468,11 @@
       const dh = $('#demoHost', page);
       if (dh) (dh.dataset.demo === 'ortskurve' ? demoOrt : demoBestand)(dh);
       const fh = $('#flashHost', page);
-      if (fh) flash(fh, l.test);
+      if (fh) flash(fh, l.test.map((c, i) => ({ q: c.q, a: c.a, ref: `${l.id}:${i}`, lesson: l })));
       const db = $('#doneBtn', page);
       if (db) db.addEventListener('click', () => {
-        if (state.done[l.id]) delete state.done[l.id]; else state.done[l.id] = true;
+        if (state.done[l.id]) delete state.done[l.id];
+        else { state.done[l.id] = true; LR.log('learn', l.id); }
         save(); page.innerHTML = pages[cur].html(); bindPage();
       });
     }
@@ -384,10 +488,15 @@
     show();
   }
 
-  function flash(host, cards) {
-    let i = 0, known = 0;
+  // Karteikarten; jede Bewertung ist ein Abruf-Ereignis (Ring-Segment „Abruf“)
+  function flash(host, cards, opts = {}) {
+    let i = 0, known = 0, okCards = [];
     function draw() {
-      if (i >= cards.length) { host.innerHTML = `<div class="done-wrap"><div class="done-badge">${icon('check')}</div><h3 class="h-1">${known} von ${cards.length} gewusst</h3><p class="muted">Was du nicht wusstest, liest du am besten noch einmal im Rezept nach.</p><button class="btn" id="again" type="button">${icon('flip')}Nochmal</button></div>`; $('#again', host).onclick = () => { i = 0; known = 0; draw(); }; return; }
+      if (i >= cards.length) {
+        host.innerHTML = opts.end ? opts.end(known, cards.length, okCards) : `<div class="done-wrap"><div class="done-badge">${icon('check')}</div><h3 class="h-1">${known} von ${cards.length} gewusst</h3><p class="muted">Was du nicht wusstest, liest du am besten noch einmal im Rezept nach. Es kommt beim nächsten Abruf zuerst wieder.</p><button class="btn" id="again" type="button">${icon('flip')}Nochmal</button></div>`;
+        const ag = $('#again', host); if (ag) ag.onclick = () => { i = 0; known = 0; okCards = []; draw(); };
+        return;
+      }
       const c = cards[i];
       host.innerHTML = `<div class="flash-count"><span class="kicker">Frage ${i + 1} von ${cards.length}</span>${bar(((i) / cards.length).toFixed(2)).replace('class="bar"', 'class="bar go" style="width:120px;--p:' + (i / cards.length).toFixed(2) + '"')}</div>
         <div class="flash" id="fc"><div class="flash-in"><div class="face"><span class="kicker">Frage</span>${prose(c.q)}<span class="dim" style="font-size:13px;margin-top:6px">Tippen zum Umdrehen</span></div><div class="face back"><span class="kicker" style="color:var(--accent-ink)">Antwort</span>${prose(c.a)}</div></div></div>
@@ -395,7 +504,12 @@
       const fc = $('#fc', host), rate = $('#rate', host);
       const flip = () => { fc.classList.add('flip'); rate.hidden = false; };
       fc.addEventListener('click', flip);
-      $$('[data-r]', host).forEach(b => b.addEventListener('click', () => { known += +b.dataset.r; i++; draw(); }));
+      $$('[data-r]', host).forEach(b => b.addEventListener('click', () => {
+        const ok = b.dataset.r === '1';
+        if (c.ref) LR.log('recall', c.ref, { ok });
+        if (ok) { known++; okCards.push(c); }
+        i++; draw();
+      }));
     }
     draw();
   }
@@ -510,14 +624,107 @@
           });
         });
         $$('[data-sol]', root).forEach(b => b.addEventListener('click', () => { const r = $('#sol-' + b.dataset.sol, root); r.classList.toggle('open'); }));
+        // Bewertung -> Ereignis „practice“ (1,5 s entprellt, damit Herumklicken nicht zählt).
+        // Mehr Punkte als bei einem früheren Versuch (> 1 h her) -> „fix“ (Ring-Segment „Fehler“).
+        const timers = {};
+        const initial = {}; // ältere Bewertungen aus der Zeit vor der Ereignis-Liste zählen als „früherer Versuch“
+        t.parts.forEach(p => { if (state.scores[p.id] !== undefined && !LR.events().some(e => e.type === 'practice' && e.ref === p.id)) initial[p.id] = state.scores[p.id]; });
         $$('.score button', root).forEach(b => b.addEventListener('click', () => {
-          state.scores[b.dataset.p] = +b.dataset.v; save();
-          $$(`.score button[data-p="${b.dataset.p}"]`, root).forEach(x => x.classList.toggle('on', x === b));
+          const pid = b.dataset.p, v = +b.dataset.v;
+          const part = t.parts.find(x => x.id === pid);
+          state.scores[pid] = v; save();
+          $$(`.score button[data-p="${pid}"]`, root).forEach(x => x.classList.toggle('on', x === b));
+          clearTimeout(timers[pid]);
+          timers[pid] = setTimeout(() => {
+            const ev = LR.events().filter(e => e.type === 'practice' && e.ref === pid && e.t < Date.now() - 36e5).pop();
+            const prev = ev && ev.data ? ev.data.pts : initial[pid];
+            LR.log('practice', pid, { pts: v, max: part.be });
+            if (prev !== undefined && prev < part.be && v > prev) { LR.log('fix', pid, { from: prev, to: v }); delete initial[pid]; }
+          }, 1500);
         }));
         $$('textarea.work', root).forEach(ta => ta.addEventListener('input', () => { state.answers = state.answers || {}; state.answers[ta.dataset.ansKey] = ta.value; save(); }));
       }
     };
   };
+
+  // ------------------------------------------------------------ Profile (Portalplan 11.1)
+  const initial = n => (Array.from(String(n || '?').trim())[0] || '?').toUpperCase();
+  const allIds = () => SUBJECTS.map(s => s.id);
+  function profileForm(p) {
+    const sel = new Set(p && p.courses.length ? p.courses : allIds());
+    return `<form class="pform" id="pform" autocomplete="off" novalidate>
+      <label class="lbl" for="pname">Spitzname</label>
+      <input class="input" id="pname" maxlength="24" value="${p ? esc(p.name) : ''}" placeholder="z. B. Tonda" autocapitalize="words" enterkeyhint="done">
+      <span class="lbl">Meine Kurse</span>
+      <div class="picks" role="group" aria-label="Meine Kurse">${SUBJECTS.map(s => `<button type="button" class="pick" data-course="${s.id}" aria-pressed="${sel.has(s.id)}" ${subjStyle(s)}><span class="mono">${mono(s)}</span><span>${s.name.replace(/ (eA|gA)$/, '')}</span></button>`).join('')}</div>
+      <p class="row-sub" id="pmsg">Bestimmt Termine, Countdown und Vorschläge. Jederzeit änderbar.</p>
+      <button class="btn primary block" type="submit">${p ? 'Speichern' : 'Los geht’s'} ${icon('arrow', 'go')}</button></form>`;
+  }
+  function bindForm(root, onSave) {
+    $$('.pick', root).forEach(b => b.addEventListener('click', () => b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true')));
+    $('#pform', root).addEventListener('submit', e => {
+      e.preventDefault();
+      const nameEl = $('#pname', root), msg = $('#pmsg', root);
+      const name = nameEl.value.trim();
+      const courses = $$('.pick[aria-pressed="true"]', root).map(b => b.dataset.course);
+      if (!name) { msg.textContent = 'Bitte einen Spitznamen eingeben.'; msg.classList.add('err'); nameEl.focus(); return; }
+      if (!courses.length) { msg.textContent = 'Bitte mindestens einen Kurs auswählen.'; msg.classList.add('err'); return; }
+      onSave(name, courses.length === SUBJECTS.length ? [] : courses);
+    });
+  }
+  R.start = () => ({
+    title: 'Willkommen', nav: 'heute', focus: true,
+    html: `<div class="onboard rise"><div class="page-head"><span class="kicker">Lernraum</span><h2 class="h-display">Wer lernt hier?</h2>
+      <p class="muted">Jede Person bekommt ein eigenes Profil. Fortschritt, Streak und Antworten gehören nur dir und bleiben auf diesem Gerät. Freunde legen ihr eigenes Profil an, auf ihrem Gerät oder hier.</p></div>${profileForm(null)}</div>`,
+    after(root) { bindForm(root, (n, c) => { LR.createProfile(n, c); history.replaceState(null, '', '#/'); location.reload(); }); }
+  });
+
+  const sheet = $('#sheet');
+  function openSheet(html, bind) {
+    const box = $('.sheet', sheet);
+    box.innerHTML = html;
+    sheet.hidden = false;
+    requestAnimationFrame(() => sheet.classList.add('open'));
+    if (bind) bind(box);
+    const f = $('input, button:not([data-close])', box); if (f && matchMedia('(pointer: fine)').matches) f.focus();
+  }
+  function closeSheet() { sheet.classList.remove('open'); setTimeout(() => { sheet.hidden = true; }, reduced ? 0 : 260); }
+  const sheetHead = t => `<div class="sheet-head"><h3 class="h-2">${t}</h3><button class="icon-btn" type="button" data-close aria-label="Schließen">${icon('x')}</button></div>`;
+  function profileSheet() {
+    const list = LR.profiles();
+    openSheet(`${sheetHead('Wer lernt gerade?')}
+      <div class="list">${list.map(p => `<button class="row" type="button" data-switch="${p.id}"><span class="avatar">${esc(initial(p.name))}</span><span class="row-main"><span class="row-title">${esc(p.name)}</span><span class="row-sub">${p.id === me.id ? 'aktiv' : 'zu diesem Profil wechseln'}</span></span>${p.id === me.id ? icon('check', 'ok-ic') : icon('right', 'chev')}</button>`).join('')}</div>
+      <div class="sheet-actions"><button class="btn" type="button" data-action="edit-profile">${icon('pencil')}Name und Kurse</button><button class="btn" type="button" data-action="new-profile">Neues Profil</button></div>
+      <p class="row-sub sheet-note">Jedes Profil hat eigene Daten. Niemand kann den Streak eines anderen verändern. Geräte verbinden (verschlüsselt) kommt in einem späteren Schritt.</p>
+      ${list.length > 1 ? `<button class="link danger" type="button" data-action="delete-profile">Profil „${esc(me.name)}“ von diesem Gerät löschen</button>` : ''}`);
+  }
+  const idleAtStart = LR.idleMinutes();
+  function askWho(idle = LR.idleMinutes()) {
+    if (!me || LR.profiles().length < 2 || idle < 30) { LR.touch(); return; }
+    openSheet(`${sheetHead('Weiter lernen')}<p class="prose" style="margin-bottom:18px">Lernt gerade <b>${esc(me.name)}</b>?</p>
+      <div class="sheet-actions"><button class="btn primary" type="button" data-action="confirm-me">${icon('check')}Ja, ich bin ${esc(me.name)}</button><button class="btn" type="button" data-action="profiles">Profil wechseln</button></div>`);
+  }
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-close]') || e.target.classList.contains('sheet-bg')) { closeSheet(); return; }
+    const sw = e.target.closest('[data-switch]');
+    if (sw) { if (sw.dataset.switch !== me.id) { LR.switchTo(sw.dataset.switch); history.replaceState(null, '', '#/'); location.reload(); } else closeSheet(); return; }
+    const a = e.target.closest('[data-action]'); if (!a) return;
+    const act = a.dataset.action;
+    if (act === 'profiles') profileSheet();
+    else if (act === 'confirm-me') { LR.touch(); closeSheet(); }
+    else if (act === 'edit-profile') openSheet(sheetHead('Name und Kurse') + profileForm(me), box => bindForm(box, (n, c) => { LR.updateProfile(me.id, { name: n, courses: c }); location.reload(); }));
+    else if (act === 'new-profile') openSheet(sheetHead('Neues Profil') + profileForm(null), box => bindForm(box, (n, c) => { LR.createProfile(n, c); history.replaceState(null, '', '#/'); location.reload(); }));
+    else if (act === 'delete-profile') {
+      if (confirm(`Profil „${me.name}“ mit allem Fortschritt von diesem Gerät löschen? Das kann nicht rückgängig gemacht werden.`)) { LR.deleteProfile(me.id); history.replaceState(null, '', '#/'); location.reload(); }
+    }
+  });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !sheet.hidden) closeSheet(); });
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && sheet.hidden) askWho(); });
+  function paintProfile() {
+    $$('[data-avatar]').forEach(el => { el.textContent = me ? initial(me.name) : ''; });
+    $$('[data-pname]').forEach(el => { el.textContent = me ? me.name : ''; });
+    $$('[data-action="profiles"]').forEach(el => { el.hidden = !me; });
+  }
 
   // ------------------------------------------------------------ Router & Shell
   const view = $('#view'), title = $('#appTitle'), backBtn = $('#backBtn');
@@ -531,11 +738,13 @@
     if (a === 'fach') return ['fach', b, c === 'ueben' ? 'ueben' : c === 'klausur' ? 'klausur' : 'pfad'];
     if (a === 'lektion') return ['lektion', b];
     if (a === 'aufgabe') return ['aufgabe', b];
+    if (a === 'abruf') return ['abruf'];
     return ['heute'];
   }
 
   function mount(opts = {}) {
-    const r = parse();
+    const r = me ? parse() : ['start'];
+    if (me) LR.touch();
     const res = R[r[0]](...r.slice(1));
     view.classList.toggle('still', !!opts.still);
     view.innerHTML = res.html;
@@ -559,7 +768,7 @@
     const key = location.hash;
     const same = opts && opts.still;
     const run = () => { const res = mount(opts); if (!same) window.scrollTo(0, 0); lastKey = key; return res; };
-    if (!same && document.startViewTransition && !reduced) document.startViewTransition(run); else run();
+    if (!same && document.startViewTransition && !reduced) { const vt = document.startViewTransition(run); [vt.ready, vt.finished, vt.updateCallbackDone].forEach(p => p && p.catch(() => {})); } else run();
   }
 
   function setNav(name) {
@@ -616,5 +825,7 @@
   addEventListener('scroll', () => $('#appbar').classList.toggle('scrolled', scrollY > 6), { passive: true });
   addEventListener('hashchange', () => go());
   addEventListener('resize', () => initSegs(view));
+  paintProfile();
   go();
+  askWho(idleAtStart);
 })();

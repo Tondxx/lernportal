@@ -39,13 +39,16 @@ Material (IServ, Uploads, Mitschriften) kommt als vierter Reiter **Material** mi
 | `ds.css` | Das Designsystem (Tokens, Shell, Komponenten, Reader, Motion) |
 | `app.js` | Router (`#/`, `#/faecher`, `#/fach/<id>/<reiter>`, `#/lektion/<id>`, `#/aufgabe/<id>`, `#/plan`), alle Ansichten, Reader, Demos |
 | `data.js` | Fächer + Themenlisten, per Skript aus `../main_hub.js` erzeugt (ohne Emojis) |
+| `core.js` | Profile, Ereignis-Liste, Berechnung von Streak/Ring/Kalender (Portalplan 10.2/11.1); Tests in `tests/core.test.js` |
 | gelesen aus dem Portal | `../calendar.js` (Klausuren), `../timetable.js` (Stundenplan), `../mathe_trainer_content.js` (11 Lektionen, Probeklausur, Spickzettel) |
 
-Fortschritt: `localStorage` `neu_state_v1` (Lektionen verstanden, Selbstbewertung, eigene Antworten). Verstandene Lektionen aus dem alten Mathe-Trainer (`mt_state_v1`) werden übernommen.
+Fortschritt (seit S1, 07.11.): pro Profil `lr:st:<id>` (Lektionen verstanden, Selbstbewertung, Antworten) und `lr:ev:<id>` (Ereignisse). Das erste Profil übernimmt `neu_state_v1` und verstandene Lektionen aus `mt_state_v1`.
 
 ## Was echt ist, was noch fehlt
 Echt und funktionsfähig: Heute, Fächer, Plan (Klausuren + Stundenplan), Mathe-Lernpfad mit allen 11 Lektionen, Reader mit 2 interaktiven Demos (Bestand ↔ Rate, Schar ↔ Ortskurve), Üben mit 9 Aufgaben inkl. Graphen, Tipps, Zahlenprüfung, Selbstbewertung, Spickzettel.
 Noch nicht übertragen: Probeklausur mit Uhr, Aufgaben aus Modul 06/07 (`integral_kurs.js`, `schar_kurs.js`), alle Inhalte von Physik/Informatik/Politik/…, IServ, Uploads, Fehlerliste, Kalender-Detailseite. Andere Fächer zeigen ihren Lernpfad aus `data.js` und verweisen auf das alte Portal.
+
+> **Hinweis (07.11.2026):** Maßgeblich ist jetzt `../../Portalplan.md` (Lerntreppe, Rechenweg-Engine, Papier-Checkpoints, Ziel-Ring/Streak, Zeitplan). Der Übertragungsplan unten ist die ältere Fassung; bei Widerspruch gilt Portalplan.md.
 
 ## Übertragungsplan (effizienteste Reihenfolge)
 1. **Feedback zum Prototyp** (Handy + iPad ausprobieren) → Anpassungen nur in `ds.css`/`app.js`.

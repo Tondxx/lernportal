@@ -5,7 +5,7 @@ import urllib.parse
 import json
 import sys
 
-PORT = 8000
+PORT = int(os.environ.get("PORT", "8000"))  # Vorschau-Tools setzen PORT
 PORTAL_DIR = os.path.dirname(os.path.abspath(__file__))
 # Abhängigkeiten (requests, beautifulsoup4) liegen in libs/ – unabhängig von Benutzer-Site-Packages
 # und davon, ob start.bat normal oder als Administrator gestartet wurde.

@@ -14,7 +14,7 @@ Aufgaben werden **nicht** als Markdown in `Faecher/*/03_Aufgaben/` bearbeitet, s
 
 ## Technik
 - Reines Frontend: `index.html` + JS-Dateien, KaTeX lokal (`katex.min.js/css`), kein Build-Framework. Läuft lokal und per GitHub Pages (`.nojekyll`).
-- Start: `start.bat` → `python server.py` → http://localhost:8000
+- Start: `start.bat` → `python server.py` → http://localhost:8000 (Port über Umgebungsvariable `PORT` änderbar, z. B. für Vorschau-Tools)
 - `server.py`: statische Dateien + API (`/api/iserv/*`, `/api/save-notes`, `/api/load-notes`).
 - `iserv_bridge.py`: IServ-Client. Zugangsdaten **nur** in `.env` (Vorlage `.env.example`). `.env` nie lesen, ausgeben, committen oder kopieren.
 - `bundle.py`: baut aus `index.html` + allen JS/CSS die Einzeldatei `tonda-oberstufe.html` (offline nutzbar). Nach Änderungen ausführen.
@@ -33,6 +33,7 @@ Aufgaben werden **nicht** als Markdown in `Faecher/*/03_Aufgaben/` bearbeitet, s
 | `katex-fonts.css` | KaTeX-Schriften von jsDelivr (lokaler `fonts/`-Ordner fehlt); offline Ersatzschrift. |
 | `calendar.js`, `timetable.js`, `steckbrief.js` | Kalender, Stundenplan, Steckbrief |
 | `user_content.js` | Upload/Ablage eigener Mitschriften |
+| `neu/core.js` | **Kern des Lernraums (S1):** Profile (pro Person getrennte Daten), Ereignis-Liste pro Profil (`lr:ev:<profil>` in localStorage: learn/recall/practice/fix), daraus berechnet: Streak mit Schutz (1 Tag/Woche), Ziel-Ring (Abruf 3 · Neu 1 · Fehler 1), Kalender. Kein DOM, Tests: `node neu/tests/core.test.js`. **Streak/Ring nie speichern, immer aus Ereignissen berechnen.** |
 | `neu/` | **Prototyp der neuen Oberfläche „Lernraum“** (eigene Struktur, mobil/iPad-first, ohne Emojis). Läuft unter `/neu/`, nutzt echte Daten aus `calendar.js`, `timetable.js`, `mathe_trainer_content.js`. Konzept, IA und Übertragungsplan: `neu/DESIGN.md`. **Vor jeder Design-Arbeit lesen.** Ziel: Fach für Fach hierher übertragen, dann `neu/` zur Startseite machen. |
 | `style.css` | Basis-Design (Layout, Komponenten) |
 | `design2.css` | **Aktuelles Design „Aurora Study“** – wird zuletzt geladen und überschreibt Tokens/Karten/Nav/Hero/Mathe-Trainer (Glas, Aurora-Hintergrund, Fachfarben per `--subj`). Neues Aussehen bitte hier ändern, nicht in `style.css`. Fächerfarbe kommt aus `FAECHER_DATA[...].color` (`--subj`), Klausurfarbe aus `calendar.js` (`--hero-color`). |
@@ -61,7 +62,10 @@ Für Mathe, Physik und Informatik liegen offizielle Zentralabitur-Aufgaben samt 
 - Das Skript bricht ab, wenn Privates (`.env`, `data/private`, IServ-Dateien/-Cache, Mitschriften) in den Änderungen auftaucht, und schreibt `../_tools/autopush.log`. Bei „FEHLER" im Log: Ursache beheben, nicht umgehen.
 - Git liegt unter `C:\Program Files\Git\cmd\git.exe` (nicht im PATH jeder Shell).
 
-## Offene Verbesserungen (Ideen)
+## Verbindlicher Gesamtplan
+**`../Portalplan.md` lesen, bevor du am Portal arbeitest** (Lerntreppe mit 6 Stufen, Aufgabenformat mit `schritte`/`checkpoints`, Rechenweg-Stilguide je Fach, Papier-Checkpoints, Wiederholungs-Queue, Ziel-Ring/Streak, Startseite „nächster Schritt“, Zeitplan). Er hat Vorrang vor `neu/DESIGN.md` (Übertragungsplan) und der folgenden Ideenliste. Die Datei liegt außerhalb von `Portal/` und geht nicht nach GitHub.
+
+## Offene Verbesserungen (Ideen, überholt durch `../Portalplan.md`)
 - Aufgaben-Generator: einheitliches Aufgabenformat (Thema, Schwierigkeit, Lösungsweg, Bewertung) für alle Fächer.
 - Fortschrittsspeicher, der in `../Faecher/*/README.md` zurückgespiegelt wird (damit KIs den Lernstand kennen).
 - IServ-Aufgaben automatisch mit Kalender und Klausurplan verknüpfen.
