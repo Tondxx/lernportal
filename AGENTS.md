@@ -33,7 +33,9 @@ Aufgaben werden **nicht** als Markdown in `Faecher/*/03_Aufgaben/` bearbeitet, s
 | `katex-fonts.css` | KaTeX-Schriften von jsDelivr (lokaler `fonts/`-Ordner fehlt); offline Ersatzschrift. |
 | `calendar.js`, `timetable.js`, `steckbrief.js` | Kalender, Stundenplan, Steckbrief |
 | `user_content.js` | Upload/Ablage eigener Mitschriften |
-| `style.css` | Gesamtes Design |
+| `neu/` | **Prototyp der neuen Oberfläche „Lernraum“** (eigene Struktur, mobil/iPad-first, ohne Emojis). Läuft unter `/neu/`, nutzt echte Daten aus `calendar.js`, `timetable.js`, `mathe_trainer_content.js`. Konzept, IA und Übertragungsplan: `neu/DESIGN.md`. **Vor jeder Design-Arbeit lesen.** Ziel: Fach für Fach hierher übertragen, dann `neu/` zur Startseite machen. |
+| `style.css` | Basis-Design (Layout, Komponenten) |
+| `design2.css` | **Aktuelles Design „Aurora Study“** – wird zuletzt geladen und überschreibt Tokens/Karten/Nav/Hero/Mathe-Trainer (Glas, Aurora-Hintergrund, Fachfarben per `--subj`). Neues Aussehen bitte hier ändern, nicht in `style.css`. Fächerfarbe kommt aus `FAECHER_DATA[...].color` (`--subj`), Klausurfarbe aus `calendar.js` (`--hero-color`). |
 | `data/private/` | **Privat, nicht in Git:** `iserv_files/` (IServ-Downloads), `meine_mitschriften.json` |
 | `iserv_tasks.json` | IServ-Aufgaben-Cache (nicht in Git) |
 

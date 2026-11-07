@@ -20,6 +20,13 @@ if os.path.exists(mt_css_path):
         mt_css = f.read()
     html_bundled = re.sub(r'<link rel="stylesheet" href="mathe_trainer\.css(?:\?[^"]*)?">', lambda m: "<style>" + chr(10) + mt_css + chr(10) + "</style>", html_bundled)
 
+# Design 2 (Aurora Study) einbetten – muss nach style.css/mathe_trainer.css stehen
+d2_path = os.path.join(portal_dir, "design2.css")
+if os.path.exists(d2_path):
+    with open(d2_path, "r", encoding="utf-8") as f:
+        d2_css = f.read()
+    html_bundled = re.sub(r'<link rel="stylesheet" href="design2\.css(?:\?[^"]*)?">', lambda m: "<style>" + chr(10) + d2_css + chr(10) + "</style>", html_bundled)
+
 # KaTeX-Schriften-CSS (CDN, kleine Datei) einbetten
 kf_path = os.path.join(portal_dir, "katex-fonts.css")
 if os.path.exists(kf_path):

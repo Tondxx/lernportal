@@ -416,7 +416,11 @@ function buildKlausurHeroHtml() {
             <span>${klausurWeekday(after)}, ${after.dateStr} • ${after.period} Stunde • Raum ${after.room}</span>
           </div>` : '';
   return `
-    <div class="urgent-hero-box" style="border-left-color: ${next.color};">
+    <div class="urgent-hero-box" style="--hero-color: ${next.color}; border-left-color: ${next.color};">
+      <div class="urgent-count" aria-label="${klausurCountdownText(days)}">
+        <span class="uc-num">${days === 0 ? 'Heute' : (days === 1 ? 'Morgen' : days)}</span>
+        <span class="uc-unit">${days > 1 ? 'Tage' : 'Klausur'}</span>
+      </div>
       <div class="urgent-left">
         <div class="urgent-alert-pill" style="color: ${next.color}; border-color: ${next.color};">
           <span class="status-dot" style="background: ${next.color};"></span>

@@ -913,7 +913,7 @@ function renderDashboardSubjects() {
     const f = FAECHER_DATA[id];
     if (!f) return;
     html += `
-      <div class="dash-sub-pill" onclick="openFach('${f.id}')">
+      <div class="dash-sub-pill" style="--subj: ${f.color};" onclick="openFach('${f.id}')">
         <div class="dash-sub-pill-head">
           <span class="dash-sub-name">${f.icon} ${f.name}</span>
           <span class="dash-sub-code">${f.courseCode}</span>
@@ -934,7 +934,7 @@ function renderFaecherGrid() {
   let html = '';
   Object.values(FAECHER_DATA).forEach(f => {
     html += `
-      <div class="fach-card" onclick="openFach('${f.id}')">
+      <div class="fach-card" style="--subj: ${f.color};" onclick="openFach('${f.id}')">
         <div class="fach-card-top">
           <div class="fach-icon-box" style="border-left: 3px solid ${f.color};">
             ${f.icon}
