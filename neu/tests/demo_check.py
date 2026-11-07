@@ -53,4 +53,40 @@ assert diff(gc, x, 2).subs(x, 3) > 0                    # x = 3 ist Tiefstelle
 check('c', solve(gc.subs(x, 3), c)[0], 0)
 check('g0 faktorisiert', factor(gc.subs(c, 0)), x*(x - 3)**2)
 
+# ---- S3: Lösungsweg erläutern (steilster Abstieg von p)
+dp = diff(p, x)
+check("p''", diff(p, x, 2), R(6, 10)*x - R(24, 10))
+assert solve(diff(p, x, 2), x) == [4]
+check("p'''", diff(p, x, 3), R(6, 10))
+check("p'(4)", dp.subs(x, 4), R(-12, 10))
+check("p'(0)", dp.subs(x, 0), R(36, 10))
+check("p'(8)", dp.subs(x, 8), R(36, 10))
+
+# ---- S3: Bedingung deuten
+check('p(6)', p.subs(x, 6), 2)
+check('mittlere Aenderungsrate 2..6', (p.subs(x, 6) - p.subs(x, 2))/4, R(-8, 10))
+check("p'(2)", dp.subs(x, 2), 0)
+a = symbols('a')
+dd = simplify(p.subs(x, a + 2) - p.subs(x, a))
+sol = sorted(float(s) for s in solve(dd, a))
+assert abs(sol[0] - 1.085) < 0.001 and abs(sol[1] - 4.915) < 0.001, sol   # a ~ 1,09 und 4,92 (Text in „Bedingung deuten“)
+ok += 1
+
+# ---- S3: Fehler finden
+k = x**3 - 3*x**2 - 24*x + 5
+assert sorted(solve(diff(k, x), x)) == [-2, 4]            # richtig: 4 und -2
+check('k(4)', k.subs(x, 4), -75)
+check('k(-2)', k.subs(x, -2), 33)
+check("k''(2)", diff(k, x, 2).subs(x, 2), 6)              # falsche Folgewerte (Fehler: -1 statt +1 in pq)
+check("k''(-4)", diff(k, x, 2).subs(x, -4), -30)
+check('k(2)', k.subs(x, 2), -47)
+check('k(-4)', k.subs(x, -4), -11)
+mm = -x**3 + 6*x**2 - 9*x + 4
+check("m'", diff(mm, x), -3*x**2 + 12*x - 9)
+assert sorted(solve(diff(mm, x), x)) == [1, 3]
+check("m''(1)", diff(mm, x, 2).subs(x, 1), 6)
+check("m''(3)", diff(mm, x, 2).subs(x, 3), -6)
+check('m(1)', mm.subs(x, 1), 0)
+check('m(3)', mm.subs(x, 3), 4)
+
 print(f'{ok} Zahlen geprüft, alles korrekt')

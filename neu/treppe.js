@@ -38,11 +38,13 @@
 
   // ------------------------------------------------------------ Fortschritt aus Ereignissen
   function progress(LR, topic) {
-    const best = {};
+    const best = {}, ex = {}; // ex: beste Prozentzahl je besonderer Übung (blurting, fehler, erlaeutern, deuten)
     let entry = null;
     LR.events().forEach(e => {
       if (e.type === 'stage' && e.data && e.data.topic === topic.id) best[e.data.stufe] = Math.max(best[e.data.stufe] || 0, e.data.pct);
       if (e.type === 'entry' && e.ref === topic.id) entry = e.data;
+      if (e.type === 'extra' && e.data && e.data.topic === topic.id) ex[e.data.kind] = Math.max(ex[e.data.kind] || 0, e.data.pct);
+      if (e.type === 'blurt' && e.data && e.data.topic === topic.id) ex.blurting = Math.max(ex.blurting || 0, e.data.pct);
     });
     let rec = topic.stufen.findIndex((_, i) => !(best[i] >= PASS));
     if (rec < 0) rec = topic.stufen.length - 1;
@@ -50,7 +52,54 @@
     const reached = Object.keys(best).filter(k => best[k] >= PASS).map(Number);
     const top = reached.length ? Math.max(...reached) : -1;
     const status = !Object.keys(best).length ? 'offen' : top <= 2 ? 'begonnen' : 'unsicher'; // „sicher“ kommt mit der Wiederholung (S4)
-    return { best, rec, status, entry };
+    return { best, rec, status, entry, ex };
+  }
+
+  // ------------------------------------------------------------ „Frag Claude“ (Portalplan 5.3 / 4.1)
+  // Kopiert Aufgabe + eigene Eingaben + Fehlertypen als Text. Kein Schlüssel, keine Übertragung:
+  // Tonda fügt den Text selbst im Chat ein. Gelesen wird direkt aus der Seite (Zahlenfelder, Auswahl, Selbstkorrektur).
+  function askText(root, meta) {
+    const L = ['Hallo Claude, ich brauche Hilfe im Lernraum.', `Fach: ${meta.fach} · Thema: ${meta.thema} · ${meta.wo}`];
+    const auf = typeof meta.aufgabe === 'function' ? meta.aufgabe() : meta.aufgabe;
+    if (auf) L.push('', 'Aufgabe:', auf);
+    const cps = [...root.querySelectorAll('.field.cp')].map(f => {
+      const v = f.querySelector('input').value.trim();
+      return v ? `- ${f.querySelector('label').textContent.trim()}: ${v} (${f.classList.contains('ok') ? 'richtig' : f.classList.contains('bad') ? 'falsch' : 'noch nicht geprüft'})` : null;
+    }).filter(Boolean);
+    if (cps.length) L.push('', 'Meine Zahlen-Eingaben:', ...cps);
+    const mcqs = [...root.querySelectorAll('.mcq.answered')].map(b => {
+      const bad = b.querySelector('.opt.wrong'), good = b.querySelector('.opt.right');
+      const pick = bad || good;
+      return pick ? `- ${b.dataset.qraw} → meine Antwort: ${pick.dataset.raw} (${bad ? 'falsch' : 'richtig'})` : null;
+    }).filter(Boolean);
+    if (mcqs.length) L.push('', 'Meine Antworten auf Auswahlfragen:', ...mcqs);
+    const rated = [...root.querySelectorAll('.rw-step')].map(st => {
+      const r = st.querySelector('.rate3 .on'); if (!r) return null;
+      const ft = st.querySelector('.ft-chips .on');
+      const nm = st.querySelector('.rw-name'); // Name nur, wenn er reiner Text ist (keine doppelten KaTeX-Texte)
+      return `- Schritt ${+st.dataset.i + 1}${nm && !nm.querySelector('.katex') ? ` (${nm.textContent.trim()})` : ''}: ${r.textContent}${ft ? ` (Fehlertyp: ${ft.dataset.ftv})` : ''}`;
+    }).filter(Boolean);
+    if (rated.length) L.push('', 'Meine Selbstkorrektur am Erwartungshorizont:', ...rated);
+    const conf = root.querySelector('.conf .on'); if (conf) L.push(`Meine Sicherheit vorher: ${conf.textContent.replace(/^\d/, '').trim()}`);
+    if (meta.extra) { const x = meta.extra(); if (x && x.length) L.push('', ...x); }
+    L.push('', 'Wo ich nicht weiterkomme: [hier kurz ergänzen]', '', 'Bitte erst ein Denkanstoß oder Hinweis, die volle Lösung nur, wenn ich ausdrücklich danach frage.');
+    return L.join('\n');
+  }
+  function toast(msg) {
+    let t = document.getElementById('toast');
+    if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; t.setAttribute('role', 'status'); t.setAttribute('aria-live', 'polite'); document.body.appendChild(t); }
+    t.textContent = msg; t.classList.remove('show'); void t.offsetWidth; t.classList.add('show');
+    clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 3800);
+  }
+  function bindAsk(root, ctx, meta) {
+    root.querySelectorAll('[data-ask]').forEach(b => b.addEventListener('click', async () => {
+      const text = askText(root, meta);
+      let ok = false;
+      try { await navigator.clipboard.writeText(text); ok = true; } catch (e) { /* z. B. kein Zugriff: Ausweichfenster */ }
+      if (ok) { toast('Kopiert. Füge den Text jetzt bei Claude im Chat ein.'); return; }
+      if (ctx.openSheet) ctx.openSheet(`${ctx.sheetHead('Text für Claude')}<p class="row-sub" style="margin-bottom:10px">Dein Gerät lässt das Kopieren nicht zu. Markiere den Text und kopiere ihn selbst.</p><textarea class="ask-box" readonly rows="12">${ctx.esc(text)}</textarea><div class="sheet-actions"><button class="btn primary" type="button" data-asksel>Alles markieren</button></div>`,
+        box => { const ta = box.querySelector('textarea'); box.querySelector('[data-asksel]').onclick = () => { ta.focus(); ta.select(); }; ta.focus(); ta.select(); });
+    }));
   }
 
   // ------------------------------------------------------------ Bausteine (HTML)
@@ -61,10 +110,13 @@
     B.pills = (topic, cur) => `<nav class="st-pills" aria-label="Stufen">${topic.stufen.map((_, i) =>
       `<a href="#/thema/${topic.id}/${i}" class="${i === cur ? 'on' : ''}" aria-current="${i === cur ? 'step' : 'false'}" title="Stufe ${i}: ${NAMES[i]}"><span>${i}</span></a>`).join('')}</nav>`;
 
-    B.mcq = (q, key) => `<div class="mcq" data-mcq="${key}">
+    // data-qraw / data-raw: Rohtext (mit $…$) für „Frag Claude“, damit keine doppelten KaTeX-Texte im Zwischenspeicher landen
+    B.mcq = (q, key) => `<div class="mcq" data-mcq="${key}" data-qraw="${esc(q.frage)}" data-expl="${esc(M(q.erklaerung || ''))}">
       <p class="mcq-q">${M(q.frage)}</p>
-      <div class="mcq-opts">${q.optionen.map((o, i) => `<button type="button" class="opt" data-o="${i}"><span class="opt-k">${'ABC'[i]}</span><span class="opt-t">${M(o)}</span></button>`).join('')}</div>
+      <div class="mcq-opts">${q.optionen.map((o, i) => `<button type="button" class="opt" data-o="${i}" data-raw="${esc(o)}"><span class="opt-k">${'ABCD'[i]}</span><span class="opt-t">${M(o)}</span></button>`).join('')}</div>
       <div class="mcq-fb" hidden></div></div>`;
+
+    B.ask = () => `<button class="btn small ask-btn" type="button" data-ask title="Kopiert Aufgabe, deine Eingaben und Fehlertypen. Du fügst den Text bei Claude im Chat ein.">${icon('copy')}Frag Claude</button>`;
 
     B.cas = (cas, collapsed) => {
       if (!cas) return '';
@@ -104,7 +156,7 @@
       const fb = box.querySelector('.mcq-fb');
       fb.hidden = false;
       fb.className = 'mcq-fb ' + (ok ? 'ok' : 'bad');
-      fb.innerHTML = (ok ? '<b>Richtig.</b> ' : '<b>Noch nicht.</b> Richtig ist ' + 'ABC'[q.richtig] + '. ') + (q.erklaerung ? box.dataset.expl || '' : '');
+      fb.innerHTML = (ok ? '<b>Richtig.</b> ' : '<b>Noch nicht.</b> Richtig ist ' + 'ABCD'[q.richtig] + '. ') + (q.erklaerung ? box.dataset.expl || '' : '');
       cb(ok, fb);
     }));
   }
@@ -147,6 +199,7 @@
       ewh.innerHTML = `<div class="sc-title"><span class="kicker">Erwartungshorizont · ${part.be} BE</span><p class="muted">Vergleiche Schritt für Schritt mit deinem Blatt und hake ehrlich ab.</p></div>
         <div class="rw">${part.schritte.map((st, i) => B.step(st, i, {
           casFold: opts.casFold,
+          body: st.kern ? `<div class="rw-math prose">${M(st.rechnung)}</div>` : undefined, // Kernpunkte (Text statt Rechnung)
           after: `<div class="rate3" role="group" aria-label="Wie war dein Schritt?">${[['hatte ich', 'full'], ['fast', 'half'], ['fehlte', 'none']].map(([l, v]) => `<button type="button" data-rate="${i}" data-v="${v}">${l}</button>`).join('')}</div>
             <div class="ftype" data-ft="${i}" hidden><span class="kicker">Was war los?</span><div class="ft-chips">${FTYPES.map(f => `<button type="button" data-ftv="${f}">${f}</button>`).join('')}</div></div>`
         })).join('')}</div>
@@ -178,8 +231,10 @@
           <p class="dim np-note">Umrechnung nach der üblichen Oberstufen-Tabelle (95 % = 15 NP … 20 % = 1 NP). Deine Lehrkraft kann abweichen.</p>
           <button class="btn primary block" type="button" data-save>${icon('check')}Ergebnis speichern</button>`;
         res.querySelector('[data-save]').onclick = () => {
-          LR.log('practice', part.id, { pts, max: part.be, conf, topic: opts.topic });
-          part.schritte.forEach((st, i) => { if (rating[i] !== 'full') LR.log('mistake', `${part.id}:${i}`, { typ: ftSel[i] || null, rating: rating[i], topic: opts.topic }); });
+          // Besondere Aufgaben (opts.kind) melden sich als „extra“, normale Aufgaben als „practice“
+          if (opts.kind) LR.log('extra', `${opts.topic}:${opts.kind}`, { topic: opts.topic, kind: opts.kind, pct: Math.round(pts / part.be * 100), pts, max: part.be, conf });
+          else LR.log('practice', part.id, { pts, max: part.be, conf, topic: opts.topic });
+          part.schritte.forEach((st, i) => { if (rating[i] !== 'full') LR.log('mistake', `${part.id}:${i}`, { typ: ftSel[i] || null, rating: rating[i], topic: opts.topic, conf }); });
           ewh.querySelectorAll('button').forEach(x => { x.disabled = true; });
           res.querySelector('[data-save]').outerHTML = `<p class="saved">${icon('check')}Gespeichert${Object.values(rating).some(r => r !== 'full') ? '. Fehler sind für die Fehlerjagd vorgemerkt.' : '.'}</p>`;
           done(pts, part.be);
@@ -228,6 +283,24 @@
   // ------------------------------------------------------------ Ansichten
   const T = {};
 
+  // Besondere Übungen (S3): eigene Typen neben der Treppe, jede einzeln aufrufbar
+  const EXTRAS = [
+    ['blurting', 'Blurting', '5 Minuten, leeres Blatt: alles aufschreiben, was du weißt. Danach abhaken.', 'pencil', 'Zum Start oder zur Wiederholung'],
+    ['fehler', 'Fehler finden', 'Eine vorgerechnete Lösung hat einen Fehler. Finde die Zeile.', 'alert', 'Ab Stufe 2'],
+    ['erlaeutern', 'Lösungsweg erläutern', 'Ein fertiger Rechenweg: Was passiert in jeder Zeile, und warum?', 'book', 'AFB III, fester Abi-Typ'],
+    ['deuten', 'Bedingung deuten', 'Aus einer Gleichung ein Bild und einen Satz machen.', 'eye', 'AFB III, fester Abi-Typ']
+  ];
+  function extrasList(topic, pr, ctx) {
+    const { icon } = ctx;
+    const have = EXTRAS.filter(([k]) => topic.extras && topic.extras[k]);
+    if (!have.length) return '';
+    return `<div class="section-head xhead"><h3 class="h-2">Besondere Übungen</h3></div>
+      <div class="list xlist">${have.map(([k, name, desc, ic, tag]) => {
+        const b = pr.ex[k];
+        return `<a class="row" href="#/thema/${topic.id}/${k}"><span class="x-ic">${icon(ic)}</span><span class="row-main"><span class="row-title">${name}</span><span class="row-sub">${desc}</span></span><span class="row-end">${b != null ? `<span class="chip ${b >= PASS ? 'ok' : 'warn'}">${b} %</span>` : `<span class="chip">${tag}</span>`}${icon('right', 'chev')}</span></a>`;
+      }).join('')}</div>`;
+  }
+
   T.overview = (topic, ctx) => {
     const { icon, LR, subjStyle, byId, M } = ctx;
     const s = byId[topic.fach];
@@ -245,6 +318,7 @@
       <div class="page-head"><span class="kicker">Lerntreppe · ${s ? s.name.replace(/ (eA|gA)$/, '') : ''}${topic.demo ? ' · Demo' : ''}</span><h2 class="h-1">${M(topic.titel)}</h2><p class="muted">${M(topic.kurz)}</p>
         ${topic.demo ? `<div class="notice">${icon('info')}<div>Demo-Inhalt zum Testen der Lerntreppe. Echte Themen aus dem Unterricht kommen nach dem Fundament.</div></div>` : ''}</div>
       <div class="stair">${steps}</div>
+      ${extrasList(topic, pr, ctx)}
       <div class="card entry">${icon('target')}<div class="row-main"><span class="row-title">Kennst du das schon?</span><span class="row-sub">3 kurze Fragen, danach springst du direkt auf die passende Stufe. Gesperrt ist nichts, du kannst jede Stufe öffnen.</span></div><a class="btn small" href="#/thema/${topic.id}/check">Eingangs-Check</a></div>
       <p class="row-sub legend">Status: <b>${pr.status}</b> · Eine Stufe gilt ab ${PASS} % als geschafft.</p></div>`;
     return { title: topic.titel.replace(/\$/g, ''), back: `#/fach/${topic.fach}`, nav: 'faecher', html };
@@ -282,7 +356,7 @@
     if (!st) return T.overview(topic, ctx);
     const s = byId[topic.fach];
     const task = st.task;
-    const head = `${B.pills(topic, n)}<div class="page-head"><span class="kicker">Stufe ${n} · ${NAMES[n]} · ${HELP[n]}</span><h2 class="h-1">${task ? esc(task.titel) : NAMES[n]}</h2><p class="muted">${DESC[n]}</p></div>`;
+    const head = `${B.pills(topic, n)}<div class="page-head"><span class="kicker">Stufe ${n} · ${NAMES[n]} · ${HELP[n]}</span><h2 class="h-1">${task ? esc(task.titel) : NAMES[n]}</h2><p class="muted">${DESC[n]}</p><div class="head-tools">${B.ask()}</div></div>`;
     let body = '';
 
     if (st.typ === 'sehen') {
@@ -340,6 +414,12 @@
   function bindStage(root, topic, n, st, ctx) {
     const { M, icon, LR } = ctx;
     const B = api(ctx);
+    const subj = ctx.byId[topic.fach];
+    bindAsk(root, ctx, {
+      fach: subj ? subj.name : topic.fach, thema: topic.titel.replace(/\$/g, ''), wo: `Stufe ${n} (${NAMES[n]})`,
+      aufgabe: st.typ === 'sehen' ? `${st.text}\n${st.frage.frage}`
+        : (st.task.intro ? st.task.intro + '\n' : '') + st.task.parts.map(p => `${p.label ? p.label + ' ' : ''}${p.frage} (${p.be} BE, AFB ${p.afb})`).join('\n')
+    });
     const finish = pct => {
       pct = Math.max(0, Math.min(100, Math.round(pct)));
       LR.log('stage', `${topic.id}:${n}`, { topic: topic.id, stufe: n, pct });
@@ -461,5 +541,9 @@
     }
   }
 
-  window.LRTreppe = Object.assign(T, { progress, notenpunkte, parseNum, NAMES, PASS });
+  // Werkzeugkasten für extras.js (Blurting, Fehler finden, Erläutern, Deuten, Notation)
+  window.LRTreppe = Object.assign(T, {
+    progress, notenpunkte, parseNum, NAMES, PASS,
+    kit: { api, bindMcq, bindCheckpoints, selfCheck, bindAsk, toast, near, fmt, FTYPES }
+  });
 })();

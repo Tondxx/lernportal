@@ -36,7 +36,7 @@
   function loadState() {
     const s = LR.loadState();
     ['done', 'scores', 'answers'].forEach(k => { if (!s[k] || typeof s[k] !== 'object') s[k] = {}; });
-    if (!s.planTab) s.planTab = 'klausuren';
+    if (!s.planTab) s.planTab = 'lernplan';
     if (!s.week) s.week = 'all';
     const first = LR.profiles()[0];
     if (me && first && first.id === me.id) {
@@ -115,21 +115,8 @@
   // ---- Heute (Portalplan Abschnitt 8: eine Frage – was jetzt?)
   const MONTHS_LONG = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 
-  // Abruf-Karten aus verstandenen Lektionen: zuletzt falsch > nie gefragt > am längsten her
-  function recallPool() {
-    if (!mine('mathe')) return [];
-    const last = {};
-    LR.events().forEach(e => { if (e.type === 'recall') last[e.ref] = e; });
-    const pool = [];
-    LESSONS.forEach(l => {
-      if (!state.done[l.id]) return;
-      (l.test || []).forEach((c, i) => {
-        const ref = `${l.id}:${i}`, e = last[ref];
-        pool.push({ ref, q: c.q, a: c.a, lesson: l, pr: !e ? 1 : (e.data && e.data.ok === false ? 0 : 2), t: e ? e.t : 0 });
-      });
-    });
-    return pool.sort((a, b) => a.pr - b.pr || a.t - b.t);
-  }
+  // Abruf-Karten kommen aus der Wiederholungs-Queue (wiederholen.js, Abstände 1–3–7–21 Tage)
+  const recallPool = force => (window.LRWdh ? LRWdh.dueCards(force) : []);
   // Teilaufgaben, bei denen Punkte gefehlt haben (Fehler-Segment des Rings)
   function lostParts() {
     const out = [];
@@ -140,12 +127,16 @@
 
   // Nächster Schritt: fälliger Abruf > angefangene Lektion > Fehler ausbessern > neue Lektion > Üben
   function nextStep(st) {
+    const ps = window.LRStruktur && LRStruktur.nextPlanStep(); // erster offener Eintrag im Lernplan
+    if (ps) return ps;
     const ms = byId.mathe;
     if (!mine('mathe') || !LESSONS.length) return null;
-    const pool = recallPool();
-    if (!st.ring.seg[0] && pool.length >= 3) return { kicker: 'Abruf', title: `${Math.min(5, pool.length)} Karten aus deinen Lektionen`, sub: 'Erst im Kopf antworten, dann umdrehen. Was du nicht wusstest, kommt zuerst wieder.', min: 3, href: '#/abruf', s: ms, ic: 'flip' };
+    const pool = recallPool(false);
+    if (!st.ring.seg[0] && pool.length) return { kicker: 'Wiederholen', title: `${Math.min(5, pool.length)} ${pool.length === 1 ? 'Karte ist' : 'Karten sind'} heute fällig`, sub: 'Erst im Kopf antworten, dann umdrehen. Was du nicht wusstest, kommt morgen wieder.', min: 3, href: '#/abruf', s: ms, ic: 'flip' };
     const cont = state.last && LESSONS.find(l => l.id === state.last.id && !state.done[l.id]);
     if (cont) return { kicker: 'Weiter, wo du aufgehört hast', title: `Lektion ${cont.num}: ${cont.title}`, sub: cont.short, min: cont.min, href: `#/lektion/${cont.id}`, s: ms, ic: 'play' };
+    const hd = window.LRWdh ? LRWdh.huntState().due.length : 0;
+    if (!st.ring.seg[2] && hd) return { kicker: 'Fehlerjagd', title: `${hd} ${hd === 1 ? 'Fehler ist' : 'Fehler sind'} wieder dran`, sub: 'Nur die Stelle neu rechnen, an der es gehakt hat. Dann vergleichen.', min: 5, href: '#/jagd', s: ms, ic: 'target' };
     const lost = lostParts();
     if (!st.ring.seg[2] && lost.length) { const { t, p, v } = lost[0]; return { kicker: 'Fehler ausbessern', title: `${t.title} · ${p.label}`, sub: `Beim letzten Mal ${v} von ${p.be} BE. Rechne den Teil nochmal auf Papier und hol dir die fehlenden Punkte.`, min: 8, href: `#/aufgabe/${t.id}`, s: ms, ic: 'target' }; }
     const nl = LESSONS.find(l => !state.done[l.id]);
@@ -175,7 +166,9 @@
     const blocks = [];
     const head = `<div class="page-head"><span class="kicker">${WD[now.getDay()]}, ${now.getDate()}. ${MONTHS_LONG[now.getMonth()]}</span>
       <h2 class="h-display">${st.comeback ? 'Willkommen zurück' : 'Hallo'}, ${esc(me.name)}.</h2>
-      ${st.comeback ? '<p class="muted">Schön, dass du wieder da bist. Fünf Minuten reichen heute völlig.</p>' : ''}</div>`;
+      ${st.comeback ? '<p class="muted">Schön, dass du wieder da bist. Fünf Minuten reichen heute völlig.</p>' : ''}
+      ${state.tomorrow && state.tomorrow.day === st.today ? `<p class="muted plan-yday">${icon('flag')}Gestern vorgenommen: <a class="link" href="${state.tomorrow.href}">${esc(state.tomorrow.title)}</a></p>` : ''}</div>`;
+    const wi = window.LRWdh ? LRWdh.heuteInfo() : null;
 
     // 1) Nächster Schritt – eine große Karte, ein Knopf
     const ns = nextStep(st);
@@ -185,16 +178,22 @@
         <p class="muted next-sub">${ns.sub}</p>
         <span class="btn primary next-btn">Start ${icon('arrow', 'go')}</span></a>`
       : `<div class="next" style="--subj:var(--accent)"><span class="kicker">Nächster Schritt</span><h3 class="h-1 next-title">Noch keine Inhalte für deine Kurse</h3><p class="muted next-sub">Die Lerninhalte für alle Fächer kommen, sobald das Fundament des Lernraums steht.</p></div>`);
+    if (wi && wi.session) {
+      const s = wi.session, left = wi.phaseLeft(s);
+      blocks.push(`<a class="sess-run" href="#/session"><span class="sess-dot"></span><span class="row-main"><span class="row-title">${esc(wi.modes[s.mode].name)} läuft</span><span class="row-sub">${wi.phaseName(s)} · ${left <= 0 ? 'Zeit um' : wi.mmss(left) + ' übrig'}</span></span><span class="btn small primary">Weiter ${icon('arrow', 'go')}</span></a>`);
+    } else if (wi) {
+      blocks.push(`<div class="time-pick"><span class="kicker">Wie viel Zeit hast du?</span><div class="tp-chips"><a class="chip" href="#/session/m3">3 Min.</a><a class="chip" href="#/session/m10">10 Min.</a><a class="chip" href="#/session/m20">20 Min.</a><a class="chip" href="#/session">Fokusblock</a></div></div>`);
+    }
 
     // 2) Ziel-Ring + Streak + Kalender
     const r = st.ring;
-    const goalRow = (i, have, need, txt) => `<li class="${have >= need ? 'done' : ''}" style="--c:${SEG[i][1]}"><span class="g-dot">${icon('check')}</span><span class="row-main"><span class="row-title">${SEG[i][0]}</span><span class="row-sub">${txt}</span></span><span class="g-n">${Math.min(have, need)}/${need}</span></li>`;
+    const goalRow = (i, have, need, txt, href) => `<li class="${have >= need ? 'done' : ''}" style="--c:${SEG[i][1]}">${href ? `<a class="g-link" href="${href}">` : '<div class="g-link">'}<span class="g-dot">${icon('check')}</span><span class="row-main"><span class="row-title">${SEG[i][0]}</span><span class="row-sub">${txt}</span></span><span class="g-n">${Math.min(have, need)}/${need}</span>${href ? '</a>' : '</div>'}</li>`;
     blocks.push(`<section class="daily">
       <div class="card goal">${goalRing(r.seg)}
         <ul class="goal-list">
-          ${goalRow(0, r.recall, LR.GOAL.recall, 'Karten aus dem Kopf beantworten')}
+          ${goalRow(0, r.recall, LR.GOAL.recall, wi && wi.cardsDue ? `${wi.cardsDue} ${wi.cardsDue === 1 ? 'Karte' : 'Karten'} heute fällig` : 'Karten aus dem Kopf beantworten', '#/abruf')}
           ${goalRow(1, r.learn, LR.GOAL.learn, 'eine Lektion oder Aufgabe')}
-          ${goalRow(2, r.fix, LR.GOAL.fix, 'verlorene Punkte zurückholen')}
+          ${goalRow(2, r.fix, LR.GOAL.fix, wi && wi.huntDue ? `${wi.huntDue} ${wi.huntDue === 1 ? 'Fehler' : 'Fehler'} wieder dran` : wi && wi.huntOpen ? `${wi.huntOpen} offen, heute keiner dran` : 'Fehler neu rechnen oder Punkte zurückholen', '#/fehlerjagd')}
         </ul></div>
       <div class="card streakbox">
         <div class="streak-top"><div><span class="kicker">Abi-Training · Tag ${st.trainingDays || 1}</span>
@@ -208,7 +207,7 @@
     const next = upcoming[0];
     if (next) {
       const s = byId[next.fid];
-      blocks.push(`<a class="exam-line" ${next.fid ? `href="#/fach/${next.fid}/klausur"` : ''} ${subjStyle(s)}><span class="dot"></span><span class="row-main"><span class="row-title">${s ? s.name.replace(/ (eA|gA)$/, '') : next.subject}-Klausur ${next.days === 0 ? 'heute' : next.days === 1 ? 'morgen' : daysText(next.days)}</span><span class="row-sub">${WD[next.date.getDay()]}, ${next.dateStr.slice(0, 6)} · ${next.period} Stunde · Raum ${next.room}</span></span>${icon('right', 'chev')}</a>`);
+      blocks.push(`<a class="exam-line" ${next.fid ? `href="#/fach/${next.fid}"` : ''} ${subjStyle(s)}><span class="dot"></span><span class="row-main"><span class="row-title">${s ? s.name.replace(/ (eA|gA)$/, '') : next.subject}-Klausur ${next.days === 0 ? 'heute' : next.days === 1 ? 'morgen' : daysText(next.days)}</span><span class="row-sub">${WD[next.date.getDay()]}, ${next.dateStr.slice(0, 6)} · ${next.period} Stunde · Raum ${next.room}</span></span>${icon('right', 'chev')}</a>`);
     }
 
     // 4) Unterricht heute / nächster Schultag (nur eigene Kurse)
@@ -225,10 +224,14 @@
   };
 
   // ---- Abruf (kurz, zählt fürs Ring-Segment „Abruf“)
-  R.abruf = () => {
+  R.abruf = (arg) => {
     const ms = byId.mathe;
-    const pool = recallPool().slice(0, 5);
-    const head = `<div class="page-head"><span class="kicker">Abruf · ca. 3 Min.</span><h2 class="h-1">Was weißt du noch?</h2><p class="muted">Karten aus Lektionen, die du schon verstanden hast. Erst im Kopf antworten, dann umdrehen.</p></div>`;
+    const force = arg === 'alle';
+    const pool = recallPool(force).slice(0, 5);
+    const head = `<div class="page-head"><span class="kicker">Abruf · ca. 3 Min.</span><h2 class="h-1">Was weißt du noch?</h2><p class="muted">Karten aus Lektionen, die du schon verstanden hast. Richtig: Sie kommen in 1, 3, 7, 21 Tagen wieder. Falsch: morgen.</p></div>`;
+    if (!pool.length && !force && recallPool(true).length) {
+      return { title: 'Abruf', back: '#/', nav: 'heute', focus: true, html: `<div ${subjStyle(ms)} class="rise">${head}<div class="empty">Heute ist keine Karte fällig. Genau so soll es sein: Karten kommen erst wieder, kurz bevor du sie vergessen würdest (nach 1, 3, 7, 21 Tagen).</div><a class="btn block" href="#/abruf/alle">${icon('flip')}Trotzdem ein paar Karten üben</a></div>` };
+    }
     if (!pool.length) {
       const nl = LESSONS.find(l => !state.done[l.id]);
       return { title: 'Abruf', back: '#/', nav: 'heute', focus: true, html: `<div ${subjStyle(ms)} class="rise">${head}<div class="empty">Noch keine Karten. Abfragen kann man nur, was man schon einmal gelernt hat.</div>${nl ? `<a class="btn primary block" href="#/lektion/${nl.id}">Lektion ${nl.num} lernen ${icon('arrow', 'go')}</a>` : ''}</div>` };
@@ -244,7 +247,7 @@
             return `<div class="done-wrap"><div class="done-badge">${icon('check')}</div><h3 class="h-1">${known} von ${total} gewusst</h3>
               ${titles.length ? `<div class="can"><span class="kicker">Das kannst du jetzt</span><ul>${titles.map(t => `<li>${icon('check')}<span>${t}</span></li>`).join('')}</ul></div>` : '<p class="muted">Die Karten kommen beim nächsten Abruf zuerst wieder. Genau so lernt man sie.</p>'}
               <p class="muted">Ziel-Ring heute: ${st.ring.done} von 3${st.ring.seg[0] ? ' · Abruf geschafft' : ''}.</p>
-              <a class="btn primary" href="#/">Zurück zu Heute ${icon('arrow', 'go')}</a></div>`;
+              ${window.LRWdh && LRWdh.running() ? `<a class="btn primary" href="#/session">${icon('clock')}Zurück zur Session</a>` : `<a class="btn primary" href="#/">Zurück zu Heute ${icon('arrow', 'go')}</a>`}</div>`;
           }
         });
       }
@@ -276,78 +279,23 @@
     return { title: 'Fächer', nav: 'faecher', html: `<div class="page-head"><span class="kicker">Jahrgang 12</span><h2 class="h-display">Deine Fächer</h2><p class="muted">Deine Kurse, sortiert nach der nächsten Klausur. <button class="link" type="button" data-action="edit-profile">Kurse ändern</button></p></div><div class="grid cols rise">${tiles.map((t, i) => rise(t, Math.min(i, 8))).join('')}</div>` };
   };
 
-  // ---- Fach
-  R.fach = (id, tab = 'pfad') => {
-    const s = byId[id];
-    if (!s) return R.faecher();
-    const e = examsOf(id)[0];
-    const isMath = id === 'mathe';
-    const head = `<div class="fach-head" ${subjStyle(s)}><div class="mono">${mono(s)}</div><div style="min-width:0"><h2 class="h-1">${s.name}</h2><p class="muted" style="margin-top:4px">${s.level} · ${s.code} · ${s.teacher} · Raum ${s.room}</p></div></div>`;
-    const examChip = e ? `<div class="notice" style="margin-bottom:18px;background:color-mix(in oklab,var(--subj) 12%,transparent)">${icon('target')}<div><b style="color:var(--text)">Nächste Klausur ${daysText(e.days).toLowerCase()}</b> · ${WD[e.date.getDay()]}, ${e.dateStr} · ${e.period} Stunde<br>${e.topic}</div></div>` : '';
-    const tabs = `<div class="sticky-seg">${seg('fachtab:' + id, [['pfad', 'Lernpfad'], ['ueben', 'Üben'], ['klausur', 'Klausur']], tab, true)}</div>`;
-    let body = '';
-    if (tab === 'pfad') body = isMath ? mathPath(s) : otherPath(s);
-    else if (tab === 'ueben') body = isMath ? mathPractice(s) : soon(s);
-    else body = isMath ? mathExam(s, e) : soon(s);
-    return { title: s.name, back: '#/faecher', nav: 'faecher', html: `<div ${subjStyle(s)}>${head}${examChip}${tabs}<div class="rise" id="tabBody">${body}</div></div>` };
-  };
-  const soon = s => `<div class="notice">${icon('info')}<div>Dieser Bereich wird für ${s.name} noch aus dem bisherigen Portal übernommen. Die Struktur ist überall gleich: <b style="color:var(--text)">Lernpfad, Üben, Klausur</b>.</div></div>`;
-
-  function unitRow(i, n, total, done, isNext, title, sub, chip, href, ext) {
-    const cls = ['unit', i === 0 ? 'first' : '', i === total - 1 ? 'last' : '', done ? 'done' : '', isNext ? 'next' : ''].join(' ');
-    return `<a class="${cls}" href="${href}"${ext ? ' target="_blank" rel="noopener"' : ''}>
-      <span class="node">${done ? icon('check') : n}</span>
-      <span class="row-main"><span class="row-title">${title}</span><span class="row-sub">${sub}</span></span>
-      <span class="row-end">${chip}${icon(ext ? 'ext' : 'right', 'chev')}</span></a>`;
-  }
-  function mathPath(s) {
-    const groups = [['integral', 'Integral & Bestand'], ['schar', 'Funktionsscharen & Ortskurven']];
-    const nxt = nextLesson();
-    const total = lessonsDone() / LESSONS.length;
-    const demo = TOPICS.find(x => x.fach === 'mathe' && x.demo);
-    let h = demo ? `<a class="cont" href="#/thema/${demo.id}" style="margin-bottom:14px"><div class="cont-ico">${icon('layers')}</div><div class="row-main"><span class="kicker">Neu · Lerntreppe (Demo)</span><span class="row-title" style="font-size:18px">${demo.titel}</span><span class="row-sub">So funktionieren Themen ab jetzt: 6 Stufen vom Zuschauen bis zur Abi-Aufgabe.</span></div>${icon('right', 'chev')}</a>` : '';
-    h += `<div class="card" style="padding:18px 20px;display:flex;align-items:center;gap:18px">${ring(total, { size: 72, center: `<b class="num" style="font-size:20px">${lessonsDone()}</b>` })}<div><div class="row-title">${lessonsDone()} von ${LESSONS.length} Lektionen verstanden</div><div class="row-sub">Jede Lektion: Idee, Rezept, Beispiel, Fehler, Selbsttest.</div></div></div>`;
-    groups.forEach(([g, label]) => {
-      const ls = LESSONS.filter(l => l.group === g);
-      const gd = ls.filter(l => state.done[l.id]).length;
-      h += `<div class="path-group"><h3 class="h-2">${label}</h3><span class="chip">${gd}/${ls.length}</span></div><div class="path">` +
-        ls.map((l, i) => unitRow(i, l.num, ls.length, !!state.done[l.id], nxt && nxt.id === l.id, l.title, l.short, `<span class="chip">${icon('clock')}${l.min} Min.</span>`, `#/lektion/${l.id}`)).join('') + `</div>`;
-    });
-    return h;
-  }
-  function otherPath(s) {
+  // ---- Fach, Ordner, Probeklausur, Lernplan: struktur.js (Bauschritt S3b)
+  function oldModules(s) {
     const ts = s.topics;
-    return `<div class="notice" style="margin-bottom:18px">${icon('info')}<div>Diese Module laufen noch im bisherigen Portal und werden in die neue Struktur übertragen.</div></div>
+    const demo = ALGOS.find(x => x.fach === s.id);
+    const demoCard = demo ? `<a class="cont" href="#/algo/${demo.id}" style="margin-bottom:14px"><div class="cont-ico">${icon('layers')}</div><div class="row-main"><span class="kicker">Neu · Notation (Demo)</span><span class="row-title" style="font-size:18px">${demo.titel}</span><span class="row-sub">Ein Algorithmus als Struktogramm, Pseudocode und Python, zum Tippen und Vergleichen.</span></div>${icon('right', 'chev')}</a>` : '';
+    return `${demoCard}<div class="notice" style="margin-bottom:18px">${icon('info')}<div>Diese Module laufen noch im bisherigen Portal und werden in die neue Struktur übertragen.</div></div>
       <div class="path">${ts.map((t, i) => unitRow(i, i + 1, ts.length, false, false, t.title, t.desc.length > 110 ? t.desc.slice(0, 108) + '…' : t.desc, t.badge ? `<span class="chip">${t.badge}</span>` : '', '../index.html', true)).join('')}</div>`;
   }
 
-  function mathPractice(s) {
-    let got = 0, max = 0;
-    TASKS.forEach(t => { got += taskGot(t); max += taskMax(t); });
-    let h = `<div class="card" style="padding:18px 20px;display:flex;align-items:center;gap:18px;margin-bottom:8px">${ring(max ? got / max : 0, { size: 72, center: `<b class="num" style="font-size:18px">${got}</b>` })}<div><div class="row-title">${got} von ${max} BE ehrlich bewertet</div><div class="row-sub">Du bewertest dich selbst, erst nach der Musterlösung.</div></div></div>`;
-    [['A', 'Teil A · ohne Taschenrechner'], ['B', 'Teil B · mit Taschenrechner']].forEach(([teil, label]) => {
-      const ts = TASKS.filter(t => t.teil === teil);
-      if (!ts.length) return;
-      h += `<div class="path-group"><h3 class="h-2">${label}</h3><span class="chip">${ts.length} Aufgaben</span></div><div class="list">` + ts.map(t => {
-        const g = taskGot(t), m = taskMax(t);
-        return `<a class="row" href="#/aufgabe/${t.id}"><span class="row-main"><span class="row-title">${t.title}</span><span class="row-sub">AFB ${t.afb} · ${t.ops}</span></span><span class="row-end"><span class="chip ${g >= m * 0.75 ? 'ok' : g > 0 ? 'warn' : ''}">${g}/${m} BE</span>${icon('right', 'chev')}</span></a>`;
-      }).join('') + `</div>`;
-    });
-    return h;
-  }
-
-  function mathExam(s, e) {
-    const open = LESSONS.filter(l => !state.done[l.id]);
-    return `<div class="section" style="margin-top:6px"><h3 class="h-2" style="margin-bottom:12px">Bereit für die Klausur?</h3>
-      <div class="list">${open.length ? open.slice(0, 5).map(l => `<a class="row" href="#/lektion/${l.id}"><span class="node" style="width:32px;height:32px;font-size:13px;box-shadow:0 0 0 2px var(--line-2) inset;border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);font-weight:700">${l.num}</span><span class="row-main"><span class="row-title">${l.title}</span><span class="row-sub">noch nicht als verstanden markiert</span></span>${icon('right', 'chev')}</a>`).join('') : `<div class="empty">Alle Lektionen verstanden. Jetzt Aufgaben im Reiter Üben.</div>`}</div></div>
-      <div class="section"><h3 class="h-2" style="margin-bottom:14px">Spickzettel</h3>${prose(D.SPICK)}</div>`;
-  }
 
   // ---- Plan
   R.plan = () => {
-    const tab = state.planTab || 'klausuren';
+    const tab = state.planTab || 'lernplan';
     let body = '';
-    if (tab === 'klausuren') {
+    if (tab === 'lernplan') {
+      body = window.LRStruktur ? LRStruktur.planBody() : '';
+    } else if (tab === 'klausuren') {
       const first = upcoming.filter(k => k.date < new Date(2027, 0, 1));
       const later = upcoming.filter(k => k.date >= new Date(2027, 0, 1));
       const past = exams.filter(k => k.days < 0).reverse();
@@ -376,7 +324,7 @@
       const day = `<div class="tt-day">${seg('day', dayKeys.map((d, i) => [i, d]), dsel, true)}<div class="list" style="margin-top:14px">${slots.length ? groupSlots(slots).map(x => { const s = subjOfCourse(x.course); return `<div class="row" ${subjStyle(s)}><span class="bar-subj"></span><span class="num" style="min-width:58px;font-size:15px;font-weight:700;color:var(--text-3)">${rangeText(x)}</span><span class="row-main"><span class="row-title">${s ? s.name : x.course}</span><span class="row-sub">${x.teacher} · Raum ${x.room}</span></span>${x.week ? `<span class="chip">${x.week}-Woche</span>` : ''}</div>`; }).join('') : `<div class="empty">Kein Unterricht.</div>`}</div></div>`;
       body = `<div style="margin:6px 0 18px">${seg('week', [['all', 'Alle Wochen'], ['A', 'A-Woche'], ['B', 'B-Woche']], wk)}</div>${grid}${day}`;
     }
-    return { title: 'Plan', nav: 'plan', html: `<div class="page-head"><span class="kicker">Schuljahr 2026/27</span><h2 class="h-display">Plan</h2></div><div class="sticky-seg">${seg('plan', [['klausuren', 'Klausuren'], ['stunden', 'Stundenplan']], tab, true)}</div><div class="rise" id="tabBody">${body}</div>` };
+    return { title: 'Plan', nav: 'plan', html: `<div class="page-head"><span class="kicker">Schuljahr 2026/27</span><h2 class="h-display">Plan</h2></div><div class="sticky-seg">${seg('plan', [['lernplan', 'Lernplan'], ['klausuren', 'Klausuren'], ['stunden', 'Stundenplan']], tab, true)}</div><div class="rise" id="tabBody">${body}</div>` };
   };
 
   // ---- Lektion (Reader)
@@ -417,7 +365,7 @@
       <div class="reader"><nav class="outline" id="outline" aria-label="Seiten der Lektion">${pages.map((p, i) => `<button type="button" data-p="${i}"><span class="n">${i + 1}</span>${p.label}</button>`).join('')}</nav>
       <div><article class="page" id="page"></article><div class="pager"><button class="btn back-btn" id="prevBtn" type="button" aria-label="Zurück">${icon('left')}</button><button class="btn primary" id="nextBtn" type="button"></button></div></div></div></div>`;
     return {
-      title: `Lektion ${l.num}`, back: '#/fach/mathe', nav: 'faecher', focus: true, html,
+      title: `Lektion ${l.num}`, back: (window.LRStruktur && LRStruktur.backFor('lektion', l.id)) || '#/fach/mathe', nav: 'faecher', focus: true, html,
       after(root) { readerInit(root, l, pages, cur); }
     };
   };
@@ -435,7 +383,7 @@
       $$('#steps i', root).forEach((el, i) => el.classList.toggle('on', i <= cur));
       $$('#outline button', root).forEach((b, i) => { b.toggleAttribute('aria-current', i === cur); if (i === cur) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); b.classList.toggle('seen', seen.has(i) && i !== cur); });
       const last = cur === pages.length - 1;
-      next.innerHTML = last ? `${icon('check')}<span>Zurück zum Lernpfad</span>` : `<span>${nextLabel()}</span>${icon('arrow', 'go')}`;
+      next.innerHTML = last ? `${icon('check')}<span>Zurück zum Ordner</span>` : `<span>${nextLabel()}</span>${icon('arrow', 'go')}`;
       prev.style.visibility = cur === 0 ? 'hidden' : 'visible';
       bindPage();
       window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
@@ -444,7 +392,7 @@
     function go(d) {
       const n = cur + d;
       if (n < 0) return;
-      if (n >= pages.length) { location.hash = '#/fach/mathe'; return; }
+      if (n >= pages.length) { location.hash = (window.LRStruktur && LRStruktur.backFor('lektion', l.id)) || '#/fach/mathe'; return; }
       cur = n; dir = d; show();
     }
     function bindPage() {
@@ -589,76 +537,106 @@
     return `<div class="fig"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${f.title || 'Graph'}"><defs><clipPath id="fc"><rect x="${m / 2}" y="${m / 2}" width="${W - m}" height="${H - m}"/></clipPath></defs>${g}<line x1="${m / 2}" x2="${W - m / 2}" y1="${sy(0)}" y2="${sy(0)}" style="stroke:var(--text-3)"/><line x1="${sx(0)}" x2="${sx(0)}" y1="${m / 2}" y2="${H - m / 2}" style="stroke:var(--text-3)"/><path clip-path="url(#fc)" d="${d}" fill="none" style="stroke:var(--subj);stroke-width:3;stroke-linejoin:round"/></svg><div class="dim" style="font-size:13px;padding:6px 6px 2px">${f.title || ''}</div></div>`;
   }
 
-  R.aufgabe = (id) => {
-    const t = TASKS.find(x => x.id === id);
-    if (!t) return R.faecher();
-    const ms = byId.mathe;
+  // ---- Aufgabe: Baustein für die Aufgaben-Seite und die Probeklausur
+  // mode 'browse' = frei üben (Tipps, Musterlösung, Bewertung) · 'work' = Klausurmodus (nur Text + Antwortfeld)
+  //      'rate' = nach dem Abgeben (Lösung offen, Selbstbewertung). store = wo die Bewertung liegt.
+  function taskBlock(t, o = {}) {
+    const mode = o.mode || 'browse';
+    const store = o.store || state.scores;
     const parts = t.parts.map(p => {
-      const nums = (p.nums || []).map((n, i) => `<span class="field"><label for="${p.id}-n${i}">${n.label}</label><input id="${p.id}-n${i}" data-ans="${n.ans}" data-tol="${n.tol || 0.01}" inputmode="decimal" autocomplete="off" placeholder="Zahl"><button class="btn small" type="button" data-check="${p.id}-n${i}">Prüfen</button></span>`).join('');
-      const scoreBtns = Array.from({ length: (p.be || 0) + 1 }, (_, v) => `<button type="button" data-p="${p.id}" data-v="${v}" class="${(state.scores[p.id] || 0) === v && state.scores[p.id] !== undefined ? 'on' : ''}">${v}</button>`).join('');
+      const nums = mode === 'work' ? '' : (p.nums || []).map((n, i) => `<span class="field"><label for="${p.id}-n${i}">${n.label}</label><input id="${p.id}-n${i}" data-ans="${n.ans}" data-tol="${n.tol || 0.01}" inputmode="decimal" autocomplete="off" placeholder="Zahl"><button class="btn small" type="button" data-check="${p.id}-n${i}">Prüfen</button></span>`).join('');
+      const scoreBtns = Array.from({ length: (p.be || 0) + 1 }, (_, v) => `<button type="button" data-p="${p.id}" data-v="${v}" class="${store[p.id] === v ? 'on' : ''}">${v}</button>`).join('');
+      const hintBtn = mode === 'browse' && p.hints && p.hints.length ? `<button class="btn small" type="button" data-hint="${p.id}">${icon('bulb')}<span>Tipp 1 von ${p.hints.length}</span></button>` : '';
+      const solBtn = mode === 'browse' ? `<button class="btn small primary" type="button" data-sol="${p.id}">${icon('eye')}Musterlösung</button>` : '';
+      const sol = mode === 'work' ? '' : `<div class="reveal${mode === 'rate' ? ' open' : ''}" id="sol-${p.id}"><div><div class="inner"><div class="hint" style="background:color-mix(in oklab,var(--ok) 10%,transparent)">${icon('check').replace('class="i "', 'class="i " style="color:var(--ok)"')}${prose(p.sol)}</div>
+          <div class="score"><span class="kicker" style="margin-right:6px">Ehrlich bewertet</span>${scoreBtns}<span class="dim">von ${p.be} BE</span></div></div></div></div>`;
       return `<section class="part" id="part-${p.id}">
         <div class="part-head"><span class="lab">${p.label}</span><span class="chip be">${p.be} BE</span></div>
         ${prose(p.text)}
         <textarea class="work" data-ans-key="${p.id}" placeholder="Dein Lösungsweg (wird nur hier gespeichert)">${(state.answers && state.answers[p.id]) || ''}</textarea>
-        <div class="tools">${nums}${(p.hints && p.hints.length) ? `<button class="btn small" type="button" data-hint="${p.id}">${icon('bulb')}<span>Tipp 1 von ${p.hints.length}</span></button>` : ''}<button class="btn small primary" type="button" data-sol="${p.id}">${icon('eye')}Musterlösung</button></div>
-        <div id="hints-${p.id}"></div>
-        <div class="reveal" id="sol-${p.id}"><div><div class="inner"><div class="hint" style="background:color-mix(in oklab,var(--ok) 10%,transparent)">${icon('check').replace('class="i "', 'class="i " style="color:var(--ok)"')}${prose(p.sol)}</div>
-          <div class="score"><span class="kicker" style="margin-right:6px">Ehrlich bewertet</span>${scoreBtns}<span class="dim">von ${p.be} BE</span></div></div></div></div>
+        <div class="tools">${nums}${hintBtn}${solBtn}</div>
+        <div id="hints-${p.id}"></div>${sol}
       </section>`;
     }).join('');
-    const html = `<div ${subjStyle(ms)} class="rise"><div class="page-head"><span class="kicker">Teil ${t.teil} · AFB ${t.afb} · ${taskMax(t)} BE</span><h2 class="h-1">${t.title}</h2><p class="dim" style="font-size:14px">${t.ops} · angelehnt an Zentralabitur-Aufgabenformate, nicht offiziell</p></div>
-      ${prose(t.intro || '')}${figSvg(t.fig)}${parts}</div>`;
-    return {
-      title: t.title, back: '#/fach/mathe/ueben', nav: 'faecher', focus: true, html,
-      after(root) {
-        $$('[data-check]', root).forEach(b => b.addEventListener('click', () => {
-          const inp = document.getElementById(b.dataset.check), box = inp.closest('.field');
-          const v = parseFloat(inp.value.replace(',', '.'));
-          const ok = !isNaN(v) && Math.abs(v - +inp.dataset.ans) <= +inp.dataset.tol * Math.max(1, Math.abs(+inp.dataset.ans));
-          box.classList.remove('ok', 'bad'); void box.offsetWidth; box.classList.add(ok ? 'ok' : 'bad');
-        }));
-        $$('[data-hint]', root).forEach(b => {
-          const p = t.parts.find(x => x.id === b.dataset.hint); let n = 0;
-          b.addEventListener('click', () => {
-            if (n >= p.hints.length) return;
-            $('#hints-' + p.id, root).insertAdjacentHTML('beforeend', `<div class="hint">${icon('bulb')}${prose(p.hints[n])}</div>`);
-            n++; $('span', b).textContent = n >= p.hints.length ? 'Alle Tipps gezeigt' : `Tipp ${n + 1} von ${p.hints.length}`;
-            if (n >= p.hints.length) b.setAttribute('disabled', '');
-          });
+    const html = `${prose(t.intro || '')}${figSvg(t.fig)}${parts}`;
+
+    function bind(root, onScore) {
+      $$('[data-check]', root).forEach(b => b.addEventListener('click', () => {
+        const inp = document.getElementById(b.dataset.check), box = inp.closest('.field');
+        const v = parseFloat(inp.value.replace(',', '.'));
+        const ok = !isNaN(v) && Math.abs(v - +inp.dataset.ans) <= +inp.dataset.tol * Math.max(1, Math.abs(+inp.dataset.ans));
+        box.classList.remove('ok', 'bad'); void box.offsetWidth; box.classList.add(ok ? 'ok' : 'bad');
+      }));
+      $$('[data-hint]', root).forEach(b => {
+        const p = t.parts.find(x => x.id === b.dataset.hint); let n = 0;
+        b.addEventListener('click', () => {
+          if (n >= p.hints.length) return;
+          $('#hints-' + p.id, root).insertAdjacentHTML('beforeend', `<div class="hint">${icon('bulb')}${prose(p.hints[n])}</div>`);
+          n++; $('span', b).textContent = n >= p.hints.length ? 'Alle Tipps gezeigt' : `Tipp ${n + 1} von ${p.hints.length}`;
+          if (n >= p.hints.length) b.setAttribute('disabled', '');
         });
-        $$('[data-sol]', root).forEach(b => b.addEventListener('click', () => { const r = $('#sol-' + b.dataset.sol, root); r.classList.toggle('open'); }));
-        // Bewertung -> Ereignis „practice“ (1,5 s entprellt, damit Herumklicken nicht zählt).
-        // Mehr Punkte als bei einem früheren Versuch (> 1 h her) -> „fix“ (Ring-Segment „Fehler“).
-        const timers = {};
-        const initial = {}; // ältere Bewertungen aus der Zeit vor der Ereignis-Liste zählen als „früherer Versuch“
-        t.parts.forEach(p => { if (state.scores[p.id] !== undefined && !LR.events().some(e => e.type === 'practice' && e.ref === p.id)) initial[p.id] = state.scores[p.id]; });
-        $$('.score button', root).forEach(b => b.addEventListener('click', () => {
-          const pid = b.dataset.p, v = +b.dataset.v;
-          const part = t.parts.find(x => x.id === pid);
-          state.scores[pid] = v; save();
-          $$(`.score button[data-p="${pid}"]`, root).forEach(x => x.classList.toggle('on', x === b));
-          clearTimeout(timers[pid]);
-          timers[pid] = setTimeout(() => {
-            const ev = LR.events().filter(e => e.type === 'practice' && e.ref === pid && e.t < Date.now() - 36e5).pop();
-            const prev = ev && ev.data ? ev.data.pts : initial[pid];
-            LR.log('practice', pid, { pts: v, max: part.be });
-            if (prev !== undefined && prev < part.be && v > prev) { LR.log('fix', pid, { from: prev, to: v }); delete initial[pid]; }
-          }, 1500);
-        }));
-        $$('textarea.work', root).forEach(ta => ta.addEventListener('input', () => { state.answers = state.answers || {}; state.answers[ta.dataset.ansKey] = ta.value; save(); }));
-      }
-    };
+      });
+      $$('[data-sol]', root).forEach(b => b.addEventListener('click', () => { const r = $('#sol-' + b.dataset.sol, root); r.classList.toggle('open'); }));
+      // Frei üben: Bewertung -> Ereignis „practice“ (1,5 s entprellt, damit Herumklicken nicht zählt).
+      // Mehr Punkte als bei einem früheren Versuch (> 1 h her) -> „fix“ (Ring-Segment „Fehler“).
+      // Probeklausur (work/rate): nur speichern, die Ereignisse entstehen beim Auswerten.
+      const timers = {};
+      const initial = {}; // ältere Bewertungen aus der Zeit vor der Ereignis-Liste zählen als „früherer Versuch“
+      if (mode === 'browse') t.parts.forEach(p => { if (state.scores[p.id] !== undefined && !LR.events().some(e => e.type === 'practice' && e.ref === p.id)) initial[p.id] = state.scores[p.id]; });
+      $$('.score button', root).forEach(b => b.addEventListener('click', () => {
+        const pid = b.dataset.p, v = +b.dataset.v;
+        const part = t.parts.find(x => x.id === pid);
+        store[pid] = v; save();
+        $$(`.score button[data-p="${pid}"]`, root).forEach(x => x.classList.toggle('on', x === b));
+        if (onScore) onScore(pid, v);
+        if (mode !== 'browse') return;
+        clearTimeout(timers[pid]);
+        timers[pid] = setTimeout(() => {
+          const ev = LR.events().filter(e => e.type === 'practice' && e.ref === pid && e.t < Date.now() - 36e5).pop();
+          const prev = ev && ev.data ? ev.data.pts : initial[pid];
+          LR.log('practice', pid, { pts: v, max: part.be });
+          if (prev !== undefined && prev < part.be && v > prev) { LR.log('fix', pid, { from: prev, to: v }); delete initial[pid]; }
+        }, 1500);
+      }));
+      $$('textarea.work', root).forEach(ta => ta.addEventListener('input', () => { state.answers = state.answers || {}; state.answers[ta.dataset.ansKey] = ta.value; save(); }));
+    }
+    return { html, bind };
+  }
+
+  R.aufgabe = (id) => {
+    const t = TASKS.find(x => x.id === id);
+    if (!t) return R.faecher();
+    const ms = byId.mathe;
+    const blk = taskBlock(t);
+    const html = `<div ${subjStyle(ms)} class="rise"><div class="page-head"><span class="kicker">Teil ${t.teil} · AFB ${t.afb} · ${taskMax(t)} BE</span><h2 class="h-1">${t.title}</h2><p class="dim" style="font-size:14px">${t.ops} · angelehnt an Zentralabitur-Aufgabenformate, nicht offiziell</p></div>${blk.html}</div>`;
+    return { title: t.title, back: (window.LRStruktur && LRStruktur.backFor('aufgabe', t.id)) || '#/fach/mathe', nav: 'faecher', focus: true, html, after(root) { blk.bind(root); } };
   };
 
   // ---- Lerntreppe (treppe.js, Bauschritt S2)
   const TOPICS = window.LR_TOPICS || [];
+  const treppeCtx = () => ({ M, icon, esc, LR, byId, subjStyle, figSvg, reduced, openSheet, sheetHead });
   R.thema = (id, n) => {
     const t = TOPICS.find(x => x.id === id);
     if (!t || !window.LRTreppe) return R.faecher();
-    const ctx = { M, icon, esc, LR, byId, subjStyle, figSvg, reduced };
-    if (n === undefined || n === '') return LRTreppe.overview(t, ctx);
+    const ctx = treppeCtx();
+    if (n === undefined || n === '') {
+      const res = LRTreppe.overview(t, ctx);
+      const up = window.LRStruktur && LRStruktur.backFor('thema', t.id);
+      if (up) res.back = up;
+      return res;
+    }
     if (n === 'check') return LRTreppe.check(t, ctx);
-    return LRTreppe.stage(t, +n, ctx);
+    if (/^\d+$/.test(n)) return LRTreppe.stage(t, +n, ctx);
+    // Besondere Übungen (S3): blurting, fehler, erlaeutern, deuten
+    if (window.LRExtras && ['blurting', 'fehler', 'erlaeutern', 'deuten'].includes(n)) return LRExtras[n](t, ctx);
+    return LRTreppe.overview(t, ctx);
+  };
+  // ---- Notation: Struktogramm · Pseudocode · Python (extras.js, algo.js)
+  const ALGOS = window.LR_ALGOS || [];
+  R.algo = id => {
+    const a = ALGOS.find(x => x.id === id);
+    if (!a || !window.LRExtras || !window.LRAlgo) return R.faecher();
+    return LRExtras.algo(a, treppeCtx());
   };
 
   // ------------------------------------------------------------ Profile (Portalplan 11.1)
@@ -752,8 +730,15 @@
     if (a === 'fach') return ['fach', b, c === 'ueben' ? 'ueben' : c === 'klausur' ? 'klausur' : 'pfad'];
     if (a === 'lektion') return ['lektion', b];
     if (a === 'aufgabe') return ['aufgabe', b];
-    if (a === 'abruf') return ['abruf'];
+    if (a === 'abruf') return ['abruf', b];
+    if (a === 'fehlerjagd') return ['fehlerjagd'];
+    if (a === 'jagd') return ['jagd', b];
+    if (a === 'session') return ['session', b];
+    if (a === 'ordner') return ['ordner', b];
+    if (a === 'probe') return ['probe', b];
+    if (a === 'spick') return ['spick', b];
     if (a === 'thema') return ['thema', b, c];
+    if (a === 'algo') return ['algo', b];
     return ['heute'];
   }
 
@@ -782,8 +767,8 @@
   function go(opts) {
     const key = location.hash;
     const same = opts && opts.still;
-    const run = () => { const res = mount(opts); if (!same) window.scrollTo(0, 0); lastKey = key; return res; };
-    if (!same && document.startViewTransition && !reduced) { const vt = document.startViewTransition(run); [vt.ready, vt.finished, vt.updateCallbackDone].forEach(p => p && p.catch(() => {})); } else run();
+    const run = () => { try { const res = mount(opts); if (!same) window.scrollTo(0, 0); lastKey = key; return res; } catch (e) { console.error(e); view.innerHTML = `<div class="empty">Diese Seite konnte nicht angezeigt werden. <a class="link" href="#/">Zur Startseite</a></div>`; } }; // Fehler nie verschlucken (View-Transition fängt sie sonst still ab)
+    if (!same && !(opts && opts.first) && document.startViewTransition && !reduced && !document.hidden) { /* im Hintergrund würde der Übergang die Seite aufhalten */ const vt = document.startViewTransition(run); [vt.ready, vt.finished, vt.updateCallbackDone].forEach(p => p && p.catch(() => {})); } else run();
   }
 
   function setNav(name) {
@@ -838,9 +823,12 @@
 
   backBtn.addEventListener('click', () => { if (backHref) location.hash = backHref; });
   addEventListener('scroll', () => $('#appbar').classList.toggle('scrolled', scrollY > 6), { passive: true });
-  addEventListener('hashchange', () => go());
+  addEventListener('hashchange', () => { if (!sheet.hidden) closeSheet(); go(); }); // offenes Fenster (z. B. „Text für Claude“) gehört zur alten Seite
   addEventListener('resize', () => initSegs(view));
+  const APP = { R, nextStep, state, save, LR, M, icon, esc, byId, SUBJECTS, mine, subjStyle, mono, fmt, prose, bar, ring, seg, exams, upcoming, examsOf, daysText, WD, MONTHS, LESSONS, TASKS, TOPICS, ALGOS, D, taskMax, taskGot, taskBlock, oldModules, openSheet, closeSheet, sheetHead, view, rerender: () => go({ still: true }), reduced };
+  if (window.LRStruktur) LRStruktur.init(APP);
+  if (window.LRWdh) LRWdh.init(APP);
   paintProfile();
-  go();
+  go({ first: true }); // erste Anzeige ohne Übergang: der kann beim Laden hängen bleiben
   askWho(idleAtStart);
 })();

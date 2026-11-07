@@ -69,6 +69,15 @@ test('Ziel-Ring: Abruf braucht 3 Karten, Neu 1, Fehler 1', () => {
   assert.deepStrictEqual(s2.ring.seg, [true, false, false]);
 });
 
+test('Blurting füllt das Abruf-Segment, besondere Aufgabe zählt als Neu', () => {
+  const k = '2026-11-07', now = at(k, 20);
+  const s = LR.stats([ev(k, 'blurt')], now);
+  assert.deepStrictEqual(s.ring.seg, [true, false, false]);
+  const s2 = LR.stats([ev(k, 'extra')], now);
+  assert.deepStrictEqual(s2.ring.seg, [false, true, false]);
+  assert.strictEqual(s2.streak, 1, 'zählt auch für den Streak');
+});
+
 test('Merge: Vereinigung nach id, keine Doppelten', () => {
   const p = LR.createProfile('Sync', []);
   const e1 = LR.log('learn', 'a');
@@ -92,6 +101,70 @@ test('Kalender: 4 Wochen ab Montag', () => {
   assert.strictEqual(c[0].k, '2026-10-12'); // Montag 3 Wochen vor der Woche vom 02.11.
   assert.ok(c.find(x => x.today).lvl === 1);
   assert.ok(c[c.length - 1].future);
+});
+
+// ---------------------------------------------------------------- S4: Wiederholungs-Queue
+const rv = (k, ok, h = 12) => ({ t: at(k, h), ok });
+
+test('Queue: Abstände 1 – 3 – 7 – 21 bei richtigen Antworten an neuen Tagen', () => {
+  let s = LR.schedule([rv('2026-11-01', true)], '2026-11-01');
+  assert.strictEqual(s.due, '2026-11-02');
+  s = LR.schedule([rv('2026-11-01', true), rv('2026-11-02', true)]);
+  assert.strictEqual(s.due, '2026-11-05');
+  s = LR.schedule([rv('2026-11-01', true), rv('2026-11-02', true), rv('2026-11-05', true)]);
+  assert.strictEqual(s.due, '2026-11-12');
+  s = LR.schedule([rv('2026-11-01', true), rv('2026-11-02', true), rv('2026-11-05', true), rv('2026-11-12', true)]);
+  assert.strictEqual(s.due, '2026-12-03');
+});
+
+test('Queue: falsch → morgen wieder, mehrfach am selben Tag zählt einmal', () => {
+  let s = LR.schedule([rv('2026-11-01', true), rv('2026-11-02', true), rv('2026-11-05', false)]);
+  assert.strictEqual(s.due, '2026-11-06');
+  s = LR.schedule([rv('2026-11-01', true, 9), rv('2026-11-01', true, 10), rv('2026-11-01', true, 11)]);
+  assert.strictEqual(s.due, '2026-11-02', 'Pauken am selben Tag springt nicht weiter');
+  s = LR.schedule([rv('2026-11-01', false, 9), rv('2026-11-01', true, 10)]);
+  assert.strictEqual(s.due, '2026-11-02');
+});
+
+test('Karten: zuletzt falsch zuerst, neue Karten sofort fällig', () => {
+  const now = at('2026-11-07');
+  const evs = [
+    { id: 'a', t: at('2026-11-06'), type: 'recall', ref: 'L1:0', data: { ok: true } },
+    { id: 'b', t: at('2026-11-06'), type: 'recall', ref: 'L1:1', data: { ok: false } },
+    { id: 'c', t: at('2026-11-07', 9), type: 'recall', ref: 'L1:2', data: { ok: true } }
+  ];
+  const q = LR.cards(evs, ['L1:0', 'L1:1', 'L1:2', 'L1:3'], now);
+  assert.deepStrictEqual(q.due.map(c => c.ref), ['L1:1', 'L1:0', 'L1:3']);
+  assert.strictEqual(q.newCount, 1);
+});
+
+test('Fehlerjagd: nach 1 Tag fällig, Sicherheit 3 sofort, behoben nach 2 Tagen richtig', () => {
+  const evs = [
+    { id: 'm1', t: at('2026-11-05'), type: 'mistake', ref: 'p:1', data: { typ: 'Rechenfehler' } },
+    { id: 'm2', t: at('2026-11-05'), type: 'mistake', ref: 'p:2', data: { conf: 3 } }
+  ];
+  let f = LR.mistakes(evs, at('2026-11-05', 20));
+  assert.deepStrictEqual(f.due.map(x => x.ref), ['p:2'], 'nur der „sicher, aber falsch“-Fehler ist sofort dran');
+  f = LR.mistakes(evs, at('2026-11-06'));
+  assert.strictEqual(f.due.length, 2);
+  assert.strictEqual(f.due[0].ref, 'p:2');
+  const hunts = evs.concat([
+    { id: 'h1', t: at('2026-11-06'), type: 'hunt', ref: 'p:1', data: { ok: true } },
+    { id: 'h2', t: at('2026-11-07'), type: 'hunt', ref: 'p:1', data: { ok: true } }
+  ]);
+  f = LR.mistakes(hunts, at('2026-11-07', 20));
+  assert.ok(f.fixed.some(x => x.ref === 'p:1'));
+  assert.ok(!f.open.some(x => x.ref === 'p:1'));
+  // neuer Fehler am selben Ort: wieder offen
+  f = LR.mistakes(hunts.concat([{ id: 'm3', t: at('2026-11-08'), type: 'mistake', ref: 'p:1', data: {} }]), at('2026-11-09'));
+  assert.ok(f.due.some(x => x.ref === 'p:1'));
+});
+
+test('Fehlerjagd richtig zählt fürs Fehler-Segment', () => {
+  const k = '2026-11-07';
+  const s = LR.stats([{ id: 'x', t: at(k), type: 'hunt', ref: 'p:1', data: { ok: true } }, { id: 'y', t: at(k), type: 'hunt', ref: 'p:2', data: { ok: false } }], at(k, 20));
+  assert.strictEqual(s.ring.fix, 1);
+  assert.strictEqual(s.ring.seg[2], true);
 });
 
 console.log(`\n${n} Tests bestanden`);

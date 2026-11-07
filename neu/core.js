@@ -97,8 +97,12 @@
   // ------------------------------------------------------------ Ereignisse
   // Typen: learn (Lektion verstanden), recall (Karte abgefragt, data.ok),
   //        practice (Teilaufgabe bewertet, data.pts/max), fix (vorher verlorene Punkte geholt),
-  //        stage (Treppenstufe abgeschlossen), mistake (Fehler mit Fehlertyp), entry (Eingangs-Check)
-  const COUNTS = { learn: 1, recall: 1, practice: 1, fix: 1, stage: 1 };
+  //        stage (Treppenstufe abgeschlossen), mistake (Fehler mit Fehlertyp), entry (Eingangs-Check),
+  //        blurt (Blurting: 5 Min. frei aus dem Kopf, zählt als volles Abruf-Segment),
+  //        extra (besondere Aufgabe fertig: Fehler finden, Lösungsweg erläutern, Bedingung deuten, Notation),
+  //        hunt (Fehlerjagd: ein vorgemerkter Fehler neu gerechnet, data.ok – ok zählt fürs Fehler-Segment),
+  //        session (Mini-Session/Fokusblock beendet, data.mode/min)
+  const COUNTS = { learn: 1, recall: 1, practice: 1, fix: 1, stage: 1, blurt: 1, extra: 1, hunt: 1 };
   const events = (pid = activeId()) => get(`ev:${pid}`, []);
   function log(type, ref, data, t) {
     const pid = activeId();
@@ -134,8 +138,9 @@
       const d = perDay[k] || (perDay[k] = { n: 0, recall: 0, learn: 0, fix: 0 });
       d.n++;
       if (e.type === 'recall') d.recall++;
-      else if (e.type === 'learn' || e.type === 'practice' || e.type === 'stage') d.learn++;
-      else if (e.type === 'fix') d.fix++;
+      else if (e.type === 'blurt') d.recall += GOAL.recall; // freies Abrufen aus dem Kopf = ein ganzer Abruf-Block
+      else if (e.type === 'learn' || e.type === 'practice' || e.type === 'stage' || e.type === 'extra') d.learn++;
+      else if (e.type === 'fix' || (e.type === 'hunt' && e.data && e.data.ok)) d.fix++;
     });
     const activeDays = Object.keys(perDay).sort();
     const isActive = k => !!perDay[k];
@@ -179,9 +184,61 @@
     return out;
   }
 
+  // ------------------------------------------------------------ Wiederholungs-Queue (Portalplan 4: verteiltes Wiederholen)
+  // Abstände in Tagen. Richtig → eine Stufe weiter (1 – 3 – 7 – 21 – 50 – 120), falsch → morgen wieder.
+  // Mehrmals am selben Tag richtig zählt nur einmal (kein Pauken-Bonus). Alles aus Ereignissen berechnet.
+  const STEPS = [1, 3, 7, 21, 50, 120];
+  function schedule(reviews, firstDue) {
+    let step = -1, lastDay = null, lastOk = null;
+    const okDays = new Set();
+    reviews.forEach(r => {
+      const d = dayKey(r.t);
+      if (!r.ok || step < 0 || lastOk === false) step = 0;          // falsch, erstes Mal oder nach einem Fehler: Abstand 1 Tag
+      else if (d !== lastDay) step = Math.min(step + 1, STEPS.length - 1); // richtig an einem neuen Tag: eine Stufe weiter
+      if (r.ok) okDays.add(d);
+      lastDay = d; lastOk = r.ok;
+    });
+    const due = lastDay == null ? firstDue : addDays(lastDay, STEPS[Math.max(0, step)]);
+    return { step, due, lastDay, lastOk, n: reviews.length, okDays: okDays.size };
+  }
+  const isDue = (s, today) => s.due <= today;
+
+  // Karten (z. B. Selbsttest-Fragen verstandener Lektionen): refs = verfügbare Karten.
+  // Reihenfolge: zuletzt falsch > am längsten überfällig > neu.
+  function cards(evs, refs, now = Date.now()) {
+    const today = dayKey(now);
+    const rev = {};
+    evs.forEach(e => { if (e.type === 'recall' && e.ref) (rev[e.ref] = rev[e.ref] || []).push({ t: e.t, ok: !!(e.data && e.data.ok) }); });
+    const out = refs.map(ref => Object.assign({ ref }, schedule(rev[ref] || [], today)));
+    const rank = c => (c.lastOk === false ? 0 : c.n ? 1 : 2);
+    out.sort((a, b) => rank(a) - rank(b) || (a.due < b.due ? -1 : a.due > b.due ? 1 : 0));
+    return { all: out, due: out.filter(c => isDue(c, today)), newCount: out.filter(c => !c.n).length };
+  }
+
+  // Fehlerjagd: jeder vorgemerkte Fehler (mistake) kommt nach 1 Tag wieder. War man sich bei der Aufgabe
+  // sehr sicher (Sicherheit 3) und lag falsch, kommt er sofort und zuerst (Hypercorrection).
+  // Behoben = zweimal an verschiedenen Tagen richtig nachgerechnet. Ein neuer Fehler am selben Ort setzt zurück.
+  function mistakes(evs, now = Date.now()) {
+    const today = dayKey(now);
+    const m = {};
+    evs.forEach(e => {
+      if (e.type === 'mistake' && e.ref) m[e.ref] = { ref: e.ref, t: e.t, data: e.data || {}, hunts: [] };
+      else if (e.type === 'hunt' && e.ref && m[e.ref]) m[e.ref].hunts.push({ t: e.t, ok: !!(e.data && e.data.ok) });
+    });
+    const out = Object.values(m).map(x => {
+      const hyper = x.data.conf === 3;
+      const s = schedule(x.hunts, hyper ? dayKey(x.t) : addDays(dayKey(x.t), 1));
+      return Object.assign(x, s, { hyper, fixed: s.step >= 1 && s.lastOk === true });
+    });
+    const open = out.filter(x => !x.fixed);
+    open.sort((a, b) => (b.hyper - a.hyper) || (a.due < b.due ? -1 : a.due > b.due ? 1 : 0) || a.t - b.t);
+    return { open, due: open.filter(x => isDue(x, today)), fixed: out.filter(x => x.fixed) };
+  }
+
   root.LR = {
     profiles, active, activeId, createProfile, updateProfile, switchTo, deleteProfile,
     touch, idleMinutes, loadState, saveState, events, log, merge, stats, calendar, GOAL,
+    STEPS, schedule, cards, mistakes,
     _util: { dayKey, addDays, weekKey, daysBetween, setStore: s => { store = s; }, mem }
   };
 })(typeof window !== 'undefined' ? window : globalThis);

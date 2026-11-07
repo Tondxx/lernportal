@@ -24,6 +24,112 @@
       { frage: m`Es gilt $f'(2)=0$ und $f''(2)=-4$. Was liegt bei $x=2$ vor?`, optionen: ['ein Hochpunkt', 'ein Tiefpunkt', 'ein Wendepunkt'], richtig: 0 }
     ],
 
+    // ---------------------------------------------------------------- Besondere Übungen (S3)
+    extras: {
+      // Blurting: 5 Min. leeres Blatt, danach Kernpunkte abhaken (Portalplan 5.4)
+      blurting: {
+        minuten: 5,
+        aufforderung: m`Schreib auf, was du über <b>Extrempunkte</b> weißt: Bedingungen, Ablauf, typische Stolperstellen. Stichwörter reichen.`,
+        kernpunkte: [
+          m`Notwendige Bedingung: $f'(x)=0$ (waagerechte Tangente)`,
+          'Warum diese Bedingung: An einem Hoch- oder Tiefpunkt wechselt der Graph von steigend zu fallend (oder umgekehrt), dazwischen ist die Steigung 0',
+          m`Hinreichende Bedingung: $f''(x_0)<0$ ergibt Hochpunkt, $f''(x_0)>0$ ergibt Tiefpunkt`,
+          m`Bei $f''(x_0)=0$ ist keine Aussage möglich (es kann ein Sattelpunkt sein)`,
+          'Ablauf: Ableitungen bilden, Gleichung lösen, mit der zweiten Ableitung prüfen, y-Wert berechnen, Antwortsatz',
+          m`y-Wert immer durch Einsetzen in $f$ (nicht in $f'$)`,
+          m`Ergebnis als Punkt angeben, z. B. $H(1\,|\,5)$`,
+          'Auf einem begrenzten Intervall zusätzlich die Randwerte prüfen',
+          'Bei einer Schar den Parameter wie eine feste Zahl mitführen'
+        ],
+        spick: m`<ol><li>$f'(x)=0$ lösen: Kandidaten für Extremstellen</li><li>$f''(x_0)<0$: <b>Hoch</b>punkt, $f''(x_0)>0$: <b>Tief</b>punkt, $f''(x_0)=0$: keine Aussage</li><li>$y=f(x_0)$ berechnen, Antwortsatz mit $H(x\,|\,y)$ oder $T(x\,|\,y)$</li><li>Intervall? Randwerte vergleichen</li></ol>`
+      },
+
+      // Fehler finden (Stufe 2b): erste fehlerhafte Zeile antippen
+      fehler: [
+        {
+          id: 'demo-fx1', titel: 'Fehler in der Rechnung',
+          frage: m`Bestimme die Extrempunkte von $k$ mit $k(x)=x^3-3x^2-24x+5$. Eine Zeile der Lösung enthält einen Fehler, alle späteren Zeilen rechnen mit dem Ergebnis weiter. Tippe auf die <b>erste</b> falsche Zeile.`,
+          schritte: [
+            { name: 'Ableitungen', rechnung: m`$$k'(x)=3x^2-6x-24,\quad k''(x)=6x-6$$`, ok: 'Diese Zeile stimmt: Potenzregel richtig angewendet.' },
+            { name: 'Notwendige Bedingung', rechnung: m`$$\begin{aligned} 3x^2-6x-24&=0 \mid :3 \\ x^2-2x-8&=0 \\ x_{1,2}&=-1\pm\sqrt{1+8}=-1\pm 3 \\ x_1&=2,\quad x_2=-4 \end{aligned}$$` },
+            { name: 'Hinreichende Bedingung', rechnung: m`$$k''(2)=6>0\Rightarrow\text{Tiefstelle},\quad k''(-4)=-30<0\Rightarrow\text{Hochstelle}$$`, ok: 'Diese Zeile ist für sich richtig, sie rechnet nur mit den Werten aus der Zeile davor. Der Fehler liegt weiter oben.' },
+            { name: 'y-Werte', rechnung: m`$$k(2)=-47,\quad k(-4)=-11$$`, ok: 'Diese Zeile rechnet richtig mit den vorherigen Werten. Suche weiter oben.' },
+            { name: 'Antwortsatz', rechnung: m`Tiefpunkt $T(2\,|\,-47)$, Hochpunkt $H(-4\,|\,-11)$.`, ok: 'Der Antwortsatz übernimmt nur die Ergebnisse. Suche weiter oben.' }
+          ],
+          fehler: 1,
+          was: m`In der pq-Formel steht $-1$ statt $+1$. Bei $x^2-2x-8=0$ ist $p=-2$, also $-\tfrac p2=+1$.`,
+          richtig: m`$$x_{1,2}=1\pm\sqrt{1+8}=1\pm3 \;\Rightarrow\; \res{x_1=4},\ \res{x_2=-2}$$`,
+          typ: 'Rechenfehler',
+          folge: m`Alle folgenden Zeilen sind dadurch falsch. Richtig wäre $T(4\,|\,-75)$ und $H(-2\,|\,33)$.`,
+          tipp: m`Probe: Setze die Lösungen in $x^2-2x-8$ ein. Für $x=2$ ergibt das $4-4-8=-8\neq0$.`
+        },
+        {
+          id: 'demo-fx2', titel: 'Fehler in der Begründung',
+          frage: m`Bestimme die Extrempunkte von $m$ mit $m(x)=-x^3+6x^2-9x+4$. Tippe auf die <b>erste</b> falsche Zeile.`,
+          schritte: [
+            { name: 'Ableitungen', rechnung: m`$$m'(x)=-3x^2+12x-9,\quad m''(x)=-6x+12$$`, ok: 'Diese Zeile stimmt.' },
+            { name: 'Notwendige Bedingung', rechnung: m`$$\begin{aligned} -3x^2+12x-9&=0 \mid :(-3) \\ x^2-4x+3&=0 \\ x_{1,2}&=2\pm\sqrt{4-3}=2\pm1 \\ x_1&=1,\quad x_2=3 \end{aligned}$$`, ok: 'Diese Zeile stimmt. Wer will, macht die Probe: $1-4+3=0$ und $9-12+3=0$.' },
+            { name: 'Hinreichende Bedingung', rechnung: m`$$m''(1)=6>0\Rightarrow\text{Hochstelle},\quad m''(3)=-6<0\Rightarrow\text{Tiefstelle}$$` },
+            { name: 'y-Werte', rechnung: m`$$m(1)=-1+6-9+4=0,\quad m(3)=-27+54-27+4=4$$`, ok: 'Diese Zeile rechnet richtig. Suche weiter oben.' },
+            { name: 'Antwortsatz', rechnung: m`Hochpunkt $H(1\,|\,0)$, Tiefpunkt $T(3\,|\,4)$.`, ok: 'Der Antwortsatz übernimmt nur die Ergebnisse. Suche weiter oben.' }
+          ],
+          fehler: 2,
+          was: m`Das Vorzeichen von $m''$ ist falsch gedeutet: positiv heißt <b>Tief</b>punkt, negativ heißt <b>Hoch</b>punkt.`,
+          richtig: m`$$m''(1)=6>0\Rightarrow\res{\text{Tiefstelle}},\quad m''(3)=-6<0\Rightarrow\res{\text{Hochstelle}}$$`,
+          typ: 'Verständnis fehlt',
+          folge: m`Richtig wäre $T(1\,|\,0)$ und $H(3\,|\,4)$. Plausibilitätscheck: Bei einer Funktion dritten Grades liegt der Hochpunkt immer höher als der Tiefpunkt. Hier lag der angebliche Hochpunkt tiefer. Das hätte auffallen können.`,
+          tipp: m`Merkhilfe: $f''>0$ ist eine Linkskurve (Schale, ein Tal), also ein Tiefpunkt.`
+        }
+      ],
+
+      // Lösungsweg erläutern (Abi-Typ, 5 BE, AFB III) – Portalplan 5.5
+      erlaeutern: {
+        titel: 'Lösungsweg erläutern',
+        intro: m`Der Wanderweg aus Stufe 4 hat das Höhenprofil $p(x)=0{,}1x^3-1{,}2x^2+3{,}6x+2$ für $0\le x\le 8$. Unten steht ein Lösungsweg ohne Kommentar.`,
+        operator: 'Erläutern Sie den dargestellten Lösungsweg.',
+        be: 5,
+        zeilen: [
+          { rechnung: m`$$p'(x)=0{,}3x^2-2{,}4x+3{,}6$$`,
+            frage: { frage: 'Was geschieht in dieser Zeile?', optionen: ['Die Höhe des Weges wird an der Stelle 0 berechnet.', 'Die Steigung des Weges wird als Funktion aufgestellt.', 'Die Nullstellen des Weges werden bestimmt.'], richtig: 1, erklaerung: m`$p'$ gibt an, wie steil der Weg an jeder Stelle ist (positiv: Anstieg, negativ: Abstieg).` } },
+          { rechnung: m`$$p''(x)=0{,}6x-2{,}4=0 \;\Rightarrow\; x=4$$`,
+            frage: { frage: m`Warum wird hier $p''(x)=0$ gesetzt?`, optionen: [m`Gesucht ist die Stelle, an der die Steigung $p'$ selbst am größten oder kleinsten ist.`, 'Gesucht ist die Stelle, an der der Weg am höchsten ist.', 'Gesucht ist die Stelle, an der der Weg waagerecht verläuft.'], richtig: 0, erklaerung: m`Extremwerte einer Funktion findet man über die Ableitung der Funktion. Hier ist die Funktion die Steigung $p'$, ihre Ableitung ist $p''$.` } },
+          { rechnung: m`$$p'''(x)=0{,}6>0 \;\Rightarrow\; p' \text{ hat bei } x=4 \text{ ein Minimum}$$`,
+            frage: { frage: 'Was bedeutet diese Zeile für den Weg?', optionen: ['Bei $x=4$ ist die Steigung am kleinsten, dort fällt der Weg am stärksten.', 'Bei $x=4$ ist der Weg am höchsten.', 'Bei $x=4$ ist die Steigung am größten, dort steigt der Weg am stärksten.'], richtig: 0, erklaerung: m`Minimum von $p'$ heißt kleinste Steigung. Eine negative Steigung ist ein Abstieg, die kleinste Steigung ist also der steilste Abstieg.` } },
+          { rechnung: m`$$p'(4)=-1{,}2,\qquad p'(0)=p'(8)=3{,}6$$`,
+            frage: { frage: 'Warum werden hier auch $x=0$ und $x=8$ betrachtet?', optionen: ['Weil dort der Weg beginnt und endet. Auf einem Intervall kann das Minimum auch am Rand liegen.', 'Weil dort die Nullstellen von $p$ liegen.', 'Weil man immer drei Werte berechnen muss.'], richtig: 0, erklaerung: m`Ein lokales Minimum muss nicht das kleinste auf dem ganzen Intervall sein. Die Randwerte $3{,}6$ sind größer als $-1{,}2$, also gewinnt $x=4$.` } },
+          { rechnung: m`Bei $x=4$ fällt der Weg am stärksten, um $1{,}2$ Höhe (100 m) pro km, also $120\,\text{m}$ pro km.`,
+            frage: null }
+        ],
+        aufgabe: { frage: 'Welche Aufgabenstellung gehört zu diesem Lösungsweg?', optionen: ['Bestimmen Sie die Stelle, an der der Weg am stärksten abfällt.', 'Bestimmen Sie die größte Höhe des Weges.', 'Bestimmen Sie die Länge des Weges.'], richtig: 0, erklaerung: m`Der Weg sucht die kleinste Steigung $p'$. Das ist der steilste Abstieg.` },
+        aufschreiben: 'Schreib jetzt auf Papier in 3 bis 4 Sätzen, was der Lösungsweg macht und warum. Nenne die Aufgabe, den Ansatz, die Begründung und das Ergebnis im Sachzusammenhang.',
+        kernpunkte: [
+          { name: 'Aufgabe erkannt', punkte: 1, text: 'Es wird die Stelle gesucht, an der der Weg am stärksten abfällt (kleinste Steigung).' },
+          { name: 'Ansatz erklärt', punkte: 1, text: m`Die Steigung ist $p'$. Ihre Extremstelle findet man mit $p''(x)=0$.` },
+          { name: 'Art des Extremums begründet', punkte: 1, text: m`$p'''(4)>0$, also hat $p'$ bei $x=4$ ein Minimum (und kein Maximum).` },
+          { name: 'Ränder berücksichtigt', punkte: 1, text: m`Auf $[0;8]$ werden die Randwerte $p'(0)=p'(8)=3{,}6$ verglichen, sie sind größer als $p'(4)$.` },
+          { name: 'Ergebnis im Sachzusammenhang', punkte: 1, text: m`Bei km 4 fällt der Weg am stärksten, mit $-1{,}2$, also 120 m pro km.` }
+        ]
+      },
+
+      // Bedingung deuten (Abi-Typ) – Portalplan 5.5
+      deuten: {
+        titel: 'Bedingung deuten',
+        intro: m`Das Höhenprofil des Wanderwegs ist $p(x)=0{,}1x^3-1{,}2x^2+3{,}6x+2$ ($x$ in km, $p(x)$ in 100 m). Probiere erst mit den Reglern aus, was ein Ausdruck wie $p(a+w)-p(a)$ am Graphen bedeutet. Danach übersetzt du drei Bedingungen in ein Bild und einen Satz.`,
+        demo: { f: 'p', w: 2, a: 1, wmax: 6 },
+        bedingungen: [
+          { term: m`$p'(2)=0$`,
+            bild: { frage: 'Was ist im Graphen zu sehen?', optionen: ['Die Tangente bei $x=2$ liegt waagerecht.', 'Der Graph schneidet bei $x=2$ die $x$-Achse.', 'Der Graph hat bei $x=2$ die Höhe 0.'], richtig: 0, erklaerung: m`$p'$ ist die Steigung. Steigung 0 heißt waagerechte Tangente. Über die Höhe sagt die Bedingung nichts.` },
+            satz: { frage: 'Welcher Satz im Sachzusammenhang passt?', optionen: ['Nach 2 km liegt der Weg auf Meereshöhe.', 'Bei km 2 steigt der Weg weder an noch fällt er, dort ist er kurz waagerecht.', 'Der Weg ist insgesamt 2 km lang.'], richtig: 1, erklaerung: m`$p'(2)=0$: die momentane Steigung ist 0. Der Wanderer geht an dieser Stelle gerade eben.` } },
+          { term: m`$p(a+2)=p(a)$`,
+            bild: { frage: 'Was ist im Graphen zu sehen?', optionen: ['Zwei Punkte des Graphen, die 2 Einheiten auseinanderliegen, haben dieselbe Höhe (waagerechte Verbindungsgerade).', 'Der Graph steigt um 2, wenn man um $a$ nach rechts geht.', 'Der Graph hat bei $x=2$ einen Hochpunkt.'], richtig: 0, erklaerung: m`Links steht die Höhe an der Stelle $a+2$, rechts die Höhe an der Stelle $a$. Gleiche Werte heißen gleich hoch. Im Regler oben siehst du das, wenn der Unterschied 0 ist (für $a\approx1{,}09$ und $a\approx4{,}92$).` },
+            satz: { frage: 'Welcher Satz im Sachzusammenhang passt?', optionen: ['Es gibt zwei Stellen im Abstand von 2 km, an denen der Weg gleich hoch liegt.', 'Nach 2 km liegt der Weg wieder auf der Starthöhe.', 'Der Weg steigt auf 2 km um dieselbe Höhe wie auf $a$ km.'], richtig: 0, erklaerung: m`Die Bedingung vergleicht zwei Höhen im festen Abstand 2. Wo das stimmt, ist der Höhenunterschied zwischen beiden Stellen 0.` } },
+          { term: m`$\dfrac{p(6)-p(2)}{4}=-0{,}8$`,
+            bild: { frage: 'Was ist im Graphen zu sehen?', optionen: ['Die Gerade durch die Punkte bei $x=2$ und $x=6$ hat die Steigung $-0{,}8$.', 'Die Tangente bei $x=4$ hat die Steigung $-0{,}8$.', 'Der Graph hat bei $x=4$ einen Tiefpunkt.'], richtig: 0, erklaerung: m`Höhenunterschied geteilt durch Breite ist die Steigung der Verbindungsgeraden (Sekante). Das ist eine <b>mittlere</b> Änderungsrate. Die Tangente bei $x=4$ hat sogar die Steigung $p'(4)=-1{,}2$.` },
+            satz: { frage: 'Welcher Satz im Sachzusammenhang passt?', optionen: ['Zwischen km 2 und km 6 fällt der Weg im Mittel um 0,8 (80 m) pro km.', 'Bei km 4 beträgt die Steigung genau $-0{,}8$.', 'Der Weg ist zwischen km 2 und km 6 genau 0,8 km lang.'], richtig: 0, erklaerung: m`„Im Mittel“ gehört zu einem Intervall, „genau an einer Stelle“ zur Ableitung. Das ist die häufigste Verwechslung bei diesem Typ.` } }
+        ]
+      }
+    },
+
     stufen: [
       // ---------------------------------------------------------------- 0 Sehen
       {
@@ -205,6 +311,6 @@
   // Für Demos: Funktionen als JS (gleiche Terme wie oben, für Graphen)
   window.LR_FN = Object.assign(window.LR_FN || {}, {
     'x^3-6x^2+9x+1': { f: x => x ** 3 - 6 * x ** 2 + 9 * x + 1, d: x => 3 * x ** 2 - 12 * x + 9, xmin: -0.6, xmax: 4.6, ymin: -2, ymax: 8 },
-    p: { f: x => 0.1 * x ** 3 - 1.2 * x ** 2 + 3.6 * x + 2 }
+    p: { f: x => 0.1 * x ** 3 - 1.2 * x ** 2 + 3.6 * x + 2, xmin: 0, xmax: 8, ymin: 0, ymax: 6 }
   });
 })();

@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 global.window = {};
+require('../algo.js'); // Inhalte mit Notation brauchen den Baukasten
 const dir = path.join(__dirname, '..', 'content');
 fs.readdirSync(dir).filter(f => f.endsWith('.js')).forEach(f => require(path.join(dir, f)));
 const TOPICS = window.LR_TOPICS || [];
@@ -58,6 +59,49 @@ TOPICS.forEach(t => {
       if (st.typ === 'geruest' && p.checkpoints.some(c => typeof c.schritt !== 'number')) err(P, 'Gerüst-Checkpoints brauchen schritt');
     });
   });
+});
+
+// ---------------------------------------------------------------- Besondere Übungen (S3)
+const FT = ['Rechenfehler', 'Ansatz fehlte', 'Schreibweise', 'Verständnis fehlt', 'CAS-Bedienung'];
+TOPICS.forEach(t => {
+  const x = t.extras; if (!x) return;
+  const W = `Thema ${t.id} extras`;
+  if (x.blurting) {
+    const b = x.blurting, k = b.kernpunkte || [];
+    if (k.length < 6 || k.length > 12) err(W + ' blurting', `6–12 Kernpunkte erwartet, ${k.length} gefunden`);
+    k.forEach((s, i) => { if (!s) err(W + ' blurting', `Kernpunkt ${i + 1} leer`); dollarsBalanced(W + ' blurting', s); });
+    if (!b.aufforderung) err(W + ' blurting', 'aufforderung fehlt');
+  }
+  (x.fehler || []).forEach(f => {
+    const F = `${W} fehler ${f.id}`;
+    uniq(F, f.id);
+    if (!f.schritte || f.schritte.length < 3) return err(F, 'mind. 3 Zeilen');
+    if (!(f.fehler >= 0 && f.fehler < f.schritte.length)) err(F, 'fehler zeigt auf keine Zeile');
+    ['frage', 'was', 'richtig', 'typ', 'folge'].forEach(k => { if (!f[k]) err(F, `${k} fehlt`); dollarsBalanced(F, f[k]); });
+    if (!FT.includes(f.typ)) err(F, `typ muss einer von ${FT.join(', ')} sein`);
+    f.schritte.forEach((s, i) => {
+      if (!s.name || !s.rechnung) err(F, `Zeile ${i + 1}: name/rechnung fehlt`);
+      if (i !== f.fehler && !s.ok) err(F, `Zeile ${i + 1}: braucht ok-Text (wird beim Antippen gezeigt)`);
+      dollarsBalanced(F, s.rechnung);
+    });
+  });
+  if (x.erlaeutern) {
+    const e = x.erlaeutern, E = W + ' erlaeutern';
+    if (!e.zeilen || e.zeilen.length < 3) err(E, 'mind. 3 Zeilen');
+    (e.zeilen || []).forEach((z, i) => { if (!z.rechnung) err(E, `Zeile ${i + 1} ohne rechnung`); if (z.frage) mcqOk(`${E} Zeile ${i + 1}`, z.frage); dollarsBalanced(E, z.rechnung); });
+    mcqOk(E + ' aufgabe', e.aufgabe);
+    const sum = (e.kernpunkte || []).reduce((a, k) => a + (k.punkte || 0), 0);
+    if (!e.kernpunkte || !e.kernpunkte.length) err(E, 'kernpunkte fehlen');
+    else if (sum !== e.be) err(E, `Kernpunkte-Summe ${sum} ≠ ${e.be} BE`);
+    (e.kernpunkte || []).forEach(k => { if (!k.name || !k.text) err(E, 'Kernpunkt ohne name/text'); dollarsBalanced(E, k.text); });
+    ['intro', 'operator', 'aufschreiben'].forEach(k => { if (!e[k]) err(E, `${k} fehlt`); });
+  }
+  if (x.deuten) {
+    const d = x.deuten, D = W + ' deuten';
+    if (!d.bedingungen || !d.bedingungen.length) err(D, 'bedingungen fehlen');
+    (d.bedingungen || []).forEach((b, i) => { if (!b.term) err(D, `Bedingung ${i + 1} ohne term`); mcqOk(`${D} ${i + 1} bild`, b.bild); mcqOk(`${D} ${i + 1} satz`, b.satz); dollarsBalanced(D, b.term); });
+    if (!d.demo || !(window.LR_FN || {})[d.demo.f]) err(D, 'demo.f ist nicht in LR_FN definiert');
+  }
 });
 
 if (errors.length) { console.error(errors.join('\n')); console.error(`\n${errors.length} Fehler`); process.exit(1); }

@@ -14,7 +14,11 @@ Drei Hauptbereiche, überall gleich:
 | **Fächer** | Wo lerne ich was? | alle Fächer, sortiert nach nächster Klausur |
 | **Plan** | Wann ist was? | Klausuren (12.1 / 12.2 / geschrieben), Stundenplan (A/B-Woche) |
 
-Jedes **Fach** hat genau drei Reiter, in jedem Fach identisch:
+> **UMGESETZT in S3b (07.11.): `struktur.js`.** Die Reiter unten gibt es nicht mehr.
+>
+> **NEUE STRUKTUR (Tonda, 07.11., verbindlich: `../../Portalplan.md` Abschnitt 8a, Bauschritt S3b).** Die drei Reiter unten (Lernpfad/Üben/Klausur) sind **überholt**, sobald S3b gebaut ist. Dann gilt: **Fach → Ordner → (Unterordner) → Thema**, pro Bildschirm eine Ebene, höchstens 6 Kacheln, Brotkrumen oben; Fach-Seite = Kopf + **Klausur-Filter** (Klausur antippen → nur klausurrelevante Ordner) + Ordner-Kacheln + Knopf „Lernplan“; Reiter **Plan** = Lernplan · Klausuren · Stundenplan; „In den Plan“-Knopf an Ordner, Thema, Übung.
+
+Jedes **Fach** hat (bis S3b) genau drei Reiter, in jedem Fach identisch:
 1. **Lernpfad** – Lektionen in fester Reihenfolge (Linie mit Stationen: offen · nächste · verstanden)
 2. **Üben** – Aufgaben (Teil A/B), Tipp-Leiter, Zahlenprüfung, Musterlösung, ehrliche Selbstbewertung
 3. **Klausur** – nächster Termin, was noch fehlt, Spickzettel (später: Probeklausur mit Uhr, Fehlerliste)
