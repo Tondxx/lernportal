@@ -18,11 +18,12 @@
   const mono = s => (s.code || s.name).slice(0, 2).toUpperCase();
 
   // ------------------------------------------------------------ Mathe-Rendering
+  const KMACROS = { '\\res': '\\boxed{#1}' }; // hervorgehobenes Ergebnis im Rechenweg
   function M(s) {
     if (!s) return '';
     if (!window.katex) return s;
     return s.replace(/\$\$([\s\S]+?)\$\$|\$([^$\n]+?)\$/g, (m, a, b) => {
-      try { return katex.renderToString((a || b).trim(), { displayMode: !!a, throwOnError: false }); } catch (e) { return m; }
+      try { return katex.renderToString((a || b).trim(), { displayMode: !!a, throwOnError: false, macros: KMACROS }); } catch (e) { return m; }
     });
   }
   const prose = html => `<div class="prose">${M(html)}</div>`;
@@ -198,7 +199,7 @@
       <div class="card streakbox">
         <div class="streak-top"><div><span class="kicker">Abi-Training · Tag ${st.trainingDays || 1}</span>
           <div class="streak-n"><b class="num" data-count="${st.streak}">${st.streak}</b><span>${st.streak === 1 ? 'Tag' : 'Tage'} in Folge</span></div></div>
-          <span class="chip ${st.freezeWeek === 'bereit' ? 'ok' : ''}" title="Ein verpasster Tag pro Woche lässt den Streak nicht reißen.">${icon('shield')}Schutz ${st.freezeWeek}</span></div>
+</div>
         ${heat(st)}
         <div class="row-sub streak-foot">${st.best > st.streak ? `Bestwert ${st.best} Tage · ` : ''}Ein Segment am Tag reicht für den Streak.</div>
       </div></section>`);
@@ -303,7 +304,9 @@
     const groups = [['integral', 'Integral & Bestand'], ['schar', 'Funktionsscharen & Ortskurven']];
     const nxt = nextLesson();
     const total = lessonsDone() / LESSONS.length;
-    let h = `<div class="card" style="padding:18px 20px;display:flex;align-items:center;gap:18px">${ring(total, { size: 72, center: `<b class="num" style="font-size:20px">${lessonsDone()}</b>` })}<div><div class="row-title">${lessonsDone()} von ${LESSONS.length} Lektionen verstanden</div><div class="row-sub">Jede Lektion: Idee, Rezept, Beispiel, Fehler, Selbsttest.</div></div></div>`;
+    const demo = TOPICS.find(x => x.fach === 'mathe' && x.demo);
+    let h = demo ? `<a class="cont" href="#/thema/${demo.id}" style="margin-bottom:14px"><div class="cont-ico">${icon('layers')}</div><div class="row-main"><span class="kicker">Neu · Lerntreppe (Demo)</span><span class="row-title" style="font-size:18px">${demo.titel}</span><span class="row-sub">So funktionieren Themen ab jetzt: 6 Stufen vom Zuschauen bis zur Abi-Aufgabe.</span></div>${icon('right', 'chev')}</a>` : '';
+    h += `<div class="card" style="padding:18px 20px;display:flex;align-items:center;gap:18px">${ring(total, { size: 72, center: `<b class="num" style="font-size:20px">${lessonsDone()}</b>` })}<div><div class="row-title">${lessonsDone()} von ${LESSONS.length} Lektionen verstanden</div><div class="row-sub">Jede Lektion: Idee, Rezept, Beispiel, Fehler, Selbsttest.</div></div></div>`;
     groups.forEach(([g, label]) => {
       const ls = LESSONS.filter(l => l.group === g);
       const gd = ls.filter(l => state.done[l.id]).length;
@@ -647,6 +650,17 @@
     };
   };
 
+  // ---- Lerntreppe (treppe.js, Bauschritt S2)
+  const TOPICS = window.LR_TOPICS || [];
+  R.thema = (id, n) => {
+    const t = TOPICS.find(x => x.id === id);
+    if (!t || !window.LRTreppe) return R.faecher();
+    const ctx = { M, icon, esc, LR, byId, subjStyle, figSvg, reduced };
+    if (n === undefined || n === '') return LRTreppe.overview(t, ctx);
+    if (n === 'check') return LRTreppe.check(t, ctx);
+    return LRTreppe.stage(t, +n, ctx);
+  };
+
   // ------------------------------------------------------------ Profile (Portalplan 11.1)
   const initial = n => (Array.from(String(n || '?').trim())[0] || '?').toUpperCase();
   const allIds = () => SUBJECTS.map(s => s.id);
@@ -739,6 +753,7 @@
     if (a === 'lektion') return ['lektion', b];
     if (a === 'aufgabe') return ['aufgabe', b];
     if (a === 'abruf') return ['abruf'];
+    if (a === 'thema') return ['thema', b, c];
     return ['heute'];
   }
 

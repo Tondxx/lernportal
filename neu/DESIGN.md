@@ -40,6 +40,8 @@ Material (IServ, Uploads, Mitschriften) kommt als vierter Reiter **Material** mi
 | `app.js` | Router (`#/`, `#/faecher`, `#/fach/<id>/<reiter>`, `#/lektion/<id>`, `#/aufgabe/<id>`, `#/plan`), alle Ansichten, Reader, Demos |
 | `data.js` | Fächer + Themenlisten, per Skript aus `../main_hub.js` erzeugt (ohne Emojis) |
 | `core.js` | Profile, Ereignis-Liste, Berechnung von Streak/Ring/Kalender (Portalplan 10.2/11.1); Tests in `tests/core.test.js` |
+| `treppe.js` | Lerntreppe: Übersicht `#/thema/<id>`, Eingangs-Check `#/thema/<id>/check`, Stufen `#/thema/<id>/<0–5>` |
+| `content/*.js` | Lerninhalte (`window.LR_TOPICS`), geprüft mit `tests/tasks.test.js` |
 | gelesen aus dem Portal | `../calendar.js` (Klausuren), `../timetable.js` (Stundenplan), `../mathe_trainer_content.js` (11 Lektionen, Probeklausur, Spickzettel) |
 
 Fortschritt (seit S1, 07.11.): pro Profil `lr:st:<id>` (Lektionen verstanden, Selbstbewertung, Antworten) und `lr:ev:<id>` (Ereignisse). Das erste Profil übernimmt `neu_state_v1` und verstandene Lektionen aus `mt_state_v1`.

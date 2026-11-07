@@ -96,8 +96,9 @@
 
   // ------------------------------------------------------------ Ereignisse
   // Typen: learn (Lektion verstanden), recall (Karte abgefragt, data.ok),
-  //        practice (Teilaufgabe bewertet, data.pts/max), fix (vorher verlorene Punkte geholt)
-  const COUNTS = { learn: 1, recall: 1, practice: 1, fix: 1 };
+  //        practice (Teilaufgabe bewertet, data.pts/max), fix (vorher verlorene Punkte geholt),
+  //        stage (Treppenstufe abgeschlossen), mistake (Fehler mit Fehlertyp), entry (Eingangs-Check)
+  const COUNTS = { learn: 1, recall: 1, practice: 1, fix: 1, stage: 1 };
   const events = (pid = activeId()) => get(`ev:${pid}`, []);
   function log(type, ref, data, t) {
     const pid = activeId();
@@ -133,7 +134,7 @@
       const d = perDay[k] || (perDay[k] = { n: 0, recall: 0, learn: 0, fix: 0 });
       d.n++;
       if (e.type === 'recall') d.recall++;
-      else if (e.type === 'learn' || e.type === 'practice') d.learn++;
+      else if (e.type === 'learn' || e.type === 'practice' || e.type === 'stage') d.learn++;
       else if (e.type === 'fix') d.fix++;
     });
     const activeDays = Object.keys(perDay).sort();
