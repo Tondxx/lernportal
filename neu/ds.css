@@ -777,3 +777,4 @@ a.exam-line:hover { background: var(--raised); }
 .rw-step.locked .rw-n { background: var(--sunken); color: var(--text-3); box-shadow: 0 0 0 1.5px var(--line-2) inset; }
 .rw-step.locked .rw-name::after { content: " · erscheint nach der Lücke"; font: 600 13px var(--font-ui); color: var(--text-3); }
 .rw-step:not(.locked) .rw-body > * { transition: filter .5s, opacity .5s; }
+.rw-cas code sup { font-size: .72em; line-height: 0; position: relative; top: -.15em; margin-left: 1px; }

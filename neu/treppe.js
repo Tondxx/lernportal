@@ -68,7 +68,9 @@
 
     B.cas = (cas, collapsed) => {
       if (!cas) return '';
-      const line = `<div class="rw-cas"><span class="cas-tag">${icon('calc')}TI-Nspire CAS</span><code>${esc(cas.eingabe)}</code><span class="cas-to">${icon('arrow')}</span><code class="cas-out">${esc(cas.ausgabe)}</code></div>`;
+      // Hochzahlen wie auf dem TI-Nspire-Bildschirm hochgestellt: x^2 → x², x^(n+1) → x hoch (n+1)
+      const sup = s => esc(s).replace(/\^\(([^()]*)\)|\^(-?[\w.]+)/g, (m0, a, b) => `<sup>${a != null ? a : b}</sup>`);
+      const line = `<div class="rw-cas"><span class="cas-tag">${icon('calc')}TI-Nspire CAS</span><code title="Hochzahl im Rechner mit der Taste ^">${sup(cas.eingabe)}</code><span class="cas-to">${icon('arrow')}</span><code class="cas-out">${sup(cas.ausgabe)}</code></div>`;
       return collapsed ? `<details class="cas-fold"><summary>${icon('calc')}CAS-Eingabe zeigen</summary>${line}</details>` : line;
     };
 
