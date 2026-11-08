@@ -206,7 +206,7 @@
 
     function showEwh(silent) {
       const ewh = host.querySelector('.sc-ewh');
-      ewh.innerHTML = `<div class="sc-title"><span class="kicker">Erwartungshorizont · ${part.be} BE</span><p class="muted">Vergleiche jeden Schritt mit deinem Blatt und tippe an, wie er bei dir war. Bei „fast“ oder „fehlte“ kannst du sagen, woran es lag.</p></div>
+      ewh.innerHTML = `<div class="sc-title"><span class="kicker">Erwartungshorizont · ${part.be} BE</span><p class="muted">Vergleiche jeden Schritt mit deinem Blatt und tippe an, wie er bei dir war. Bei „fast“ oder „fehlte“ kannst du sagen, woran es lag.</p>${window.LRReplay ? LRReplay.button('Lösungsweg als Replay') : ''}</div>
         <div class="rw">${part.schritte.map((st, i) => B.step(st, i, {
           casFold: opts.casFold,
           body: st.kern ? `<div class="rw-math prose">${M(st.rechnung)}</div>` : undefined, // Kernpunkte (Text statt Rechnung)
@@ -216,6 +216,7 @@
         <div class="sc-result"></div>
         <div class="sc-prog" role="status"></div>`;
       ewh.hidden = false;
+      if (window.LRReplay) LRReplay.bind(ewh, ctx, part, { titel: 'Erwartungshorizont', frage: part.frage });
       if (!silent) ewh.scrollIntoView({ behavior: ctx.reduced ? 'auto' : 'smooth', block: 'start' });
       const stepEl = i => ewh.querySelectorAll('.rw > .rw-step')[i];
       const rate = (i, v, scroll) => {
@@ -403,7 +404,7 @@
       body = `<div class="demo tdemo" id="tdemo"></div><p class="prose">${M(st.text)}</p><div class="spacer"></div>${B.mcq(st.frage, 'q0')}`;
     } else if (st.typ === 'beispiel') {
       const p = task.parts[0];
-      body = `<div class="q">${M(p.frage)}</div><div class="rw" id="rw"></div><div id="stepCtl" class="step-ctl"></div>`;
+      body = `<div class="q">${M(p.frage)}</div>${window.LRReplay ? `<div class="rp-offer">${LRReplay.button('Erst als Replay ansehen')}<span class="row-sub">Der ganze Weg baut sich wie an der Tafel auf. Danach rechnest du hier Schritt für Schritt mit.</span></div>` : ''}<div class="rw" id="rw"></div><div id="stepCtl" class="step-ctl"></div>`;
     } else if (st.typ === 'luecken') {
       const p = task.parts[0];
       const firstGap = p.schritte.findIndex(x => x.luecke); // spätere Schritte würden die Lücke verraten → erst danach zeigen
@@ -488,6 +489,7 @@
     if (st.typ === 'beispiel') {
       const p = st.task.parts[0];
       const rw = root.querySelector('#rw'), ctl = root.querySelector('#stepCtl');
+      if (window.LRReplay) LRReplay.bind(root, ctx, p, { titel: st.task.titel, frage: p.frage });
       let k = 0, asked = 0, right = 0;
       const next = () => {
         if (k >= p.schritte.length) { finish(asked ? 50 + 50 * right / asked : 100); ctl.innerHTML = ''; return; }

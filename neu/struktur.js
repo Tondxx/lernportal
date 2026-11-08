@@ -186,7 +186,9 @@
       : `<div class="empty">Für diese Klausur ist noch kein Ordner markiert. Tippe auf „Auswahl ändern“ und hake an, was dran kommt, oder sag Claude im Chat, was in der Klausur dran kommt.</div>`;
     const note = kid && hidden > 0 && !editRel ? `<p class="row-sub kinfo">${hidden} ${hidden === 1 ? 'Ordner ist' : 'Ordner sind'} ausgeblendet, weil sie nicht zu dieser Klausur gehören. <button type="button" class="link small" data-kf="" data-fach="${id}">Alle zeigen</button></p>` : (editRel ? `<p class="row-sub kinfo">Hake an, was für ${examLabel(exam(kid))} dran kommt. Das merkt sich dein Profil.</p>` : '');
     const planBtn = `<button type="button" class="cont plan-go" data-goplan="${id}" ${A.subjStyle(s)}><div class="cont-ico">${icn('cal')}</div><div class="row-main"><span class="row-title" style="font-size:18px">Lernplan für ${subjName(s)}</span><span class="row-sub">${planLine(id)}</span></div>${icn('right', 'chev')}</button>`;
-    return { title: s.name, back: '#/faecher', nav: 'faecher', html: `<div ${A.subjStyle(s)}>${head}${chipsFor(id)}${note}${body}${planBtn}</div>` };
+    const hasMap = tree.some(n => n.typ === 'ordner' && themenOf(n).length > 1);
+    const mapBtn = hasMap ? `<a class="cont plan-go" href="#/karte/${id}" ${A.subjStyle(s)}><div class="cont-ico">${icn('map')}</div><div class="row-main"><span class="row-title" style="font-size:18px">Wissenslandkarte</span><span class="row-sub">Alle Themen als Karte: was sitzt, was wackelt, was als Nächstes kommt</span></div>${icn('right', 'chev')}</a>` : '';
+    return { title: s.name, back: '#/faecher', nav: 'faecher', html: `<div ${A.subjStyle(s)}>${head}${chipsFor(id)}${note}${body}${planBtn}${mapBtn}</div>` };
   }
   function planLine(fid) {
     const { pe, items } = currentPlan();
@@ -602,4 +604,8 @@
   };
 
   LRS._test = { info, relNode };
+  // Für die Wissenslandkarte (ueberblick.js): dieselben Ordner und Themen, zweite Ansicht
+  LRS.tree = fid => TREES[fid] || [];
+  LRS.info = info;
+  LRS.themenOf = themenOf;
 })();

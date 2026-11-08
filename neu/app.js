@@ -200,7 +200,7 @@
           <div class="streak-n"><b class="num" data-count="${st.streak}">${st.streak}</b><span>${st.streak === 1 ? 'Tag' : 'Tage'} in Folge</span></div></div>
 </div>
         ${heat(st)}
-        <div class="row-sub streak-foot">${st.best > st.streak ? `Bestwert ${st.best} Tage · ` : ''}Ein Segment am Tag reicht für den Streak.</div>
+        <div class="row-sub streak-foot">${st.best > st.streak ? `Bestwert ${st.best} Tage · ` : ''}Ein Segment am Tag reicht für den Streak. <a class="link" href="#/verlauf">Ganzer Kalender</a></div>
       </div></section>`);
 
     // 3) Eine Zeile: nächste Klausur
@@ -733,6 +733,8 @@
     if (a === 'abruf') return ['abruf', b];
     if (a === 'fehlerjagd') return ['fehlerjagd'];
     if (a === 'wiederholen') return ['wiederholen'];
+    if (a === 'karte') return ['karte', b];
+    if (a === 'verlauf') return ['verlauf'];
     if (a === 'jagd') return ['jagd', b];
     if (a === 'session') return ['session', b];
     if (a === 'ordner') return ['ordner', b];
@@ -829,6 +831,7 @@
   const APP = { R, nextStep, state, save, LR, M, icon, esc, byId, SUBJECTS, mine, subjStyle, mono, fmt, prose, bar, ring, seg, exams, upcoming, examsOf, daysText, WD, MONTHS, LESSONS, TASKS, TOPICS, ALGOS, D, taskMax, taskGot, taskBlock, oldModules, openSheet, closeSheet, sheetHead, view, rerender: () => go({ still: true }), reduced };
   if (window.LRStruktur) LRStruktur.init(APP);
   if (window.LRWdh) LRWdh.init(APP);
+  if (window.LRUeberblick) LRUeberblick.init(APP);
   paintProfile();
   go({ first: true }); // erste Anzeige ohne Übergang: der kann beim Laden hängen bleiben
   askWho(idleAtStart);
