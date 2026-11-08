@@ -554,7 +554,7 @@
       return `<section class="part" id="part-${p.id}">
         <div class="part-head"><span class="lab">${p.label}</span><span class="chip be">${p.be} BE</span></div>
         ${prose(p.text)}
-        <textarea class="work" data-ans-key="${p.id}" placeholder="Dein Lösungsweg (wird nur hier gespeichert)">${(state.answers && state.answers[p.id]) || ''}</textarea>
+        <textarea class="work" data-ans-key="${p.id}" placeholder="Dein Lösungsweg (wird nur hier gespeichert)">${esc((state.answers && state.answers[p.id]) || '')}</textarea>
         <div class="tools">${nums}${hintBtn}${solBtn}</div>
         <div id="hints-${p.id}"></div>${sol}
       </section>`;
@@ -668,8 +668,13 @@
   R.start = () => ({
     title: 'Willkommen', nav: 'heute', focus: true,
     html: `<div class="onboard rise"><div class="page-head"><span class="kicker">Lernraum</span><h2 class="h-display">Wer lernt hier?</h2>
-      <p class="muted">Jede Person bekommt ein eigenes Profil. Fortschritt, Streak und Antworten gehören nur dir und bleiben auf diesem Gerät. Freunde legen ihr eigenes Profil an, auf ihrem Gerät oder hier.</p></div>${profileForm(null)}</div>`,
-    after(root) { bindForm(root, (n, c) => { LR.createProfile(n, c); history.replaceState(null, '', '#/'); location.reload(); }); }
+      <p class="muted">Jede Person bekommt ein eigenes Profil. Fortschritt, Streak und Antworten gehören nur dir und bleiben auf diesem Gerät. Freunde legen ihr eigenes Profil an, auf ihrem Gerät oder hier.</p></div>${profileForm(null)}
+      <div class="join-box"><span class="row-title">Schon auf einem anderen Gerät angefangen?</span><span class="row-sub">Mit deinem Sync-Code holst du deinen Fortschritt hierher.</span><button class="btn block" type="button" data-join>${icon('shield')}Mit Sync-Code verbinden</button></div></div>`,
+    after(root) {
+      bindForm(root, (n, c) => { LR.createProfile(n, c); history.replaceState(null, '', '#/'); location.reload(); });
+      const j = root.querySelector('[data-join]');
+      if (j) j.onclick = () => { LR.createProfile('Ich', []); try { sessionStorage.setItem('lr:adopt', '1'); } catch (e) { /* egal */ } history.replaceState(null, '', '#/sync/join'); location.reload(); };
+    }
   });
 
   const sheet = $('#sheet');
@@ -688,7 +693,8 @@
     openSheet(`${sheetHead('Wer lernt gerade?')}
       <div class="list">${list.map(p => `<button class="row" type="button" data-switch="${p.id}"><span class="avatar">${esc(initial(p.name))}</span><span class="row-main"><span class="row-title">${esc(p.name)}</span><span class="row-sub">${p.id === me.id ? 'aktiv' : 'zu diesem Profil wechseln'}</span></span>${p.id === me.id ? icon('check', 'ok-ic') : icon('right', 'chev')}</button>`).join('')}</div>
       <div class="sheet-actions"><button class="btn" type="button" data-action="edit-profile">${icon('pencil')}Name und Kurse</button><button class="btn" type="button" data-action="new-profile">Neues Profil</button></div>
-      <p class="row-sub sheet-note">Jedes Profil hat eigene Daten. Niemand kann den Streak eines anderen verändern. Geräte verbinden (verschlüsselt) kommt in einem späteren Schritt.</p>
+      <a class="btn block sync-go" href="#/sync">${icon('shield')}Geräte verbinden (verschlüsselt)</a>
+      <p class="row-sub sheet-note">Jedes Profil hat eigene Daten und ein eigenes, verschlüsseltes Postfach. Niemand kann den Streak eines anderen verändern.</p>
       ${list.length > 1 ? `<button class="link danger" type="button" data-action="delete-profile">Profil „${esc(me.name)}“ von diesem Gerät löschen</button>` : ''}`);
   }
   const idleAtStart = LR.idleMinutes();
@@ -737,6 +743,7 @@
     if (a === 'karte') return ['karte', b];
     if (a === 'verlauf') return ['verlauf'];
     if (a === 'klausur') return ['klausur', b];
+    if (a === 'sync') return ['sync', b];
     if (a === 'jagd') return ['jagd', b];
     if (a === 'session') return ['session', b];
     if (a === 'ordner') return ['ordner', b];
@@ -835,6 +842,7 @@
   if (window.LRWdh) LRWdh.init(APP);
   if (window.LRUeberblick) LRUeberblick.init(APP);
   if (window.LRKlausur) LRKlausur.init(APP);
+  if (window.LRSync && me) LRSync.init(APP);
   paintProfile();
   go({ first: true }); // erste Anzeige ohne Übergang: der kann beim Laden hängen bleiben
   askWho(idleAtStart);

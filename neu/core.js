@@ -113,8 +113,11 @@
     list.push(e);
     set(`ev:${pid}`, list);
     touch();
+    listeners.forEach(f => { try { f(e, pid); } catch (x) { /* egal */ } });
     return e;
   }
+  const listeners = [];
+  const onLog = f => listeners.push(f); // z. B. Sync: nach neuen Ereignissen abgleichen
   // Für den späteren Sync: fremde Ereignisse einmischen (Vereinigung nach id).
   function merge(pid, incoming) {
     const list = events(pid);
@@ -238,7 +241,7 @@
   root.LR = {
     profiles, active, activeId, createProfile, updateProfile, switchTo, deleteProfile,
     touch, idleMinutes, loadState, saveState, events, log, merge, stats, calendar, GOAL,
-    STEPS, schedule, cards, mistakes,
+    STEPS, schedule, cards, mistakes, onLog,
     _util: { dayKey, addDays, weekKey, daysBetween, setStore: s => { store = s; }, mem }
   };
 })(typeof window !== 'undefined' ? window : globalThis);

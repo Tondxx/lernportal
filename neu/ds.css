@@ -1283,3 +1283,39 @@ body.rp-open { overflow: hidden; }
 .cal-exs { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
 .cal-ex { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
 .fach-head .mono { flex: none; }
+
+/* ==========================================================================
+   S7 (Portalplan 10): Geräte verbinden (Sync)
+   ========================================================================== */
+.sdot { width: 10px; height: 10px; border-radius: 50%; flex: none; background: var(--text-3); display: inline-block; }
+.sdot[data-sync="off"] { display: none; }
+.sdot[data-sync="ok"] { background: var(--ok); }
+.sdot[data-sync="busy"] { background: var(--info); animation: sessPulse 1.2s ease-in-out infinite; }
+.sdot[data-sync="error"] { background: var(--warn); }
+.sdot[data-sync="revoked"] { background: var(--bad); }
+.prof-btn, .prof-top { position: relative; }
+.sdot.av { position: absolute; width: 9px; height: 9px; box-shadow: 0 0 0 2px var(--bg); }
+.prof-top .sdot.av { right: 8px; bottom: 8px; }
+.prof-btn .sdot.av { left: 34px; top: 28px; }
+@media (max-width: 1099px) { .prof-btn .sdot.av { left: 34px; top: 28px; } }
+.sync-go { margin-top: 4px; }
+.sync .sync-card { padding: 20px 22px; margin-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+.sync-state { display: flex; align-items: center; gap: 12px; }
+.sync-state .sdot { width: 12px; height: 12px; }
+.sync-state .sdot[data-sync="off"] { display: inline-block; }
+.code-in { font: 700 17px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; }
+.err { color: var(--bad); font-weight: 600; }
+.code-box { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin: 6px 0; }
+.code-box span { display: grid; place-items: center; height: 54px; border-radius: 14px; background: var(--sunken); box-shadow: 0 0 0 1px var(--line-2) inset; font: 800 clamp(16px, 4.2vw, 22px) var(--font-mono); letter-spacing: .08em; }
+.sync-ok { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; line-height: 1.5; cursor: pointer; }
+.sync-ok input { width: 20px; height: 20px; margin-top: 2px; accent-color: var(--ok); flex: none; }
+.sync-how { margin-top: 20px; }
+.sync-how > summary { cursor: pointer; display: inline-flex; gap: 8px; align-items: center; font-weight: 650; color: var(--text-2); list-style: none; }
+.sync-how > summary::-webkit-details-marker { display: none; }
+.sync-how ul { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; color: var(--text-2); font-size: 15px; line-height: 1.55; }
+.sync-how b { color: var(--text); }
+.warnbox { background: color-mix(in oklab, var(--bad) 10%, transparent); }
+.warnbox svg.i { color: var(--bad); }
+.join-box { margin-top: 26px; padding: 18px 20px; border-radius: 22px; border: 1.5px dashed var(--line-2); display: flex; flex-direction: column; gap: 6px; }
+.join-box .btn { margin-top: 8px; }
+.code-box { grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); }

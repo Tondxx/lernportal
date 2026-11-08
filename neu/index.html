@@ -6,21 +6,15 @@
   <meta name="theme-color" content="#090b10">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <title>Lernraum</title>
-  <script>
-    (function () {
-      try {
-        var s = localStorage.getItem('neu_theme');
-        var t = (s === 'light' || s === 'dark') ? s : (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
-        document.documentElement.setAttribute('data-theme', t);
-      } catch (e) {}
-    })();
-  </script>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data:; connect-src 'self' https://lernraum-sync.wraithai.workers.dev; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="no-referrer">
+  <script src="boot.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Inter:wght@400;500;600;650;700;800&family=JetBrains+Mono:wght@600&display=swap">
   <link rel="stylesheet" href="../katex.min.css">
   <link rel="stylesheet" href="../katex-fonts.css?v=1">
-  <link rel="stylesheet" href="ds.css?v=23">
+  <link rel="stylesheet" href="ds.css?v=25">
 </head>
 <body>
   <!-- Icon-Satz (eigene Linien-Icons, keine Emojis) -->
@@ -72,7 +66,7 @@
         <a class="nav-item" href="#/plan" data-route="plan"><svg class="i"><use href="#i-cal"/></svg><span>Plan</span></a>
       </nav>
       <div class="sidebar-foot">
-        <button class="theme-btn prof-btn" type="button" data-action="profiles" hidden><span class="avatar" data-avatar></span><span data-pname></span></button>
+        <button class="theme-btn prof-btn" type="button" data-action="profiles" hidden><span class="avatar" data-avatar></span><span class="sdot av" data-sync="off"></span><span data-pname></span></button>
         <button class="theme-btn" id="themeBtnSide" type="button"><svg class="i"><use href="#i-sun"/></svg><span>Design wechseln</span></button>
       </div>
     </aside>
@@ -82,7 +76,7 @@
         <button class="icon-btn" id="backBtn" type="button" aria-label="Zurück" hidden><svg class="i"><use href="#i-left"/></svg></button>
         <h1 id="appTitle">Heute</h1>
         <a class="sess-chip" id="sessChip" href="#/session" hidden><span class="sess-dot"></span><span data-stxt></span></a>
-        <button class="icon-btn prof-top" type="button" data-action="profiles" aria-label="Profil wechseln" hidden><span class="avatar" data-avatar></span></button>
+        <button class="icon-btn prof-top" type="button" data-action="profiles" aria-label="Profil wechseln" hidden><span class="avatar" data-avatar></span><span class="sdot av" data-sync="off"></span></button>
         <button class="icon-btn" id="themeBtnTop" type="button" aria-label="Design wechseln"><svg class="i"><use href="#i-sun"/></svg></button>
       </header>
       <main class="view" id="view" tabindex="-1"></main>
@@ -104,7 +98,7 @@
   <script src="../timetable.js"></script>
   <script src="../mathe_trainer_content.js"></script>
   <script src="data.js?v=1"></script>
-  <script src="core.js?v=4"></script>
+  <script src="core.js?v=5"></script>
   <script src="algo.js?v=2"></script>
   <script src="plan.js?v=1"></script>
   <script src="content/demo.js?v=3"></script>
@@ -118,6 +112,7 @@
   <script src="ueberblick.js?v=2"></script>
   <script src="klausur.js?v=2"></script>
   <script src="wiederholen.js?v=4"></script>
-  <script src="app.js?v=16"></script>
+  <script src="sync.js?v=2"></script>
+  <script src="app.js?v=17"></script>
 </body>
 </html>

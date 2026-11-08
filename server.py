@@ -249,8 +249,23 @@ class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                           self.log_date_time_string(),
                           format%args))
 
+def sync_pull_background():
+    """Lernfortschritt aus dem verschlüsselten Sync holen (nur wenn auf diesem PC ein Code gespeichert ist).
+    Code liegt in der Windows-Anmeldeinformationsverwaltung, Logik in ../_tools/sync_pull.py (nicht öffentlich)."""
+    import threading
+    def job():
+        try:
+            sys.path.insert(0, os.path.join(LERNEN_DIR, "_tools"))
+            import sync_pull
+            if sync_pull.pull(quiet=True):
+                print("Sync: Fortschritt nach data/private/fortschritt.json geholt.")
+        except Exception as e:
+            print(f"Sync: übersprungen ({type(e).__name__})")
+    threading.Thread(target=job, daemon=True).start()
+
 def run():
     print(f"Starting RobustTCPServer on port {PORT}...")
+    sync_pull_background()
     while True:
         try:
             with RobustTCPServer(("", PORT), CustomHTTPRequestHandler) as httpd:
