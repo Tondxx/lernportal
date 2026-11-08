@@ -25,7 +25,7 @@
       ]
     },
     beispiel: [4, 9, 2, 7, 12, 5],
-    // Ausgabe-Vorhersage (Ersatz fürs Ausführen, bis Python im Browser läuft: Plan 4.3)
+    // Ausgabe-Vorhersage (auch Ausweg, wenn Python im Browser nicht lädt: Plan 4.3, python.js)
     fragen: [
       { frage: 'Was gibt groesste([3, 8, 2, 8]) zurück?', optionen: ['3', '8', '2', '16'], richtig: 1, erklaerung: 'Die Bedingung „zahl > maximum“ ist bei der zweiten 8 falsch (8 ist nicht größer als 8). Das Maximum bleibt 8.' },
       { frage: 'Wie oft wird die Bedingung „zahl > maximum“ bei einer Liste mit 6 Zahlen geprüft?', optionen: ['5-mal', '6-mal', '7-mal'], richtig: 1, erklaerung: 'Die Schleife läuft für jedes Element, also 6-mal. (Das erste Element wird mit sich selbst verglichen, das ist harmlos.)' },

@@ -1,0 +1,3193 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <base href="../"><!-- altes Portal liegt unter /alt/, alle Dateien weiter im Hauptordner -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tonda Beutler &bull; Oberstufen-Portal (Jahrgang 12)</title>
+  <!-- KaTeX for crisp formulas without raw dollar signs (Local fast loading with CDN fallback) -->
+  <link rel="stylesheet" href="katex.min.css">
+  <link rel="stylesheet" href="katex-fonts.css?v=1">
+  <script src="katex.min.js"></script>
+  <!-- Early theme initialization to avoid flash of unstyled theme -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('tonda_portal_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = (saved === 'light' || saved === 'dark') ? saved : (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="style.css?v=20261105_navfix">
+  <link rel="stylesheet" href="mathe_trainer.css?v=20261105_5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap">
+  <link rel="stylesheet" href="design2.css?v=20261107_1">
+</head>
+<body>
+<div id="altBanner" style="position:sticky;top:0;z-index:9999;display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;padding:8px 14px;background:#141a2e;color:#eef1f7;font:600 14px/1.3 system-ui,sans-serif">Das ist das <b>alte Portal</b>. Neu lernst du im Lernraum. <a href="neu/" style="color:#d6f65b;text-decoration:underline">Zum Lernraum</a></div>
+
+  <!-- Top Global Portal Navigation Bar -->
+  <nav class="portal-nav">
+    <div class="nav-left">
+      <div class="portal-brand" onclick="navigateTo('dashboard')" style="cursor: pointer;">
+        <span class="portal-logo-icon">🏛️</span>
+        <div>
+          <div class="portal-title">Tonda Beutler &bull; Oberstufen-Portal</div>
+          <div class="portal-subtitle">Jahrgang 12 &bull; Gymnasiale Oberstufe 2026/2027</div>
+        </div>
+      </div>
+      <div class="nav-tabs">
+        <button class="nav-tab active" data-tab="dashboard" onclick="navigateTo('dashboard')">
+          🏠 Dashboard
+        </button>
+        <button class="nav-tab" data-tab="faecher" onclick="navigateTo('faecher')">
+          📚 Fächer
+        </button>
+        <button class="nav-tab" data-tab="seminarfach" onclick="navigateTo('seminarfach'); if(typeof renderSeminarfachView==='function')renderSeminarfachView();">
+          Seminarfach KI
+        </button>
+        <button class="nav-tab" data-tab="kalender" onclick="navigateTo('kalender')">
+          📅 Klausuren
+        </button>
+        <button class="nav-tab" data-tab="stundenplan" onclick="navigateTo('stundenplan')">
+          📋 Stundenplan
+        </button>
+      </div>
+    </div>
+    <div class="nav-right">
+      <!-- Apple-style Segmented Theme Control -->
+      <div class="theme-segmented-control" role="group" aria-label="Farbschema auswählen">
+        <button class="theme-seg-btn active" id="themeBtnLight" onclick="setTheme('light')" title="Helles Design aktivieren">
+          <span>☀️</span>
+          <span>Hell</span>
+        </button>
+        <button class="theme-seg-btn" id="themeBtnDark" onclick="setTheme('dark')" title="Dunkles Design aktivieren">
+          <span>🌙</span>
+          <span>Dunkel</span>
+        </button>
+      </div>
+      <!-- IServ Status Badge -->
+      <div class="iserv-nav-badge" id="navIservBadge" onclick="openIservConfigModal()" title="IServ Verbindung & Privatsphäre-Einstellungen">
+        <span class="iserv-status-dot" id="navIservDot"></span>
+        <span id="navIservText">IServ</span>
+      </div>
+      <!-- Privacy Lock Button -->
+      <button class="btn-nav-privacy" id="btnNavPrivacy" onclick="triggerPrivacyAction()" title="Privatsphäre & PIN-Schutz">
+        <span id="privacyLockIcon">🔒</span>
+      </button>
+      <span class="student-badge">Tutor: J. Hildebrandt</span>
+      <div class="exam-pill-urgent" onclick="openFach('deutsch')" style="background: var(--accent-deutsch-bg); color: var(--accent-deutsch); border-color: var(--accent-deutsch-border); cursor: pointer;">
+        <span class="status-dot" style="background: var(--accent-deutsch);"></span>
+        <strong>Morgen: Deutsch-Klausur (Der Sandmann)</strong>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Apple-Style Breadcrumbs Navigation Bar -->
+  <div class="breadcrumbs-bar" id="breadcrumbsBar">
+    <div class="breadcrumbs-trail" id="breadcrumbsTrail">
+      <!-- Generated dynamically by main_hub.js?v=20260930_gegenueberstellung -->
+    </div>
+    <button class="btn-back-nav" id="btnBackNav" onclick="goBack()" style="display: none;">
+      ← Zurück
+    </button>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 1: DASHBOARD (Home / Übersicht)                                      -->
+  <!-- ========================================================================= -->
+  <div id="view-dashboard" class="portal-view active-view">
+    
+    <!-- Urgent Klausur Hero Banner -->
+    <div id="dashHeroUrgent"></div>
+
+    <!-- 3-Column Dashboard Widgets Grid -->
+    <div class="dashboard-grid">
+      
+      <!-- Card 1: Mein Schultag heute -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-card-title">
+            <span>📅</span> Mein Schultag heute
+          </div>
+          <button class="btn-cal-action" onclick="navigateTo('stundenplan')" style="padding: 0.25rem 0.6rem; font-size: 0.74rem;">
+            Stundenplan &rarr;
+          </button>
+        </div>
+        <div class="today-schedule-list" id="todayScheduleList">
+          <!-- Populated by renderTodaySchedule() -->
+        </div>
+      </div>
+
+      <!-- Card 2: IServ Aufgaben & Hausaufgaben -->
+      <div class="dash-card iserv-card" id="dashIservCard">
+        <div class="dash-card-header">
+          <div class="dash-card-title">
+            <span class="iserv-header-icon">⚡</span>
+            <span>IServ Aufgaben</span>
+            <span class="iserv-pill-badge" id="iservCounterBadge">Lädt...</span>
+          </div>
+          <div class="iserv-card-actions">
+            <button class="btn-cal-action iserv-btn-sync" id="btnIservSync" onclick="refreshIservTasks(event)" title="Aufgaben jetzt mit IServ abgleichen">
+              <span id="syncSpinnerIcon">🔄</span> Sync
+            </button>
+            <button class="btn-cal-action" onclick="openIservConfigModal()" title="IServ Verbindung &amp; Schutz einstellen" style="display: inline-flex; align-items: center; gap: 0.3rem;">
+              <span>⚙️</span> <span>Setup</span>
+            </button>
+          </div>
+        </div>
+        <!-- IServ Connection status bar -->
+        <div class="iserv-status-bar" id="iservStatusBar" onclick="openIservConfigModal()" style="cursor: pointer;" title="Klicken für IServ-Einstellungen &amp; Verbindung">
+          <div class="iserv-status-left">
+            <span class="iserv-dot" id="iservStatusDot"></span>
+            <span id="iservStatusServer">IServ verbinden...</span>
+          </div>
+          <span class="iserv-sync-label" id="iservLastSyncLabel">-</span>
+        </div>
+        <!-- Tasks list container -->
+        <div class="iserv-tasks-list" id="iservTasksList">
+          <div class="iserv-loading-state">Lade Aufgaben von IServ...</div>
+        </div>
+      </div>
+
+      <!-- Card 2: Nächste Klausuren -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-card-title">
+            <span>🚨</span> Nächste Klausuren
+          </div>
+          <button class="btn-cal-action" onclick="navigateTo('kalender')" style="padding: 0.25rem 0.6rem; font-size: 0.74rem;">
+            Klausurplan &rarr;
+          </button>
+        </div>
+        <div class="dash-exams-list" id="dashExamsList">
+          <!-- Populated by renderUpcomingExams() -->
+        </div>
+      </div>
+
+      <!-- Card 3: Schnellauswahl Fächer -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <div class="dash-card-title">
+            <span>📚</span> Meine Fächer
+          </div>
+          <button class="btn-cal-action" onclick="navigateTo('faecher')" style="padding: 0.25rem 0.6rem; font-size: 0.74rem;">
+            Alle Fächer &rarr;
+          </button>
+        </div>
+        <div class="dash-subjects-grid" id="dashSubjectsGrid">
+          <!-- Populated by renderDashboardSubjects() -->
+        </div>
+      </div>
+
+      <!-- Card 4: Seminarfach KI & Tagebuch -->
+      <div class="dash-card" style="border-left: 3px solid #7c3aed;">
+        <div class="dash-card-header">
+          <div class="dash-card-title">
+            Seminarfach: Tagebuch
+          </div>
+          <button class="btn-cal-action" onclick="navigateTo('seminarfach')" style="padding: 0.25rem 0.6rem; font-size: 0.74rem; background: rgba(139, 92, 246, 0.12); color: #7c3aed; border-color: rgba(139, 92, 246, 0.3);">
+            Öffnen &rarr;
+          </button>
+        </div>
+        <div style="padding: 0.85rem 1rem; display: flex; flex-direction: column; gap: 0.55rem;">
+          <div style="font-size: 0.8rem; font-weight: 700; color: #7c3aed;">
+            Oberstufen-Tagebuch &bull; Seminarfach 4 (Hr. Jatzeck)
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45;">
+            Persönliche Notizen zu den Unterrichtsstunden, Überlegungen zur Themenfindung, KI-Nutzung und aktuellen KI-News.
+          </div>
+          <div style="display: flex; gap: 0.4rem; margin-top: 0.25rem;">
+            <button class="btn-cal-action" onclick="navigateTo('seminarfach')" style="font-size: 0.76rem; flex: 1;">
+              Zum Tagebuch
+            </button>
+            <button class="btn-cal-action" onclick="navigateTo('seminarfach'); switchSfTab('themen');" style="font-size: 0.76rem; flex: 1;">
+              Themenfindung
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 2: FÄCHER-HUB (Catalog of all Grade 12 subjects)                    -->
+  <!-- ========================================================================= -->
+  <div id="view-faecher" class="portal-view">
+    <div class="faecher-hero">
+      <h2>📚 Deine Kurse &amp; Fächer (Jahrgang 12)</h2>
+      <p>Wähle ein Schulfach aus, um direkt in die zugehörigen Lernmodule, Klausurschwerpunkte und Aufgaben einzutauchen.</p>
+    </div>
+    <div class="faecher-grid" id="faecherGrid">
+      <!-- Populated by renderFaecherGrid() -->
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 3: FACH-DETAILANSICHT (Themenkatalog des gewählten Fachs)            -->
+  <!-- ========================================================================= -->
+  <div id="view-fach-detail" class="portal-view">
+    <div class="fach-detail-header" id="fachDetailHeader">
+      <!-- Populated dynamically by renderFachDetail() -->
+    </div>
+
+    <!-- Segmented Tab Bar: Themen vs IServ-Dateien vs Eigene Uploads -->
+    <div class="fach-subtabs-nav">
+      <button class="fach-subtab-btn active" id="btnSubTabThemen" onclick="switchFachSubTab('themen')">
+        <span>📚</span>
+        <span>Themen &amp; Lernmodule</span>
+      </button>
+      <button class="fach-subtab-btn" id="btnSubTabIservFiles" onclick="switchFachSubTab('iserv-files')">
+        <span>📁</span>
+        <span>IServ Kursordner &amp; Dokumente</span>
+        <span class="subtab-pill" id="fachFilesBadge">IServ</span>
+      </button>
+      <button class="fach-subtab-btn" id="btnSubTabUserDocs" onclick="switchFachSubTab('user-docs')">
+        <span>📤</span>
+        <span>Eigene Uploads &amp; Mitschriften</span>
+        <span class="subtab-pill" id="fachUserDocsBadge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">0</span>
+      </button>
+    </div>
+
+    <!-- Panel 1: Themenkatalog -->
+    <div class="themen-grid" id="themenGrid">
+      <!-- Populated dynamically by renderFachDetail() -->
+    </div>
+
+    <!-- Panel 2: IServ Files Explorer -->
+    <div id="fachIservFilesPanel" class="fach-files-panel" style="display: none;">
+      <!-- Explorer Header & Path -->
+      <div class="files-explorer-header">
+        <div class="files-explorer-title-box">
+          <div class="files-breadcrumb-trail" id="filesBreadcrumbs">
+            <!-- Breadcrumbs -->
+          </div>
+          <div class="files-status-info" id="filesStatusInfo">
+            Lade Ordnerinhalt...
+          </div>
+        </div>
+        <div class="files-top-actions">
+          <button class="btn-action-dl-folder" id="btnDownloadFolder" onclick="downloadCurrentFolderForAi()" title="Alle Dateien und Unterordner dieses Verzeichnisses lokal speichern, damit die KI sie lesen kann">
+            <span>⚡</span>
+            <span id="lblDownloadFolder">Ganzen Ordner für KI freigeben</span>
+          </button>
+          <a class="btn-cal-action" id="linkOpenIservWeb" href="#" target="_blank" rel="noopener noreferrer" title="Diesen Ordner direkt auf IServ im Browser öffnen" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem;">
+            🌐
+          </a>
+          <button class="btn-cal-action" onclick="refreshCurrentFolder()" title="Aktualisieren">
+            🔄
+          </button>
+        </div>
+      </div>
+
+      <!-- Files & Folders Content Grid -->
+      <div class="files-layout-grid">
+        <!-- Column 1: Unterordner -->
+        <div class="files-col files-folders-col">
+          <div class="files-col-header">
+            <span>📁 Unterordner</span>
+            <span class="files-col-badge" id="foldersCountBadge">0</span>
+          </div>
+          <div class="files-list-container" id="foldersListContainer">
+            <!-- Folders populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Column 2: Dokumente & Dateien -->
+        <div class="files-col files-docs-col">
+          <div class="files-col-header">
+            <span>📄 Dateien &amp; Arbeitsblätter</span>
+            <span class="files-col-badge" id="filesCountBadge">0</span>
+          </div>
+          <div class="files-list-container" id="filesListContainer">
+            <!-- Files populated dynamically -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Informative Helper Banner -->
+      <div class="files-ai-banner">
+        <span style="font-size: 1.2rem;">💡</span>
+        <div>
+          <strong>Wie funktioniert die Freigabe für die KI?</strong>
+          <p style="margin: 0.2rem 0 0 0; font-size: 0.76rem; color: var(--text-secondary); line-height: 1.4;">
+            Wenn du auf <strong>„Für KI freigeben“</strong> klickst, lädt der lokale Server das Dokument in deinen geschützten Ordner <code>school/iserv_files/...</code> herunter. Ich als deine KI-Assistenz habe sofort vollen Lesezugriff auf die PDF-Inhalte und Arbeitsblätter, um dir beim Verstehen und Lösen der Aufgaben zu helfen.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 3: Eigene Uploads & Mitschriften -->
+    <div id="fachUserDocsPanel" class="fach-user-docs-panel" style="display: none; padding-top: 0.5rem;">
+      <!-- Populated dynamically by renderSubjectUserDocuments() -->
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 4: FOKUSSIERTER TOPIC-WORKSPACE (Isoliertes Lernen)                 -->
+  <!-- ========================================================================= -->
+  <div id="view-topic-workspace" class="portal-view">
+    
+    <!-- Top Workspace Controller -->
+    <div class="topic-workspace-header">
+      <div class="topic-ws-left">
+        <button class="btn-back-nav" id="btnWsBack" onclick="goBack()">
+          &larr; Zurück zum Fach
+        </button>
+        <div class="topic-ws-title" id="wsTopicTitle">Lernmodul</div>
+        <span class="p-badge" id="wsFachBadge">Fach</span>
+      </div>
+      <div id="wsTopicSubtitle" style="font-size: 0.82rem; color: var(--text-secondary); font-weight: 500;"></div>
+    </div>
+
+    <!-- Generic Module Placeholder -->
+    <div id="topic-generic-placeholder" class="topic-module-box"></div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- DEUTSCH TOPIC: E.T.A. HOFFMANN - DER SANDMANN                         -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-deutsch-sandmann" class="topic-module-box">
+      <style>
+        .deutsch-hero-banner {
+          background: linear-gradient(135deg, rgba(185, 28, 28, 0.12) 0%, rgba(185, 28, 28, 0.03) 100%);
+          border: 1px solid var(--accent-deutsch-border);
+          border-left: 5px solid var(--accent-deutsch);
+          border-radius: var(--radius-lg);
+          padding: 1.25rem 1.5rem;
+          margin-bottom: 1.5rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 1rem;
+        }
+        .dh-title-area h2 {
+          font-size: 1.45rem;
+          font-weight: 800;
+          color: var(--text-primary);
+          margin-bottom: 0.25rem;
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+        }
+        .dh-meta {
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem;
+          margin-top: 0.35rem;
+        }
+        .dh-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          padding: 0.2rem 0.6rem;
+          border-radius: var(--radius-xs);
+          font-size: 0.76rem;
+          font-weight: 700;
+          background: var(--accent-deutsch-bg);
+          color: var(--accent-deutsch);
+          border: 1px solid var(--accent-deutsch-border);
+        }
+        .deutsch-tab-bar {
+          display: flex;
+          gap: 0.5rem;
+          margin-bottom: 1.25rem;
+          overflow-x: auto;
+          padding-bottom: 0.25rem;
+        }
+        .deutsch-tab-btn {
+          padding: 0.6rem 1.1rem;
+          background: var(--bg-card);
+          border: 1px solid var(--border-subtle);
+          border-radius: var(--radius-md);
+          color: var(--text-secondary);
+          font-size: 0.86rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.45rem;
+          white-space: nowrap;
+        }
+        .deutsch-tab-btn:hover {
+          background: var(--bg-subtle);
+          color: var(--text-primary);
+          border-color: var(--border-medium);
+        }
+        .deutsch-tab-btn.active {
+          background: var(--accent-deutsch);
+          color: #ffffff;
+          border-color: var(--accent-deutsch);
+          box-shadow: 0 2px 8px rgba(185, 28, 28, 0.3);
+        }
+        .deutsch-panel {
+          display: none;
+          flex-direction: column;
+          gap: 1.25rem;
+        }
+        .deutsch-panel.active-panel {
+          display: flex;
+        }
+        .contrast-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.25rem;
+        }
+        @media (max-width: 820px) {
+          .contrast-grid {
+            grid-template-columns: 1fr;
+          }
+        }
+        .c-box {
+          background: var(--bg-card);
+          border-radius: var(--radius-md);
+          border: 1px solid var(--border-subtle);
+          padding: 1.2rem;
+          box-shadow: var(--card-shadow);
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+        .c-box.clara {
+          border-top: 4px solid #0284c7;
+        }
+        .c-box.olimpia {
+          border-top: 4px solid var(--accent-deutsch);
+        }
+        .c-box.coppelius {
+          border-top: 4px solid #7c3aed;
+        }
+        .c-box.coppola {
+          border-top: 4px solid #d97706;
+        }
+        .c-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          border-bottom: 1px solid var(--border-subtle);
+          padding-bottom: 0.6rem;
+        }
+        .c-head h4 {
+          font-size: 1.05rem;
+          font-weight: 800;
+          color: var(--text-primary);
+        }
+        .c-badge {
+          font-size: 0.72rem;
+          font-weight: 700;
+          padding: 0.15rem 0.5rem;
+          border-radius: var(--radius-xs);
+        }
+        .quiz-card {
+          background: var(--bg-card);
+          border: 1px solid var(--border-subtle);
+          border-radius: var(--radius-md);
+          padding: 1rem 1.2rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          box-shadow: var(--card-shadow);
+        }
+        .quiz-q {
+          font-weight: 700;
+          font-size: 0.92rem;
+          color: var(--text-primary);
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+        .quiz-a {
+          display: none;
+          background: var(--bg-subtle);
+          border-left: 3px solid var(--accent-deutsch);
+          padding: 0.75rem 1rem;
+          border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+          font-size: 0.85rem;
+          color: var(--text-secondary);
+          line-height: 1.5;
+          margin-top: 0.4rem;
+        }
+        .btn-toggle-quiz {
+          align-self: flex-start;
+          background: transparent;
+          border: 1px solid var(--border-medium);
+          padding: 0.3rem 0.75rem;
+          border-radius: var(--radius-sm);
+          font-size: 0.78rem;
+          font-weight: 600;
+          color: var(--text-secondary);
+          cursor: pointer;
+          transition: all 0.15s ease;
+        }
+        .btn-toggle-quiz:hover {
+          background: var(--bg-subtle);
+          color: var(--text-primary);
+        }
+        .quote-callout {
+          background: var(--bg-subtle);
+          border-left: 4px solid var(--accent-deutsch);
+          border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+          padding: 0.85rem 1.15rem;
+          margin: 0.5rem 0;
+          font-style: italic;
+          color: var(--text-primary);
+          font-size: 0.92rem;
+          line-height: 1.45;
+        }
+        .quote-sub {
+          display: block;
+          font-style: normal;
+          font-size: 0.78rem;
+          color: var(--text-muted);
+          margin-top: 0.35rem;
+          font-weight: 600;
+        }
+      </style>
+
+      <!-- HERO BANNER -->
+      <div class="deutsch-hero-banner">
+        <div class="dh-title-area">
+          <h2><span>📖</span> E.T.A. Hoffmann: Der Sandmann (1816)</h2>
+          <div class="dh-meta">
+            <span class="dh-pill">🚨 Klausur: 01.10.2026 (1. Std., R3)</span>
+            <span>Fach: <strong>Deutsch gA (de48)</strong></span>
+            <span>Lehrerin: <strong>Fr. Heinrich (Hh)</strong></span>
+            <span>Epoche: <strong>Schwarze Romantik / Spätromantik</strong></span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn-cal-action" onclick="openFach('deutsch')" style="font-size: 0.8rem;">
+            &larr; Deutsch-Übersicht
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB NAVIGATION -->
+      <div class="deutsch-tab-bar">
+        <button class="deutsch-tab-btn active" id="dtab-btn-augen" onclick="switchDeutschTab('augen')">
+          <span>👀</span> 1. Erstes &amp; Zweites Augenpaar
+        </button>
+        <button class="deutsch-tab-btn" id="dtab-btn-auseinandersetzung" onclick="switchDeutschTab('auseinandersetzung')">
+          <span>✍️</span> 2. Die Gegenüberstellung (Leitfaden)
+        </button>
+        <button class="deutsch-tab-btn" id="dtab-btn-streitfragen" onclick="switchDeutschTab('streitfragen')">
+          <span>⚔️</span> 3. Die 3 Klausur-Streitfragen
+        </button>
+        <button class="deutsch-tab-btn" id="dtab-btn-zitate" onclick="switchDeutschTab('zitate')">
+          <span>💎</span> 4. Zitate &amp; Formulierungen
+        </button>
+        <button class="deutsch-tab-btn" id="dtab-btn-quiz" onclick="switchDeutschTab('quiz')">
+          <span>🧠</span> 5. Klausur-Quiz (8 Fragen)
+        </button>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- TAB 1: ERSTES & ZWEITES AUGENPAAR                                   -->
+      <!-- =================================================================== -->
+      <div id="dpanel-augen" class="deutsch-panel active-panel">
+        
+        <!-- CARD 1: DIE WEIBLICHEN AUGENPAARE (CLARA VS. OLIMPIA) -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>👁️</span> Ebene 1: Die gegensätzlichen Frauenaugen (Clara vs. Olimpia)</h3>
+            <span class="p-badge" style="background: rgba(185, 28, 28, 0.15); color: var(--accent-deutsch); border: 1px solid var(--accent-deutsch-border);">Klausur-Kernfokus</span>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem;">
+            Das Augenmotiv spiegelt Nathanaels geistigen Zustand und seine gestörte Beziehung zur Wirklichkeit. Im Zentrum steht der <strong>fatale Rollentausch</strong> zwischen der lebendigen Frau und der toten Holzpuppe:
+          </p>
+
+          <div class="contrast-grid">
+            <!-- CLARA -->
+            <div class="c-box clara">
+              <div class="c-head">
+                <h4>1. Augenpaar: Clara</h4>
+                <span class="c-badge" style="background: rgba(2, 132, 199, 0.15); color: #0284c7; border: 1px solid rgba(2, 132, 199, 0.3);">Aufklärung &bull; Realität</span>
+              </div>
+              <ul style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; margin-left: 1.1rem; display: flex; flex-direction: column; gap: 0.45rem;">
+                <li><strong>Namensbedeutung:</strong> Lat. <em>clarus</em> = die Helle, Klare, Reine, Einsichtige.</li>
+                <li><strong>Reale Beschaffenheit:</strong> Lebendige, klare, aufmerksame Augen. Der Erzähler lobt ihren seelenvollen, reinen Blick.</li>
+                <li><strong>Funktion &amp; Weltbild:</strong> Repräsentantin der <strong>Aufklärung</strong> und des gesunden Menschenverstands. Sie entlarvt den Sandmann als psychologisches Hirngespinst (<em>„Alles Entsetzliche existierte nur in deinem Gemüt“</em>).</li>
+                <li><strong>Nathanaels Wahrnehmungsverzerrung:</strong> Da Clara seine düsteren Dichtungen kritisch hinterfragt und nicht hysterisch bewundert, empfindet er ihren klaren Blick als Kälte. Er beschuldigt sie eines <em>„toten Gemüts“</em> und beschimpft sie im Affekt als <strong>„leblose, verdammte Puppe“</strong>!</li>
+                <li><strong>Beziehungsdynamik:</strong> Echte, gleichberechtigte Kommunikation. Nathanael hält diese Konfrontation mit der Wirklichkeit nicht aus.</li>
+              </ul>
+            </div>
+
+            <!-- OLIMPIA -->
+            <div class="c-box olimpia">
+              <div class="c-head">
+                <h4>2. Augenpaar: Olimpia</h4>
+                <span class="c-badge" style="background: rgba(185, 28, 28, 0.15); color: var(--accent-deutsch); border: 1px solid var(--accent-deutsch-border);">Täuschung &bull; Projektion</span>
+              </div>
+              <ul style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; margin-left: 1.1rem; display: flex; flex-direction: column; gap: 0.45rem;">
+                <li><strong>Reale Beschaffenheit:</strong> Eine leblose Holzpuppe (Automat). Ihre Augen sind <strong>starre Glasaugen</strong>, blicklos, unbeweglich, seelenlos und <em>„todesstarr“</em>.</li>
+                <li><strong>Nathanaels Wahrnehmungsverzerrung:</strong> Durch Coppolas manipulierendes <strong>Taschenperspektiv</strong> meint Nathanael, in ihren Augen tiefste Seelenverwandtschaft, Liebe und feurige Blicke zu sehen (<em>„strahlende Sehnsucht“</em>).</li>
+                <li><strong>Funktion &amp; Weltbild:</strong> <strong>Narzisstische Projektionsfläche</strong>. Olimpia sagt im Grunde nur <em>„Ach, ach!“</em>. Sie widerspricht nie, hat keinen eigenen Verstand und dient Nathanael nur als stummer Spiegel, in dem er sich selbst als Dichtergenie anhimmelt.</li>
+                <li><strong>Höhepunkt &amp; Vernichtung:</strong> Streit zwischen Coppola und Spalanzani. Spalanzani reißt ihr die Augen heraus und schleudert Nathanael die blutigen Glasaugen an die Brust: <em>„Da hast du die Augen!“</em></li>
+                <li><strong>Beziehungsdynamik:</strong> Schein-Beziehung ohne Gegenüber. Nathanael liebt nicht Olimpia, sondern nur sein eigenes Echo.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- KLAUSUR-HIGHLIGHT BOX -->
+          <div class="schema-box" style="border-left: 4px solid var(--accent-deutsch); margin-top: 1.25rem;">
+            <div class="sb-head">
+              <strong>💡 Klausur-Pointe für die Bestnote: Der fatale Rollentausch</strong>
+              <span class="sb-badge" style="background: var(--accent-deutsch-bg); color: var(--accent-deutsch);">Pointen-Garant</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">
+              Nathanael erleidet eine vollständige Verkehrung seiner Wahrnehmung: 
+              Er degradiert die <strong>lebendige, fühlende Frau (Clara)</strong> zur <em>„leblosen Puppe“</em>, weil sie autonom denkt und ihm widerspricht. Gleichzeitig erhebt er die <strong>tote, künstliche Holzpuppe (Olimpia)</strong> zur <em>„einzigen Frau mit Seele“</em>, weil sie stumm bleibt und sein Ego ungestört reflektiert. Seine Liebe zu Olimpia ist in Wahrheit reiner <strong>Narzissmus</strong>.
+            </p>
+          </div>
+        </section>
+
+        <!-- CARD 2: DIE TRAUMATISCHEN GEWALT-SZENEN (COPPELIUS VS. COPPOLA) -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>⚡</span> Ebene 2: Die traumatischen Augen-Szenen (Kindheit vs. Erwachsenenalter)</h3>
+            <span class="p-badge" style="background: rgba(124, 58, 237, 0.15); color: #7c3aed; border: 1px solid rgba(124, 58, 237, 0.3);">Traumagenese &bull; Freud</span>
+          </div>
+
+          <div class="contrast-grid">
+            <!-- SZENE 1 -->
+            <div class="c-box coppelius">
+              <div class="c-head">
+                <h4>1. Szene: Das Kindheitstrauma</h4>
+                <span class="c-badge" style="background: rgba(124, 58, 237, 0.15); color: #7c3aed;">Coppelius &bull; Alchemie</span>
+              </div>
+              <ul style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; margin-left: 1.1rem; display: flex; flex-direction: column; gap: 0.45rem;">
+                <li><strong>Der Ursprung:</strong> Die Amme erzählt das Schauermärchen vom Sandmann, der bösen Kindern Sand in die Augen streut, bis sie blutig herausspringen, und sie an seine Jungen im Eulennest verfüttert.</li>
+                <li><strong>Die Konfrontation:</strong> Nathanael versteckt sich im Zimmer des Vaters. Der grässliche Advokat <strong>Coppelius</strong> führt alchemistische Experimente durch.</li>
+                <li><strong>Der Gewaltexzess:</strong> Coppelius entdeckt den Knaben, reißt ihn an sich: <em>„Augen her, Augen her!“</em> Er droht, glühende Asche/Glutkörner in seine Augen zu streuen und schraubt ihm symbolisch Hände und Füße ab.</li>
+                <li><strong>Das Ende:</strong> Bei einem späteren Experiment explodiert der Ofen – der Vater stirbt, Coppelius flieht spurlos.</li>
+                <li><strong>Deutung nach Freud:</strong> Angst vor Erblindung ist die psychische Verschiebung der <strong>Kastrationsangst</strong> und der Angst vor Bestrafung durch die übermächtige Vaterfigur.</li>
+              </ul>
+            </div>
+
+            <!-- SZENE 2 -->
+            <div class="c-box coppola">
+              <div class="c-head">
+                <h4>2. Szene: Die Wiederkehr des Traumas</h4>
+                <span class="c-badge" style="background: rgba(217, 119, 6, 0.15); color: #d97706;">Coppola &bull; Brillen &amp; Puppe</span>
+              </div>
+              <ul style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.55; margin-left: 1.1rem; display: flex; flex-direction: column; gap: 0.45rem;">
+                <li><strong>Das Auftauchen:</strong> Der italienische Händler <strong>Giuseppe Coppola</strong> klopft an Nathanaels Studentenzimmer. Er ähnelt Coppelius bis aufs Haar.</li>
+                <li><strong>Die Kiste der Augen:</strong> Coppola ruft: <em>„Ei, Sköne Oke – Sköne Oke!“</em> (Schöne Augen). Er öffnet seinen Kasten: Hunderte Brillen und Linsen starren Nathanael wie flammende, dämonische Augen an.</li>
+                <li><strong>Das Instrument der Täuschung:</strong> Nathanael kauft aus panischer Beklemmung das <strong>Taschenperspektiv</strong>. Statt die Realität zu schärfen, verzerrt das optische Glas seinen Blick auf Olimpia vollends.</li>
+                <li><strong>Die Entlarvung:</strong> Nathanael wird Zeuge des Streits zwischen Spalanzani und Coppola. Olimpia liegt ohne Augen da – die blutigen Glasaugen fliegen ihm an die Brust.</li>
+                <li><strong>Der Rückfall:</strong> Das verdrängte Kindheitstrauma bricht schlagartig durch; Nathanael verfällt dem absoluten Tobsuchtswahn (<em>„Feuerkreis, dreh dich!“</em>).</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- =================================================================== -->
+      <!-- TAB 2: DIE GEGENÜBERSTELLUNG (LEITFADEN & 4 KRITERIEN)              -->
+      <!-- =================================================================== -->
+      <div id="dpanel-auseinandersetzung" class="deutsch-panel">
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>⚖️</span> Leitfaden: Wie schreibe ich die Gegenüberstellung (AFB II / III)?</h3>
+            <span class="p-badge" style="background: rgba(30, 126, 52, 0.15); color: #16a34a; border: 1px solid rgba(30, 126, 52, 0.3);">Klausur-Erfolgsplan</span>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem;">
+            Der Operator <strong>„Gegenüberstellen“</strong> (Vergleichen) verlangt, zwei Figuren, Aspekte oder Textstellen nach <strong>festen Kriterien</strong> systematisch auf <strong>Gemeinsamkeiten</strong> und <strong>Unterschiede</strong> zu untersuchen und ein synthetisierendes Fazit zu ziehen.
+          </p>
+
+          <div class="schema-step-list">
+            <!-- SCHRITT 1 -->
+            <div class="schema-box" style="border-left: 3px solid #0284c7;">
+              <div class="sb-head">
+                <strong>1. Einleitung (ca. 10 %): Basissatz &amp; Vergleichshypothese</strong>
+                <span class="sb-badge" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">Schritt 1</span>
+              </div>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+                <li><strong>Basissatz:</strong> Textsorte (Schauernovelle), Titel (<em>Der Sandmann</em>), Autor (E.T.A. Hoffmann), Erscheinungsjahr (1816), Epoche (Schwarze Romantik).</li>
+                <li><strong>Nennung der Vergleichsgegenstände:</strong> 1. Augenpaar (Clara) vs. 2. Augenpaar (Olimpia).</li>
+                <li><strong>Vergleichshypothese formulieren:</strong> <em>„Die Augenpaare von Clara und Olimpia fungieren als kontrastierende Spiegel von Nathanaels Psyche und markieren den Wendepunkt seines fortschreitenden Realitätsverlusts.“</em></li>
+              </ul>
+            </div>
+
+            <!-- SCHRITT 2: DIE 4 KRITERIEN -->
+            <div class="schema-box" style="border-left: 3px solid #d97706;">
+              <div class="sb-head">
+                <strong>2. Hauptteil: Der kriterienorientierte Vergleich (Die 4 Kern-Kriterien)</strong>
+                <span class="sb-badge" style="background: rgba(217, 119, 6, 0.15); color: #d97706;">Schritt 2 &bull; Kriterien</span>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.4rem;">
+                <div style="background: var(--bg-card); padding: 0.6rem 0.8rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <strong style="color: var(--text-primary); font-size: 0.83rem;">Kriterium 1: Physische Beschaffenheit (Biologie vs. Mechanik)</strong>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.15rem;">
+                    Claras Augen sind menschlich, sehend, lebendig und reagieren autonom auf Licht und Emotionen. Olimpias Augen sind tote, künstliche Glasaugen, blicklos, unbeweglich und <em>„todesstarr“</em>.
+                  </p>
+                </div>
+                <div style="background: var(--bg-card); padding: 0.6rem 0.8rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <strong style="color: var(--text-primary); font-size: 0.83rem;">Kriterium 2: Epochenkontext &amp; Symbolik (Aufklärung vs. Romantische Täuschung)</strong>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.15rem;">
+                    Claras Name (lat. <em>clarus</em> = hell, klar) steht für das Ideal der Aufklärung: Vernunft, Entzauberung des Aberglaubens. Olimpia steht für die Schwarze Romantik: Das Unheimliche, Täuschung durch Technik, den leblosen Automaten.
+                  </p>
+                </div>
+                <div style="background: var(--bg-card); padding: 0.6rem 0.8rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <strong style="color: var(--text-primary); font-size: 0.83rem;">Kriterium 3: Nathanaels Wahrnehmungsverzerrung (Der fatale Rollentausch)</strong>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.15rem;">
+                    Nathanael verdreht die Realität pervertiert ins Gegenteil: Er empfindet Claras klaren Blick als Kälte (beschimpft sie als <em>„leblose Puppe“</em>), während er durch Coppolas Taschenperspektiv in Olimpias toten Glasaugen <em>„feurige Blicke“</em> und <em>„Seelentiefe“</em> zu erkennen meint.
+                  </p>
+                </div>
+                <div style="background: var(--bg-card); padding: 0.6rem 0.8rem; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                  <strong style="color: var(--text-primary); font-size: 0.83rem;">Kriterium 4: Beziehungsdynamik &amp; Funktion für Nathanael (Dialog vs. Monolog/Narzissmus)</strong>
+                  <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.15rem;">
+                    Clara ist ein autonomes Gegenüber, das ihm widerspricht und ihn fordert (echte Liebe, die Nathanael überfordert). Olimpia ist ein stummer Spiegel (sagt nur <em>„Ach, ach!“</em>), in dem Nathanael ausschließlich sein eigenes Genie-Ich anhimmelt (reiner Narzissmus).
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCHRITT 3: GEMEINSAMKEITEN & UNTERSCHIEDE -->
+            <div class="schema-box" style="border-left: 3px solid #7c3aed;">
+              <div class="sb-head">
+                <strong>3. Synthese: Gemeinsamkeiten &amp; Divergenzen herausarbeiten</strong>
+                <span class="sb-badge" style="background: rgba(124, 58, 237, 0.15); color: #7c3aed;">Schritt 3</span>
+              </div>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">
+                <li><strong>Gemeinsamkeiten:</strong> Beide Figuren werden zum Zentrum von Nathanaels Liebesleidenschaft; an beiden Figuren entzündet sich sein Wahn (Puppen-Motiv, Todes- und Eifersuchtsphantasien).</li>
+                <li><strong>Fundamentaler Unterschied:</strong> Clara will ihn in die Realität zurückholen $
+ightarrow$ Nathanael flieht; Olimpia erlaubt ihm die totale Flucht aus der Realität $
+ightarrow$ Nathanael verfällt ihr restlos.</li>
+              </ul>
+            </div>
+
+            <!-- SCHRITT 4: FAZIT & SIGNALWÖRTER -->
+            <div class="schema-box" style="border-left: 3px solid var(--accent-deutsch);">
+              <div class="sb-head">
+                <strong>4. Schlusssurteil &amp; Formulierungshilfen für die Gegenüberstellung</strong>
+                <span class="sb-badge" style="background: var(--accent-deutsch-bg); color: var(--accent-deutsch);">Schritt 4</span>
+              </div>
+              <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55;">
+                <p><strong>Perfekte Satzstarter für die Gegenüberstellung:</strong></p>
+                <ul style="margin-left: 1.1rem; margin-top: 0.25rem;">
+                  <li><em>„Im diametralen Gegensatz zu Claras hellem, lebendigem Blick erweisen sich Olimpias Augen als...“</em></li>
+                  <li><em>„Hinsichtlich der Beschaffenheit divergieren die beiden Augenpaare fundamental: Während Clara...“</em></li>
+                  <li><em>„Diese Gegenüberstellung verdeutlicht die tragische Inversion in Nathanaels Bewusstsein...“</em></li>
+                  <li><em>„Zusammenfassend markiert der Vergleich der beiden Augenpaare die Spaltung zwischen aufgeklärter Wirklichkeit und romantischer Wahnwelt.“</em></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- TAB 3: DIE 3 KLASSISCHEN KLAUSUR-STREITFRAGEN                      -->
+      <!-- =================================================================== -->
+      <div id="dpanel-streitfragen" class="deutsch-panel">
+        
+        <!-- STREITFRAGE 1 -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>⚔️</span> Streitfrage 1: Psychologischer Wahn vs. Reale Dämonie</h3>
+            <span class="p-badge" style="background: rgba(185, 28, 28, 0.15); color: var(--accent-deutsch);">Klassiker Nr. 1</span>
+          </div>
+          <div class="contrast-grid">
+            <div class="c-box" style="border-top: 3px solid #0284c7;">
+              <h4 style="color: #0284c7;">Position A: Psychologische Störung / Wahn</h4>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-left: 1rem;">
+                <li><strong>Traumatisierung:</strong> Die Ammenmärchen haben sich als Phobie ins kindliche Gemüt eingebrannt. Der Tod des Vaters fixiert das Trauma.</li>
+                <li><strong>Autosuggestion:</strong> Nathanael deutet zufällige Begegnungen (Coppola = Hausierer mit Brillen) wahnhaft als Rückkehr des Dämons Coppelius.</li>
+                <li><strong>Sigmund Freud („Das Unheimliche“):</strong> Die Bedrohung der Augen ist die verdrängte <em>Kastrationsangst</em>; Coppelius spaltet die Vaterfigur in den guten Vater (Experimente) und bösen Vater (Coppelius/Zerstörer).</li>
+              </ul>
+            </div>
+            <div class="c-box" style="border-top: 3px solid #7c3aed;">
+              <h4 style="color: #7c3aed;">Position B: Reale dämonische Mächte</h4>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-left: 1rem;">
+                <li><strong>Nachtseite der Natur:</strong> Romantische Überzeugung, dass der Mensch von finsteren, unerklärlichen Schicksalsmächten gelenkt wird.</li>
+                <li><strong>Reale Doppelgängerschaft:</strong> Coppola und Coppelius kooperieren nachweislich mit Spalanzani. Die Puppe Olimpia existiert real!</li>
+                <li><strong>Schlussauftritt:</strong> Beim Turmsturz steht Coppelius tatsächlich mitten im Volk und prophezeit Nathanaels Tod (<em>„Wart nur, der kommt schon von selbst herunter“</em>).</li>
+              </ul>
+            </div>
+          </div>
+          <div class="schema-box" style="margin-top: 0.8rem; background: var(--bg-subtle);">
+            <strong style="color: var(--text-primary); font-size: 0.84rem;">🎯 Synthese für die Klausur:</strong>
+            <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.2rem;">
+              Hoffmann wendet das poetische Konzept des <strong>unzuverlässigen Erzählers</strong> an (Konzept des Phantastischen nach Todorov). Die düstere Macht entfaltet ihre Wirkung gerade <em>durch</em> Nathanaels labile Psyche. Wie Clara treffend formuliert: Die dunkle Macht kann nur siegen, wenn das eigene Innere ihr Raum gibt.
+            </p>
+          </div>
+        </section>
+
+        <!-- STREITFRAGE 2 -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>⚖️</span> Streitfrage 2: Clara – Lebensretterin oder verständnislose Philisterin?</h3>
+            <span class="p-badge" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">Aufklärung vs. Romantik</span>
+          </div>
+          <div class="contrast-grid">
+            <div class="c-box" style="border-top: 3px solid #16a34a;">
+              <h4 style="color: #16a34a;">Pro Clara (Die Vernunft &amp; Rettung)</h4>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-left: 1rem;">
+                <li>Sie analysiert Nathanaels Trauma messerscharf und nimmt ihm die Schuldgefühle.</li>
+                <li>Sie liebt ihn aufrichtig und bewahrt ihn vor dem Duell mit ihrem Bruder Lothar.</li>
+                <li>Auf dem Turm versucht sie bis zur letzten Sekunde, ihn vor dem Sturz ins Verderben zu bewahren.</li>
+              </ul>
+            </div>
+            <div class="c-box" style="border-top: 3px solid #dc2626;">
+              <h4 style="color: #dc2626;">Contra Clara (Kälte &amp; Philistertum)</h4>
+              <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-left: 1rem;">
+                <li>Ihr fehlt jedes Verständnis für künstlerische Sensibilität und seelische Abgründe.</li>
+                <li>Sie langweilt sich bei seinen Gedichten und fordert ihn auf, seine Kunst ins Feuer zu werfen.</li>
+                <li>Am Ende heiratet sie einen biederen, unauffälligen Mann und lebt ein bürgerliches Idyll („Philister-Dasein“).</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- STREITFRAGE 3 -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>🤖</span> Streitfrage 3: Olimpia als bösartige Satire auf die Gesellschaft</h3>
+            <span class="p-badge" style="background: rgba(217, 119, 6, 0.15); color: #d97706;">Gesellschaftskritik</span>
+          </div>
+          <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.5;">
+            Warum fällt die Gesellschaft wochenlang auf eine Holzpuppe herein?
+            Hoffmann übt hier vernichtende Kritik am <strong>patriarchalen Frauenbild</strong> des 19. Jahrhunderts:
+          </p>
+          <ul style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-left: 1.2rem; margin-top: 0.4rem;">
+            <li>Eine „perfekte bürgerliche Dame“ sollte Klavier spielen, zierlich tanzen, nicht widersprechen und den Mann anhimmeln. Olimpia tut exakt das – und wird deshalb von Professoren und Studenten als hochgebildet und sittsam gelobt!</li>
+            <li>Nach der Entlarvung bricht in der Stadt Panik aus: Die Bürger verlangen von ihren Bräuten und Ehefrauen, dass sie beim Sprechen leicht gähnen oder ungelenk tanzen, um zu beweisen, dass sie keine Maschinen sind!</li>
+          </ul>
+        </section>
+
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- TAB 4: ZITATE & FORMULIERUNGSHILFEN                                 -->
+      <!-- =================================================================== -->
+      <div id="dpanel-zitate" class="deutsch-panel">
+        
+        <!-- CARD: SCHLÜSSELZITATE -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>💎</span> Die 6 goldenen Klausur-Zitate (mit Anwendungskontext)</h3>
+            <span class="p-badge" style="background: var(--accent-deutsch-bg); color: var(--accent-deutsch);">Auswendig lernen!</span>
+          </div>
+
+          <div class="quote-callout">
+            „Augen her, Augen her!“
+            <span class="quote-sub">Coppelius beim Nachtexperiment &bull; Perfekt für: Kindheitstrauma, Kastrationsangst nach Freud, Ursprung des Wahns.</span>
+          </div>
+
+          <div class="quote-callout">
+            „Ei, Sköne Oke – Sköne Oke!“
+            <span class="quote-sub">Giuseppe Coppola beim Brillenverkauf &bull; Perfekt für: Reaktivierung des Traumas, Verkaufsgespräch der optischen Linsen.</span>
+          </div>
+
+          <div class="quote-callout">
+            „Glaube, dass wenn es eine dunkle Macht gibt, ... sie in unserem eignen Innern Platz greifen muss.“
+            <span class="quote-sub">Clara in ihrem 1. Brief an Nathanael &bull; Perfekt für: Aufklärerische Vernunft, psychologische Verinnerlichung des Bösen.</span>
+          </div>
+
+          <div class="quote-callout">
+            „Du leblose, verdammte Puppe!“
+            <span class="quote-sub">Nathanael zu Clara beim Streit um sein Gedicht &bull; Perfekt für: Verkehrung der Wirklichkeit / Rollentausch vor dem Olimpia-Kontakt.</span>
+          </div>
+
+          <div class="quote-callout">
+            „Da hast du die Augen – da hast du sie!“
+            <span class="quote-sub">Spalanzani schleudert die blutigen Glasaugen an Nathanaels Brust &bull; Perfekt für: Wendepunkt (Peripetie), endgültiger Rückfall in den Wahnsinn.</span>
+          </div>
+
+          <div class="quote-callout">
+            „Sköne Püppchen, dreh dich! – dreh dich!“
+            <span class="quote-sub">Nathanaels Wahnsinnsruf auf dem Rathausturm &bull; Perfekt für: Finale Katastrophe, Verschmelzen von Clara und Olimpia im Wahn.</span>
+          </div>
+        </section>
+
+        <!-- CARD: FORMULIERUNGSHILFEN -->
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>✍️</span> Elegante Formulierungshilfen für Bestnoten</h3>
+            <span class="p-badge" style="background: rgba(2, 132, 199, 0.15); color: #0284c7;">Sprachliche Brillanz</span>
+          </div>
+          <div class="schema-step-list">
+            <div class="schema-box">
+              <strong style="color: var(--text-primary); font-size: 0.85rem;">Für die Einleitung:</strong>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem; font-style: italic;">
+                „E.T.A. Hoffmanns 1816 erschienene Schauernovelle ‚Der Sandmann‘ thematisiert das fragile Verhältnis zwischen subjektiver Einbildungskraft und objektiver Realität an der Epochenschwelle von Aufklärung und Schwarzer Romantik.“
+              </p>
+            </div>
+            <div class="schema-box">
+              <strong style="color: var(--text-primary); font-size: 0.85rem;">Für den Übergang zur Analyse / Auseinandersetzung:</strong>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem; font-style: italic;">
+                „Dieses Spannungsverhältnis kristallisiert sich insbesondere am zentralen Leitmotiv des Werkes heraus: dem Auge als Spiegel der Seele und Einfallstor des Wahns.“
+              </p>
+            </div>
+            <div class="schema-box">
+              <strong style="color: var(--text-primary); font-size: 0.85rem;">Für den Rollentausch (Clara vs. Olimpia):</strong>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem; font-style: italic;">
+                „Nathanaels Wahrnehmungsvermögen unterliegt einer pervertierten Inversion: Während er Claras emanzipierte Vernunft als gefühllose Starrheit denunziert, verklärt er Olimpias mechanische Leblosigkeit zum Inbegriff weiblicher Hingabe.“
+              </p>
+            </div>
+            <div class="schema-box">
+              <strong style="color: var(--text-primary); font-size: 0.85rem;">Für das differenzierte Fazit (Synthese):</strong>
+              <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem; font-style: italic;">
+                „Hoffmann entzieht dem Rezipienten bewusst die tröstliche Sicherheit einer eindeutigen Deutung. Die Tragödie Nathanaels entfaltet sich exakt in jenem unheimlichen Zwischenreich, in dem psychische Disposition und äußere Schrecknisse unlösbar ineinandergreifen.“
+              </p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- =================================================================== -->
+      <!-- TAB 5: INTERAKTIVES KLAUSUR-QUIZ (8 SELBSTTEST-FRAGEN)             -->
+      <!-- =================================================================== -->
+      <div id="dpanel-quiz" class="deutsch-panel">
+        <section class="p-card">
+          <div class="p-card-header">
+            <h3><span>🧠</span> Express-Check: 8 Klausur-Testfragen (Mit Klick-Lösungen)</h3>
+            <button class="btn-cal-action" onclick="toggleAllDeutschAnswers()" style="font-size: 0.78rem;">
+              👁️ Alle Antworten aufdecken / verdecken
+            </button>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.8rem;">
+            Teste dich jetzt selbst, um vor der Klausur morgen absolut sicher zu sein:
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            
+            <!-- Q1 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>1.</span> Warum kauft Nathanael das Perspektiv, obwohl er Angst vor Coppola hat?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Aus einer Mischung aus panischer Beklemmung, Scham und dem unbewussten Drang, Coppola loszuwerden. Das Taschenperspektiv fungiert fortan als optischer Filter, der seine Wahrnehmung manipuliert und Olimpia belebt.
+              </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>2.</span> Welche Rolle spielt Sigmund Freuds Aufsatz „Das Unheimliche“ für das Werk?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Freud deutet die Angst vor Augenverlust als <strong>Kastrationsangst</strong>. Das Unheimliche ist nach Freud nichts gänzlich Neues, sondern etwas einst Vertrautes (Kindheitsangst, Ammenmärchen), das verdrängt wurde und nun mit Gewalt wieder an die Oberfläche bricht.
+              </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>3.</span> Wie kommt es zum Rollentausch zwischen Clara und Olimpia?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Clara fordert Nathanael heraus, widerspricht ihm und vertritt die Vernunft – Nathanael fühlt sich gekränkt und beschimpft sie als <em>„leblose Puppe“</em>. Olimpia dagegen schweigt, widerspricht nie und dient als leerer Spiegel für sein Ego – Nathanael hält die Holzpuppe deshalb für die einzige beseelte Frau.
+              </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>4.</span> Was bedeuten Coppolas Worte „Ei, Sköne Oke“?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Coppola spricht mit italienischem Akzent und meint Brillen und Gläser („Schöne Augen“). Für Nathanael reaktiviert dieser Ausruf jedoch das Kindheitstrauma, in dem Coppelius rief: <em>„Augen her, Augen her!“</em>.
+              </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>5.</span> Was geschieht auf dem Rathausturm am Ende der Novelle?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Nathanael will mit Clara die Aussicht genießen. Er greift nach dem Taschenperspektiv, blickt versehentlich auf Clara, verfällt erneut dem Tobsuchtswahn (<em>„Sköne Püppchen, dreh dich!“</em>) und will sie in die Tiefe stürzen. Lothar rettet Clara. Unten in der Menge sieht Nathanael Coppelius und stürzt sich selbst mit zerschmettertem Schädel in den Tod.
+              </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>6.</span> Inwiefern ist der Erzähler im „Sandmann“ unzuverlässig?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Die Novelle beginnt mit drei Briefen (Nathanael, Clara, Nathanael), die subjektive, widersprüchliche Sichtweisen bieten. Danach schaltet sich ein Ich-Erzähler ein, der Sympathie für Nathanael hegt, aber zugibt, dass ihm die Worte fehlen. Der Leser erhält nie eine neutrale, objektive Wahrheit.
+              </div>
+            </div>
+
+            <!-- Q7 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>7.</span> Warum ist Olimpia eine Satire auf das Bildungsbürgertum?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Weil kein Professor und kein feiner Bürger merkt, dass sie eine Maschine ist. Sie erfüllt perfekt das damalige Klischee der passiven, hübschen, schweigenden Frau. Hoffmann verspottet die Oberflächlichkeit bürgerlicher Salons.
+              </div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="quiz-card">
+              <div class="quiz-q"><span>8.</span> Was ist das ideale Urteil in einer Auseinandersetzung zur Frage „Wahnsinn oder Dämonie“?</div>
+              <button class="btn-toggle-quiz" onclick="toggleDeutschAnswer(this)">Antwort anzeigen</button>
+              <div class="quiz-a">
+                Eine Synthese: Nathanael ist zweifellos schwer traumatisiert und autosuggestiv veranlagt; Hoffmann gestaltet jedoch zugleich eine Welt, in der die Realität selbst (Spalanzanis Maschinenbau, Coppelius' Auftauchen) beängstigend und dämonisch wirkt. Hoffmann lässt die Grenzen bewusst verschwimmen.
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </div>
+
+    </div>
+
+
+    
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- MATHE TOPIC 1: STECKBRIEF (BUCH S. 18)                                -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-mathe-steckbrief" class="topic-module-box">
+      <div class="steckbrief-container">
+        <header class="sb-header">
+          <div class="sb-header-left">
+            <span class="page-pill">18</span>
+            <span class="topic-pill">Kurvenanpassung</span>
+            <h1 class="sb-title" id="sb-main-title">Bedingungen bei Steckbriefaufgaben übersetzen</h1>
+            <div class="set-switch-group">
+              <button class="set-btn active" id="btn-sb-set1" onclick="switchSbSet(1)">📖 Set 1: Buch S. 18</button>
+              <button class="set-btn" id="btn-sb-set2" onclick="switchSbSet(2)">🎯 Set 2: Klausur-Training (Neu)</button>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <button class="btn-reveal-all" onclick="toggleAllSolutions()">👁️ Alle aufdecken / verdecken</button>
+          </div>
+        </header>
+
+        <div class="sb-layout-grid">
+          <section class="merkkasten-card">
+            <div class="guide-title">
+              <span class="guide-icon">📌</span>
+              <strong>Regeln &amp; Übersetzungshilfe (Buch S. 18):</strong>
+            </div>
+
+            <table class="merkkasten-table">
+              <thead>
+                <tr>
+                  <th style="width: 52%;">Beschreibung im Aufgabentext</th>
+                  <th style="width: 48%;">Mathematische Gleichung</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>verläuft durch P(3|5)</td>
+                  <td>f(3) = 5 <span class="st-badge">1 Bed.</span></td>
+                </tr>
+                <tr>
+                  <td>berührt die x-Achse an der Stelle 2</td>
+                  <td>f(2) = 0 und f'(2) = 0 <span class="st-badge" style="background:var(--accent-warning-bg); color:var(--accent-warning); border-color:var(--accent-warning-border);">2 Bed.</span></td>
+                </tr>
+                <tr>
+                  <td>hat an der Stelle -3 die Steigung 1,5</td>
+                  <td>f'(-3) = 1,5 <span class="st-badge">1 Bed.</span></td>
+                </tr>
+                <tr>
+                  <td>hat einen Hochpunkt H(0,5|-2)</td>
+                  <td>f(0,5) = -2 und f'(0,5) = 0 <span class="st-badge" style="background:var(--accent-warning-bg); color:var(--accent-warning); border-color:var(--accent-warning-border);">2 Bed.</span></td>
+                </tr>
+                <tr>
+                  <td>hat einen Wendepunkt W(-1|4)</td>
+                  <td>f(-1) = 4 und f''(-1) = 0 <span class="st-badge" style="background:var(--accent-warning-bg); color:var(--accent-warning); border-color:var(--accent-warning-border);">2 Bed.</span></td>
+                </tr>
+                <tr>
+                  <td>hat einen <strong>Sattelpunkt</strong> S(2|3)</td>
+                  <td>
+                    f(2) = 3<br>
+                    f'(2) = 0 und f''(2) = 0
+                    <span class="st-badge" style="background:var(--accent-urgent-bg); color:var(--accent-urgent); border-color:var(--accent-urgent-border);">3 Bed.!</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>hat Wendetangente an Stelle 3 mit t(x) = -4x + 1</td>
+                  <td>
+                    f''(3) = 0 (Wende)<br>
+                    f'(3) = -4 (Steigung)<br>
+                    f(3) = t(3) = -11 (Punkt)
+                    <span class="st-badge" style="background:var(--accent-urgent-bg); color:var(--accent-urgent); border-color:var(--accent-urgent-border);">3 Bed.!</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+
+          <section class="drill-column">
+            <div class="drill-card">
+              <div class="drill-card-header">
+                <div>
+                  <strong id="task1-title">Aufgabe 1 &bull; Steckbriefbeschreibungen übersetzen:</strong>
+                  <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem;">Klicke auf eine Zeile, um die mathematische Gleichung aufzudecken!</div>
+                </div>
+              </div>
+
+              <div id="drillItemsList" class="drill-items-container"></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- MATHE TOPIC 2: FUNKTIONSSCHAREN (A3 & A2)                             -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-mathe-schar" class="topic-module-box">
+      <div class="schar-container">
+        <header class="sb-header">
+          <div class="sb-header-left">
+            <span class="page-pill" id="schar-task-pill" style="background:var(--accent-deutsch-bg); color:var(--accent-deutsch); border-color:var(--accent-deutsch-border);">NEU 2</span>
+            <span class="topic-pill">Funktionsscharen</span>
+            <h1 class="sb-title" id="schar-main-title">Aufgabe 3: Extrema bei 0 &amp; 2 (d = t frei)</h1>
+            <div class="schar-sub-tabs">
+              <button class="sub-tab-btn active" id="btn-schar-task3" onclick="switchScharTask('task3')">
+                🔥 Neue Aufgabe: Extrema bei 0 &amp; 2 (d = t)
+              </button>
+              <button class="sub-tab-btn" id="btn-schar-new-a2" onclick="switchScharTask('new-a2')">
+                🎯 Aufgabe: Extrema bei 1 &amp; 3
+              </button>
+              <button class="sub-tab-btn" id="btn-schar-orig-a2" onclick="switchScharTask('orig-a2')">
+                📋 Original A2 (Wiederholung.pdf)
+              </button>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <span class="anti-leak-badge">🔒 Lösungen verdeckt (Anti-Leak)</span>
+          </div>
+        </header>
+
+        <div class="schar-layout-grid">
+          <section class="schar-guide-col" id="schar-left-col"></section>
+          
+          <section class="schar-visualizer-col">
+            <div class="viz-control-card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.4rem;">
+                <strong>Parameter t einstellen:</strong>
+                <span id="paramTValue" style="color:var(--accent-primary); font-weight:800;">t = 4.0</span>
+              </div>
+              <div style="display:flex; align-items:center; gap: 0.6rem;">
+                <span id="slider-min-lbl" style="font-size:0.75rem; color:var(--text-muted);">-2</span>
+                <input type="range" id="tSlider" min="-2" max="6" step="0.2" value="4" oninput="onSliderChange(this.value)" style="flex:1;">
+                <span id="slider-max-lbl" style="font-size:0.75rem; color:var(--text-muted);">6</span>
+              </div>
+              <div id="schar-quick-btns" style="display:flex; gap:0.4rem; margin-top:0.6rem; flex-wrap:wrap;"></div>
+            </div>
+
+            <div class="canvas-schar-wrapper">
+              <canvas id="scharCanvas" width="560" height="340"></canvas>
+            </div>
+
+            <div class="legend-card" id="scharLegend"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- MATHE TOPIC 3: LGS & MATRIZEN (BUCH S. 46)                            -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-mathe-matrizen" class="topic-module-box">
+      <div class="steckbrief-container">
+        <header class="sb-header">
+          <div class="sb-header-left">
+            <span class="page-pill">46</span>
+            <span class="topic-pill">LGS &amp; Matrizen</span>
+            <h1 class="sb-title">Aufgabe 1 (Buch S. 46) &bull; LGS, Diagonalform &amp; Graphen</h1>
+            <div class="level-switch-group">
+              <button class="level-btn active" id="btn-lvl-1" onclick="switchLevel(1)">📖 Level 1: Buch S. 46</button>
+              <button class="level-btn" id="btn-lvl-2" onclick="switchLevel(2)">🎯 Level 2: Klausur-Set 1</button>
+              <button class="level-btn" id="btn-lvl-3" onclick="switchLevel(3)">⚡ Level 3: Meister-Set</button>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <button class="btn-reveal-all" onclick="resetAll()">🔄 Neustart</button>
+          </div>
+        </header>
+
+        <div class="merkkasten-card" style="margin-bottom: 1rem;">
+          <strong style="color: var(--accent-math);">📌 Die 3 Lösungsfälle bei linearen Gleichungssystemen:</strong>
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap:0.8rem; margin-top:0.5rem; font-size:0.78rem;">
+            <div style="background:var(--bg-subtle); padding:0.6rem; border-radius:var(--radius-sm); border-left:3px solid var(--accent-math); color:var(--text-secondary);">
+              <strong style="color:var(--text-primary);">1. Genau eine Lösung (Schnittpunkt):</strong><br>
+              Diagonalform hat eindeutige Werte <code>x = x₀</code> und <code>y = y₀</code>. Geraden schneiden sich in genau einem Punkt.
+            </div>
+            <div style="background:var(--bg-subtle); padding:0.6rem; border-radius:var(--radius-sm); border-left:3px solid var(--accent-politik); color:var(--text-secondary);">
+              <strong style="color:var(--text-primary);">2. Unendlich viele Lösungen (Identisch):</strong><br>
+              Nullzeile <code>0 = 0</code> (immer wahr). Beide Geraden liegen exakt aufeinander.
+            </div>
+            <div style="background:var(--bg-subtle); padding:0.6rem; border-radius:var(--radius-sm); border-left:3px solid var(--accent-urgent); color:var(--text-secondary);">
+              <strong style="color:var(--text-primary);">3. Keine Lösung (Parallelen):</strong><br>
+              Widerspruchszeile <code>0 = 1</code> (Widerspruch!). Geraden sind echt parallel und berühren sich nie.
+            </div>
+          </div>
+        </div>
+
+        <!-- Matching Board Cards -->
+        <main class="cards-board">
+          <!-- Row 1: LGS -->
+          <div class="cards-row">
+            <div class="textbook-card" id="card-lgs-1" onclick="selectCard('lgs', '1')">
+              <div class="card-badge">①</div>
+              <div class="lgs-formula" id="lgs-text-1"></div>
+              <div class="trio-tag" id="tag-lgs-1"></div>
+            </div>
+            <div class="textbook-card" id="card-lgs-2" onclick="selectCard('lgs', '2')">
+              <div class="card-badge">②</div>
+              <div class="lgs-formula" id="lgs-text-2"></div>
+              <div class="trio-tag" id="tag-lgs-2"></div>
+            </div>
+            <div class="textbook-card" id="card-lgs-3" onclick="selectCard('lgs', '3')">
+              <div class="card-badge">③</div>
+              <div class="lgs-formula" id="lgs-text-3"></div>
+              <div class="trio-tag" id="tag-lgs-3"></div>
+            </div>
+            <div class="textbook-card" id="card-lgs-4" onclick="selectCard('lgs', '4')">
+              <div class="card-badge">④</div>
+              <div class="lgs-formula" id="lgs-text-4"></div>
+              <div class="trio-tag" id="tag-lgs-4"></div>
+            </div>
+          </div>
+
+          <!-- Row 2: Matrices -->
+          <div class="cards-row">
+            <div class="textbook-card" id="card-mat-A" onclick="selectCard('mat', 'A')">
+              <div class="card-badge">Ⓐ</div>
+              <div class="matrix-display" id="mat-katex-A"></div>
+              <div class="trio-tag" id="tag-mat-A"></div>
+            </div>
+            <div class="textbook-card" id="card-mat-B" onclick="selectCard('mat', 'B')">
+              <div class="card-badge">Ⓑ</div>
+              <div class="matrix-display" id="mat-katex-B"></div>
+              <div class="trio-tag" id="tag-mat-B"></div>
+            </div>
+            <div class="textbook-card" id="card-mat-C" onclick="selectCard('mat', 'C')">
+              <div class="card-badge">Ⓒ</div>
+              <div class="matrix-display" id="mat-katex-C"></div>
+              <div class="trio-tag" id="tag-mat-C"></div>
+            </div>
+            <div class="textbook-card" id="card-mat-D" onclick="selectCard('mat', 'D')">
+              <div class="card-badge">Ⓓ</div>
+              <div class="matrix-display" id="mat-katex-D"></div>
+              <div class="trio-tag" id="tag-mat-D"></div>
+            </div>
+          </div>
+
+          <!-- Row 3: Graphs -->
+          <div class="cards-row">
+            <div class="textbook-card card-with-graph" id="card-graph-I" onclick="selectCard('graph', 'I')">
+              <div class="card-badge">Ⅰ</div>
+              <div class="canvas-container">
+                <canvas id="canvasI" width="108" height="108"></canvas>
+              </div>
+              <div class="trio-tag" id="tag-graph-I"></div>
+            </div>
+            <div class="textbook-card card-with-graph" id="card-graph-II" onclick="selectCard('graph', 'II')">
+              <div class="card-badge">Ⅱ</div>
+              <div class="canvas-container">
+                <canvas id="canvasII" width="108" height="108"></canvas>
+              </div>
+              <div class="trio-tag" id="tag-graph-II"></div>
+            </div>
+            <div class="textbook-card card-with-graph" id="card-graph-III" onclick="selectCard('graph', 'III')">
+              <div class="card-badge">Ⅲ</div>
+              <div class="canvas-container">
+                <canvas id="canvasIII" width="108" height="108"></canvas>
+              </div>
+              <div class="trio-tag" id="tag-graph-III"></div>
+            </div>
+            <div class="textbook-card card-with-graph" id="card-graph-IV" onclick="selectCard('graph', 'IV')">
+              <div class="card-badge">Ⅳ</div>
+              <div class="canvas-container">
+                <canvas id="canvasIV" width="108" height="108"></canvas>
+              </div>
+              <div class="trio-tag" id="tag-graph-IV"></div>
+            </div>
+          </div>
+        </main>
+
+        <footer class="book-footer">
+          <div class="matcher-control-bar">
+            <div class="trio-slot" id="slot-1">
+              <div class="slot-badge badge-1">①</div>
+              <span class="slot-arr">➔</span>
+              <select id="sel_m_1" onchange="onDropdownChange(1)">
+                <option value="">Matrix?</option>
+                <option value="A">Matrix A</option>
+                <option value="B">Matrix B</option>
+                <option value="C">Matrix C</option>
+                <option value="D">Matrix D</option>
+              </select>
+              <span class="slot-plus">+</span>
+              <select id="sel_g_1" onchange="onDropdownChange(1)">
+                <option value="">Graph?</option>
+                <option value="I">Graph I</option>
+                <option value="II">Graph II</option>
+                <option value="III">Graph III</option>
+                <option value="IV">Graph IV</option>
+              </select>
+            </div>
+
+            <div class="trio-slot" id="slot-2">
+              <div class="slot-badge badge-2">②</div>
+              <span class="slot-arr">➔</span>
+              <select id="sel_m_5" onchange="onDropdownChange(2)">
+                <option value="">Matrix?</option>
+                <option value="A">Matrix A</option>
+                <option value="B">Matrix B</option>
+                <option value="C">Matrix C</option>
+                <option value="D">Matrix D</option>
+              </select>
+              <span class="slot-plus">+</span>
+              <select id="sel_g_5" onchange="onDropdownChange(2)">
+                <option value="">Graph?</option>
+                <option value="I">Graph I</option>
+                <option value="II">Graph II</option>
+                <option value="III">Graph III</option>
+                <option value="IV">Graph IV</option>
+              </select>
+            </div>
+
+            <div class="trio-slot" id="slot-3">
+              <div class="slot-badge badge-3">③</div>
+              <span class="slot-arr">➔</span>
+              <select id="sel_m_5" onchange="onDropdownChange(3)">
+                <option value="">Matrix?</option>
+                <option value="A">Matrix A</option>
+                <option value="B">Matrix B</option>
+                <option value="C">Matrix C</option>
+                <option value="D">Matrix D</option>
+              </select>
+              <span class="slot-plus">+</span>
+              <select id="sel_g_5" onchange="onDropdownChange(3)">
+                <option value="">Graph?</option>
+                <option value="I">Graph I</option>
+                <option value="II">Graph II</option>
+                <option value="III">Graph III</option>
+                <option value="IV">Graph IV</option>
+              </select>
+            </div>
+
+            <div class="trio-slot" id="slot-4">
+              <div class="slot-badge badge-4">④</div>
+              <span class="slot-arr">➔</span>
+              <select id="sel_m_5" onchange="onDropdownChange(4)">
+                <option value="">Matrix?</option>
+                <option value="A">Matrix A</option>
+                <option value="B">Matrix B</option>
+                <option value="C">Matrix C</option>
+                <option value="D">Matrix D</option>
+              </select>
+              <span class="slot-plus">+</span>
+              <select id="sel_g_5" onchange="onDropdownChange(4)">
+                <option value="">Graph?</option>
+                <option value="I">Graph I</option>
+                <option value="II">Graph II</option>
+                <option value="III">Graph III</option>
+                <option value="IV">Graph IV</option>
+              </select>
+            </div>
+
+            <div class="action-buttons">
+              <button class="btn-action btn-check" onclick="checkAllMatches()">✓ Prüfen</button>
+              <button class="btn-action btn-solve" onclick="solveAllMatches()">Auflösen</button>
+              <button class="btn-action btn-reset" onclick="resetAll()">↺ Reset</button>
+            </div>
+          </div>
+
+          <div id="resultBanner" class="result-banner"></div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- MATHE TOPIC 4: TRASSIERUNG                                            -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-mathe-trassierung" class="topic-module-box">
+      <div class="schar-container">
+        <header class="sb-header">
+          <div class="sb-header-left">
+            <span class="page-pill" id="trass-pill" style="background:var(--accent-politik-bg); color:var(--accent-politik); border-color:var(--accent-politik-border);">NEU</span>
+            <span class="topic-pill">Trassierung</span>
+            <h1 class="sb-title" id="trass-title">Challenge 2: Ansteigende Rampe (g₂ = x)</h1>
+            <div class="schar-sub-tabs">
+              <button class="sub-tab-btn active" id="btn-trass-t2" onclick="switchTrassMode('t2')">
+                🔥 Neue Challenge: Rampe an Steigung (g₂ = x)
+              </button>
+              <button class="sub-tab-btn" id="btn-trass-t1" onclick="switchTrassMode('t1')">
+                🛣️ Challenge 1: Autobahnzubringer (g₂ = 2)
+              </button>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <span class="anti-leak-badge">🔒 Lösungen verdeckt (Anti-Leak)</span>
+          </div>
+        </header>
+
+        <div class="schar-layout-grid">
+          <section class="schar-guide-col" id="trass-left-col"></section>
+
+          <section class="schar-visualizer-col">
+            <div class="viz-control-card" id="trass-viz-card"></div>
+
+            <div class="canvas-schar-wrapper">
+              <canvas id="trassCanvas" width="560" height="340"></canvas>
+            </div>
+
+            <div class="legend-card" id="trassLegend"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- MATHE TOPIC 5: INTEGRALRECHNUNG (AH S. 2 & S. 4)                     -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-mathe-integral" class="topic-module-box">
+      <div class="steckbrief-container">
+        <header class="sb-header">
+          <div class="sb-header-left">
+            <span class="page-pill" style="background:#e0f2fe; color:#0284c7; border-color:#7dd3fc;">AH S. 2 &amp; S. 4</span>
+            <span class="topic-pill">Integralrechnung</span>
+            <h1 class="sb-title">Bestände rekonstruieren &amp; Stammfunktionen</h1>
+            <div class="schar-sub-tabs" style="margin-top:0.6rem;">
+              <button class="sub-tab-btn active" id="integral-tab-s2" onclick="switchIntegralTab('s2')">
+                📐 S. 2 · Näherung (Flächen)
+              </button>
+              <button class="sub-tab-btn" id="integral-tab-s4" onclick="switchIntegralTab('s4')">
+                ∫ S. 4 · Stammfunktionen
+              </button>
+              <button class="sub-tab-btn" id="integral-tab-stammcheck" onclick="switchIntegralTab('stammcheck')">
+                ✔️ Aufgaben-Check (S. 4 Nr. 1–3)
+              </button>
+            </div>
+          </div>
+          <div class="sb-actions">
+            <img src="integral_seite2_naeherung.jpg" alt="Arbeitsheft S.2" style="height:54px;border-radius:6px;border:1px solid var(--border-subtle);margin-right:6px;cursor:pointer;" onclick="this.style.height=this.style.height==='180px'?'54px':'180px'" title="Klicken zum Vergrößern">
+            <img src="integral_seite4_stammfunktionen.png" alt="Arbeitsheft S.4" style="height:54px;border-radius:6px;border:1px solid var(--border-subtle);cursor:pointer;" onclick="this.style.height=this.style.height==='180px'?'54px':'180px'" title="Klicken zum Vergrößern">
+          </div>
+        </header>
+
+        <!-- PANE 1: S.2 NÄHERUNG -->
+        <div id="integral-pane-s2">
+
+          <!-- ════ GROSSES ERKLÄRUNGSFELD ════ -->
+          <div class="p-card" style="border-left:4px solid #38bdf8;margin-bottom:1.2rem;">
+            <h3 style="color:#38bdf8;margin:0 0 0.8rem 0;">💡 Was ist hier überhaupt gefragt? – Schritt-für-Schritt-Erklärung</h3>
+
+            <div style="display:grid;gap:0.8rem;">
+
+              <!-- Schritt 1 -->
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">
+                  📊 Schritt 1: Was zeigt der Graph?
+                </div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Der Graph zeigt die <strong>Änderungsrate</strong> – also z.B. wie schnell die Bakterienkultur <em>gerade</em> wächst (in mm²/h).<br>
+                  Das ist <strong>NICHT</strong> der Bestand selbst! Es ist nur das Tempo, mit dem er sich ändert.<br>
+                  <span style="color:#38bdf8;">→ Wenn die Kurve bei +2 liegt, wächst die Kultur gerade mit 2 mm²/h.</span><br>
+                  <span style="color:#f87171;">→ Wenn die Kurve bei −1 liegt, schrumpft sie gerade mit 1 mm²/h.</span>
+                </p>
+              </div>
+
+              <!-- Schritt 2 -->
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">
+                  📐 Schritt 2: Wie berechne ich den Bestand?
+                </div>
+                <p style="margin:0 0 0.5rem 0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Der <strong>Bestand B(t)</strong> = Anfangsbestand + <em>Fläche</em> zwischen dem Graphen und der x-Achse.<br>
+                  Weil wir keine Formel haben, legen wir <strong>geometrische Formen</strong> so in den Graphen, dass sie die Fläche möglichst gut abdecken:
+                </p>
+                <div style="display:flex;gap:0.7rem;flex-wrap:wrap;font-size:0.85rem;">
+                  <div style="background:#fef3c7;border:1px solid #f59e0b;border-radius:7px;padding:0.4rem 0.8rem;color:#92400e;">
+                    🔺 <strong>Dreieck</strong> bei Flächen die spitz zulaufen<br>
+                    <span style="font-size:0.78rem;">A = ½ · Breite · Höhe</span>
+                  </div>
+                  <div style="background:#ede9fe;border:1px solid #a78bfa;border-radius:7px;padding:0.4rem 0.8rem;color:#5b21b6;">
+                    ⬡ <strong>Trapez</strong> wenn eine Seite nicht Null ist<br>
+                    <span style="font-size:0.78rem;">A = ½ · (a+b) · Höhe</span>
+                  </div>
+                  <div style="background:#dcfce7;border:1px solid #34d399;border-radius:7px;padding:0.4rem 0.8rem;color:#065f46;">
+                    ▭ <strong>Rechteck</strong> bei flachen, geraden Bereichen<br>
+                    <span style="font-size:0.78rem;">A = Breite · Höhe</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Schritt 3 -->
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">
+                  ⚠️ Schritt 3: Vorzeichen NICHT vergessen!
+                </div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  <span style="display:inline-block;background:#dbeafe;border-radius:5px;padding:0.15rem 0.5rem;color:#1d4ed8;font-weight:600;margin-right:0.3rem;">Fläche ÜBER x-Achse</span> → <strong style="color:#38bdf8;">PLUS</strong> → Bestand steigt<br>
+                  <span style="display:inline-block;background:#fee2e2;border-radius:5px;padding:0.15rem 0.5rem;color:#dc2626;font-weight:600;margin-right:0.3rem;">Fläche UNTER x-Achse</span> → <strong style="color:#f87171;">MINUS</strong> → Bestand sinkt<br><br>
+                  <strong>Beispiel aus dem Buch (Infokästchen S.2):</strong><br>
+                  B(1) = 0 + <span style="color:#38bdf8;">Dreieck oberhalb</span> = 0 + 0,5 · 0,9 · 2 = <strong>0,9 mm²</strong><br>
+                  B(1,3) = 0,9 + <span style="color:#38bdf8;">weiteres Stück</span> + 0,5 · 0,3 · 2 = <strong>1,2 mm²</strong><br>
+                  B(1,8) = 1,2 <span style="color:#f87171;">− Trapez unterhalb</span> = 1,2 − 0,8 = <strong>0,4 mm²</strong>
+                </p>
+              </div>
+
+              <!-- Schritt 4 -->
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">
+                  🧮 Schritt 4: Kästchen zählen als Alternative
+                </div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Statt geometrischer Formen kannst du auch einfach Kästchen zählen.<br>
+                  <strong>Aber Achtung mit den Einheiten:</strong><br>
+                  Ein Kästchen ist 0,1 h breit und 0,5 mm²/h hoch.<br>
+                  → Fläche = 0,1 h · 0,5 mm²/h = <strong>0,05 mm²</strong> pro Kästchen.<br>
+                  Kästchen oberhalb: positiv zählen | Kästchen unterhalb: negativ zählen.
+                </p>
+              </div>
+
+            </div><!-- /grid -->
+          </div><!-- /erklaerung -->
+
+          <div class="p-card" style="border-left:4px solid #f87171; background:var(--bg-subtle); margin-bottom:1.2rem;">
+            <h3 style="color:#f87171;margin:0 0 0.5rem 0;">🔴 Formeln auf einen Blick</h3>
+            <div style="display:flex;gap:1rem;flex-wrap:wrap;font-size:0.85rem;">
+              <div class="formula-chip">Dreieck: <span class="katex-render" data-display="false" data-latex="A = \tfrac{1}{2} \cdot b \cdot h"></span></div>
+              <div class="formula-chip">Trapez: <span class="katex-render" data-display="false" data-latex="A = \tfrac{1}{2}(a+c)\cdot h"></span></div>
+              <div class="formula-chip">Rechteck: <span class="katex-render" data-display="false" data-latex="A = b \cdot h"></span></div>
+              <div class="formula-chip" style="background:var(--bg-card);">1 Kästchen = 0,1h · 0,5mm²/h = <strong>0,05 mm²</strong></div>
+            </div>
+          </div>
+
+          <div class="p-card" style="margin-bottom:1.2rem;">
+            <h4 style="margin:0 0 0.5rem 0;">📈 Visualisierung: Beispiel aus dem roten Infokästchen (AH S.2)</h4>
+            <p style="font-size:0.83rem;color:var(--text-muted);margin:0 0 0.6rem 0;">Die blaue Kurve ist der Änderungsgraph. 🟡 Goldenes Dreieck = Näherung der Fläche oberhalb | 🟣 Lila Trapez = Näherung der Fläche unterhalb.</p>
+            <canvas id="integral-canvas-bakteria" width="680" height="260" style="width:100%;max-width:680px;display:block;border-radius:8px;"></canvas>
+          </div>
+
+          <div class="p-card" style="margin-bottom:1rem;">
+            <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:0.8rem;">
+              <h4 style="margin:0;">Aufgabe 1 – Näherungsweise Bestand bestimmen (Anfangsbestand = 0)</h4>
+              <label style="font-size:0.83rem;cursor:pointer;display:flex;align-items:center;gap:0.3rem;">
+                <input type="checkbox" id="integral-show-shapes" onchange="renderAufgabe1()">
+                Geometrische Näherungen einblenden
+              </label>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;flex-wrap:wrap;">
+              <div>
+                <canvas id="integral-canvas-1a" width="440" height="240" style="width:100%;border-radius:8px;"></canvas>
+                <div style="font-size:0.82rem;margin-top:0.5rem;color:var(--text-secondary);">
+                  <strong>a)</strong>
+                  <div style="margin-top:0.3rem;">t=2: B(2)≈<input class="integral-input" id="in-1a-b2" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1a-b2','≈ 3,9 mm² (Dreieck: ½·2,5·3,1)')">Lsg</button> <span id="sol-1a-b2" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                  <div style="margin-top:0.25rem;">t=3: B(3)≈<input class="integral-input" id="in-1a-b3" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1a-b3','≈ 3,4 mm²')">Lsg</button> <span id="sol-1a-b3" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                  <div style="margin-top:0.25rem;">t=7: B(7)≈<input class="integral-input" id="in-1a-b7" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1a-b7','≈ 2,1 mm²')">Lsg</button> <span id="sol-1a-b7" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                </div>
+              </div>
+              <div>
+                <canvas id="integral-canvas-1b" width="440" height="240" style="width:100%;border-radius:8px;"></canvas>
+                <div style="font-size:0.82rem;margin-top:0.5rem;color:var(--text-secondary);">
+                  <strong>b)</strong>
+                  <div style="margin-top:0.3rem;">t=1,5: B(1,5)≈<input class="integral-input" id="in-1b-b15" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1b-b15','≈ 1,4 mm²')">Lsg</button> <span id="sol-1b-b15" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                  <div style="margin-top:0.25rem;">t=2: B(2)≈<input class="integral-input" id="in-1b-b2" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1b-b2','≈ 1,9 mm²')">Lsg</button> <span id="sol-1b-b2" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                  <div style="margin-top:0.25rem;">t=3: B(3)≈<input class="integral-input" id="in-1b-b3" placeholder="? mm²" style="width:66px;"> <button class="btn-sm" onclick="showIntegralSol('sol-1b-b3','≈ 1,9 mm²')">Lsg</button> <span id="sol-1b-b3" class="integral-sol" style="display:none;color:#34d399;font-size:0.8rem;"></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-card">
+            <h4 style="margin:0 0 0.6rem 0;">Aufgabe 2 – Populationsentwicklung von Rehen (AH S.2)</h4>
+            <div style="font-size:0.85rem;color:var(--text-secondary);margin-bottom:0.7rem;">
+              Änderung der Tierzahl pro Jahr: positiver Bereich → Wachstum, negativer Bereich → Schrumpfung.
+            </div>
+            <div style="display:flex;flex-direction:column;gap:0.5rem;font-size:0.85rem;">
+              <div><strong>a) Wann war die Population am größten?</strong> <input class="integral-input" id="in-2a" placeholder="Jahr?" style="width:80px;margin:0 0.4rem;"> <button class="btn-sm" onclick="showIntegralSol('sol-2a','Jahr ≈ 40 (Nullstelle des Änderungsgraphen)')">Lösung</button> <span id="sol-2a" class="integral-sol" style="display:none;color:#34d399;"></span></div>
+              <div><strong>b) Wachstum in ersten 30 Jahren ≈</strong> <input class="integral-input" id="in-2b" placeholder="? Tiere" style="width:90px;margin:0 0.4rem;"> <button class="btn-sm" onclick="showIntegralSol('sol-2b','≈ ½·30·100 = 1 500 Tiere (Dreieck)')">Lösung</button> <span id="sol-2b" class="integral-sol" style="display:none;color:#34d399;"></span></div>
+              <div><strong>c) Schrumpfung t=35 bis 60 ≈</strong> <input class="integral-input" id="in-2c" placeholder="? Tiere" style="width:90px;margin:0 0.4rem;"> <button class="btn-sm" onclick="showIntegralSol('sol-2c','≈ ½·25·200 = 2 500 Tiere (Dreieck unterhalb x-Achse)')">Lösung</button> <span id="sol-2c" class="integral-sol" style="display:none;color:#34d399;"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: S.4 STAMMFUNKTIONEN -->
+        <div id="integral-pane-s4" style="display:none;">
+
+          <!-- ════ ERKLÄRUNGSFELD S.4 ════ -->
+          <div class="p-card" style="border-left:4px solid #a78bfa;margin-bottom:1.2rem;">
+            <h3 style="color:#a78bfa;margin:0 0 0.8rem 0;">💡 Was ist eine Stammfunktion? – Schritt-für-Schritt</h3>
+            <div style="display:grid;gap:0.8rem;">
+
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">🔄 Grundidee: Ableiten rückwärts</div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Du kennst das Ableiten: aus f(x) = x² wird f'(x) = 2x.<br>
+                  <strong>Das Integrieren macht das Gegenteil</strong>: Aus f(x) = 2x wird F(x) = x².<br>
+                  F(x) heißt <strong>Stammfunktion</strong> von f(x). Es gilt immer: <strong>F'(x) = f(x)</strong><br>
+                  <span style="color:#a78bfa;">→ Die Ableitung der Stammfunktion ergibt wieder die ursprüngliche Funktion!</span>
+                </p>
+              </div>
+
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">📏 Die Potenzregel – das einzige was du brauchst</div>
+                <div style="font-size:0.88rem;color:var(--text-secondary);line-height:1.8;">
+                  <strong>Merksatz: Exponent um 1 erhöhen, dann durch den neuen Exponenten dividieren.</strong><br>
+                  <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.4rem;">
+                    <div style="background:#ede9fe;border-radius:7px;padding:0.4rem 0.8rem;color:#5b21b6;font-size:0.85rem;">
+                      f(x) = x³ &nbsp;→&nbsp; <strong>F(x) = x⁴ / 4 = ¼x⁴</strong><br>
+                      <span style="font-size:0.75rem;">(Exponent 3 → 4, dann ÷4)</span>
+                    </div>
+                    <div style="background:#ede9fe;border-radius:7px;padding:0.4rem 0.8rem;color:#5b21b6;font-size:0.85rem;">
+                      f(x) = x⁻² &nbsp;→&nbsp; <strong>F(x) = x⁻¹ / (−1) = −x⁻¹</strong><br>
+                      <span style="font-size:0.75rem;">(Exponent −2 → −1, dann ÷(−1))</span>
+                    </div>
+                    <div style="background:#ede9fe;border-radius:7px;padding:0.4rem 0.8rem;color:#5b21b6;font-size:0.85rem;">
+                      f(x) = 5x² &nbsp;→&nbsp; <strong>F(x) = 5 · x³/3 = 5/3 · x³</strong><br>
+                      <span style="font-size:0.75rem;">(Konstante bleibt, Exponent 2→3, ÷3)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;">
+                <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:0.4rem;">➕ Summenregel – mehrere Terme kein Problem</div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Wenn f(x) aus mehreren Termen besteht, integriere einfach <strong>jeden Term einzeln</strong>.<br>
+                  Beispiel: f(x) = 3x² + 5<br>
+                  &nbsp;&nbsp;→ F(x) = 3 · x³/3 + 5x = <strong>x³ + 5x</strong>
+                </p>
+              </div>
+
+              <div style="background:var(--bg-subtle);border-radius:10px;padding:0.9rem 1.1rem;border:2px solid #a78bfa;">
+                <div style="font-size:1rem;font-weight:700;color:#a78bfa;margin-bottom:0.4rem;">⚡ Das +c – warum und wie?</div>
+                <p style="margin:0;font-size:0.88rem;color:var(--text-secondary);line-height:1.6;">
+                  Beim Ableiten fallen Konstanten weg: Aus F(x) = x² + 7 wird f(x) = 2x.<br>
+                  Deshalb gibt es <strong>unendlich viele</strong> Stammfunktionen: x², x²+5, x²−3 sind alle Stammfunktionen von 2x.<br><br>
+                  <strong>Wie bestimmt man c?</strong><br>
+                  Man benutzt einen <strong>bekannten Punkt P(x₀ | y₀)</strong> auf dem Bestandsgraphen:<br>
+                  Einsetzen: F(x₀) = y₀ → Gleichung nach c auflösen.<br><br>
+                  <strong>Beispiel:</strong> F(x) = x² + c, Punkt P(2 | 7)<br>
+                  → F(2) = 4 + c = 7 → c = 3 → <strong>F(x) = x² + 3</strong><br><br>
+                  Besonders einfach: Wenn P(0 | y₀) gegeben → c = y₀ direkt!
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="p-card" style="border-left:4px solid #a78bfa;margin-bottom:1.2rem;">
+            <h3 style="color:#a78bfa;margin:0 0 0.5rem 0;">∫ Stammfunktion = Umkehrung der Ableitung</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;flex-wrap:wrap;">
+              <div><h4 style="margin:0 0 0.3rem 0;font-size:0.9rem;">Potenzregel</h4><div class="formula-chip"><span class="katex-render" data-display="true" data-latex="f(x)=x^n \;\Rightarrow\; F(x)=\frac{x^{n+1}}{n+1}+c"></span></div></div>
+              <div><h4 style="margin:0 0 0.3rem 0;font-size:0.9rem;">Konstanter Faktor</h4><div class="formula-chip"><span class="katex-render" data-display="true" data-latex="f(x)=a\cdot x^n \;\Rightarrow\; F(x)=a\cdot\frac{x^{n+1}}{n+1}+c"></span></div></div>
+              <div><h4 style="margin:0 0 0.3rem 0;font-size:0.9rem;">Summenregel</h4><div class="formula-chip"><span class="katex-render" data-display="true" data-latex="h=f+g \;\Rightarrow\; H=F+G+c"></span></div></div>
+              <div><h4 style="margin:0 0 0.3rem 0;font-size:0.9rem;">Konstante c = Anfangsbestand</h4><div class="formula-chip"><span class="katex-render" data-display="true" data-latex="F(0)=c=\text{Anfangsbestand}"></span></div></div>
+            </div>
+          </div>
+
+          <div class="p-card" style="margin-bottom:1rem;">
+            <h4 style="margin:0 0 0.6rem 0;">Visualisierung: Änderungsrate f(x) ↔ Stammfunktion F(x)</h4>
+            <p style="font-size:0.82rem;color:var(--text-muted);margin:0 0 0.6rem 0;">Links: f(x) (Ableitung / Änderungsrate) &nbsp;|&nbsp; Rechts: F(x) (Stammfunktion / Bestand)</p>
+            <canvas id="stammfunktion-demo-canvas" width="680" height="220" style="width:100%;max-width:680px;display:block;border-radius:8px;margin-bottom:0.3rem;"></canvas>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:0.8rem;">Beispiel: f(x) = 2x &nbsp;→&nbsp; F(x) = x²</div>
+            <canvas id="stammfunktion-demo-canvas2" width="680" height="220" style="width:100%;max-width:680px;display:block;border-radius:8px;"></canvas>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.3rem;">Beispiel: f(x) = 3x² &nbsp;→&nbsp; F(x) = x³</div>
+          </div>
+
+          <div class="p-card" style="background:var(--bg-subtle);">
+            <h4 style="margin:0 0 0.5rem 0;">Spezialregeln</h4>
+            <div style="display:flex;flex-wrap:wrap;gap:0.5rem;font-size:0.85rem;">
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int \sin(x)\,dx = -\cos(x)+c"></span></div>
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int \cos(x)\,dx = \sin(x)+c"></span></div>
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int \frac{1}{x}\,dx = \ln|x|+c"></span></div>
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int e^x\,dx = e^x+c"></span></div>
+              <div class="formula-chip"><span class="katex-render" data-display="false" data-latex="\int a\,dx = a\cdot x+c"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: AUFGABEN-CHECK -->
+        <div id="integral-pane-stammcheck" style="display:none;">
+          <div class="p-card" style="margin-bottom:1rem;">
+            <h4 style="margin:0 0 0.8rem 0;">Nr. 1 – Eine Stammfunktion (S.4)</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0.7rem;font-size:0.85rem;">
+              <div class="steckbrief-condition-card"><div class="sc-label">a) <span class="katex-render" data-display="false" data-latex="f(x)=x^4"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{1}{5}x^5')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">b) <span class="katex-render" data-display="false" data-latex="f(x)=x^{-2}"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-x^{-1}=-\\frac{1}{x}')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">c) <span class="katex-render" data-display="false" data-latex="f(x)=3x^4-2x-2"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{3}{5}x^5-x^2-2x')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">e) <span class="katex-render" data-display="false" data-latex="f(x)=12x^4"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{12}{5}x^5')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">g) <span class="katex-render" data-display="false" data-latex="f(x)=\frac{1}{4}x^2"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{1}{12}x^3')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">h) <span class="katex-render" data-display="false" data-latex="f(x)=3\sin(x)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-3\\cos(x)')">Lösung</button></div>
+            </div>
+          </div>
+
+          <div class="p-card" style="margin-bottom:1rem;">
+            <h4 style="margin:0 0 0.8rem 0;">Nr. 2 – Alle Stammfunktionen (+c) (S.4)</h4>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0.7rem;font-size:0.85rem;">
+              <div class="steckbrief-condition-card"><div class="sc-label">a) <span class="katex-render" data-display="false" data-latex="f(x)=x^5"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{1}{6}x^6+c')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">b) <span class="katex-render" data-display="false" data-latex="f(x)=\frac{1}{3}x^{-2}"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-\\frac{1}{3}x^{-1}+c')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">c) <span class="katex-render" data-display="false" data-latex="f(x)=2x^2-\frac{1}{x^3}"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{2}{3}x^3+\\frac{1}{2}x^{-2}+c')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">d) <span class="katex-render" data-display="false" data-latex="f(x)=\sin(x)+1"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-\\cos(x)+x+c')">Lösung</button></div>
+            </div>
+          </div>
+
+          <div class="p-card">
+            <h4 style="margin:0 0 0.8rem 0;">Nr. 3 – Stammfunktion durch Punkt P bestimmen (S.4)</h4>
+            <p style="font-size:0.83rem;color:var(--text-muted);margin:0 0 0.7rem 0;">Allgemeine Stammfunktion F(x)+c bestimmen → c mit P(x|y) ausrechnen.</p>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:0.7rem;font-size:0.85rem;">
+              <div class="steckbrief-condition-card"><div class="sc-label">a) <span class="katex-render" data-display="false" data-latex="f(x)=x^{-3},\;P(1|5)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-\\frac{1}{2}x^{-2}+5{,}5')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">b) <span class="katex-render" data-display="false" data-latex="f(x)=2x^5,\;P(0|-2)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{1}{3}x^6-2')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">d) <span class="katex-render" data-display="false" data-latex="f(x)=x^{1/3},\;P(8|-2)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'\\frac{3}{4}x^{4/3}-14')">Lösung</button></div>
+              <div class="steckbrief-condition-card"><div class="sc-label">g) <span class="katex-render" data-display="false" data-latex="f(x)=\frac{12}{x^2},\;P(0{,}5|4)"></span></div><input class="integral-input" placeholder="F(x)=?" style="width:100%;margin:0.3rem 0;"><button class="btn-sm" onclick="showIntegralSolKatex(this,'-\\frac{12}{x}+28')">Lösung</button></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /topic-mathe-integral -->
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- MATHE TOPIC 0: MATHE-KLAUSURTRAINER (neues Design, "Start hier")       -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-mathe-trainer" class="topic-module-box">
+      <div class="steckbrief-container">
+        <div id="mt-root"></div>
+      </div>
+    </div><!-- /topic-mathe-trainer -->
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- MATHE TOPIC 6: INTEGRALRECHNUNG KOMPLETT (Erklärung + Abi-Übungen)    -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-mathe-integral-kurs" class="topic-module-box">
+      <div class="steckbrief-container">
+        <div id="ik-root"></div>
+      </div>
+    </div><!-- /topic-mathe-integral-kurs -->
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- MATHE TOPIC 7: FUNKTIONSSCHAREN & ORTSKURVEN KOMPLETT                -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-mathe-schar-kurs" class="topic-module-box">
+      <div class="steckbrief-container">
+        <div id="sk-root"></div>
+      </div>
+    </div><!-- /topic-mathe-schar-kurs -->
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- POLITIK TOPIC 1: OPERATOREN (AFB I - III)                             -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-politik-operatoren" class="topic-module-box">
+      <section class="p-card">
+        <div class="p-card-header">
+          <h3><span>📝</span> Deine 3 Klausuraufgaben &amp; Operatoren</h3>
+          <span class="p-badge">Punkteschlüssel</span>
+        </div>
+
+        <div class="schema-step-list">
+          <!-- AUFGABE 1 -->
+          <div class="schema-box" style="border-left: 3px solid var(--accent-math);">
+            <div class="sb-head">
+              <strong>Aufgabe 1: Zusammenfassen</strong>
+              <span class="sb-badge afb-1">AFB I &bull; ca. 30 %</span>
+            </div>
+            <p><strong>Ziel:</strong> Den Text sachlich, neutral und in eigenen Worten wiedergeben.</p>
+            <ul>
+              <li><strong>Pflicht-Einleitungssatz:</strong> Textsorte (z. B. Kommentar), Titel, Autor, Erscheinungsdatum &amp; -ort, Kernthema &amp; Hauptthese des Autors.</li>
+              <li><strong>Gedankengang strukturieren:</strong> Sinnabschnitte bilden, Thesen &amp; Argumente mit Zeilenangaben (z. B. <em>vgl. Z. 12-15</em>) belegen.</li>
+              <li><strong>Tabu:</strong> Keine eigene Meinung, keine wörtlichen Zitate aneinanderreihen! Im Präsens schreiben.</li>
+            </ul>
+          </div>
+
+          <!-- AUFGABE 2 -->
+          <div class="schema-box" style="border-left: 3px solid var(--accent-warning);">
+            <div class="sb-head">
+              <strong>Aufgabe 2: Erläutern</strong>
+              <span class="sb-badge afb-2">AFB II &bull; ca. 40 %</span>
+            </div>
+            <p><strong>Ziel:</strong> Einen Sachverhalt, eine Textaussage oder Fachmodelle detailliert und nachvollziehbar veranschaulichen.</p>
+            <ul>
+              <li><strong>Fachbegriffe anwenden:</strong> Verbinde den Text mit deinem Gelernten (z. B. <em>Formen der Partizipation</em>, <em>Wahlfunktionen</em>, <em>Ziviler Ungehorsam</em>).</li>
+              <li><strong>Ursache-Wirkungs-Ketten:</strong> Nutze Überleitungen: <em>„Dies begründet sich darin, dass...“</em>, <em>„Daraus resultiert...“</em>.</li>
+              <li>Immer noch neutral bleiben – die Bewertung kommt erst in Aufgabe 3!</li>
+            </ul>
+          </div>
+
+          <!-- AUFGABE 3 -->
+          <div class="schema-box" style="border-left: 3px solid var(--accent-politik);">
+            <div class="sb-head">
+              <strong>Aufgabe 3: Sich auseinandersetzen mit...</strong>
+              <span class="sb-badge afb-3">AFB III &bull; ca. 30 %</span>
+            </div>
+            <p><strong>Ziel:</strong> Kritisches, argumentatives Abwägen von Pro &amp; Contra mit begründetem eigenem Urteil.</p>
+            <ul>
+              <li><strong>These/Forderung aufgreifen:</strong> Was behauptet der Autor? Welche Gegenposition gibt es?</li>
+              <li><strong>Pro &amp; Contra abwägen:</strong> Argumente nach Stärke ordnen (vom schwachen zum stärksten Argument).</li>
+              <li><strong>Urteilsbildung:</strong> Klare Trennung zwischen Sachurteil (Pragmatik) und Werturteil (Grundwerte).</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- POLITIK TOPIC 2: DIE URTEILS-MATRIX                                    -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-politik-urteil" class="topic-module-box">
+      <section class="p-card">
+        <div class="p-card-header">
+          <h3><span>⚖️</span> Die Urteils-Matrix für Aufgabe 3 (Sach- vs. Werturteil)</h3>
+          <span class="p-badge">AFB III Meisterschaft</span>
+        </div>
+
+        <div class="urteil-formula-card" style="margin-top: 0;">
+          <strong style="color: var(--accent-politik); font-size: 1.05rem;">Die zwei Säulen eines vollständigen Abiturs-Urteils:</strong>
+          <div class="urteil-cols" style="margin-top: 1rem;">
+            <div class="u-col">
+              <strong style="color: var(--accent-math); font-size: 0.95rem;">1. Sachurteil (Effizienz &amp; Machbarkeit)</strong>
+              <ul>
+                <li><strong>Wirksamkeit / Zielerreichung:</strong> Erreicht die geforderte Maßnahme (z. B. Wahlalter 16 / mehr Volksentscheide / Bürgerräte) tatsächlich das angestrebte Ziel?</li>
+                <li><strong>Realisierbarkeit &amp; Kosten:</strong> Ist es organisatorisch, personell und finanziell praktisch machbar?</li>
+                <li><strong>Unerwünschte Nebenwirkungen:</strong> Droht Populismus, Überforderung der Bürger oder Blockade von Institutionen?</li>
+                <li><em>Leitfrage:</em> Funktioniert die Maßnahme in der realen Praxis?</li>
+              </ul>
+            </div>
+            <div class="u-col">
+              <strong style="color: var(--accent-warning); font-size: 0.95rem;">2. Werturteil (Legitimität &amp; Grundwerte)</strong>
+              <ul>
+                <li><strong>Gerechtigkeit &amp; Fairness:</strong> Werden alle Bürger und künftige Generationen fair repräsentiert?</li>
+                <li><strong>Demokratieprinzip:</strong> Entspricht es den Werten des Grundgesetzes (Art. 20 GG, Rechtsstaatlichkeit)?</li>
+                <li><strong>Gemeinwohl &amp; Minderheitenschutz:</strong> Dient es dem Wohl aller oder nur einer lautstarken Minderheit?</li>
+                <li><em>Leitfrage:</em> Ist die Maßnahme ethisch, demokratisch und verfassungsrechtlich legitim?</li>
+              </ul>
+            </div>
+          </div>
+          <div style="margin-top: 1.2rem; padding: 0.8rem; background: var(--bg-card); border-radius: var(--radius-sm); border-left: 3px solid var(--accent-politik); font-size: 0.85rem; color: var(--text-primary);">
+            <strong>Schluss-Synthese formulieren:</strong> Ziehe am Ende ein abwägendes, begründetes Fazit mit klarer Haltung:<br>
+            <em>„Zusammenfassend überwiegen aus meiner Sicht die Argumente für/gegen... da zwar pragmatisch gesehen [Sachurteil-Aspekt], jedoch aus normativer Perspektive [Werturteil-Aspekt] von entscheidender Bedeutung ist...“</em>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- POLITIK TOPIC 3: BEGRIFFSTRAINER FLASHCARDS                           -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-politik-flashcards" class="topic-module-box">
+      <section class="p-card" style="max-width: 750px; margin: 0 auto;">
+        <div class="p-card-header">
+          <h3><span>🃏</span> Begriffstrainer (Partizipation &amp; Wahlen)</h3>
+          <span class="p-badge" id="fcTopic">Prüfungswissen</span>
+        </div>
+
+        <!-- 3D Flashcard -->
+        <div class="flashcard-wrapper" onclick="flipFlashcard()">
+          <div class="flashcard" id="interactiveFlashcard">
+            <div class="fc-header-row">
+              <span class="fc-topic-tag">Klausur 15.09.</span>
+              <span class="fc-counter" id="fcNum">Karte 1 von 8</span>
+            </div>
+            <div class="fc-body">
+              <div class="fc-question" id="fcQuestion">Lädt Frage...</div>
+              <div class="fc-answer" id="fcAnswer">Lädt Antwort...</div>
+              <div class="fc-tip" id="fcTip"></div>
+            </div>
+            <div class="fc-click-hint">Klicke auf die Karte, um die Antwort aufzudecken / zu verdecken</div>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="fc-controls">
+          <button class="btn-fc-nav" onclick="prevFlashcard()">&larr; Vorherige</button>
+          <button class="btn-fc-flip" onclick="flipFlashcard()">👁️ Aufdecken / Wenden</button>
+          <button class="btn-fc-nav" onclick="nextFlashcard()">Nächste &rarr;</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- POLITIK TOPIC 4: SPICKZETTEL                                          -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-politik-spickzettel" class="topic-module-box">
+      <section class="p-card">
+        <div class="p-card-header">
+          <h3><span>⚡</span> Der große Klausur-Spickzettel: Partizipation &amp; Wahlen</h3>
+          <span class="p-badge">Prüfungsstoff auf einen Blick</span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem;">
+          <!-- BOX 1: FORMEN DER PARTIZIPATION -->
+          <div class="schema-box" style="border-top: 3px solid var(--accent-math);">
+            <strong style="color: var(--accent-math); font-size: 0.95rem;">1. Formen politischer Partizipation:</strong>
+            <ul style="margin-top: 0.4rem; line-height: 1.5;">
+              <li><strong>Konventionell (im System verankert):</strong><br>
+              Wählen, Mitgliedschaft &amp; Mitarbeit in Parteien, Bürgerinitiativen, Gewerkschaften, formelle Petitionen an den Bundestag (Art. 17 GG).</li>
+              <li style="margin-top: 0.4rem;"><strong>Unkonventionell (außerinstitutionell):</strong><br>
+              Demonstrationen, Protestkundgebungen, Konsumboykotte, Streiks, Flashmobs, Online-Kampagnen.</li>
+              <li style="margin-top: 0.4rem;"><strong>Legal vs. Illegal (Ziviler Ungehorsam):</strong><br>
+              Bewusster Regelbruch aus Gewissensgründen. Kriterien: Gewaltfrei, öffentlich, Appell an die Verfassung, Akzeptanz der rechtlichen Strafe.</li>
+            </ul>
+          </div>
+
+          <!-- BOX 2: WAHLEN & WAHLGRUNDSÄTZE -->
+          <div class="schema-box" style="border-top: 3px solid var(--accent-politik);">
+            <strong style="color: var(--accent-politik); font-size: 0.95rem;">2. Wahlen &amp; die 5 Wahlrechtsgrundsätze (Art. 38 GG):</strong>
+            <ul style="margin-top: 0.4rem; line-height: 1.5;">
+              <li><strong>Allgemein:</strong> Alle wahlberechtigten Staatsbürger unabhängig von Einkommen, Geschlecht oder Religion.</li>
+              <li><strong>Unmittelbar:</strong> Direktwahl der Abgeordneten ohne Zwischeninstanz (keine Wahlmänner wie in den USA).</li>
+              <li><strong>Frei:</strong> Freie Willensbildung ohne Zwang, Druck oder Angst vor Verfolgung.</li>
+              <li><strong>Gleich:</strong> Jede gültige Stimme hat den gleichen Zählwert und gleichen Erfolgswert.</li>
+              <li><strong>Geheim:</strong> Wahlkabine und Wahlurne sichern Anonymität (niemand erfährt das Votum).</li>
+            </ul>
+          </div>
+
+          <!-- BOX 3: FUNKTIONEN VON WAHLEN & PARTIZIPATION -->
+          <div class="schema-box" style="border-top: 3px solid var(--accent-warning);">
+            <strong style="color: var(--accent-warning); font-size: 0.95rem;">3. Die 5 Funktionen von Wahlen &amp; Partizipation:</strong>
+            <ul style="margin-top: 0.4rem; line-height: 1.5;">
+              <li><strong>1. Legitimation:</strong> Verleiht den Gewählten das Recht, im Namen des Volkes Gesetze zu erlassen (Art. 20 Abs. 2 GG: <em>„Alle Staatsgewalt geht vom Volke aus“</em>).</li>
+              <li><strong>2. Kontrolle:</strong> Regierende können durch Abwahl abgestraft oder bestätigt werden (Macht auf Zeit).</li>
+              <li><strong>3. Partizipation:</strong> Bürger nehmen Einfluss auf die politische Richtung.</li>
+              <li><strong>4. Repräsentation:</strong> Der gesellschaftliche Pluralismus wird im Parlament abgebildet.</li>
+              <li><strong>5. Integration:</strong> Bündelt Meinungen und sorgt für friedliche Konfliktlösung (auch Wahlverlierer akzeptieren das Votum).</li>
+            </ul>
+          </div>
+
+          <!-- BOX 4: PARTIZIPATIONSPARADOXON -->
+          <div class="schema-box" style="border-top: 3px solid var(--accent-deutsch);">
+            <strong style="color: var(--accent-deutsch); font-size: 0.95rem;">4. Die soziale Schieflage (Klausur-Highlight für Urteil):</strong>
+            <p style="margin-top: 0.4rem; font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45;">
+              <strong>Das Partizipationsparadoxon:</strong> Formal hat jeder Bürger die gleiche Stimme. Empirisch partizipieren aber vor allem gut Gebildete und Wohlhabende an Wahlen und unkonventionellen Protesten. Einkommensschwache und Bildungsferne ziehen sich oft enttäuscht zurück (<em>Politikverdrossenheit</em>).<br>
+              <strong>Folge:</strong> Die Politik richtet sich oft stärker nach den Interessen der aktiven Wähler &rarr; Gefahr einer Spaltung der Gesellschaft.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- --------------------------------------------------------------------- -->
+    <!-- POLITIK TOPIC 5: NOTIZEN                                              -->
+    <!-- --------------------------------------------------------------------- -->
+    <div id="topic-politik-notizen" class="topic-module-box">
+      <section class="p-card" style="max-width: 850px; margin: 0 auto;">
+        <div class="p-card-header">
+          <h3><span>📝</span> Eigene Notizen &amp; Merkzettel für die Politik-Klausur</h3>
+          <span id="notesSaveStatus" style="font-size: 0.76rem; color: var(--accent-politik); font-weight: 700;"></span>
+        </div>
+        <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 0.8rem;">
+          Halte hier letzte Stichworte, Definitionen, eigene Beispiele oder Formulierungshilfen aus deinem Heft fest. Deine Notizen werden automatisch im Browser gespeichert.
+        </p>
+        <textarea id="userPolitikNotes" class="notes-textarea" style="min-height: 280px; width: 100%;" placeholder="Hier letzte Stichworte, Definitionen oder Merksätze aus deinem Heft notieren (speichert automatisch)..." oninput="saveUserPolitikNotes()"></textarea>
+      </section>
+    </div>
+
+  
+    <!-- ===================================================================== -->
+    <!-- PHYSIK TOPIC 1: SPICKZETTEL & KLAUSURFALLEN                          -->
+    <!-- ===================================================================== -->
+    <!-- PHYSIK TOPIC 1: SPICKZETTEL & KLAUSURFALLEN                          -->
+    <!-- ===================================================================== -->
+    <div id="topic-physik-spickzettel" class="topic-module-box">
+      <section class="p-card">
+        <div class="p-card-header">
+          <h3><span>📌</span> Physik 12 eA: Formelsammlung &amp; Spickzettel</h3>
+          <span class="p-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">Klausur 18.09.</span>
+        </div>
+
+        <!-- Segmented Tab Nav -->
+        <div class="topic-segmented-bar">
+          <button class="topic-segment-btn active" data-tab="formeln" onclick="switchTopicSubTab('physik-spickzettel', 'formeln')">
+            <span>📐</span><span>Alle 6 Kern-Formeln</span>
+          </button>
+          <button class="topic-segment-btn" data-tab="konstanten" onclick="switchTopicSubTab('physik-spickzettel', 'konstanten')">
+            <span>⚡</span><span>Naturkonstanten &amp; Einheiten</span>
+          </button>
+          <button class="topic-segment-btn" data-tab="fallen" onclick="switchTopicSubTab('physik-spickzettel', 'fallen')">
+            <span>⚠️</span><span>Die 5 Klausurfallen</span>
+          </button>
+        </div>
+
+        <!-- PANE 1: FORMELN (HERO CARDS) -->
+        <div class="topic-tab-pane active-pane" data-pane="formeln">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.2rem;">
+            <!-- CARD 1: COULOMB -->
+            <div class="formula-hero-card" style="padding: 1.2rem; text-align: left;">
+              <div class="formula-hero-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">Coulombsches Gesetz</div>
+              <div class="formula-math-display katex-render" data-latex="F_C = \frac{1}{4\pi\varepsilon_0} \cdot \frac{|Q_1 \cdot Q_2|}{r^2}">
+                F<sub>C</sub> = &frac14;&pi;&epsilon;<sub>0</sub> &bull; |Q<sub>1</sub> &bull; Q<sub>2</sub>| / r&sup2;
+              </div>
+              <div class="formula-takeaway-box" style="background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b;">
+                💡 <strong>Klausur-Merker:</strong> Kraft sinkt quadratisch mit dem Abstand (1/r&sup2;)!
+              </div>
+            </div>
+
+            <!-- CARD 2: E-FELD -->
+            <div class="formula-hero-card" style="padding: 1.2rem; text-align: left;">
+              <div class="formula-hero-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">Elektrisches Feld</div>
+              <div class="formula-math-display katex-render" data-latex="E = \frac{U}{d} \quad \text{und} \quad F_{\text{el}} = q \cdot E">
+                E = U / d &nbsp;|&nbsp; F<sub>el</sub> = q &bull; E
+              </div>
+              <div class="formula-takeaway-box" style="background: rgba(6, 182, 212, 0.08); border-left: 3px solid #06b6d4;">
+                💡 <strong>Klausur-Merker:</strong> E = U/d gilt <em>nur</em> im Plattenkondensator (homogen)!
+              </div>
+            </div>
+
+            <!-- CARD 3: KONDENSATOR KAPAZITÄT -->
+            <div class="formula-hero-card" style="padding: 1.2rem; text-align: left;">
+              <div class="formula-hero-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">Kondensator-Kapazit&auml;t</div>
+              <div class="formula-math-display katex-render" data-latex="C = \frac{Q}{U} = \varepsilon_0 \cdot \varepsilon_r \cdot \frac{A}{d}">
+                C = Q / U = &epsilon;<sub>0</sub> &bull; &epsilon;<sub>r</sub> &bull; (A / d)
+              </div>
+              <div class="formula-takeaway-box" style="background: rgba(56, 189, 248, 0.08); border-left: 3px solid #38bdf8;">
+                💡 <strong>Klausur-Merker:</strong> A in m&sup2;, d in m &rarr; Kapazität in Farad [F].
+              </div>
+            </div>
+
+            <!-- CARD 4: KRAFT AUF WAAGE -->
+            <div class="formula-hero-card" style="padding: 1.2rem; text-align: left;">
+              <div class="formula-hero-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">Kondensator-Kraft (Waage)</div>
+              <div class="formula-math-display katex-render" data-latex="F = \frac{1}{2} \cdot \varepsilon_0 \cdot \frac{A}{d^2} \cdot U^2">
+                F = &frac12; &bull; &epsilon;<sub>0</sub> &bull; (A / d&sup2;) &bull; U&sup2;
+              </div>
+              <div class="formula-takeaway-box" style="background: rgba(99, 102, 241, 0.08); border-left: 3px solid #818cf8;">
+                💡 <strong>Klausur-Merker:</strong> F wächst quadratisch mit U&sup2;! Linearisierung: F über U&sup2;.
+              </div>
+            </div>
+
+            <!-- CARD 5: ENERGIE -->
+            <div class="formula-hero-card" style="padding: 1.2rem; text-align: left;">
+              <div class="formula-hero-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">Feldenergie</div>
+              <div class="formula-math-display katex-render" data-latex="W_{\text{el}} = \frac{1}{2} \cdot C \cdot U^2 = \frac{1}{2} \cdot Q \cdot U">
+                W<sub>el</sub> = &frac12; &bull; C &bull; U&sup2; = &frac12; &bull; Q &bull; U
+              </div>
+              <div class="formula-takeaway-box" style="background: rgba(16, 185, 129, 0.08); border-left: 3px solid #10b981;">
+                💡 <strong>Klausur-Merker:</strong> Energie ist im Raum zwischen den Platten gespeichert.
+              </div>
+            </div>
+
+            <!-- CARD 6: FADENPENDEL -->
+            <div class="formula-hero-card" style="padding: 1.2rem; text-align: left;">
+              <div class="formula-hero-badge" style="background: rgba(244, 63, 94, 0.15); color: #f43f5e;">Kr&auml;ftedreieck am Pendel</div>
+              <div class="formula-math-display katex-render" data-latex="\tan(\alpha) = \frac{F_C}{F_G} \implies F_C = m \cdot g \cdot \tan(\alpha)">
+                tan(&alpha;) = F<sub>C</sub> / F<sub>G</sub> = F<sub>C</sub> / (m &bull; g)
+              </div>
+              <div class="formula-takeaway-box" style="background: rgba(244, 63, 94, 0.08); border-left: 3px solid #f43f5e;">
+                💡 <strong>Klausur-Merker:</strong> F<sub>C</sub> horizontal, F<sub>G</sub> vertikal &rarr; tan(&alpha;)!
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: KONSTANTEN -->
+        <div class="topic-tab-pane" data-pane="konstanten">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem;">
+            <div class="formula-hero-card" style="text-align: left; padding: 1.4rem;">
+              <span class="p-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">Elektrische Feldkonstante</span>
+              <div class="formula-math-display katex-render" data-latex="\varepsilon_0 \approx 8{,}854 \cdot 10^{-12} \, \frac{\text{A}\cdot\text{s}}{\text{V}\cdot\text{m}}">
+                &epsilon;<sub>0</sub> &asymp; 8,854 &bull; 10<sup>-12</sup> As/(Vm)
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0;">
+                Im Coulomb-Gesetz: <code>1 / (4&pi;&epsilon;<sub>0</sub>) &asymp; 8,988 &bull; 10<sup>9</sup> Vm/As</code>.
+              </p>
+            </div>
+
+            <div class="formula-hero-card" style="text-align: left; padding: 1.4rem;">
+              <span class="p-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">Elementarladung &amp; Elektron</span>
+              <div class="formula-math-display katex-render" data-latex="e \approx 1{,}602 \cdot 10^{-19} \, \text{C} \quad | \quad m_e \approx 9{,}109 \cdot 10^{-31} \, \text{kg}">
+                e &asymp; 1,602 &bull; 10<sup>-19</sup> C | m<sub>e</sub> &asymp; 9,109 &bull; 10<sup>-31</sup> kg
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0;">
+                Ladung eines Elektrons ist negativ (q = -e), Masse ist winzig.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: FALLEN -->
+        <div class="topic-tab-pane" data-pane="fallen">
+          <div class="visual-bullet-grid">
+            <div class="visual-bullet-card" style="border-left: 4px solid #ef4444;">
+              <div class="bullet-icon">⚠️</div>
+              <div class="bullet-content">
+                <h4>1. Quadrat im Nenner nicht vergessen!</h4>
+                <p>Coulomb hat <code>r&sup2;</code> und Plattenkraft hat <code>d&sup2;</code>. Niemals ohne Quadrat rechnen!</p>
+              </div>
+            </div>
+            <div class="visual-bullet-card" style="border-left: 4px solid #f59e0b;">
+              <div class="bullet-icon">📏</div>
+              <div class="bullet-content">
+                <h4>2. Vor dem Einsetzen in Meter &amp; Coulomb!</h4>
+                <p>5 cm &rarr; <code>0,05 m</code>. 10 &mu;C &rarr; <code>10&bull;10<sup>-6</sup> C</code>. 470 pF &rarr; <code>470&bull;10<sup>-12</sup> F</code>.</p>
+              </div>
+            </div>
+            <div class="visual-bullet-card" style="border-left: 4px solid #38bdf8;">
+              <div class="bullet-icon">⚡</div>
+              <div class="bullet-content">
+                <h4>3. E = U/d nur im Plattenkondensator!</h4>
+                <p>Bei Punktladungen ist das Feld inhomogen: <code>E = 1/(4&pi;&epsilon;<sub>0</sub>) &bull; Q/r&sup2;</code>.</p>
+              </div>
+            </div>
+            <div class="visual-bullet-card" style="border-left: 4px solid #10b981;">
+              <div class="bullet-icon">🤝</div>
+              <div class="bullet-content">
+                <h4>4. Ladungsaufteilung bei Ber&uuml;hrung</h4>
+                <p>Zwei identische Kugeln teilen ihre Gesamtladung symmetrisch: <code>Q' = (Q<sub>1</sub> + Q<sub>2</sub>) / 2</code>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- PHYSIK TOPIC 2: MESSWERTE AUSWERTEN & LINEARISIERUNG (AB06 & AB08)    -->
+    <!-- ===================================================================== -->
+    <div id="topic-physik-auswertung" class="topic-module-box">
+      <section class="p-card">
+        <div class="p-card-header">
+          <h3><span>📊</span> Messwerte auswerten: Die 2 Unterrichts-Experimente</h3>
+          <span class="p-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8;">AB06 &amp; AB08</span>
+        </div>
+
+        <!-- Segmented Tab Nav -->
+        <div class="topic-segmented-bar">
+          <button class="topic-segment-btn active" data-tab="ab06" onclick="switchTopicSubTab('physik-auswertung', 'ab06')">
+            <span>⚖️</span><span>1. Waage-Versuch (&epsilon;<sub>0</sub> bestimmen)</span>
+          </button>
+          <button class="topic-segment-btn" data-tab="ab08" onclick="switchTopicSubTab('physik-auswertung', 'ab08')">
+            <span>📈</span><span>2. Entladekurve (Ladung Q z&auml;hlen)</span>
+          </button>
+          <button class="topic-segment-btn" data-tab="quiz" onclick="switchTopicSubTab('physik-auswertung', 'quiz')">
+            <span>🎯</span><span>Klausur-Rechenbeispiel</span>
+          </button>
+        </div>
+
+        <!-- PANE 1: AB06 WAAGE VERSUCH -->
+        <div class="topic-tab-pane active-pane" data-pane="ab06">
+          <!-- FORMULA HERO CARD MIT KATEX & FARBLICHEN VARIABLEN-PILLS -->
+          <div class="formula-hero-card" style="border-left: 6px solid #6366f1;">
+            <span class="formula-hero-badge" style="background: rgba(99, 102, 241, 0.15); color: #6366f1;">
+              AB06: Physikalische Formel &amp; Linearisierung
+            </span>
+            
+            <div class="formula-math-display katex-render" data-latex="F = \frac{1}{2} \cdot \varepsilon_0 \cdot \frac{A}{d^2} \cdot U^2 \iff \underbrace{F}_{y} = \underbrace{\left( \frac{\varepsilon_0 \cdot A}{2 \cdot d^2} \right)}_{m} \cdot \underbrace{U^2}_{x}">
+              F = &frac12; &bull; &epsilon;<sub>0</sub> &bull; (A / d&sup2;) &bull; U&sup2;
+            </div>
+
+            <!-- Variable Pills -->
+            <div class="variable-pills-grid">
+              <div class="var-pill-card" style="border-left: 3px solid #38bdf8;">
+                <strong>F (y-Achse)</strong>
+                <span>Kraft auf die Waage [N]</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #f43f5e;">
+                <strong>U&sup2; (x-Achse)</strong>
+                <span>Quadrierte Spannung [V&sup2;]</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #10b981;">
+                <strong>m (Steigung)</strong>
+                <span>m = &Delta;F / &Delta;(U&sup2;) [N/V&sup2;]</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #f59e0b;">
+                <strong>&epsilon;<sub>0</sub> (Gesucht)</strong>
+                <span>&epsilon;<sub>0</sub> = (2 &bull; d&sup2; &bull; m) / A</span>
+              </div>
+            </div>
+
+            <div class="formula-takeaway-box" style="background: rgba(99, 102, 241, 0.08); border-left: 3px solid #6366f1; margin-top: 1.2rem;">
+              💡 <strong>Der Trick der Linearisierung:</strong> Da der Graph <code>F(U)</code> eine gekrümmte Parabel wäre, trägt man <code>F</code> über <strong><code>U&sup2;</code></strong> auf &rarr; Man erhält eine perfekte <strong>Ursprungsgerade</strong>, deren Steigung <code>m</code> man mit dem Steigungsdreieck abliest!
+            </div>
+          </div>
+
+          <!-- 3-SCHRITT AUSWERTUNG -->
+          <div class="visual-bullet-grid">
+            <div class="visual-bullet-card">
+              <div class="bullet-icon">1️⃣</div>
+              <div class="bullet-content">
+                <h4>Wertetabelle erweitern</h4>
+                <p>Für jeden Messwert U den Wert <code>U&sup2;</code> berechnen.</p>
+              </div>
+            </div>
+            <div class="visual-bullet-card">
+              <div class="bullet-icon">2️⃣</div>
+              <div class="bullet-content">
+                <h4>Steigungsdreieck einzeichnen</h4>
+                <p>Steigung der Ausgleichsgerade bestimmen: <code>m = &Delta;F / &Delta;(U&sup2;)</code>.</p>
+              </div>
+            </div>
+            <div class="visual-bullet-card">
+              <div class="bullet-icon">3️⃣</div>
+              <div class="bullet-content">
+                <h4>Nach &epsilon;<sub>0</sub> auflösen</h4>
+                <p>Einsetzen in <code>&epsilon;<sub>0</sub> = (2 &bull; d&sup2; &bull; m) / A</code> &rarr; Fertig!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: AB08 FLÄCHENZÄHLUNG -->
+        <div class="topic-tab-pane" data-pane="ab08">
+          <div class="formula-hero-card" style="border-left: 6px solid #10b981;">
+            <span class="formula-hero-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+              AB08: Ladungsbestimmung durch Fl&auml;chenintegral
+            </span>
+
+            <div class="formula-math-display katex-render" data-latex="Q_0 = \int_0^\infty I(t) \, dt \approx \sum \left( \text{Kästchen} \cdot A_{\text{Kästchen}} \right)">
+              Q<sub>0</sub> = &int; I(t) dt &asymp; &sum; (K&auml;stchen &bull; A<sub>K&auml;stchen</sub>)
+            </div>
+
+            <div class="variable-pills-grid">
+              <div class="var-pill-card" style="border-left: 3px solid #10b981;">
+                <strong>A<sub>K&auml;stchen</sub></strong>
+                <span>Wert 1 K&auml;stchens = &Delta;t &bull; &Delta;I</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #38bdf8;">
+                <strong>Anzahl K&auml;stchen</strong>
+                <span>Unter der I(t)-Kurve z&auml;hlen</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #f59e0b;">
+                <strong>Q<sub>0</sub> [Coulomb]</strong>
+                <span>Q<sub>0</sub> = Anzahl &bull; A<sub>K&auml;stchen</sub></span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #818cf8;">
+                <strong>Kapazit&auml;t C</strong>
+                <span>C = Q<sub>0</sub> / U<sub>0</sub></span>
+              </div>
+            </div>
+
+            <div class="formula-takeaway-box" style="background: rgba(16, 185, 129, 0.08); border-left: 3px solid #10b981; margin-top: 1.2rem;">
+              💡 <strong>In 1 Satz:</strong> Da Strom <code>I = &Delta;Q / &Delta;t</code> ist, entspricht die <strong>Fl&auml;che unter dem Strom-Zeit-Graphen</strong> exakt der gesamten gespeicherten Ladung <code>Q<sub>0</sub></code>!
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: KLAUSUR-RECHENBEISPIEL -->
+        <div class="topic-tab-pane" data-pane="quiz">
+          <div class="single-task-card">
+            <div class="task-prompt-box">
+              <strong>Klausur-Aufgabe (Original aus AB06):</strong><br>
+              In einem Versuch zur Bestimmung von &epsilon;<sub>0</sub> hat der Plattenkondensator den Plattenabstand <code>d = 2,0 cm</code> und die Fl&auml;che <code>A = 0,05 m&sup2;</code>. Aus dem Graphen <code>F</code> &uuml;ber <code>U&sup2;</code> liest du aus dem Steigungsdreieck die Steigung <code>m = 5,53 &bull; 10<sup>-8</sup> N/V&sup2;</code> ab.<br>
+              Berechne daraus die elektrische Feldkonstante &epsilon;<sub>0</sub>.
+            </div>
+
+            <div class="task-values-grid">
+              <span class="task-val-badge">Gegeben: <strong>d = 0,02 m</strong></span>
+              <span class="task-val-badge">Gegeben: <strong>A = 0,05 m&sup2;</strong></span>
+              <span class="task-val-badge">Gegeben: <strong>m = 5,53&bull;10<sup>-8</sup> N/V&sup2;</strong></span>
+              <span class="task-val-badge">Gesucht: <strong>&epsilon;<sub>0</sub></strong></span>
+            </div>
+
+            <button class="btn-reveal-card" onclick="toggleSolution('solAuswertung', this)">
+              👁️ L&ouml;sungsschritte aufdecken
+            </button>
+
+            <div class="task-solution-container" id="solAuswertung">
+              <div style="font-weight: 700; color: #10b981; margin-bottom: 0.6rem;">✓ Schritt-für-Schritt Musterlösung:</div>
+              <div class="katex-render" data-latex="\varepsilon_0 = \frac{2 \cdot d^2 \cdot m}{A} = \frac{2 \cdot (0{,}02\,\text{m})^2 \cdot 5{,}53 \cdot 10^{-8}\,\frac{\text{N}}{\text{V}^2}}{0{,}05\,\text{m}^2}"></div>
+              <div class="katex-render" data-latex="\varepsilon_0 = \frac{2 \cdot 0{,}0004 \cdot 5{,}53 \cdot 10^{-8}}{0{,}05} = 8{,}85 \cdot 10^{-12} \, \frac{\text{A}\cdot\text{s}}{\text{V}\cdot\text{m}}"></div>
+              <p style="margin-top: 0.6rem; font-size: 0.84rem; color: var(--text-primary);">
+                <strong>Ergebnis:</strong> Der berechnete Wert stimmt exakt mit der Literaturkonstante <code>&epsilon;<sub>0</sub> = 8,854&bull;10<sup>-12</sup> As/(Vm)</code> überein! Volle Punktzahl.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- PHYSIK TOPIC 3: EIGENER MERKZETTEL                                    -->
+    <!-- ===================================================================== -->
+    <div id="topic-physik-notizen" class="topic-module-box">
+      <section class="p-card" style="max-width: 850px; margin: 0 auto;">
+        <div class="p-card-header">
+          <h3><span>📝</span> Mein digitaler Klausur-Merkzettel (Physik eA)</h3>
+          <span id="physikNotesSaveStatus" style="font-size: 0.76rem; color: #10b981; font-weight: 700;">Auto-Save Aktiv</span>
+        </div>
+        <p style="font-size: 0.84rem; color: var(--text-secondary); margin-bottom: 0.8rem;">
+          Schreibe hier letzte Formulierungen, Rechenschritte oder pers&ouml;nliche Merks&auml;tze ein. Deine Notizen werden automatisch gesichert.
+        </p>
+        <textarea id="userPhysikNotes" class="notes-textarea" style="min-height: 280px; width: 100%;" placeholder="Hier letzte Stichworte, Definitionen oder Merksätze aus deinem Heft notieren (speichert automatisch)..." oninput="savePhysikNotes()"></textarea>
+      </section>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- PHYSIK TOPIC 4: ELEKTROSTATIK & ELEKTROSKOP-SIMULATOR                  -->
+    <!-- ===================================================================== -->
+    <div id="topic-physik-elektrostatik" class="topic-module-box">
+      <section class="p-card">
+        <div class="p-card-header">
+          <h3><span>🔬</span> Elektrostatik, Influenz &amp; Elektroskop</h3>
+          <span class="p-badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">Ladungstrennung</span>
+        </div>
+
+        <div class="topic-segmented-bar">
+          <button class="topic-segment-btn active" data-tab="konzept" onclick="switchTopicSubTab('physik-elektrostatik', 'konzept')">
+            <span>👁️</span><span>Das Konzept (In 10 Sek.)</span>
+          </button>
+          <button class="topic-segment-btn" data-tab="sim" onclick="switchTopicSubTab('physik-elektrostatik', 'sim')">
+            <span>🎮</span><span>Virtuelles Elektroskop</span>
+          </button>
+          <button class="topic-segment-btn" data-tab="quiz" onclick="switchTopicSubTab('physik-elektrostatik', 'quiz')">
+            <span>🎯</span><span>Typische Klausurfrage</span>
+          </button>
+        </div>
+
+        <!-- PANE 1: KONZEPT -->
+        <div class="topic-tab-pane active-pane" data-pane="konzept">
+          <div class="visual-bullet-grid">
+            <div class="visual-bullet-card" style="border-left: 4px solid #06b6d4;">
+              <div class="bullet-icon">🧲</div>
+              <div class="bullet-content">
+                <h4>Influenz (In Leitern / Metallen)</h4>
+                <p>Freie Elektronen verschieben sich durch die Kraft des äußeren Feldes berührungslos durch das Metall.</p>
+              </div>
+            </div>
+            <div class="visual-bullet-card" style="border-left: 4px solid #818cf8;">
+              <div class="bullet-icon">🧱</div>
+              <div class="bullet-content">
+                <h4>Polarisation (In Isolatoren)</h4>
+                <p>Elektronen können das Atom nicht verlassen; Atomhüllen verformen sich nur leicht (Dipolbildung).</p>
+              </div>
+            </div>
+            <div class="visual-bullet-card" style="border-left: 4px solid #10b981;">
+              <div class="bullet-icon">🛡️</div>
+              <div class="bullet-content">
+                <h4>Faradayscher K&auml;fig</h4>
+                <p>Im Inneren geschlossener Metallk&ouml;rper ist das elektrische Feld exakt <code>E = 0</code>!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: SIMULATOR -->
+        <div class="topic-tab-pane" data-pane="sim">
+          <div class="sim-container">
+            <div class="sim-header">
+              <div class="sim-title">
+                <span>⚡</span>
+                <span>Influenz-Simulator: Stab ann&auml;hern &amp; Zeigerausschlag</span>
+              </div>
+              <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                <button class="sim-btn-secondary" id="btnToggleRodCharge">⚡ Stab: Negativ (-)</button>
+                <button class="sim-btn-action" id="btnGroundElectroscope">👉 Erden (mit Finger ber&uuml;hren)</button>
+                <button class="sim-btn-secondary" id="btnResetElectroscope">🔄 Entladen</button>
+              </div>
+            </div>
+
+            <div class="sim-canvas-wrapper">
+              <canvas id="electroscopeCanvas" width="560" height="300"></canvas>
+            </div>
+
+            <div class="sim-controls-grid">
+              <div class="sim-control-group">
+                <div class="sim-label-row">
+                  <span>Stab-Abstand zum Teller:</span>
+                  <span id="valRodDist" style="color:#38bdf8;">12.0 cm</span>
+                </div>
+                <input type="range" id="rodDistSlider" class="sim-slider" min="0" max="15" step="0.2" value="12">
+              </div>
+            </div>
+
+            <div class="sim-result-box" id="electroscopeResultBox">
+              Lade Simulator...
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: QUIZ -->
+        <div class="topic-tab-pane" data-pane="quiz">
+          <div class="single-task-card">
+            <div class="task-prompt-box">
+              <strong>Klausur-Klassiker:</strong><br>
+              Ein ungeladenes Elektroskop wird durch Annäherung eines <strong>negativ geladenen Stabs</strong> beeinflusst. Während der Stab da ist, wird der Teller kurz mit dem Finger geerdet und der Finger wieder entfernt. Danach wird der Stab weggenommen.<br>
+              Welche Ladung hat das Elektroskop nun und warum?
+            </div>
+
+            <button class="btn-reveal-card" onclick="toggleSolution('solElektrostatik', this)">
+              👁️ L&ouml;sungsschritte aufdecken
+            </button>
+
+            <div class="task-solution-container" id="solElektrostatik">
+              <ol style="margin-left: 1.2rem; line-height: 1.6; font-size: 0.88rem;">
+                <li>Der negative Stab st&ouml;&szlig;t Elektronen ab. Bei Ber&uuml;hrung mit dem Finger flie&szlig;en Elektronen in die Erde ab.</li>
+                <li>Wird der Finger weggenommen, k&ouml;nnen sie nicht mehr zur&uuml;ck.</li>
+                <li>Wird der Stab entfernt, herrscht ein <strong>Elektronenmangel</strong>: Das Elektroskop ist <strong>dauerhaft positiv geladen</strong>!</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- PHYSIK TOPIC 5: E-FELD & PLATTENKONDENSATOR                            -->
+    <!-- ===================================================================== -->
+    <div id="topic-physik-efeld" class="topic-module-box">
+      <section class="p-card">
+        <div class="p-card-header">
+          <h3><span>⚡</span> Elektrisches Feld &amp; Plattenkondensator</h3>
+          <span class="p-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">Elektronenstrahl</span>
+        </div>
+
+        <div class="topic-segmented-bar">
+          <button class="topic-segment-btn active" data-tab="formel" onclick="switchTopicSubTab('physik-efeld', 'formel')">
+            <span>👁️</span><span>E-Feld Formeln</span>
+          </button>
+          <button class="topic-segment-btn" data-tab="sim" onclick="switchTopicSubTab('physik-efeld', 'sim')">
+            <span>🎮</span><span>Elektronenstrahl-Simulator</span>
+          </button>
+          <button class="topic-segment-btn" data-tab="quiz" onclick="switchTopicSubTab('physik-efeld', 'quiz')">
+            <span>🎯</span><span>Klausur-Aufgabe</span>
+          </button>
+        </div>
+
+        <!-- PANE 1: FORMEL HERO -->
+        <div class="topic-tab-pane active-pane" data-pane="formel">
+          <div class="formula-hero-card" style="border-left: 6px solid #38bdf8;">
+            <span class="formula-hero-badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
+              Homogenes Feld &amp; Kraft
+            </span>
+
+            <div class="formula-math-display katex-render" data-latex="E = \frac{U}{d} \quad \text{und} \quad F_{\text{el}} = e \cdot E \implies a_y = \frac{e \cdot E}{m_e}">
+              E = U / d &nbsp;|&nbsp; F<sub>el</sub> = e &bull; E &rArr; a<sub>y</sub> = e &bull; E / m<sub>e</sub>
+            </div>
+
+            <div class="variable-pills-grid">
+              <div class="var-pill-card" style="border-left: 3px solid #38bdf8;">
+                <strong>E [V/m oder N/C]</strong>
+                <span>Elektrische Feldst&auml;rke</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #f59e0b;">
+                <strong>U [Volt]</strong>
+                <span>Plattenspannung</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #10b981;">
+                <strong>d [Meter]</strong>
+                <span>Plattenabstand</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #f43f5e;">
+                <strong>y(x) &prop; x&sup2;</strong>
+                <span>Exakte Parabelbahn</span>
+              </div>
+            </div>
+
+            <div class="formula-takeaway-box" style="background: rgba(56, 189, 248, 0.08); border-left: 3px solid #38bdf8; margin-top: 1.2rem;">
+              💡 <strong>In 1 Satz:</strong> Im homogenen Feld ist die Feldstärke <code>E</code> an jedem Punkt exakt gleich groß und die Feldlinien stehen senkrecht auf den Platten!
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: SIMULATOR -->
+        <div class="topic-tab-pane" data-pane="sim">
+          <div class="sim-container">
+            <div class="sim-header">
+              <div class="sim-title">
+                <span>🚀</span>
+                <span>Plattenkondensator &amp; Elektronenstrahl-Ablenkung</span>
+              </div>
+              <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                <button class="sim-btn-action" id="btnEfeldFire">🚀 Elektron abfeuern</button>
+                <button class="sim-btn-secondary" id="btnEfeldStream">⚡ Dauerhafter Strahl</button>
+                <button class="sim-btn-secondary" id="btnEfeldPolarity">🔄 Polung umkehren</button>
+              </div>
+            </div>
+
+            <div class="sim-canvas-wrapper">
+              <canvas id="efeldCanvas" width="560" height="300"></canvas>
+            </div>
+
+            <div class="sim-controls-grid">
+              <div class="sim-control-group">
+                <div class="sim-label-row">
+                  <span>Spannung U:</span>
+                  <span id="valEfeldU" style="color:#38bdf8;">500 V</span>
+                </div>
+                <input type="range" id="efeldSliderU" class="sim-slider" min="0" max="1000" step="25" value="500">
+              </div>
+
+              <div class="sim-control-group">
+                <div class="sim-label-row">
+                  <span>Plattenabstand d:</span>
+                  <span id="valEfeldD" style="color:#38bdf8;">5.0 cm</span>
+                </div>
+                <input type="range" id="efeldSliderD" class="sim-slider" min="2" max="10" step="0.5" value="5">
+              </div>
+            </div>
+
+            <div class="sim-result-box" id="efeldResultBox">
+              Lade E-Feld-Simulator...
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: QUIZ -->
+        <div class="topic-tab-pane" data-pane="quiz">
+          <div class="single-task-card">
+            <div class="task-prompt-box">
+              <strong>Aufgabe:</strong><br>
+              An einem Plattenkondensator mit Abstand <code>d = 4,0 cm</code> liegt die Spannung <code>U = 600 V</code> an. Berechne die Feldstärke <code>E</code> und die elektrische Kraft auf ein Elektron (<code>e = 1,602&bull;10<sup>-19</sup> C</code>).
+            </div>
+
+            <button class="btn-reveal-card" onclick="toggleSolution('solEfeld', this)">
+              👁️ L&ouml;sungsschritte aufdecken
+            </button>
+
+            <div class="task-solution-container" id="solEfeld">
+              <div class="katex-render" data-latex="E = \frac{U}{d} = \frac{600\,\text{V}}{0{,}04\,\text{m}} = 15.000\,\frac{\text{V}}{\text{m}} = 15\,\frac{\text{kV}}{\text{m}}"></div>
+              <div class="katex-render" data-latex="F_{\text{el}} = e \cdot E = (1{,}602 \cdot 10^{-19}\,\text{C}) \cdot 15.000\,\frac{\text{N}}{\text{C}} \approx 2{,}40 \cdot 10^{-15}\,\text{N}"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- PHYSIK TOPIC 6: COULOMB-GESETZ & AB10 AUFGABEN 1-5                    -->
+    <!-- ===================================================================== -->
+    <div id="topic-physik-coulomb" class="topic-module-box">
+      <section class="p-card">
+        <div class="p-card-header">
+          <h3><span>⚖️</span> Coulombsches Gesetz &amp; Kr&auml;ftedreieck</h3>
+          <span class="p-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">AB10 Aufgaben 1–5</span>
+        </div>
+
+        <div class="topic-segmented-bar">
+          <button class="topic-segment-btn active" data-tab="formel" onclick="switchTopicSubTab('physik-coulomb', 'formel')">
+            <span>👁️</span><span>Coulomb &amp; Kr&auml;ftedreieck</span>
+          </button>
+          <button class="topic-segment-btn" data-tab="sim" onclick="switchTopicSubTab('physik-coulomb', 'sim')">
+            <span>🎮</span><span>Vektor-Simulator</span>
+          </button>
+          <button class="topic-segment-btn" data-tab="ab10" onclick="switchTopicSubTab('physik-coulomb', 'ab10')">
+            <span>🎯</span><span>AB10 Aufgaben 1–5 gel&ouml;st</span>
+          </button>
+        </div>
+
+        <!-- PANE 1: FORMEL HERO -->
+        <div class="topic-tab-pane active-pane" data-pane="formel">
+          <div class="formula-hero-card" style="border-left: 6px solid #f59e0b;">
+            <span class="formula-hero-badge" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;">
+              Coulombsches Gesetz &amp; Fadenpendel
+            </span>
+
+            <div class="formula-math-display katex-render" data-latex="F_C = \frac{1}{4\pi\varepsilon_0} \cdot \frac{|Q_1 \cdot Q_2|}{r^2} \quad \iff \quad \tan(\alpha) = \frac{F_C}{F_G} = \frac{F_C}{m \cdot g}">
+              F<sub>C</sub> = &frac14;&pi;&epsilon;<sub>0</sub> &bull; |Q<sub>1</sub> &bull; Q<sub>2</sub>| / r&sup2;
+            </div>
+
+            <div class="variable-pills-grid">
+              <div class="var-pill-card" style="border-left: 3px solid #f59e0b;">
+                <strong>F<sub>C</sub> [Newton]</strong>
+                <span>Coulomb-Kraft</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #38bdf8;">
+                <strong>Q<sub>1</sub>, Q<sub>2</sub> [Coulomb]</strong>
+                <span>Punktladungen</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #f43f5e;">
+                <strong>r&sup2; [m&sup2;]</strong>
+                <span>Quadrat des Abstands!</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #10b981;">
+                <strong>&alpha; [Grad]</strong>
+                <span>Auslenkungswinkel am Pendel</span>
+              </div>
+            </div>
+
+            <div class="formula-takeaway-box" style="background: rgba(245, 158, 11, 0.08); border-left: 3px solid #f59e0b; margin-top: 1.2rem;">
+              💡 <strong>In 1 Satz:</strong> Gleichnamige Ladungen stoßen sich ab (+/+ oder -/-), ungleichnamige ziehen sich an (+/-). Bei halbiertem Abstand vervierfacht sich die Kraft!
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: SIMULATOR -->
+        <div class="topic-tab-pane" data-pane="sim">
+          <div class="sim-container">
+            <div class="sim-header">
+              <div class="sim-title">
+                <span>📐</span>
+                <span>Coulomb-Kräfte-Vektor-Simulator</span>
+              </div>
+              <span style="font-size: 0.78rem; color: var(--text-muted);">Actio = Reactio</span>
+            </div>
+
+            <div class="sim-canvas-wrapper">
+              <canvas id="coulombCanvas" width="560" height="280"></canvas>
+            </div>
+
+            <div class="sim-controls-grid">
+              <div class="sim-control-group">
+                <div class="sim-label-row">
+                  <span>Ladung Q<sub>1</sub>:</span>
+                  <span id="valCoulombQ1" style="color:#ef4444;">+5.0 &mu;C</span>
+                </div>
+                <input type="range" id="coulombSliderQ1" class="sim-slider" min="-10" max="10" step="0.5" value="5">
+              </div>
+
+              <div class="sim-control-group">
+                <div class="sim-label-row">
+                  <span>Ladung Q<sub>2</sub>:</span>
+                  <span id="valCoulombQ2" style="color:#3b82f6;">-5.0 &mu;C</span>
+                </div>
+                <input type="range" id="coulombSliderQ2" class="sim-slider" min="-10" max="10" step="0.5" value="-5">
+              </div>
+
+              <div class="sim-control-group">
+                <div class="sim-label-row">
+                  <span>Abstand r:</span>
+                  <span id="valCoulombR" style="color:#f59e0b;">10 cm</span>
+                </div>
+                <input type="range" id="coulombSliderR" class="sim-slider" min="2" max="20" step="1" value="10">
+              </div>
+            </div>
+
+            <div class="sim-result-box" id="coulombResultBox">
+              Lade Coulomb-Simulator...
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: AB10 1-AT-A-TIME CAROUSEL -->
+        <div class="topic-tab-pane" data-pane="ab10" id="ab10Container">
+          <div class="quiz-segmented-selector">
+            <button class="quiz-pill-button active" onclick="showQuizTask('ab10Container', 0)">Aufgabe 1: Kraft</button>
+            <button class="quiz-pill-button" onclick="showQuizTask('ab10Container', 1)">Aufgabe 2: Abstand</button>
+            <button class="quiz-pill-button" onclick="showQuizTask('ab10Container', 2)">Aufgabe 3: Ber&uuml;hrung</button>
+            <button class="quiz-pill-button" onclick="showQuizTask('ab10Container', 3)">Aufgabe 4: Pendel</button>
+            <button class="quiz-pill-button" onclick="showQuizTask('ab10Container', 4)">Aufgabe 5: Gravitation</button>
+          </div>
+
+          <!-- AUFGABE 1 -->
+          <div class="single-task-card">
+            <div class="task-prompt-box">
+              <strong>Aufgabe 1: Kraft zwischen zwei Punktladungen</strong><br>
+              Zwei Kugeln tragen die Ladungen <code>Q<sub>1</sub> = 2 &mu;C</code> und <code>Q<sub>2</sub> = -3 &mu;C</code> im Abstand <code>r = 15 cm</code>. Berechne die Coulomb-Kraft.
+            </div>
+            <button class="btn-reveal-card" onclick="toggleSolution('solAb10_1', this)">👁️ L&ouml;sungsschritte aufdecken</button>
+            <div class="task-solution-container" id="solAb10_1">
+              <div class="katex-render" data-latex="F_C = 8{,}988 \cdot 10^9 \cdot \frac{2 \cdot 10^{-6}\,\text{C} \cdot 3 \cdot 10^{-6}\,\text{C}}{(0{,}15\,\text{m})^2} \approx 2{,}40\,\text{N}"></div>
+              <p style="margin-top:0.4rem; color:#38bdf8; font-weight:700;">&rarr; Anziehende Kraft von 2,40 N.</p>
+            </div>
+          </div>
+
+          <!-- AUFGABE 2 -->
+          <div class="single-task-card" style="display:none;">
+            <div class="task-prompt-box">
+              <strong>Aufgabe 2: Abstand berechnen</strong><br>
+              Zwei gleiche Ladungen von je <code>Q = 10 nC</code> stoßen sich mit <code>F = 1 mN</code> ab. Welchen Abstand haben sie?
+            </div>
+            <button class="btn-reveal-card" onclick="toggleSolution('solAb10_2', this)">👁️ L&ouml;sungsschritte aufdecken</button>
+            <div class="task-solution-container" id="solAb10_5">
+              <div class="katex-render" data-latex="r = \sqrt{\frac{1}{4\pi\varepsilon_0} \cdot \frac{Q^2}{F}} = \sqrt{\frac{8{,}988\cdot 10^9 \cdot (10^{-8})^2}{10^{-3}}} \approx 0{,}030\,\text{m} = 3{,}0\,\text{cm}"></div>
+            </div>
+          </div>
+
+          <!-- AUFGABE 3 -->
+          <div class="single-task-card" style="display:none;">
+            <div class="task-prompt-box">
+              <strong>Aufgabe 3: Ladungsausgleich bei Berührung</strong><br>
+              Zwei Kugeln mit <code>Q<sub>1</sub> = +8 &mu;C</code> und <code>Q<sub>2</sub> = -2 &mu;C</code> berühren sich kurz. Wie groß ist die Ladung danach?
+            </div>
+            <button class="btn-reveal-card" onclick="toggleSolution('solAb10_3', this)">👁️ L&ouml;sungsschritte aufdecken</button>
+            <div class="task-solution-container" id="solAb10_5">
+              <div class="katex-render" data-latex="Q' = \frac{Q_1 + Q_2}{2} = \frac{+8\,\mu\text{C} + (-2\,\mu\text{C})}{2} = +3\,\mu\text{C}"></div>
+              <p style="margin-top:0.4rem;">Jede Kugel trägt danach +3 &mu;C. Kraft schlägt in Abstoßung um!</p>
+            </div>
+          </div>
+
+          <!-- AUFGABE 4 -->
+          <div class="single-task-card" style="display:none;">
+            <div class="task-prompt-box">
+              <strong>Aufgabe 4: Fadenpendel im E-Feld</strong><br>
+              Ein Pendel (<code>m = 2,0 g</code>, <code>q = 50 nC</code>) wird um <code>&alpha; = 12&deg;</code> ausgelenkt. Berechne die Feldstärke <code>E</code>.
+            </div>
+            <button class="btn-reveal-card" onclick="toggleSolution('solAb10_4', this)">👁️ L&ouml;sungsschritte aufdecken</button>
+            <div class="task-solution-container" id="solAb10_5">
+              <div class="katex-render" data-latex="E = \frac{m \cdot g \cdot \tan(\alpha)}{q} = \frac{0{,}002\,\text{kg} \cdot 9{,}81\,\frac{\text{m}}{\text{s}^2} \cdot \tan(12^\circ)}{50 \cdot 10^{-9}\,\text{C}} \approx 83{,}4\,\frac{\text{kV}}{\text{m}}"></div>
+            </div>
+          </div>
+
+          <!-- AUFGABE 5 -->
+          <div class="single-task-card" style="display:none;">
+            <div class="task-prompt-box">
+              <strong>Aufgabe 5: Vergleich Gravitation vs. Coulomb-Kraft</strong><br>
+              Berechne das Verhältnis der Coulomb-Abstoßung zur Gravitationsanziehung zwischen zwei Elektronen.
+            </div>
+            <button class="btn-reveal-card" onclick="toggleSolution('solAb10_5', this)">👁️ L&ouml;sungsschritte aufdecken</button>
+            <div class="task-solution-container" id="solAb10_5">
+              <div class="katex-render" data-latex="\frac{F_C}{F_G} = \frac{k \cdot e^2}{G \cdot m_e^2} \approx 4{,}17 \cdot 10^{42}"></div>
+              <p style="margin-top:0.4rem; color:#10b981; font-weight:700;">Erkenntnis: Die Coulomb-Kraft ist um 42 Zehnerpotenzen stärker!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- PHYSIK TOPIC 7: SCHALTKREISE & ENTLADEKURVE                           -->
+    <!-- ===================================================================== -->
+    <div id="topic-physik-schaltungen" class="topic-module-box">
+      <section class="p-card">
+        <div class="p-card-header">
+          <h3><span>🔌</span> Schaltungen &amp; Kondensatorentladung</h3>
+          <span class="p-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">I(t)-Entladekurve</span>
+        </div>
+
+        <div class="topic-segmented-bar">
+          <button class="topic-segment-btn active" data-tab="formel" onclick="switchTopicSubTab('physik-schaltungen', 'formel')">
+            <span>👁️</span><span>Entlade-Formel &amp; Regeln</span>
+          </button>
+          <button class="topic-segment-btn" data-tab="sim" onclick="switchTopicSubTab('physik-schaltungen', 'sim')">
+            <span>🎮</span><span>I(t)-Plotter Simulator</span>
+          </button>
+          <button class="topic-segment-btn" data-tab="quiz" onclick="switchTopicSubTab('physik-schaltungen', 'quiz')">
+            <span>🎯</span><span>Klausur-Aufgabe</span>
+          </button>
+        </div>
+
+        <!-- PANE 1: FORMEL HERO -->
+        <div class="topic-tab-pane active-pane" data-pane="formel">
+          <div class="formula-hero-card" style="border-left: 6px solid #10b981;">
+            <span class="formula-hero-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+              Exponentielle Entladung &amp; Zeitkonstante
+            </span>
+
+            <div class="formula-math-display katex-render" data-latex="I(t) = I_0 \cdot e^{-\frac{t}{\tau}} \quad \text{mit} \quad \tau = R \cdot C">
+              I(t) = I<sub>0</sub> &bull; e<sup>-t / &tau;</sup> &nbsp;|&nbsp; &tau; = R &bull; C
+            </div>
+
+            <div class="variable-pills-grid">
+              <div class="var-pill-card" style="border-left: 3px solid #10b981;">
+                <strong>&tau; = R &bull; C [s]</strong>
+                <span>Zeitkonstante Tau</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #38bdf8;">
+                <strong>I<sub>0</sub> = U<sub>0</sub> / R</strong>
+                <span>Anfangsstromstärke</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #f59e0b;">
+                <strong>Q = &int; I(t) dt</strong>
+                <span>Gespeicherte Ladung (Fläche)</span>
+              </div>
+              <div class="var-pill-card" style="border-left: 3px solid #818cf8;">
+                <strong>Nach 1 &tau;</strong>
+                <span>Strom sinkt auf 36,8% von I<sub>0</sub></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: SIMULATOR -->
+        <div class="topic-tab-pane" data-pane="sim">
+          <div class="sim-container">
+            <div class="sim-header">
+              <div class="sim-title">
+                <span>💡</span>
+                <span>Kondensator-Entladung &amp; I(t)-Plotter</span>
+              </div>
+              <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                <button class="sim-btn-action" id="btnCircuitDischarge">💡 Kondensator entladen</button>
+                <button class="sim-btn-secondary" id="btnCircuitCharge">⚡ Kondensator aufladen</button>
+              </div>
+            </div>
+
+            <div class="sim-canvas-wrapper">
+              <canvas id="circuitCanvas" width="560" height="280"></canvas>
+            </div>
+
+            <div class="sim-controls-grid">
+              <div class="sim-control-group">
+                <div class="sim-label-row">
+                  <span>Kapazität C:</span>
+                  <span id="valCircuitC" style="color:#38bdf8;">470 µF</span>
+                </div>
+                <input type="range" id="circuitSliderC" class="sim-slider" min="100" max="1000" step="50" value="470">
+              </div>
+
+              <div class="sim-control-group">
+                <div class="sim-label-row">
+                  <span>Widerstand R:</span>
+                  <span id="valCircuitR" style="color:#facc15;">200 &Omega;</span>
+                </div>
+                <input type="range" id="circuitSliderR" class="sim-slider" min="50" max="500" step="25" value="200">
+              </div>
+            </div>
+
+            <div class="sim-result-box" id="circuitResultBox">
+              Lade Schaltungs-Simulator...
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: QUIZ -->
+        <div class="topic-tab-pane" data-pane="quiz">
+          <div class="single-task-card">
+            <div class="task-prompt-box">
+              <strong>Aufgabe:</strong><br>
+              Ein Kondensator mit <code>C = 470 &mu;F</code> wird &uuml;ber einen Widerstand <code>R = 2,2 k&Omega;</code> entladen.<br>
+              Berechne die Zeitkonstante <code>&tau;</code> und ermittle, nach welcher Zeit der Entladestrom auf ca. 37 % abgesunken ist.
+            </div>
+
+            <button class="btn-reveal-card" onclick="toggleSolution('solSchaltung', this)">
+              👁️ L&ouml;sungsschritte aufdecken
+            </button>
+
+            <div class="task-solution-container" id="solSchaltung">
+              <div class="katex-render" data-latex="\tau = R \cdot C = (2200\,\Omega) \cdot (470 \cdot 10^{-6}\,\text{F}) \approx 1{,}034\,\text{s}"></div>
+              <p style="margin-top: 0.4rem; color: #10b981; font-weight: 700;">
+                Nach exakt t = &tau; &asymp; 1,03 Sekunden ist der Strom auf 1/e &asymp; 36,8 % abgesunken!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div id="view-kalender" class="portal-view">
+    <div id="urgentKlausurHero"></div>
+    <div class="cal-header-bar">
+      <div class="cal-title-box">
+        <h2>Gesamter Klausurplan 2026/2027 (Dein persönlicher Filter)</h2>
+        <p>Automatisch gefiltert aus Klausurplan12.pdf für all deine Kurse</p>
+      </div>
+      <div class="cal-filter-group">
+        <button class="cal-filter-btn active" onclick="filterCalendar('pending', this)">🚨 Nur offene</button>
+        <button class="cal-filter-btn" onclick="filterCalendar('12.1', this)">📅 12.1 (1. Halbjahr)</button>
+        <button class="cal-filter-btn" onclick="filterCalendar('12.2', this)">🎓 12.2 (Vor-Abi)</button>
+        <button class="cal-filter-btn" onclick="filterCalendar('all', this)">Alle 23 Termine</button>
+      </div>
+    </div>
+    <div id="calendarTimeline" class="cal-timeline-list"></div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 6: STUNDENPLAN                                                       -->
+  <!-- ========================================================================= -->
+  <div id="view-stundenplan" class="portal-view">
+    <div class="tt-container">
+      <div class="tt-header-row">
+        <div class="tt-title-box">
+          <h2>Stundenplan &bull; Tonda Beutler</h2>
+          <p>Jahrgang 12 &bull; Tutor: Jonas Hildebrandt &bull; Schuljahr 2026/2027</p>
+        </div>
+        <div class="tt-filter-group">
+          <button class="tt-filter-btn active" onclick="setTimetableWeek('all', this)">Alle Wochen</button>
+          <button class="tt-filter-btn" onclick="setTimetableWeek('A', this)">Nur A-Woche</button>
+          <button class="tt-filter-btn" onclick="setTimetableWeek('B', this)">Nur B-Woche</button>
+        </div>
+      </div>
+      <div style="overflow-x: auto;">
+        <table class="timetable-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">Std.</th>
+              <th style="width: 19%;">Montag</th>
+              <th style="width: 19%;">Dienstag</th>
+              <th style="width: 19%;">Mittwoch</th>
+              <th style="width: 19%;">Donnerstag</th>
+              <th style="width: 19%;">Freitag</th>
+            </tr>
+          </thead>
+          <tbody id="timetableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- VIEW 7: SEMINARFACH KI & PROZESSJOURNAL                                   -->
+  <!-- ========================================================================= -->
+  <div id="view-seminarfach" class="portal-view">
+    <div id="seminarfachRoot">
+      <div style="padding: 2.5rem; text-align: center; color: var(--text-muted);">
+        <div style="font-size: 2rem; margin-bottom: 0.5rem;">📖</div>
+        <div>Lade digitales Prozessjournal &amp; Tagebuch...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- MODALS & PRIVACY OVERLAYS                                                 -->
+  <!-- ========================================================================= -->
+
+  <!-- Modal 1: IServ Task Detail Modal -->
+  <div class="portal-modal-backdrop" id="iservTaskModal" style="display: none;" onclick="closeIservTaskModal(event)">
+    <div class="portal-modal-content iserv-modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <span class="p-badge" id="modalTaskSubject">Fach</span>
+          <h3 id="modalTaskTitle" style="margin-top: 0.45rem; font-size: 1.15rem;">Aufgabentitel</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeIservTaskModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-meta-grid">
+          <div class="meta-item"><span class="meta-lbl">⏰ Frist:</span> <strong id="modalTaskDeadline">-</strong></div>
+          <div class="meta-item"><span class="meta-lbl">👤 Lehrkraft:</span> <strong id="modalTaskTeacher">-</strong></div>
+          <div class="meta-item"><span class="meta-lbl">📌 Status:</span> <span id="modalTaskStatus" class="status-pill">-</span></div>
+        </div>
+        
+        <div class="modal-sec-title">📖 Aufgabenstellung &amp; Hinweise</div>
+        <div class="modal-task-desc" id="modalTaskDesc">
+          Lade Aufgabenbeschreibung...
+        </div>
+
+        <div id="modalTaskAttachmentsBox" style="margin-top: 1rem; display: none;">
+          <div class="modal-sec-title">📎 Angehängte Dokumente / PDFs</div>
+          <div id="modalTaskAttachmentsList" class="modal-attachments-list"></div>
+        </div>
+
+        <!-- AI Assistant Helper Box -->
+        <div class="modal-ai-helper-box">
+          <div class="ai-helper-head">
+            <span>✨ KI-Lernassistent (Antigravity)</span>
+            <span class="ai-pill">Bereit</span>
+          </div>
+          <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0.3rem 0 0.6rem 0;">
+            Du kannst den Text dieser Aufgabe mit einem Klick in die KI kopieren oder im Fach-Lernmodul vertiefen:
+          </p>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button class="btn-copy-prompt" onclick="copyTaskPromptForAi()">
+              📋 Prompt für KI kopieren
+            </button>
+            <button class="btn-jump-fach" id="modalBtnJumpFach" onclick="jumpToTaskSubject()">
+              📚 Zum Fach-Modul &rarr;
+            </button>
+          </div>
+          <div id="copyPromptFeedback" style="display: none; font-size: 0.72rem; color: var(--accent-success); margin-top: 0.3rem;">
+            ✓ Prompt in Zwischenablage kopiert!
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-action" id="modalBtnToggleDone" onclick="toggleCurrentTaskDone()">
+          ✓ Als erledigt markieren
+        </button>
+        <button class="btn-back-nav" onclick="closeIservTaskModal()">Schließen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: IServ Setup & Privacy Protection Modal -->
+  <div class="portal-modal-backdrop" id="iservConfigModal" style="display: none;" onclick="closeIservConfigModal(event)">
+    <div class="portal-modal-content iserv-config-modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <span class="p-badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent-primary);">⚡ IServ &amp; Privatsphäre</span>
+          <h3 style="margin-top: 0.45rem; font-size: 1.15rem;">IServ-Anbindung &amp; Datenschutz</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeIservConfigModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="privacy-callout">
+          <span class="privacy-icon">🛡️</span>
+          <div>
+            <strong>100% Lokaler Schutz (Zero-Cloud-Leak)</strong>
+            <p style="margin: 0.2rem 0 0 0; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4;">
+              Deine IServ-Zugangsdaten und persönlichen Aufgaben werden <strong>ausschließlich lokal auf deinem Rechner</strong> in der Datei <code>.env</code> gesichert. Per <code>.gitignore</code> ist sichergestellt, dass diese Daten <strong>niemals auf GitHub</strong> gelangen.
+            </p>
+          </div>
+        </div>
+
+        <form id="iservConfigForm" onsubmit="saveIservConfig(event)" style="margin-top: 1.2rem;">
+          <div class="form-group">
+            <label class="form-label">Schul-Server-Adresse (IServ Domain):</label>
+            <input type="text" id="cfgIservServer" class="portal-input" placeholder="z. B. meine-schule.iserv.de" required>
+            <small class="form-hint">Die URL deiner Schule ohne https://</small>
+          </div>
+          <div class="form-group">
+            <label class="form-label">IServ Benutzername:</label>
+            <input type="text" id="cfgIservUser" class="portal-input" placeholder="z. B. vorname.nachname" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">IServ Passwort oder App-Passwort:</label>
+            <input type="password" id="cfgIservPass" class="portal-input" placeholder="Passwort (bleibt sicher auf deinem PC)">
+            <small class="form-hint">Tipp: Du kannst im IServ auch ein separates App-Passwort generieren.</small>
+          </div>
+          <div id="cfgFeedback" style="display:none; margin-top:0.6rem; font-size:0.8rem; padding: 0.5rem; border-radius: var(--radius-sm);"></div>
+          <div style="display: flex; justify-content: flex-end; gap: 0.6rem; margin-top: 1.2rem;">
+            <button type="button" class="btn-back-nav" onclick="closeIservConfigModal()">Abbrechen</button>
+            <button type="submit" class="btn-cal-action" id="btnSaveConfig">Speichern &amp; Testen</button>
+          </div>
+        </form>
+
+        <hr style="margin: 1.5rem 0; border: 0; border-top: 1px solid var(--border-subtle);">
+
+        <!-- Master PIN Protection Section -->
+        <div class="pin-section">
+          <h4 style="font-size: 0.95rem; margin-bottom: 0.3rem; display: flex; align-items: center; gap: 0.4rem;">
+            <span>🔒</span> Master-PIN (Schutz gegen Fremdzugriff)
+          </h4>
+          <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.8rem;">
+            Sperre deine Aufgaben und Notizen mit einem PIN-Code. Wenn jemand anderes die Website öffnet, sind deine privaten Daten unsichtbar.
+          </p>
+          <div style="display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap;">
+            <input type="password" maxlength="6" id="portalPinInput" class="portal-input" placeholder="4-6 stellige PIN" style="width: 150px;">
+            <button type="button" class="btn-cal-action" onclick="savePortalPin()">PIN aktivieren</button>
+            <button type="button" class="btn-back-nav" onclick="removePortalPin()">PIN deaktivieren</button>
+          </div>
+          <div id="pinFeedback" style="display:none; margin-top:0.4rem; font-size:0.75rem;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Lock Screen Overlay (Zero-Knowledge Privacy Lock) -->
+  <div class="lock-screen-backdrop" id="portalLockOverlay" style="display: none;">
+    <div class="lock-screen-card">
+      <div class="lock-icon">🔒</div>
+      <h2>Oberstufen-Portal gesperrt</h2>
+      <p>Gib deine Master-PIN ein, um deine IServ-Aufgaben und Notizen freizuschalten.</p>
+      <div class="lock-input-group">
+        <input type="password" maxlength="6" id="unlockPinInput" class="portal-input lock-pin-input" placeholder="••••" autofocus onkeydown="if(event.key==='Enter') unlockPortal()">
+        <button class="btn-cal-action" onclick="unlockPortal()">Entsperren</button>
+      </div>
+      <div id="unlockFeedback" style="display: none; margin-top: 0.6rem; color: var(--accent-urgent); font-size: 0.8rem;"></div>
+      <div style="margin-top: 1.2rem; font-size: 0.72rem; color: var(--text-muted);">
+        Tipp: Ohne PIN bleiben allgemeine Fächer und Mathe-Tools zugänglich.
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: User Document & Content Upload Modal -->
+  <div class="portal-modal-backdrop" id="uploadDocModal" style="display: none;" onclick="closeUploadModal(event)">
+    <div class="portal-modal-content upload-doc-modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <span class="p-badge" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">📁 Eigene Inhalte &amp; Mitschriften</span>
+          <h3 style="margin-top: 0.45rem; font-size: 1.2rem;">Neues Dokument / Notiz hochladen</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeUploadModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="userDocUploadForm" onsubmit="saveUploadDocument(event)">
+          <!-- Fach Selector -->
+          <div class="form-group">
+            <label class="form-label" for="uploadDocFachSelect">Schulfach zuordnen:</label>
+            <select id="uploadDocFachSelect" class="portal-input" style="font-weight: 600; cursor: pointer;">
+              <!-- dynamically populated -->
+            </select>
+          </div>
+
+          <!-- Document Title -->
+          <div class="form-group">
+            <label class="form-label" for="uploadDocTitle">Titel / Bezeichnung:</label>
+            <input type="text" id="uploadDocTitle" class="portal-input" placeholder="z. B. Zusammenfassung Elektrisches Feld oder AB04 Musterlösung" required>
+          </div>
+
+          <!-- Category Selection Chips -->
+          <div class="form-group">
+            <label class="form-label">Kategorie / Tag:</label>
+            <div class="upload-cat-picker">
+              <button type="button" class="upload-cat-chip active" data-cat="mitschrift" onclick="selectUploadCategory('mitschrift')">
+                📝 Mitschrift
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="zusammenfassung" onclick="selectUploadCategory('zusammenfassung')">
+                📑 Zusammenfassung
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="uebung" onclick="selectUploadCategory('uebung')">
+                🎯 Übungsblatt / Rechnungen
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="klausurtipp" onclick="selectUploadCategory('klausurtipp')">
+                💡 Klausurtipp
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="formeln" onclick="selectUploadCategory('formeln')">
+                📐 Formelsammlung
+              </button>
+              <button type="button" class="upload-cat-chip" data-cat="sonstiges" onclick="selectUploadCategory('sonstiges')">
+                📎 Sonstiges
+              </button>
+            </div>
+          </div>
+
+          <!-- Drag and Drop Dropzone -->
+          <div class="form-group">
+            <label class="form-label">Datei anhängen (PDF, Bild, Scan oder Text):</label>
+            <div class="upload-dropzone" id="uploadDocDropzone" onclick="document.getElementById('uploadDocFileInput').click()">
+              <input type="file" id="uploadDocFileInput" style="display: none;" accept=".pdf,image/*,.txt,.md,.doc,.docx">
+              <div id="dropzonePrompt" class="dropzone-prompt">
+                <div class="dropzone-icon">📥</div>
+                <div class="dropzone-title">Dateien hierhin ziehen oder klicken zum Auswählen</div>
+                <div class="dropzone-sub">PDFs, Handyfotos von Tafelbildern, Mitschriften, Word oder Text (max. 45 MB)</div>
+              </div>
+              <div id="dropzoneFilePreview" class="dropzone-file-preview" style="display: none;" onclick="event.stopPropagation()">
+                <div class="preview-file-icon" id="previewFileIcon">📄</div>
+                <div class="preview-file-info">
+                  <div class="preview-file-name" id="previewFileName">datei.pdf</div>
+                  <div class="preview-file-size" id="previewFileSize">1.2 MB</div>
+                </div>
+                <img id="previewImageThumb" class="preview-img-thumb" style="display: none;" alt="Vorschau" />
+                <button type="button" class="btn-remove-file" onclick="removeSelectedFile(event)" title="Datei entfernen">✕ Entfernen</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Personal Notes / Explanation -->
+          <div class="form-group">
+            <label class="form-label" for="uploadDocNotes">Eigene Notizen, Erklärungen &amp; Klausurtipps (optional):</label>
+            <textarea id="uploadDocNotes" class="portal-input" rows="3" placeholder="Schreibe hier wichtige Formeln, Fehlerquellen, Merksätze oder eigene Anmerkungen hinein..."></textarea>
+          </div>
+
+          <div id="uploadDocFeedback" style="display:none; margin-top:0.6rem; font-size:0.85rem; font-weight: 600;"></div>
+
+          <div class="modal-footer" style="padding: 1rem 0 0 0; border-top: 1px solid var(--border-subtle); margin-top: 1rem;">
+            <button type="button" class="btn-back-nav" onclick="closeUploadModal()">Abbrechen</button>
+            <button type="submit" class="btn-cal-action" id="btnSaveUploadDoc">💾 Dokument speichern</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: Document Viewer Modal -->
+  <div class="portal-modal-backdrop" id="userDocViewerModal" style="display: none;" onclick="closeDocViewer(event)">
+    <div class="portal-modal-content doc-viewer-modal" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <span class="user-doc-badge" id="viewerDocCategory">Mitschrift</span>
+            <span class="p-badge" id="viewerDocFach" style="background: var(--bg-subtle); color: var(--text-secondary);">Fach</span>
+          </div>
+          <h3 id="viewerDocTitle" style="margin-top: 0.45rem; font-size: 1.25rem;">Dokumententitel</h3>
+          <div id="viewerDocMeta" style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;"></div>
+        </div>
+        <button class="modal-close-btn" onclick="closeDocViewer()">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 1rem 1.2rem;">
+        <div id="viewerDocContent">
+          <!-- Dynamically filled with image, PDF, or text viewer -->
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cal-action" id="viewerBtnDownload">⬇️ Herunterladen</button>
+        <button class="btn-doc-del-modal" id="viewerBtnDelete">🗑️ Löschen</button>
+        <button class="btn-back-nav" onclick="closeDocViewer()">Schließen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="calendar.js?v=20261108_1"></script>
+  <script src="politik.js"></script>
+  <script src="timetable.js"></script>
+  <script src="steckbrief.js"></script>
+  <script src="schar.js"></script>
+  <script src="matching.js"></script>
+  <script src="user_content.js?v=20260928_5"></script>
+  <script src="physik.js?v=20261001_beweisen"></script>
+  <script src="seminarfach.js?v=20260928_5"></script>
+  <script src="informatik.js?v=20261001_rekursion"></script>
+  <script src="integralrechnung.js?v=20261007_integral"></script>
+  <script src="integral_kurs.js?v=20261105_6"></script>
+  <script src="schar_kurs.js?v=20261105_11"></script>
+  <script src="mathe_trainer_content.js?v=20261105_11"></script>
+  <script src="mathe_trainer.js?v=20261105_11"></script>
+  <script src="main_hub.js?v=20261107_2"></script>
+</body>
+</html>
+

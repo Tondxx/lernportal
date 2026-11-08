@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <!--
+    Python-Sandbox (Bauschritt S8, Portalplan 4.3).
+    Wird vom Lernraum als <iframe sandbox="allow-scripts"> geladen: eigene, leere Herkunft ("null"),
+    also KEIN Zugriff auf Profile, Fortschritt oder Sync-Schlüssel des Lernraums.
+    Pyodide (Python als WebAssembly) kommt in fester Version von jsDelivr und läuft in einem Worker,
+    damit eine Endlosschleife nach dem Zeitlimit abgebrochen werden kann.
+  -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src blob:; connect-src https://cdn.jsdelivr.net; style-src 'unsafe-inline'">
+  <meta name="referrer" content="no-referrer">
+  <title>Python-Sandbox</title>
+</head>
+<body>
+<script>
+(function () {
+  'use strict';
+  // Schutz: Nur in einem Sandbox-Rahmen ohne eigene Herkunft arbeiten. Ruft jemand diese Datei direkt
+  // oder ohne Sandbox in einem Rahmen auf, hätte Python sonst die Herkunft des Lernraums.
+  if (self.origin !== 'null' || window.parent === window) { document.body.textContent = 'Diese Seite funktioniert nur innerhalb des Lernraums.'; return; }
+
+  var BASE = 'https://cdn.jsdelivr.net/pyodide/v0.26.4/full/';
+  var LOAD_MS = 120000;
+
+  // Die eigentliche Python-Maschine. Läuft im Worker (normal) oder direkt hier (Ausweichweg, falls ein Gerät keine Worker erlaubt).
+  function engine(post, loadScript) {
+    var py = null;
+    var CLEAN = function (msg) { // interne Pyodide-Zeilen aus dem Traceback entfernen
+      var L = String(msg || '').split('\n'), out = [], skip = false;
+      for (var i = 0; i < L.length; i++) {
+        var l = L[i];
+        if (/^\s+File "\/lib\//.test(l)) { skip = true; continue; }
+        if (/^\s+File "/.test(l)) skip = false;
+        if (skip && /^\s{4,}/.test(l)) continue;
+        skip = false; out.push(l);
+      }
+      return out.join('\n').replace(/File "<exec>"/g, 'File "dein Code"').trim();
+    };
+    var HARNESS = [
+      'import json as __j',
+      '__res = []',
+      'for __t in __j.loads(__lr_json):',
+      '    try:',
+      '        __v = eval(__t["call"])',
+      '        __res.append({"call": __t["call"], "got": repr(__v), "ok": bool(__v == __t["erwartet"])})',
+      '    except Exception as __ex:',
+      '        __res.append({"call": __t["call"], "got": type(__ex).__name__ + ": " + str(__ex), "ok": False, "err": True})',
+      '__j.dumps(__res)'
+    ].join('\n');
+    return function (m) {
+      if (m.type === 'load') {
+        Promise.resolve().then(function () { return loadScript(m.base + 'pyodide.js'); })
+          .then(function () { return self.loadPyodide({ indexURL: m.base }); })
+          .then(function (p) { py = p; post({ type: 'ready', version: p.version }); })
+          .catch(function (e) { post({ type: 'loaderr', text: String((e && e.message) || e) }); });
+        return;
+      }
+      if (m.type !== 'run' || !py) return;
+      var sent = 0, MAX = 20000, cut = false;
+      var emit = function (kind) {
+        return function (s) {
+          if (cut) return;
+          sent += s.length + 1;
+          if (sent > MAX) { cut = true; post({ type: 'err', id: m.id, text: '… Ausgabe nach 20 000 Zeichen gekürzt\n' }); return; }
+          post({ type: kind, id: m.id, text: s + '\n' });
+        };
+      };
+      py.setStdout({ batched: emit('out') });
+      py.setStderr({ batched: emit('err') });
+      var lines = String(m.stdin || '').split('\n'), li = 0;
+      if (lines.length && lines[lines.length - 1] === '') lines.pop();
+      py.setStdin({ stdin: function () { return li < lines.length ? lines[li++] : null; } });
+      var ns = py.globals.get('dict')();
+      var t0 = Date.now(), error = null, tests = null;
+      py.runPythonAsync(String(m.code || ''), { globals: ns })
+        .then(function () {
+          if (!m.tests || !m.tests.length) return null;
+          ns.set('__lr_json', JSON.stringify(m.tests));
+          return py.runPythonAsync(HARNESS, { globals: ns }).then(function (r) { tests = JSON.parse(r); });
+        })
+        .catch(function (e) {
+          var t = CLEAN(e && e.message ? e.message : e);
+          error = /EOFError/.test(t) ? t + '\n(input() wollte mehr Eingaben, als im Feld „Eingaben“ stehen.)' : t;
+        })
+        .then(function () {
+          try { ns.destroy(); } catch (e) { /* egal */ }
+          post({ type: 'done', id: m.id, error: error, tests: tests, ms: Date.now() - t0 });
+        });
+    };
+  }
+
+  // --- Worker anlegen (Code als Blob, damit er aus diesem Rahmen kommt)
+  var WSRC = 'var engine = ' + engine.toString() + ';\n' +
+    'var h = engine(function (m) { postMessage(m); }, function (u) { importScripts(u); });\n' +
+    'onmessage = function (e) { h(e.data); };';
+  var worker = null, inline = null, state = 'idle', current = null, timer = null, loadTimer = null;
+  function toParent(m) { parent.postMessage(m, '*'); }
+  function onEngine(m) {
+    if (m.type === 'ready') { clearTimeout(loadTimer); state = 'ready'; toParent({ type: 'ready', version: m.version, mode: worker ? 'worker' : 'inline' }); return; }
+    if (m.type === 'loaderr') { clearTimeout(loadTimer); state = 'idle'; kill(); toParent(m); return; }
+    if (m.type === 'done') { clearTimeout(timer); current = null; }
+    toParent(m);
+  }
+  function kill() { if (worker) { worker.terminate(); worker = null; } inline = null; }
+  function start() {
+    if (state !== 'idle') return;
+    state = 'loading';
+    toParent({ type: 'status', text: 'loading' });
+    try {
+      var url = URL.createObjectURL(new Blob([WSRC], { type: 'text/javascript' }));
+      worker = new Worker(url);
+      worker.onmessage = function (e) { onEngine(e.data); };
+      worker.onerror = function (e) { e.preventDefault(); if (state === 'loading') onEngine({ type: 'loaderr', text: String(e.message || 'Worker-Fehler') }); };
+      worker.postMessage({ type: 'load', base: BASE }); // der Worker kennt BASE nicht (eigener Geltungsbereich)
+    } catch (err) {
+      // Ausweichweg ohne Worker: läuft, kann eine Endlosschleife aber nicht abbrechen
+      worker = null;
+      inline = engine(function (m) { setTimeout(function () { onEngine(m); }, 0); }, function (u) {
+        return new Promise(function (res, rej) { var s = document.createElement('script'); s.src = u; s.onload = res; s.onerror = function () { rej(new Error('Laden fehlgeschlagen')); }; document.head.appendChild(s); });
+      });
+      inline({ type: 'load', base: BASE });
+    }
+    loadTimer = setTimeout(function () { if (state === 'loading') { state = 'idle'; kill(); toParent({ type: 'loaderr', text: 'Zeitüberschreitung beim Laden' }); } }, LOAD_MS);
+  }
+
+  addEventListener('message', function (e) {
+    if (e.source !== window.parent) return;
+    var m = e.data || {};
+    if (m.type === 'start') { if (state === 'ready') toParent({ type: 'ready', mode: worker ? 'worker' : 'inline' }); else start(); return; }
+    if (m.type === 'run') {
+      if (state !== 'ready') { toParent({ type: 'done', id: m.id, error: 'Python ist noch nicht bereit.' }); return; }
+      current = m.id;
+      if (worker) worker.postMessage(m); else inline(m);
+      var lim = Math.max(1000, Math.min(30000, +m.timeout || 8000));
+      clearTimeout(timer);
+      timer = setTimeout(function () {
+        if (current !== m.id) return;
+        current = null;
+        if (worker) { kill(); state = 'idle'; } // Worker samt Endlosschleife beenden, beim nächsten Mal neu starten (kommt aus dem Cache)
+        toParent({ type: 'done', id: m.id, timeout: true, error: 'Abgebrochen: Dein Programm lief länger als ' + Math.round(lim / 1000) + ' Sekunden. Steckt es in einer Endlosschleife?' });
+      }, lim);
+    }
+  });
+  toParent({ type: 'hello' });
+})();
+</script>
+</body>
+</html>

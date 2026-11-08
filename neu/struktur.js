@@ -48,7 +48,8 @@
     const les = new Set(themenOf(n).filter(it => it.typ === 'lektion').map(it => it.ref));
     return A.TASKS.filter(t => les.has(t.lesson)).map(t => ({ typ: 'aufgabe', ref: t.id }));
   };
-  const nodeHref = n => n.typ === 'seite' ? `#/spick/${n.fach}` : `#/ordner/${n.id}`;
+  // Seiten-Kacheln: ref 'spick' → Spickzettel des Fachs, sonst eigene Route (z. B. 'python' → #/python)
+  const nodeHref = n => n.typ === 'seite' ? (n.ref === 'spick' ? `#/spick/${n.fach}` : `#/${n.ref}`) : `#/ordner/${n.id}`;
 
   // ------------------------------------------------------------ Einheiten (Themen, Aufgaben …) auflösen
   function progressOf(topic) { return LRTreppe.progress(A.LR, topic); }
@@ -56,12 +57,12 @@
     const { LESSONS, TASKS, TOPICS, ALGOS, state } = A;
     if (it.typ === 'lektion') {
       const l = LESSONS.find(x => x.id === it.ref); if (!l) return null;
-      return { title: l.title, num: l.num, sub: l.short, min: l.min, href: `#/lektion/${l.id}`, done: !!state.done[l.id], fach: 'mathe', kind: 'Lektion' };
+      return { title: l.title, num: l.num, sub: l.short, min: l.min, href: `#/lektion/${l.id}`, done: !!state.done[l.id], fach: A.fachOf(l), kind: 'Lektion' };
     }
     if (it.typ === 'aufgabe') {
       const t = TASKS.find(x => x.id === it.ref); if (!t) return null;
       const be = A.taskMax(t), got = A.taskGot(t);
-      return { title: t.title, sub: `Teil ${t.teil} · AFB ${t.afb} · ${be} BE`, min: Math.max(5, Math.round(be * 1.5)), href: `#/aufgabe/${t.id}`, done: got > 0 && got >= be * 0.75, chip: got ? `${got}/${be} BE` : '', fach: 'mathe', kind: 'Aufgabe' };
+      return { title: t.title, sub: `${A.teilText(t)} · AFB ${t.afb} · ${be} BE`, min: Math.max(5, Math.round(be * 1.5)), href: `#/aufgabe/${t.id}`, done: got > 0 && got >= be * 0.75, chip: got ? `${got}/${be} BE` : '', fach: A.fachOf(t), kind: 'Aufgabe' };
     }
     if (it.typ === 'thema' || it.typ === 'stufe' || it.typ === 'extra') {
       const t = TOPICS.find(x => x.id === it.ref); if (!t) return null;
@@ -129,11 +130,16 @@
   // ------------------------------------------------------------ Probeklausuren
   const contentProbes = () => {
     const e = A.D.EXAM1;
-    return e ? [{ id: e.id || 'MP1', fach: 'mathe', titel: e.title, tasks: e.tasks.map(t => t.id), minuten: e.minutes || 90, be: e.maxBE || e.tasks.reduce((a, t) => a + A.taskMax(t), 0), fest: true }] : [];
+    const own = e ? [{ id: e.id || 'MP1', fach: 'mathe', titel: e.title, tasks: e.tasks.map(t => t.id), minuten: e.minutes || 90, be: e.maxBE || e.tasks.reduce((a, t) => a + A.taskMax(t), 0), fest: true }] : [];
+    // weitere Fächer: feste Probeklausuren aus content/*.js (window.LR_PROBES: {id, fach, titel, tasks:[ids], minuten})
+    const more = (window.LR_PROBES || []).map(p => Object.assign({ fest: true, minuten: 90 }, p, { be: p.tasks.reduce((a, id) => a + A.taskMax(A.TASKS.find(t => t.id === id) || { parts: [] }), 0) }));
+    return own.concat(more);
   };
-  const probesOf = fid => (fid === 'mathe' ? contentProbes() : []).concat((A.state.probes || []).filter(p => p.fach === fid));
+  const probesOf = fid => contentProbes().filter(p => p.fach === fid).concat((A.state.probes || []).filter(p => p.fach === fid));
   const findProbe = id => contentProbes().concat(A.state.probes || []).find(p => p.id === id) || null;
-  const poolOf = fid => fid === 'mathe' ? A.TASKS.map(t => ({ id: t.id, teil: t.teil, lesson: t.lesson, be: A.taskMax(t) })) : [];
+  const poolOf = fid => A.TASKS.filter(t => A.fachOf(t) === fid).map(t => ({ id: t.id, teil: t.teil, lesson: t.lesson, be: A.taskMax(t) }));
+  // Bezeichnung der Teile: Mathe Teil A/B (ohne/mit CAS), andere Fächer Grundwissen / mit Taschenrechner
+  const TEILE = fid => fid === 'mathe' ? { a: 'Teil A · ohne Taschenrechner', b: 'Teil B · mit Taschenrechner (CAS)', mix: 'Teil A (ohne Taschenrechner) kommt zuerst, dann Teil B.' } : { a: 'Grundwissen (kurz)', b: 'Rechnen und Erläutern · mit Taschenrechner', mix: 'Kurze Grundwissen-Aufgaben kommen zuerst, dann die Rechenaufgaben.' };
 
   // ------------------------------------------------------------ Bausteine (HTML)
   const crumbs = n => {
@@ -159,7 +165,7 @@
     const frac = (n.typ === 'ordner') ? progFrac(n) : 0;
     const box = edit ? `<button type="button" class="rel-box${rel ? ' on' : ''}" data-krel="${n.id}" data-kid="${kid}" aria-pressed="${rel}" aria-label="Für diese Klausur relevant">${icn('check')}</button>` : '';
     return `<div class="otile-wrap${edit && !rel ? ' dim' : ''}"><a class="otile${n.demo ? ' demo' : ''}" href="${nodeHref(n)}" ${A.subjStyle(s)}>
-        <span class="otile-ic">${icn(n.typ === 'probes' ? 'target' : n.typ === 'seite' ? 'book' : 'folder')}</span>
+        <span class="otile-ic">${icn(n.typ === 'probes' ? 'target' : n.typ === 'seite' ? (n.ref === 'python' ? 'code' : 'book') : 'folder')}</span>
         <span class="otile-t">${n.titel}</span><span class="otile-s">${n.kurz || ''}</span>
         <span class="otile-p">${n.typ === 'ordner' ? A.bar(frac.toFixed(2)) : ''}<span class="row-sub">${progText(n)}</span></span></a>${box}</div>`;
   }
@@ -188,7 +194,8 @@
     const planBtn = `<button type="button" class="cont plan-go" data-goplan="${id}" ${A.subjStyle(s)}><div class="cont-ico">${icn('cal')}</div><div class="row-main"><span class="row-title" style="font-size:18px">Lernplan für ${subjName(s)}</span><span class="row-sub">${planLine(id)}</span></div>${icn('right', 'chev')}</button>`;
     const hasMap = tree.some(n => n.typ === 'ordner' && themenOf(n).length > 1);
     const mapBtn = hasMap ? `<a class="cont plan-go" href="#/karte/${id}" ${A.subjStyle(s)}><div class="cont-ico">${icn('map')}</div><div class="row-main"><span class="row-title" style="font-size:18px">Wissenslandkarte</span><span class="row-sub">Alle Themen als Karte: was sitzt, was wackelt, was als Nächstes kommt</span></div>${icn('right', 'chev')}</a>` : '';
-    return { title: s.name, back: '#/faecher', nav: 'faecher', html: `<div ${A.subjStyle(s)}>${head}${chipsFor(id)}${note}${body}${planBtn}${mapBtn}</div>` };
+    const skBtn = window.LRSkript && LRSkript.has(id) ? `<a class="cont plan-go" href="#/skript/${id}" ${A.subjStyle(s)}><div class="cont-ico">${icn('book')}</div><div class="row-main"><span class="row-title" style="font-size:18px">Durchgehen</span><span class="row-sub">Alle Themen kompakt auf einer Seite: Idee, Rezept, Beispiel. Druckbar als PDF.</span></div>${icn('right', 'chev')}</a>` : '';
+    return { title: s.name, back: '#/faecher', nav: 'faecher', html: `<div ${A.subjStyle(s)}>${head}${chipsFor(id)}${note}${body}${planBtn}${mapBtn}${skBtn}</div>` };
   }
   function planLine(fid) {
     const { pe, items } = currentPlan();
@@ -231,7 +238,7 @@
       const ps = probesOf(n.fach);
       body = `<div class="list prows">${ps.length ? ps.map(probeRow).join('') : '<div class="empty">Noch keine Probeklausur.</div>'}</div>
         <button type="button" class="btn primary block" data-newprobe="${n.fach}" style="margin-top:16px">${icn('plus')}Neue Probeklausur zusammenstellen</button>
-        <p class="row-sub" style="margin-top:10px">Mischt Aufgaben aus den Ordnern, die du auswählst. Teil A (ohne Taschenrechner) kommt zuerst, dann Teil B.</p>`;
+        <p class="row-sub" style="margin-top:10px">Mischt Aufgaben aus den Ordnern, die du auswählst. ${TEILE(n.fach).mix}</p>`;
     } else if (n.typ === 'alt') {
       body = A.oldModules(s);
     } else {
@@ -256,7 +263,7 @@
 
   function spickView(fid) {
     const s = A.byId[fid || 'mathe'];
-    return { title: 'Spickzettel', back: `#/fach/${s.id}`, nav: 'faecher', html: `<div ${A.subjStyle(s)}><nav class="crumbs"><a href="#/faecher">Fächer</a><span>›</span><a href="#/fach/${s.id}">${subjName(s)}</a><span>›</span><b>Spickzettel</b></nav><div class="page-head"><h2 class="h-1">Spickzettel</h2><p class="muted">Alles Wichtige auf einer Seite.</p></div>${A.prose(A.D.SPICK)}</div>` };
+    return { title: 'Spickzettel', back: `#/fach/${s.id}`, nav: 'faecher', html: `<div ${A.subjStyle(s)}><nav class="crumbs"><a href="#/faecher">Fächer</a><span>›</span><a href="#/fach/${s.id}">${subjName(s)}</a><span>›</span><b>Spickzettel</b></nav><div class="page-head"><h2 class="h-1">Spickzettel</h2><p class="muted">Alles Wichtige auf einer Seite.</p></div>${A.prose((window.LR_SPICK || {})[s.id] || (s.id === 'mathe' ? A.D.SPICK : '<p>Noch kein Spickzettel.</p>'))}</div>` };
   }
 
   // ------------------------------------------------------------ Lernplan (Reiter „Plan“)
@@ -416,7 +423,7 @@
     A.openSheet('', box => {
       const draw = () => {
         box.innerHTML = `${A.sheetHead('Probeklausur zusammenstellen')}
-          <p class="row-sub" style="margin-bottom:12px">Mischt Aufgaben aus den gewählten Ordnern. Teil A (ohne Taschenrechner) kommt zuerst, danach Teil B. Die Klausur wird im Ordner „Probeklausuren“ gespeichert.</p>
+          <p class="row-sub" style="margin-bottom:12px">Mischt Aufgaben aus den gewählten Ordnern. ${TEILE(fid).mix} Die Klausur wird im Ordner „Probeklausuren“ gespeichert.</p>
           <span class="lbl">Aus welchen Ordnern?</span>
           <div class="picks" role="group">${os.map(n => `<button type="button" class="pick" data-pko="${n.id}" aria-pressed="${chosen.has(n.id)}" ${A.subjStyle(s)}><span class="mono">${icn('folder')}</span><span>${n.titel}</span></button>`).join('')}</div>
           <span class="lbl" style="margin-top:16px;display:block">Umfang</span>
@@ -459,9 +466,9 @@
     const crumb = owner ? `<nav class="crumbs" aria-label="Pfad"><a href="#/faecher">Fächer</a><span>›</span><a href="#/fach/${p.fach}">${subjName(s)}</a><span>›</span><a href="#/ordner/${owner.id}">${owner.titel}</a><span>›</span><b>${A.esc(p.titel.length > 34 ? p.titel.slice(0, 32) + '…' : p.titel)}</b></nav>` : '';
     const teilA = tasks.filter(t => t.teil === 'A'), teilB = tasks.filter(t => t.teil === 'B');
     const beOf = list => list.reduce((a, t) => a + A.taskMax(t), 0);
-    const meta = `<div class="abi-head"><span class="chip">${p.be} BE</span><span class="chip">${icn('clock')}${p.minuten} Min.</span><span class="chip">Teil A ${beOf(teilA)} BE · ohne Taschenrechner</span><span class="chip">Teil B ${beOf(teilB)} BE · mit CAS</span></div>`;
+    const meta = `<div class="abi-head"><span class="chip">${p.be} BE</span><span class="chip">${icn('clock')}${p.minuten} Min.</span>${teilA.length ? `<span class="chip">${TEILE(p.fach).a.split(' · ')[0]} ${beOf(teilA)} BE</span>` : ''}${teilB.length ? `<span class="chip">${TEILE(p.fach).b.split(' · ')[0]} ${beOf(teilB)} BE</span>` : ''}</div>`;
     const blocks = [];
-    const taskHtml = (t, i, mode) => { const b = A.taskBlock(t, { mode, store: scores }); blocks.push([t, b]); return `<section class="ptask"><div class="ptask-h"><span class="kicker">Aufgabe ${i + 1} · Teil ${t.teil} · ${A.taskMax(t)} BE</span><h3 class="h-2">${A.esc(t.title)}</h3></div>${b.html}</section>`; };
+    const taskHtml = (t, i, mode) => { const b = A.taskBlock(t, { mode, store: scores }); blocks.push([t, b]); return `<section class="ptask"><div class="ptask-h"><span class="kicker">Aufgabe ${i + 1} · ${A.teilText(t)} · ${A.taskMax(t)} BE</span><h3 class="h-2">${A.esc(t.title)}</h3></div>${b.html}</section>`; };
     const last = (st.probeDone[id] || []).slice(-1)[0];
     let body = '';
 
@@ -470,7 +477,7 @@
       const resCard = last ? resultCard(p, tasks, last) : '';
       body = `${resCard}<div class="card pstart"><p class="prose">So wie in der echten Klausur: Du löst auf Papier und trägst nur ein, was du magst. Die Musterlösungen siehst du erst nach dem Abgeben. Danach bewertest du dich ehrlich am Erwartungshorizont, und das Portal rechnet Punkte und Notenpunkte aus.</p>
         <div class="pstart-btns"><button class="btn primary" type="button" data-pstart="${p.minuten}">${icn('clock')}Mit Uhr starten (${p.minuten} Min.)</button><button class="btn" type="button" data-pstart="0">Ohne Uhr üben</button></div></div>
-        <span class="sub">Aufgaben</span><div class="list prows">${tasks.map((t, i) => `<div class="prow"><div class="prow-main"><span class="pnode">${i + 1}</span><span class="row-main"><span class="row-title">${A.esc(t.title)}</span><span class="row-sub">Teil ${t.teil} · AFB ${t.afb} · ${A.taskMax(t)} BE</span></span></div></div>`).join('')}</div>
+        <span class="sub">Aufgaben</span><div class="list prows">${tasks.map((t, i) => `<div class="prow"><div class="prow-main"><span class="pnode">${i + 1}</span><span class="row-main"><span class="row-title">${A.esc(t.title)}</span><span class="row-sub">${A.teilText(t)} · AFB ${t.afb} · ${A.taskMax(t)} BE</span></span></div></div>`).join('')}</div>
         ${hist.length > 1 ? `<span class="sub">Frühere Versuche</span><div class="list prows">${hist.slice(1).map(r => `<div class="prow"><div class="prow-main"><span class="pnode">${icn('clock')}</span><span class="row-main"><span class="row-title">${r.pts} von ${r.max} BE · ${r.pct} %</span><span class="row-sub">${new Date(r.t).toLocaleDateString('de-DE')}${r.min ? ' · ' + r.min + ' Min.' : ''}</span></div></div>`).join('')}</div>` : ''}`;
     } else {
       const mode = phase === 'work' ? 'work' : 'rate';
@@ -478,7 +485,7 @@
       const bar = phase === 'work'
         ? `<div class="pclock" id="pclock"><div><span class="kicker">${run.minutes ? 'Restzeit' : 'Zeit'}</span><b class="num" id="pclockT">--:--</b></div><button type="button" class="btn primary" data-psubmit>${icn('check')}Abgeben</button></div>`
         : `<div class="pclock rate"><div><span class="kicker">Jetzt bewerten</span><b id="prateN">0 von ${parts.length} Teilaufgaben bewertet</b></div><button type="button" class="btn primary" data-pfinish disabled>${icn('check')}Auswerten</button></div>`;
-      body = `${bar}${phase === 'rate' ? `<div class="notice">${icn('info')}<div>Abgegeben. Die Musterlösungen sind jetzt offen. Vergleiche mit deinem Blatt und vergib ehrlich Punkte für jede Teilaufgabe.</div></div>` : ''}${sec('Teil A · ohne Taschenrechner', teilA, 0)}${sec('Teil B · mit Taschenrechner (CAS)', teilB, teilA.length)}
+      body = `${bar}${phase === 'rate' ? `<div class="notice">${icn('info')}<div>Abgegeben. Die Musterlösungen sind jetzt offen. Vergleiche mit deinem Blatt und vergib ehrlich Punkte für jede Teilaufgabe.</div></div>` : ''}${sec(TEILE(p.fach).a, teilA, 0)}${sec(TEILE(p.fach).b, teilB, teilA.length)}
         <button type="button" class="link small pabort" data-pabort>Abbrechen und verwerfen</button>`;
     }
 
@@ -619,5 +626,6 @@
     return out;
   };
   LRS.probesOf = probesOf;
+  LRS.nodeHref = nodeHref; // Suche (suche.js)
   LRS.probeNode = fid => (TREES[fid] || []).find(n => n.typ === 'probes') || null;
 })();

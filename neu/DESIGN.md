@@ -1,6 +1,6 @@
 # Lernraum – Design & Struktur (Prototyp)
 
-Stand: 2026-11-07 · Ort: `Portal/neu/` (läuft unter `/neu/`, das alte Portal bleibt unangetastet)
+Stand: 2026-11-08 · Ort: `Portal/neu/` (läuft unter `/neu/`; **seit S8 die Startseite**, `/` leitet hierher weiter, das alte Portal liegt unter `/alt/`)
 
 ## Warum ein Prototyp
 Das alte Portal besteht aus ~800 KB gewachsener Fach-Skripte mit Inline-Styles. Farben austauschen reicht nicht. Deshalb: **erst Designsystem + Struktur + Bildschirm-Typen sauber bauen** (mit echten Daten), dann Fach für Fach übertragen. Der Prototyp ist schon die neue Basis, kein Wegwerfmodell.
@@ -46,6 +46,7 @@ Material (IServ, Uploads, Mitschriften) kommt als vierter Reiter **Material** mi
 | `core.js` | Profile, Ereignis-Liste, Berechnung von Streak/Ring/Kalender (Portalplan 10.2/11.1); Tests in `tests/core.test.js` |
 | `treppe.js` | Lerntreppe: Übersicht `#/thema/<id>`, Eingangs-Check `#/thema/<id>/check`, Stufen `#/thema/<id>/<0–5>` |
 | `content/*.js` | Lerninhalte (`window.LR_TOPICS`), geprüft mit `tests/tasks.test.js` |
+| `suche.js`, `python.js` + `py-sandbox.html`, `skript.js` | S8: Suche (Strg+K), Python-Werkstatt (`#/python`), Durchgehen (`#/skript/<fach>`, druckbar) |
 | gelesen aus dem Portal | `../calendar.js` (Klausuren), `../timetable.js` (Stundenplan), `../mathe_trainer_content.js` (11 Lektionen, Probeklausur, Spickzettel) |
 
 Fortschritt (seit S1, 07.11.): pro Profil `lr:st:<id>` (Lektionen verstanden, Selbstbewertung, Antworten) und `lr:ev:<id>` (Ereignisse). Das erste Profil übernimmt `neu_state_v1` und verstandene Lektionen aus `mt_state_v1`.
@@ -61,4 +62,4 @@ Noch nicht übertragen: Probeklausur mit Uhr, Aufgaben aus Modul 06/07 (`integra
 2. **Mathe vollständig**: Probeklausur-Modus, Aufgaben aus Modul 06/07 in dasselbe Aufgabenformat (`TASKS`), Fehlerliste.
 3. **Einheitliches Inhaltsformat** für alle Fächer: `unit = { id, titel, kurz, min, idee, bild, rezept[], beispiel{q,steps[]}, fehler[], test[], aufgaben[] }`. Mathe hat es bereits; für Physik/Informatik/Politik werden die bestehenden Module (Skripte mit eigenem Rendering) in dieses Format umgeschrieben und die Simulationen als Demo-Bausteine (`demo: '<name>'`) eingehängt.
 4. **Material-Reiter + IServ**: Dateien/Aufgaben aus dem lokalen Server in die drei Ordner.
-5. **Umschalten**: `neu/` wird `index.html`, das alte Portal wandert nach `alt/`.
+5. **Umschalten** ✓ (S8, 08.11.2026): `index.html` leitet auf `neu/` weiter, das alte Portal liegt unter `alt/` (mit `<base href="../">`).

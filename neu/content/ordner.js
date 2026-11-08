@@ -4,7 +4,7 @@
    Knoten:  { id, typ, titel, kurz, klausuren?:[Klausur-Id], themen?:[{typ,ref}], kinder?:[Knoten] }
      typ 'ordner' – enthält Themen (themen) und/oder Unterordner (kinder)
      typ 'probes' – Probeklausuren des Fachs (fest vorgegebene + selbst zusammengestellte)
-     typ 'seite'  – einzelne Seite (ref: 'spick')
+     typ 'seite'  – einzelne Seite (ref: 'spick' = Spickzettel des Fachs, sonst Route #/<ref>, z. B. 'python')
      typ 'alt'    – Module aus dem bisherigen Portal (Liste aus data.js)
    Thema:   { typ: 'lektion' | 'thema' (Lerntreppe) | 'algo' (Notation), ref }
    klausuren: Vorbelegung „klausurrelevant für …“ (Ids aus calendar.js). Tondas Haken im Portal gelten vor dieser Vorbelegung.
@@ -12,6 +12,7 @@
    ========================================================================== */
 (function () {
   const K_MATHE = 'k-19'; // Vorabiturklausur Mathematik, 30.04.2027
+  const K_PHYSIK = 'k-10'; // Physik Klausur 2 (12.1), 13.11.2026
   const L = ref => ({ typ: 'lektion', ref });
 
   window.LR_ORDNER = {
@@ -22,7 +23,18 @@
       { id: 'm-spick', typ: 'seite', ref: 'spick', titel: 'Spickzettel', kurz: 'Alles Wichtige auf einer Seite', klausuren: [K_MATHE] },
       { id: 'm-demo', typ: 'ordner', demo: true, titel: 'Demo: Lerntreppe', kurz: 'So funktionieren Themen mit 6 Stufen', themen: [{ typ: 'thema', ref: 'demo-extrem' }] }
     ],
+    // Physik: Stoff nach der 1. Klausur (IServ 04–07), Klausur 2 am 13.11.2026 (k-10). Stoff von Tonda bestätigt: „alles bisher, v. a. Kondensator“ (Portalplan 2).
+    physik: [
+      { id: 'p-energie', typ: 'ordner', titel: 'Spannung, Energie, Potential', kurz: 'W = Q·U, Potentialsonde, Äquipotentiallinien', klausuren: [K_PHYSIK], themen: ['PH1', 'PH2'].map(L),
+        kinder: [{ id: 'p-alt', typ: 'alt', titel: 'Grundlagen aus Klausur 1', kurz: 'Elektrostatik, Coulomb, Feldstärke (altes Portal)' }] },
+      { id: 'p-kondensator', typ: 'ordner', titel: 'Kondensator', kurz: 'Kapazität, Energie, Schaltungen', klausuren: [K_PHYSIK], themen: ['PH3', 'PH4', 'PH5'].map(L) },
+      { id: 'p-roehre', typ: 'ordner', titel: 'Braunsche Röhre', kurz: 'Elektronen beschleunigen und ablenken', klausuren: [K_PHYSIK], themen: ['PH6', 'PH7'].map(L).concat([{ typ: 'thema', ref: 'ph-querfeld' }]) },
+      { id: 'p-rc', typ: 'ordner', titel: 'Auf- und Entladen', kurz: 'e-Funktion, τ = R·C, C messen', klausuren: [K_PHYSIK], themen: ['PH8', 'PH9'].map(L).concat([{ typ: 'thema', ref: 'ph-entladen' }]) },
+      { id: 'p-probe', typ: 'probes', titel: 'Probeklausuren', kurz: 'Gemischt aus allen Themen, mit Uhr', klausuren: [K_PHYSIK] },
+      { id: 'p-spick', typ: 'seite', ref: 'spick', titel: 'Spickzettel', kurz: 'Alle Formeln auf einer Seite', klausuren: [K_PHYSIK] }
+    ],
     informatik: [
+      { id: 'i-python', typ: 'seite', ref: 'python', titel: 'Python-Werkstatt', kurz: 'Code schreiben, im Browser ausführen, mit Tests prüfen' },
       { id: 'i-demo', typ: 'ordner', demo: true, titel: 'Demo: Notation', kurz: 'Struktogramm, Pseudocode und Python', themen: [{ typ: 'algo', ref: 'demo-algo-max' }] },
       { id: 'i-alt', typ: 'alt', titel: 'Bisherige Module', kurz: 'Module aus dem alten Portal' }
     ]

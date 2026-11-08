@@ -149,7 +149,7 @@ const TONDA_KLAUSUREN = [
     type: "eA (LK)",
     teacher: "Lh",
     room: "NW1",
-    topic: "Klausur 2 (12.1): Schwingungen & Wellen",
+    topic: "Klausur 2 (12.1): Spannung/Potential, Kondensator, Braunsche Röhre, Auf- und Entladen",
     status: "upcoming",
     color: "#818cf8"
   },

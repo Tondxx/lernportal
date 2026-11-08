@@ -1319,3 +1319,204 @@ body.rp-open { overflow: hidden; }
 .join-box { margin-top: 26px; padding: 18px 20px; border-radius: 22px; border: 1.5px dashed var(--line-2); display: flex; flex-direction: column; gap: 6px; }
 .join-box .btn { margin-top: 8px; }
 .code-box { grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); }
+
+/* ==========================================================================
+   S8 – Werkzeuge: Suche · Python-Werkstatt · Durchgehen (Skript) · Druck
+   ========================================================================== */
+kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 6px; font: 650 11.5px/1 var(--font-ui); color: var(--text-2); background: var(--sunken); box-shadow: 0 0 0 1px var(--line-2) inset, 0 1px 0 var(--line-2); }
+
+/* Suche: Knopf in der Seitenleiste (Desktop) und Lupe oben (Handy) */
+.search-btn { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px 0 14px; border-radius: 14px; background: var(--sunken); box-shadow: 0 0 0 1px var(--line) inset; color: var(--text-3); font-size: 14.5px; font-weight: 600; transition: box-shadow .2s, color .2s; }
+.search-btn[hidden] { display: none; }
+.search-btn:hover { color: var(--text); box-shadow: 0 0 0 1px var(--line-2) inset; }
+.search-btn span { flex: 1; text-align: left; }
+.search-btn svg.i { width: 19px; height: 19px; }
+@media (max-width: 1099px) { .search-btn { width: 56px; height: 48px; padding: 0; justify-content: center; } .search-btn span, .search-btn kbd { display: none; } }
+@media (min-width: 720px) { .search-top { display: none !important; } }
+
+.search .sheet-head { margin-bottom: 12px; }
+.sbox { position: relative; }
+.sbox > svg.i { position: absolute; left: 16px; top: 50%; width: 21px; height: 21px; transform: translateY(-50%); color: var(--text-3); pointer-events: none; }
+.sinput { width: 100%; padding-left: 48px; font-weight: 600; font-size: 17px; }
+.smeta { margin: 10px 2px 8px; min-height: 1.2em; }
+.slist { max-height: min(56dvh, 520px); overflow: auto; overscroll-behavior: contain; }
+.srow { gap: 12px; }
+.srow.sel, .srow:hover { background: color-mix(in oklab, var(--subj, var(--accent)) 12%, var(--surface)); }
+.srow.sel .chev { transform: translateX(3px); opacity: 1; }
+.skind { flex: none; width: 92px; font: 650 11px/1.2 var(--font-ui); letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); border-left: 3px solid var(--subj, var(--line-2)); padding-left: 9px; }
+.skeys { margin-top: 12px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+@media (pointer: coarse) { .skeys { display: none; } }
+@media (max-width: 420px) { .skind { width: 70px; font-size: 10px; } }
+/* Handy: Suche kommt von oben, damit die Treffer über der Bildschirmtastatur bleiben */
+@media (max-width: 719px) {
+  .sheet-wrap:has(.search) { align-items: start; }
+  .sheet:has(.search) { border-radius: 0 0 26px 26px; padding-top: calc(14px + var(--sat)); padding-bottom: 16px; transform: translateY(-100%); box-shadow: 0 20px 60px -20px rgba(0, 0, 0, .6); }
+  .sheet-wrap.open .sheet:has(.search) { transform: none; }
+  .search .slist { max-height: 46dvh; }
+}
+
+/* Python-Werkstatt */
+.py-frame { position: absolute; width: 0; height: 0; border: 0; visibility: hidden; }
+.pyw .notice { margin: 4px 0 6px; }
+.py-ed-wrap { border-radius: 18px; background: var(--sunken); box-shadow: 0 0 0 1px var(--line-2) inset; overflow: hidden; }
+.py-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.py-tools .btn.small { height: 34px; padding: 0 12px; font-size: 13.5px; }
+.py-kbd { margin-left: auto; font-size: 12.5px; color: var(--text-3); display: flex; align-items: center; gap: 4px; }
+@media (pointer: coarse) { .py-kbd { display: none; } }
+.py-ed { display: block; width: 100%; min-height: 200px; padding: 14px 16px; border: 0; outline: 0; resize: vertical; background: transparent; color: var(--text); font: 500 15px/1.65 var(--font-mono); tab-size: 4; white-space: pre; overflow: auto; caret-color: var(--accent-ink); }
+.py-ed:focus { box-shadow: 0 0 0 2px var(--accent-ink) inset; }
+.py-stdin { margin-top: 12px; }
+.py-stdin summary { cursor: pointer; font-size: 14px; font-weight: 600; color: var(--text-2); }
+.py-in { width: 100%; height: auto; min-height: 84px; margin-top: 8px; padding: 12px 16px; font: 500 15px/1.5 var(--font-mono); resize: vertical; }
+.py-act { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.py-tip { margin-top: 12px; }
+.py-fallback, #pyWarn .notice { margin-top: 14px; }
+.py-out { margin-top: 14px; border-radius: 18px; background: var(--sunken); box-shadow: 0 0 0 1px var(--line) inset; overflow: hidden; }
+.py-out-h { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 16px; border-bottom: 1px solid var(--line); }
+.py-st { font-size: 12.5px; font-weight: 600; color: var(--text-3); text-align: right; }
+.py-st[data-st="ready"] { color: var(--ok); }
+.py-st[data-st="loading"] { color: var(--warn); }
+.py-st[data-st="error"] { color: var(--bad); }
+.py-pre { margin: 0; padding: 14px 16px; max-height: 50vh; overflow: auto; font: 500 14.5px/1.6 var(--font-mono); white-space: pre-wrap; word-break: break-word; color: var(--text); }
+.py-err { color: var(--bad); }
+.py-dim { color: var(--text-3); }
+.py-test code, .pyw .row-sub code, .pyw .prose code { font-family: var(--font-mono); font-size: .92em; }
+.py-test code.row-title { font-size: 14.5px; font-weight: 600; }
+.py-test.ok .pnode { color: var(--ok); box-shadow: 0 0 0 1.5px var(--ok) inset; }
+.py-test.bad .pnode { color: var(--bad); box-shadow: 0 0 0 1.5px var(--bad) inset; }
+.py-solcode { padding: 14px 18px; white-space: pre; }
+.algo-py { margin: 18px 0 6px; }
+
+/* Durchgehen (Skript-Modus) */
+.sk-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 4px 0 22px; }
+.sk-print-head { display: none; }
+.sk-toc { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--r-l); background: var(--surface); overflow: hidden; }
+.sk-toc-i { display: flex; align-items: center; gap: 14px; min-height: 52px; padding: 10px 18px; text-align: left; font-weight: 600; font-size: 15.5px; color: var(--text); }
+.sk-toc-i + .sk-toc-i { border-top: 1px solid var(--line); }
+.sk-toc-i:hover { background: color-mix(in oklab, var(--subj) 8%, transparent); }
+.sk-toc-i span:nth-child(2) { flex: 1; }
+.sk-toc-i .num, .sk-sec-h .num { width: 30px; height: 30px; flex: none; border-radius: 50%; display: grid; place-items: center; font-size: 14px; color: var(--subj); background: color-mix(in oklab, var(--subj) 16%, transparent); }
+.sk-sec { margin-top: 46px; scroll-margin-top: calc(var(--appbar-h) + 16px); }
+.sk-sec-h { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
+.sk-sec-h .num { width: 40px; height: 40px; font-size: 18px; }
+.sk-sec-h .num svg.i { width: 20px; height: 20px; }
+.sk-unit { padding: 26px 0 8px; border-top: 1px solid var(--line); margin-top: 22px; }
+.sk-unit header .kicker { color: var(--subj); }
+.sk-unit header .h-2 { margin: 8px 0 4px; font-size: 23px; }
+.sk-short { font-size: 15.5px; }
+.sk-block { margin-top: 18px; }
+.sk-lbl { display: block; margin-bottom: 8px; font: 650 11.5px/1 var(--font-ui); letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
+.sk-steps { padding-left: 1.4em; max-width: 70ch; }
+.sk-steps li { margin: 6px 0; padding-left: 4px; }
+.sk-steps li::marker { color: var(--subj); font-weight: 700; }
+.sk-steps .prose, .sk-fails .prose, .sk-q .prose { font-size: 16.5px; line-height: 1.65; }
+.sk-ex li > b { display: block; font-size: 15px; margin-top: 10px; }
+.sk-fails { padding-left: 1.2em; max-width: 70ch; }
+.sk-fails li { margin: 6px 0; }
+.sk-qa { display: grid; gap: 4px 0; max-width: 70ch; }
+.sk-qa dt { font-weight: 650; margin-top: 10px; }
+.sk-qa dd { margin: 0; padding-left: 14px; border-left: 3px solid color-mix(in oklab, var(--subj) 45%, transparent); color: var(--text-2); }
+.sk-code { padding: 12px 16px; white-space: pre; font-size: 14px; }
+.sk-open { display: inline-block; margin-top: 14px; }
+.sk-foot { margin-top: 40px; }
+.sk-kurz .sk-unit { padding-bottom: 0; }
+
+/* Druck: hell, ohne Bedienelemente, jede Ordner-Gruppe auf neuer Seite (Skript als PDF) */
+@media print {
+  :root, [data-theme="dark"], [data-theme="light"] {
+    --bg: #fff; --surface: #fff; --raised: #fff; --sunken: #f4f5f8; --line: rgba(0,0,0,.14); --line-2: rgba(0,0,0,.24);
+    --text: #000; --text-2: #262a33; --text-3: #4b5160; --accent-ink: #1f3fbf; color-scheme: light;
+  }
+  html, body { background: #fff !important; }
+  .shell { display: block; }
+  .view { max-width: none; padding: 0 !important; }
+  .search-btn, .search-top, .sheet-wrap, .sess-chip, .crumbs, .sk-tools, .sk-toc, .sk-open, .py-frame, .skript .page-head .muted { display: none !important; }
+  .rise, .rise > * { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .sk-print-head { display: block; font: 600 10pt/1.4 var(--font-ui); color: #4b5160; border-bottom: 1px solid #ccc; padding-bottom: 6px; margin-bottom: 10px; }
+  .skript .page-head { padding-top: 0; }
+  .skript .h-display { font-size: 24pt; }
+  .sk-sec { margin-top: 0; break-before: page; }
+  .sk-sec:first-of-type { break-before: auto; }
+  .sk-unit { break-inside: avoid-page; margin-top: 14px; padding-top: 14px; }
+  .sk-unit header { break-after: avoid; }
+  .sk-block { break-inside: avoid; }
+  .prose, .sk-steps .prose, .sk-fails .prose { font-size: 11pt; line-height: 1.5; max-width: none; }
+  .prose .katex-display { overflow: visible; }
+  a { color: inherit; text-decoration: none; }
+}
+
+/* ==========================================================================
+   Physik-Demos (content/physik-demos.js): Simulationen in Lektionen und Stufe 0
+   ========================================================================== */
+.pdemo svg text { font: 600 13px var(--font-ui); fill: var(--text-3); }
+.pdemo svg text.pd-lbl { fill: var(--text-2); text-transform: none; letter-spacing: 0; }
+.pdemo svg text.big { font-size: 17px; fill: var(--text); }
+.pdemo svg sup { font-size: 70%; }
+.pdemo .read sup { font-size: 65%; }
+.pd-ctls { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 2px 24px; margin-top: 6px; }
+.pd-ctl label { display: flex; gap: 6px; align-items: baseline; font-size: 14.5px; color: var(--text-2); margin-top: 8px; }
+.pd-ctl label b { font-family: var(--font-display); font-size: 18px; color: var(--text); letter-spacing: -0.01em; }
+.pd-ctl .slider { margin-top: 0; }
+.pd-ctl .slider:disabled { opacity: .35; }
+.pd-seg { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 2px; }
+.pd-seg button { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line-2); background: transparent; color: var(--text-2); font: 600 14px var(--font-ui); cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+.pd-seg button.on { background: color-mix(in oklab, var(--subj) 22%, transparent); border-color: var(--subj); color: var(--text); }
+.pd-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.pd-msg { margin: 12px 0 0; font-size: 15.5px; line-height: 1.6; color: var(--text-2); min-height: 3.2em; }
+.pd-msg b { color: var(--text); }
+.pd-try { margin-top: 14px; font-size: 15px; color: var(--text-2); }
+.pd-try-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.pd-try input { width: 130px; min-height: 40px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--line-2); background: var(--bg); color: var(--text); font: 600 16px var(--font-ui); }
+/* Formen */
+.pd-arrowhead { fill: var(--subj); }
+.pd-plate-p { fill: color-mix(in oklab, var(--bad) 70%, var(--surface)); }
+.pd-plate-m { fill: color-mix(in oklab, var(--info) 70%, var(--surface)); }
+.pd-fl { stroke: color-mix(in oklab, var(--subj) 75%, transparent); stroke-width: 2; }
+.pd-fl.thin { stroke-width: 1.6; }
+.pd-eq { stroke: var(--text-3); stroke-width: 1.4; stroke-dasharray: 5 5; }
+.pd-e { fill: var(--info); stroke: var(--bg); stroke-width: 2; }
+.pd-e.small { stroke-width: 1; }
+.pd-p { fill: var(--bad); stroke: var(--bg); stroke-width: 2; }
+.pdemo svg text.pd-ptl { fill: #fff; font: 800 15px var(--font-ui); }
+.pd-q { font: 800 15px var(--font-ui); }
+.pdemo svg text.pd-qp { fill: var(--bad); } .pdemo svg text.pd-qm { fill: var(--info); }
+.pd-dim { stroke: var(--text-3); stroke-width: 1; }
+.pd-ax { stroke: var(--text-3); stroke-width: 1.4; }
+.pd-grid { stroke: var(--line); stroke-width: 1; stroke-dasharray: 3 5; }
+.pd-grid.strong { stroke: var(--warn); stroke-dasharray: 6 4; stroke-width: 1.6; }
+.pd-bar-pot { fill: color-mix(in oklab, var(--info) 75%, transparent); }
+.pd-bar-kin { fill: color-mix(in oklab, var(--ok) 75%, transparent); }
+.pd-total { stroke: var(--text-2); stroke-width: 1.5; stroke-dasharray: 6 4; }
+.pd-guide { stroke: var(--subj); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.pd-probe { cursor: grab; outline: none; }
+.pd-probe circle { fill: var(--accent); stroke: var(--bg); stroke-width: 3; }
+.pd-probe:focus-visible circle { stroke: var(--text); }
+.pd-stick { stroke: var(--text-2); stroke-width: 4; stroke-linecap: round; }
+.pd-curve { fill: none; stroke: var(--subj); stroke-width: 3; stroke-linejoin: round; }
+.pd-curve2 { fill: none; stroke: var(--warn); stroke-width: 2.6; stroke-dasharray: 7 4; }
+.pd-dot { fill: var(--accent); stroke: var(--bg); stroke-width: 3; }
+.pd-diel { fill: color-mix(in oklab, var(--warn) 18%, transparent); stroke: color-mix(in oklab, var(--warn) 45%, transparent); }
+.pd-wire { fill: none; stroke: var(--text-2); stroke-width: 2.4; stroke-linejoin: round; }
+.pd-wire.cut { stroke-dasharray: 8 6; opacity: .5; }
+.pd-bat { stroke: var(--text); stroke-width: 3; }
+.pd-bat.thick { stroke-width: 6; }
+.pd-capl { stroke: var(--text); stroke-width: 4; }
+.pd-res { fill: var(--surface); stroke: var(--text-2); stroke-width: 2.4; }
+.pd-switch { stroke: var(--text); stroke-width: 3; stroke-linecap: round; transition: all .25s; }
+.pd-node { fill: var(--text-2); }
+.pd-rect { fill: none; stroke: var(--text-3); stroke-width: 1.6; stroke-dasharray: 6 5; }
+.pd-strip { fill: color-mix(in oklab, var(--subj) 45%, transparent); }
+.pd-area { fill: color-mix(in oklab, var(--subj) 40%, transparent); }
+.pd-qbar { fill: var(--subj); }
+.pd-qbar-bg { fill: none; stroke: var(--line-2); }
+.pd-glass { fill: color-mix(in oklab, var(--info) 5%, transparent); stroke: var(--line-2); stroke-width: 2; }
+.pd-fil { fill: none; stroke: var(--text-3); stroke-width: 2.5; transition: stroke .4s, filter .4s; }
+.pd-fil.hot { stroke: #ff9a3c; filter: drop-shadow(0 0 4px #ff9a3c); }
+.pd-kath { fill: var(--text-3); }
+.pd-wehnelt { fill: none; stroke: var(--text-3); stroke-width: 3; }
+.pd-anode { fill: color-mix(in oklab, var(--bad) 60%, var(--surface)); }
+.pd-screen { stroke: color-mix(in oklab, var(--ok) 60%, var(--text-3)); stroke-width: 5; stroke-linecap: round; }
+.pd-spot { fill: var(--ok); filter: drop-shadow(0 0 6px var(--ok)); }
+.pd-axis-dash { stroke: var(--line-2); stroke-dasharray: 2 6; }
+.pd-beam { fill: none; stroke: color-mix(in oklab, var(--info) 55%, transparent); stroke-width: 2.5; }
+@media (max-width: 520px) { .pdemo { padding: 12px; } .pd-msg { font-size: 15px; } }

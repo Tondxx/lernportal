@@ -2,13 +2,16 @@ import os
 
 portal_dir = os.path.dirname(os.path.abspath(__file__))
 
-with open(os.path.join(portal_dir, "index.html"), "r", encoding="utf-8") as f:
+import re
+
+# Seit S8 ist index.html nur noch die Weiterleitung zum Lernraum (neu/).
+# Das alte Portal liegt in alt/index.html (mit <base href="../">); daraus wird die Offline-Datei gebaut.
+with open(os.path.join(portal_dir, "alt", "index.html"), "r", encoding="utf-8") as f:
     html = f.read()
+html = re.sub(r'[ \t]*<base href="\.\./">[^\n]*\n', '', html, count=1)
 
 with open(os.path.join(portal_dir, "style.css"), "r", encoding="utf-8") as f:
     css = f.read()
-
-import re
 
 # Replace <link rel="stylesheet" href="style.css..."> with <style>...</style>
 html_bundled = re.sub(r'<link rel="stylesheet" href="style\.css(?:\?[^"]*)?">', f'<style>\n{css}\n</style>', html)

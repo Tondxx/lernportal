@@ -87,13 +87,17 @@
   }
   const rangeText = g => g.from === g.to ? `${g.from}. Std.` : `${g.from}.–${g.to}. Std.`;
 
-  // ------------------------------------------------------------ Mathe: Lektionen & Aufgaben
-  const LESSONS = D.LESSONS || [];
-  const TASKS = [].concat((D.EXAM1 && D.EXAM1.tasks) || [], D.EXTRA || []);
+  // ------------------------------------------------------------ Lektionen & Aufgaben (Mathe aus MT_DATA, weitere Fächer aus content/*.js)
+  // Lektion/Aufgabe ohne Feld `fach` gehört zu Mathe. Weitere Fächer: window.LR_LESSONS / window.LR_TASKS (z. B. content/physik.js).
+  const LESSONS = (D.LESSONS || []).concat(window.LR_LESSONS || []);
+  const TASKS = [].concat((D.EXAM1 && D.EXAM1.tasks) || [], D.EXTRA || [], window.LR_TASKS || []);
+  const fachOf = x => (x && x.fach) || 'mathe';
+  const lessonsOf = fid => LESSONS.filter(l => fachOf(l) === fid);
   const taskMax = t => t.parts.reduce((a, p) => a + (p.be || 0), 0);
   const taskGot = t => t.parts.reduce((a, p) => a + (state.scores[p.id] || 0), 0);
-  const nextLesson = () => LESSONS.find(l => !state.done[l.id]) || LESSONS[0];
-  const lessonsDone = () => LESSONS.filter(l => state.done[l.id]).length;
+  // Physik u. a.: keine Teil-A/B-Trennung wie in Mathe → „mit Taschenrechner“ / „Grundwissen“
+  const teilText = t => fachOf(t) === 'mathe' ? `Teil ${t.teil}` : (t.teil === 'A' ? 'Grundwissen' : 'mit Taschenrechner');
+  const lessonsDone = fid => lessonsOf(fid).filter(l => state.done[l.id]).length;
 
   // ------------------------------------------------------------ UI-Bausteine
   function ring(p, { size = 120, center = '', color = '' } = {}) {
@@ -120,8 +124,7 @@
   // Teilaufgaben, bei denen Punkte gefehlt haben (Fehler-Segment des Rings)
   function lostParts() {
     const out = [];
-    if (!mine('mathe')) return out;
-    TASKS.forEach(t => t.parts.forEach(p => { const v = state.scores[p.id]; if (v !== undefined && v < (p.be || 0)) out.push({ t, p, v }); }));
+    TASKS.forEach(t => mine(fachOf(t)) && t.parts.forEach(p => { const v = state.scores[p.id]; if (v !== undefined && v < (p.be || 0)) out.push({ t, p, v }); }));
     return out;
   }
 
@@ -129,19 +132,23 @@
   function nextStep(st) {
     const ps = window.LRStruktur && LRStruktur.nextPlanStep(); // erster offener Eintrag im Lernplan
     if (ps) return ps;
-    const ms = byId.mathe;
-    if (!mine('mathe') || !LESSONS.length) return null;
+    // Fach: das mit der nächsten Klausur, für das es Lektionen gibt (sonst Mathe)
+    const nxE = upcoming.find(k => lessonsOf(k.fid).length);
+    const fid = nxE ? nxE.fid : 'mathe';
+    const ms = byId[fid] || byId.mathe;
+    const LS = lessonsOf(fid);
+    if (!mine(fid) || !LS.length) return null;
     const pool = recallPool(false);
     if (!st.ring.seg[0] && pool.length) return { kicker: 'Wiederholen', title: `${Math.min(5, pool.length)} ${pool.length === 1 ? 'Karte ist' : 'Karten sind'} heute fällig`, sub: 'Erst im Kopf antworten, dann umdrehen. Was du nicht wusstest, kommt morgen wieder.', min: 3, href: '#/abruf', s: ms, ic: 'flip' };
     const cont = state.last && LESSONS.find(l => l.id === state.last.id && !state.done[l.id]);
-    if (cont) return { kicker: 'Weiter, wo du aufgehört hast', title: `Lektion ${cont.num}: ${cont.title}`, sub: cont.short, min: cont.min, href: `#/lektion/${cont.id}`, s: ms, ic: 'play' };
+    if (cont) return { kicker: 'Weiter, wo du aufgehört hast', title: `Lektion ${cont.num}: ${cont.title}`, sub: cont.short, min: cont.min, href: `#/lektion/${cont.id}`, s: byId[fachOf(cont)] || ms, ic: 'play' };
     const hd = window.LRWdh ? LRWdh.huntState().due.length : 0;
     if (!st.ring.seg[2] && hd) return { kicker: 'Fehlerjagd', title: `${hd} ${hd === 1 ? 'Fehler ist' : 'Fehler sind'} wieder dran`, sub: 'Nur die Stelle neu rechnen, an der es gehakt hat. Dann vergleichen.', min: 5, href: '#/jagd', s: ms, ic: 'target' };
     const lost = lostParts();
     if (!st.ring.seg[2] && lost.length) { const { t, p, v } = lost[0]; return { kicker: 'Fehler ausbessern', title: `${t.title} · ${p.label}`, sub: `Beim letzten Mal ${v} von ${p.be} BE. Rechne den Teil nochmal auf Papier und hol dir die fehlenden Punkte.`, min: 8, href: `#/aufgabe/${t.id}`, s: ms, ic: 'target' }; }
-    const nl = LESSONS.find(l => !state.done[l.id]);
+    const nl = LS.find(l => !state.done[l.id]);
     if (nl) return { kicker: 'Neu lernen', title: `Lektion ${nl.num}: ${nl.title}`, sub: nl.short, min: nl.min, href: `#/lektion/${nl.id}`, s: ms, ic: 'play' };
-    const open = TASKS.find(t => t.parts.some(p => state.scores[p.id] === undefined));
+    const open = TASKS.find(t => fachOf(t) === fid && t.parts.some(p => state.scores[p.id] === undefined));
     if (open) return { kicker: 'Üben', title: open.title, sub: `Teil ${open.teil} · ${taskMax(open)} BE · auf Papier lösen, dann ehrlich bewerten`, min: 15, href: `#/aufgabe/${open.id}`, s: ms, ic: 'pencil' };
     return { kicker: 'Wiederholen', title: 'Abruf aus allen Lektionen', sub: 'Alles einmal geschafft. Jetzt hält Wiederholen es frisch.', min: 3, href: '#/abruf', s: ms, ic: 'flip' };
   }
@@ -272,7 +279,8 @@
     });
     const tiles = order.map((s, i) => {
       const e = examsOf(s.id)[0];
-      const st = s.id === 'mathe' ? ` · ${lessonsDone()}/${LESSONS.length} verstanden` : '';
+      const nL = lessonsOf(s.id).length;
+      const st = nL ? ` · ${lessonsDone(s.id)}/${nL} verstanden` : '';
       return `<a class="tile" href="#/fach/${s.id}" ${subjStyle(s)}>
         <div style="display:flex;justify-content:space-between;align-items:flex-start"><div class="mono">${mono(s)}</div>${e ? `<span class="chip ${e.days <= 3 ? 'bad' : e.days <= 10 ? 'warn' : ''}">${daysText(e.days)}</span>` : ''}</div>
         <div><div class="tile-name">${s.name}</div><div class="tile-foot"><span>${s.teacher} · ${s.room}${st}</span>${icon('right')}</div></div></a>`;
@@ -285,8 +293,9 @@
     const ts = s.topics;
     const demo = ALGOS.find(x => x.fach === s.id);
     const demoCard = demo ? `<a class="cont" href="#/algo/${demo.id}" style="margin-bottom:14px"><div class="cont-ico">${icon('layers')}</div><div class="row-main"><span class="kicker">Neu · Notation (Demo)</span><span class="row-title" style="font-size:18px">${demo.titel}</span><span class="row-sub">Ein Algorithmus als Struktogramm, Pseudocode und Python, zum Tippen und Vergleichen.</span></div>${icon('right', 'chev')}</a>` : '';
-    return `${demoCard}<div class="notice" style="margin-bottom:18px">${icon('info')}<div>Diese Module laufen noch im bisherigen Portal und werden in die neue Struktur übertragen.</div></div>
-      <div class="path">${ts.map((t, i) => unitRow(i, i + 1, ts.length, false, false, t.title, t.desc.length > 110 ? t.desc.slice(0, 108) + '…' : t.desc, t.badge ? `<span class="chip">${t.badge}</span>` : '', '../index.html', true)).join('')}</div>`;
+    // Seit S8 liegt das bisherige Portal unter ../alt/ (Startseite ist der Lernraum)
+    return `${demoCard}<div class="notice" style="margin-bottom:18px">${icon('info')}<div>Diese Module laufen noch im alten Portal (öffnet sich in einem neuen Tab) und werden nach und nach in die neue Struktur übertragen.</div></div>
+      <div class="list prows">${ts.map((t, i) => `<a class="row" href="../alt/" target="_blank" rel="noopener"><span class="pnode">${esc(t.num || i + 1)}</span><span class="row-main"><span class="row-title">${esc(t.title)}</span><span class="row-sub">${esc(t.desc.length > 110 ? t.desc.slice(0, 108) + '…' : t.desc)}</span></span><span class="row-end">${t.badge ? `<span class="chip">${esc(t.badge)}</span>` : ''}${icon('ext', 'chev')}</span></a>`).join('')}</div>`;
   }
 
 
@@ -331,27 +340,31 @@
   // ---- Lektion (Reader)
   function buildPages(l) {
     const P = [];
-    P.push({ k: 'idee', label: 'Idee', html: () => `<div class="page-title"><span class="kicker">Lektion ${l.num} · ${l.min} Min.</span><h2 class="h-1">${l.title}</h2></div>${prose(l.idee)}${l.bild ? `<span class="sub">Stell dir vor</span>${prose(l.bild)}` : ''}` });
+    P.push({ k: 'idee', label: 'Idee', html: () => `<div class="page-title"><span class="kicker">Lektion ${l.num} · ${l.min} Min.</span><h2 class="h-1">${l.title}</h2></div>${demoOnIdee(l) ? demoSlot(l) : ''}${prose(l.idee)}${l.bild ? `<span class="sub">Stell dir vor</span>${prose(l.bild)}` : ''}` });
     if (l.rezept && l.rezept.length) P.push({ k: 'rezept', label: 'Rezept', html: () => `<div class="page-title"><span class="kicker">Schritt für Schritt</span><h2 class="h-1">Das Rezept</h2><p class="muted" style="margin-top:10px">Tippe einen Schritt an, wenn du ihn verstanden hast.</p></div><ol class="recipe">${l.rezept.map(r => `<li tabindex="0"><span class="tick"></span>${prose(r)}</li>`).join('')}</ol>${l.extra ? `<span class="sub">Zum Nachschlagen</span>${prose(l.extra)}` : ''}` });
-    if (l.beispiel) P.push({ k: 'beispiel', label: 'Beispiel', html: () => `<div class="page-title"><span class="kicker">Rechne mit</span><h2 class="h-1">Ein Beispiel</h2></div><div class="q">${prose(l.beispiel.q)}</div>${demoSlot(l)}<div id="steps">${l.beispiel.steps.map((st, i) => `<div class="reveal" data-step="${i}"><div><div class="inner"><div class="stepx"><span class="n">${i + 1}</span><div><h4>${st.h}</h4>${prose(st.t)}</div></div></div></div></div>`).join('')}</div><button class="btn reveal-btn" id="revealBtn" type="button">${icon('eye')}<span>Ersten Schritt zeigen</span></button>${l.extraAfter ? `<span class="sub">Mehr dazu</span>${prose(l.extraAfter)}` : ''}` });
+    if (l.beispiel) P.push({ k: 'beispiel', label: 'Beispiel', html: () => `<div class="page-title"><span class="kicker">Rechne mit</span><h2 class="h-1">Ein Beispiel</h2></div><div class="q">${prose(l.beispiel.q)}</div>${demoOnIdee(l) ? '' : demoSlot(l)}<div id="steps">${l.beispiel.steps.map((st, i) => `<div class="reveal" data-step="${i}"><div><div class="inner"><div class="stepx"><span class="n">${i + 1}</span><div><h4>${st.h}</h4>${prose(st.t)}</div></div></div></div></div>`).join('')}</div><button class="btn reveal-btn" id="revealBtn" type="button">${icon('eye')}<span>Ersten Schritt zeigen</span></button>${l.extraAfter ? `<span class="sub">Mehr dazu</span>${prose(l.extraAfter)}` : ''}` });
     if (l.fehler && l.fehler.length) P.push({ k: 'fehler', label: 'Fehler', html: () => `<div class="page-title"><span class="kicker">Darauf achten</span><h2 class="h-1">Typische Fehler</h2></div><div class="fails">${l.fehler.map(f => `<div class="fail">${icon('alert')}${prose(f)}</div>`).join('')}</div>` });
     if (l.test && l.test.length) P.push({ k: 'test', label: 'Selbsttest', html: () => `<div class="page-title"><span class="kicker">Active Recall</span><h2 class="h-1">Selbsttest</h2><p class="muted" style="margin-top:10px">Erst im Kopf antworten, dann umdrehen.</p></div><div id="flashHost"></div>` });
     P.push({ k: 'ende', label: 'Fertig', html: () => endPage(l) });
     return P;
   }
+  // Demos: Mathe (bestand, ortskurve) hier; weitere Fächer registrieren sich in window.LR_DEMOS (z. B. content/physik-demos.js).
+  // Lektionen anderer Fächer zeigen die Demo zuerst (Seite „Idee“: erst sehen, dann lesen), Mathe beim Beispiel.
+  const demoOnIdee = l => !!l.demo && (l.demoAuf ? l.demoAuf === 'idee' : fachOf(l) !== 'mathe');
   function demoSlot(l) {
     if (l.id === 'L1' || l.demo === 'bestand') return `<span class="sub">Probier es aus</span><div class="demo" id="demoHost" data-demo="bestand"></div>`;
     if (l.demo === 'ortskurve') return `<span class="sub">Probier es aus</span><div class="demo" id="demoHost" data-demo="ortskurve"></div>`;
+    if (l.demo && (window.LR_DEMOS || {})[l.demo]) return `<span class="sub">${l.demoTitel || 'Probier es aus'}</span><div class="demo pdemo" id="demoHost" data-demo="${l.demo}"></div>`;
     return '';
   }
   function endPage(l) {
     const done = !!state.done[l.id];
-    const idx = LESSONS.findIndex(x => x.id === l.id);
-    const nx = LESSONS[idx + 1];
+    const LS = lessonsOf(fachOf(l));
+    const nx = LS[LS.findIndex(x => x.id === l.id) + 1];
     const related = TASKS.filter(t => t.lesson === l.id);
     return `<div class="done-wrap"><div class="done-badge">${icon('check')}</div><h2 class="h-1">Lektion ${l.num} geschafft?</h2><p class="muted" style="max-width:44ch">Markiere sie als verstanden, wenn du das Rezept ohne Hinsehen erklären kannst. Du kannst es jederzeit zurücknehmen.</p>
       <button class="btn ${done ? '' : 'primary'}" id="doneBtn" type="button">${done ? icon('check') + 'Verstanden – zurücknehmen' : icon('check') + 'Als verstanden speichern'}</button></div>
-      ${related.length ? `<span class="sub">Passende Aufgaben</span><div class="list">${related.map(t => `<a class="row" href="#/aufgabe/${t.id}"><span class="row-main"><span class="row-title">${t.title}</span><span class="row-sub">Teil ${t.teil} · ${taskMax(t)} BE</span></span>${icon('right', 'chev')}</a>`).join('')}</div>` : ''}
+      ${related.length ? `<span class="sub">Passende Aufgaben</span><div class="list">${related.map(t => `<a class="row" href="#/aufgabe/${t.id}"><span class="row-main"><span class="row-title">${t.title}</span><span class="row-sub">${teilText(t)} · ${taskMax(t)} BE</span></span>${icon('right', 'chev')}</a>`).join('')}</div>` : ''}
       ${nx ? `<span class="sub">Danach</span><a class="row card" href="#/lektion/${nx.id}" style="border-radius:22px"><span class="row-main"><span class="row-title">Lektion ${nx.num}: ${nx.title}</span><span class="row-sub">${nx.short}</span></span>${icon('right', 'chev')}</a>` : ''}`;
   }
 
@@ -360,13 +373,13 @@
     if (!l) return R.faecher();
     const pages = buildPages(l);
     let cur = state.last && state.last.id === id ? Math.min(state.last.page, pages.length - 1) : 0;
-    const ms = byId.mathe;
+    const ms = byId[fachOf(l)] || byId.mathe;
     const html = `<div ${subjStyle(ms)} id="reader">
       <div class="steps" id="steps">${pages.map(() => '<i></i>').join('')}</div>
       <div class="reader"><nav class="outline" id="outline" aria-label="Seiten der Lektion">${pages.map((p, i) => `<button type="button" data-p="${i}"><span class="n">${i + 1}</span>${p.label}</button>`).join('')}</nav>
       <div><article class="page" id="page"></article><div class="pager"><button class="btn back-btn" id="prevBtn" type="button" aria-label="Zurück">${icon('left')}</button><button class="btn primary" id="nextBtn" type="button"></button></div></div></div></div>`;
     return {
-      title: `Lektion ${l.num}`, back: (window.LRStruktur && LRStruktur.backFor('lektion', l.id)) || '#/fach/mathe', nav: 'faecher', focus: true, html,
+      title: `Lektion ${l.num}`, back: (window.LRStruktur && LRStruktur.backFor('lektion', l.id)) || `#/fach/${fachOf(l)}`, nav: 'faecher', focus: true, html,
       after(root) { readerInit(root, l, pages, cur); }
     };
   };
@@ -393,7 +406,7 @@
     function go(d) {
       const n = cur + d;
       if (n < 0) return;
-      if (n >= pages.length) { location.hash = (window.LRStruktur && LRStruktur.backFor('lektion', l.id)) || '#/fach/mathe'; return; }
+      if (n >= pages.length) { location.hash = (window.LRStruktur && LRStruktur.backFor('lektion', l.id)) || `#/fach/${fachOf(l)}`; return; }
       cur = n; dir = d; show();
     }
     function bindPage() {
@@ -418,7 +431,11 @@
         label.textContent = 'Ersten Schritt zeigen';
       }
       const dh = $('#demoHost', page);
-      if (dh) (dh.dataset.demo === 'ortskurve' ? demoOrt : demoBestand)(dh);
+      if (dh) {
+        const ext = (window.LR_DEMOS || {})[dh.dataset.demo];
+        if (ext) { try { ext(dh, { M, icon, fmt, reduced }); } catch (err) { console.error('Demo', dh.dataset.demo, err); } }
+        else (dh.dataset.demo === 'ortskurve' ? demoOrt : demoBestand)(dh);
+      }
       const fh = $('#flashHost', page);
       if (fh) flash(fh, l.test.map((c, i) => ({ q: c.q, a: c.a, ref: `${l.id}:${i}`, lesson: l })));
       const db = $('#doneBtn', page);
@@ -607,10 +624,10 @@
   R.aufgabe = (id) => {
     const t = TASKS.find(x => x.id === id);
     if (!t) return R.faecher();
-    const ms = byId.mathe;
+    const ms = byId[fachOf(t)] || byId.mathe;
     const blk = taskBlock(t);
-    const html = `<div ${subjStyle(ms)} class="rise"><div class="page-head"><span class="kicker">Teil ${t.teil} · AFB ${t.afb} · ${taskMax(t)} BE</span><h2 class="h-1">${t.title}</h2><p class="dim" style="font-size:14px">${t.ops} · angelehnt an Zentralabitur-Aufgabenformate, nicht offiziell</p></div>${blk.html}</div>`;
-    return { title: t.title, back: (window.LRStruktur && LRStruktur.backFor('aufgabe', t.id)) || '#/fach/mathe', nav: 'faecher', focus: true, html, after(root) { blk.bind(root); } };
+    const html = `<div ${subjStyle(ms)} class="rise"><div class="page-head"><span class="kicker">${teilText(t)} · AFB ${t.afb} · ${taskMax(t)} BE</span><h2 class="h-1">${t.title}</h2><p class="dim" style="font-size:14px">${t.ops} · angelehnt an Zentralabitur-Aufgabenformate, nicht offiziell</p></div>${blk.html}</div>`;
+    return { title: t.title, back: (window.LRStruktur && LRStruktur.backFor('aufgabe', t.id)) || `#/fach/${fachOf(t)}`, nav: 'faecher', focus: true, html, after(root) { blk.bind(root); } };
   };
 
   // ---- Lerntreppe (treppe.js, Bauschritt S2)
@@ -723,6 +740,7 @@
     $$('[data-avatar]').forEach(el => { el.textContent = me ? initial(me.name) : ''; });
     $$('[data-pname]').forEach(el => { el.textContent = me ? me.name : ''; });
     $$('[data-action="profiles"]').forEach(el => { el.hidden = !me; });
+    $$('[data-action="search"]').forEach(el => { el.hidden = !me; }); // Suche erst mit Profil (S8)
   }
 
   // ------------------------------------------------------------ Router & Shell
@@ -751,6 +769,8 @@
     if (a === 'spick') return ['spick', b];
     if (a === 'thema') return ['thema', b, c];
     if (a === 'algo') return ['algo', b];
+    if (a === 'python') return ['python', b];
+    if (a === 'skript') return ['skript', b || 'mathe'];
     return ['heute'];
   }
 
@@ -837,12 +857,15 @@
   addEventListener('scroll', () => $('#appbar').classList.toggle('scrolled', scrollY > 6), { passive: true });
   addEventListener('hashchange', () => { if (!sheet.hidden) closeSheet(); go(); }); // offenes Fenster (z. B. „Text für Claude“) gehört zur alten Seite
   addEventListener('resize', () => initSegs(view));
-  const APP = { R, nextStep, state, save, LR, M, icon, esc, byId, SUBJECTS, mine, subjStyle, mono, fmt, prose, bar, ring, seg, exams, upcoming, examsOf, daysText, WD, MONTHS, LESSONS, TASKS, TOPICS, ALGOS, D, taskMax, taskGot, taskBlock, oldModules, openSheet, closeSheet, sheetHead, view, rerender: () => go({ still: true }), reduced };
+  const APP = { R, nextStep, fachOf, lessonsOf, teilText, state, save, LR, M, icon, esc, byId, SUBJECTS, mine, subjStyle, mono, fmt, prose, bar, ring, seg, exams, upcoming, examsOf, daysText, WD, MONTHS, LESSONS, TASKS, TOPICS, ALGOS, D, taskMax, taskGot, taskBlock, oldModules, openSheet, closeSheet, sheetHead, view, rerender: () => go({ still: true }), reduced };
   if (window.LRStruktur) LRStruktur.init(APP);
   if (window.LRWdh) LRWdh.init(APP);
   if (window.LRUeberblick) LRUeberblick.init(APP);
   if (window.LRKlausur) LRKlausur.init(APP);
   if (window.LRSync && me) LRSync.init(APP);
+  if (window.LRSuche && me) LRSuche.init(APP);
+  if (window.LRPython) LRPython.init(APP);
+  if (window.LRSkript) LRSkript.init(APP);
   paintProfile();
   go({ first: true }); // erste Anzeige ohne Übergang: der kann beim Laden hängen bleiben
   askWho(idleAtStart);

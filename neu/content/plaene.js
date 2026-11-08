@@ -36,6 +36,26 @@
         // Abschluss: feste Probeklausur 3 Tage vor dem Termin
         { typ: 'probe', ref: 'MP1', pin: 'T-3' }
       ]
+    },
+    {
+      id: 'plan-physik-k10',
+      fach: 'physik',
+      klausur: 'k-10', // Physik Klausur 2 (12.1), 13.11.2026
+      titel: 'Physik: Kondensator, Braunsche Röhre, Auf- und Entladen',
+      hinweis: 'Stoff nach der 1. Klausur laut IServ (Ordner 04 bis 07). Grundlagen aus Klausur 1 (Coulomb, Feldstärke) nicht im Plan, bei Bedarf im Ordner „Spannung, Energie, Potential“.',
+      stand: '2026-11-08',
+      items: [
+        L('PH1'), A('PE1'),
+        L('PH2'), A('PP1'),
+        L('PH3'), A('PC1'), A('PC2'),
+        L('PH4'), A('PW1'),
+        L('PH5'), A('PS1'),
+        L('PH6'), A('PR1'),
+        L('PH7'), { typ: 'thema', ref: 'ph-querfeld' }, A('PR3'),
+        L('PH8'), A('PL1'),
+        L('PH9'), { typ: 'thema', ref: 'ph-entladen' }, A('PL4'),
+        { typ: 'probe', ref: 'PK1', pin: 'T-2' }
+      ]
     }
   ]);
 })();

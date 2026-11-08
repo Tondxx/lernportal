@@ -430,7 +430,7 @@
     } else if (st.typ === 'abi') {
       const total = task.parts.reduce((a, p) => a + p.be, 0);
       const fn = task.fig && (window.LR_FN || {})[task.fig.f];
-      body = `<div class="abi-head"><span class="chip">Teil ${task.teil}${task.teil === 'B' ? ' · mit CAS' : ' · ohne Hilfsmittel'}</span><span class="chip">${total} BE</span></div>
+      body = `<div class="abi-head"><span class="chip">${topic.fach === 'mathe' ? `Teil ${task.teil}${task.teil === 'B' ? ' · mit CAS' : ' · ohne Hilfsmittel'}` : 'mit Taschenrechner'}</span><span class="chip">${total} BE</span></div>
         <p class="abi-src dim">${esc(task.kennung || '')}</p>
         <div class="prose">${M(task.intro || '')}</div>
         ${fn ? ctx.figSvg(Object.assign({}, task.fig, { kind: 'fn', f: fn.f })) : ''}
@@ -480,7 +480,8 @@
     };
 
     if (st.typ === 'sehen') {
-      demoTangente(root.querySelector('#tdemo'), st.demo, ctx);
+      const ext = st.demo && (window.LR_DEMOS || {})[st.demo.name]; // weitere Demos (z. B. content/physik-demos.js)
+      if (ext) { const h = root.querySelector('#tdemo'); h.classList.add('pdemo'); ext(h, ctx, st.demo); } else demoTangente(root.querySelector('#tdemo'), st.demo, ctx);
       const box = root.querySelector('[data-mcq="q0"]');
       box.dataset.expl = M(st.frage.erklaerung || '');
       bindMcq(root, 'q0', st.frage, ok => finish(ok ? 100 : 60));

@@ -15,9 +15,8 @@
 
   // ------------------------------------------------------------ Abruf-Karten (verstandene Lektionen)
   function cardPool() {
-    if (!A.mine('mathe')) return { map: {}, q: { all: [], due: [], newCount: 0 } };
     const map = {};
-    A.LESSONS.forEach(l => { if (A.state.done[l.id]) (l.test || []).forEach((c, i) => { map[`${l.id}:${i}`] = { q: c.q, a: c.a, lesson: l }; }); });
+    A.LESSONS.forEach(l => { if (A.mine(A.fachOf(l)) && A.state.done[l.id]) (l.test || []).forEach((c, i) => { map[`${l.id}:${i}`] = { q: c.q, a: c.a, lesson: l }; }); });
     return { map, q: A.LR.cards(A.LR.events(), Object.keys(map)) };
   }
   // Fällige Karten (für den Abruf). Ist nichts fällig und force = true: die am längsten nicht gesehenen.
@@ -51,11 +50,10 @@
   }
   // Ältere Mathe-Aufgaben: Teilaufgaben mit verlorenen Punkten (ausbessern über die Aufgabe selbst)
   function lostParts() {
-    if (!A.mine('mathe')) return [];
     const lastP = {};
     A.LR.events().forEach(e => { if (e.type === 'practice' && e.ref) lastP[e.ref] = e; });
     const out = [];
-    A.TASKS.forEach(t => t.parts.forEach(p => {
+    A.TASKS.forEach(t => A.mine(A.fachOf(t)) && t.parts.forEach(p => {
       const v = A.state.scores[p.id], e = lastP[p.id];
       const got = v !== undefined ? v : e && e.data ? e.data.pts : undefined;
       if (got !== undefined && got < (p.be || 0)) out.push({ t, p, v: got });

@@ -310,6 +310,7 @@
         <div class="notice">${icon('info')}<div>Demo-Inhalt zum Testen der Darstellung. Die Schreibweise des Pseudocodes ist noch nicht mit deiner Lehrkraft abgeglichen (UNSICHER). Sobald der Info-Stoff da ist, bekommt jedes Thema dieselben drei Ansichten.</div></div></div>
       <p class="prose">${esc(def.text)}</p>
       <div class="algo-host" id="algoHost"></div>
+      ${(window.LR_PY || []).filter(p => p.algo === def.id).map(p => `<a class="cont algo-py" href="#/python/${p.id}"><div class="cont-ico">${icon('code')}</div><div class="row-main"><span class="kicker">Python-Werkstatt</span><span class="row-title" style="font-size:18px">Selbst programmieren und testen</span><span class="row-sub">Schreib die Funktion in Python und lass sie im Browser mit ${p.tests.length} Tests prüfen.</span></div>${icon('right', 'chev')}</a>`).join('')}
       <h3 class="h-2 algo-h">Lesen und verfolgen</h3>
       <div class="mcq-list">${def.fragen.map((q, i) => B.mcq(q, 'q' + i)).join('')}</div>
       <div class="q algo-q">${esc(def.ablauf.frage)}</div>
