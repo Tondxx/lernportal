@@ -207,7 +207,8 @@
     const next = upcoming[0];
     if (next) {
       const s = byId[next.fid];
-      blocks.push(`<a class="exam-line" ${next.fid ? `href="#/fach/${next.fid}"` : ''} ${subjStyle(s)}><span class="dot"></span><span class="row-main"><span class="row-title">${s ? s.name.replace(/ (eA|gA)$/, '') : next.subject}-Klausur ${next.days === 0 ? 'heute' : next.days === 1 ? 'morgen' : daysText(next.days)}</span><span class="row-sub">${WD[next.date.getDay()]}, ${next.dateStr.slice(0, 6)} · ${next.period} Stunde · Raum ${next.room}</span></span>${icon('right', 'chev')}</a>`);
+      const li = window.LRKlausur ? LRKlausur.lineInfo(next) : { ready: null, phase: '' };
+      blocks.push(`<a class="exam-line" href="#/klausur/${next.id}" ${subjStyle(s)}><span class="dot"></span><span class="row-main"><span class="row-title">${s ? s.name.replace(/ (eA|gA)$/, '') : next.subject}-Klausur ${next.days === 0 ? 'heute' : next.days === 1 ? 'morgen' : daysText(next.days)}</span><span class="row-sub">${li.phase ? `<b>Countdown ${li.phase}</b> · ` : ''}${WD[next.date.getDay()]}, ${next.dateStr.slice(0, 6)} · ${next.period} Stunde · Raum ${next.room}</span></span>${li.ready != null ? `<span class="ready-chip" title="Klausurbereitschaft">${li.ready} %</span>` : ''}${icon('right', 'chev')}</a>`);
     }
 
     // 4) Unterricht heute / nächster Schultag (nur eigene Kurse)
@@ -256,7 +257,7 @@
 
   function examRow(k) {
     const s = byId[k.fid];
-    const href = k.fid ? `href="#/fach/${k.fid}"` : '';
+    const href = `href="#/klausur/${k.id}"`;
     return `<a class="exam" ${href} ${subjStyle(s)}>
       <div class="date"><b>${k.date.getDate()}</b><span>${MONTHS[k.date.getMonth()]}</span></div>
       <div class="row-main"><span class="row-title">${s ? s.name : k.subject}</span><span class="row-sub">${k.topic}</span></div>
@@ -301,7 +302,7 @@
       const past = exams.filter(k => k.days < 0).reverse();
       body = `<div class="section" style="margin-top:6px"><h3 class="h-2" style="margin-bottom:12px">Halbjahr 12.1</h3><div class="list">${first.map(examRow).join('')}</div></div>
         <div class="section"><h3 class="h-2" style="margin-bottom:12px">Halbjahr 12.2</h3><div class="list">${later.map(examRow).join('')}</div></div>
-        ${past.length ? `<div class="section"><h3 class="h-2" style="margin-bottom:12px">Geschrieben</h3><div class="list" style="opacity:.7">${past.map(k => `<div class="exam" ${subjStyle(byId[k.fid])}><div class="date"><b>${k.date.getDate()}</b><span>${MONTHS[k.date.getMonth()]}</span></div><div class="row-main"><span class="row-title">${(byId[k.fid] || {}).name || k.subject}</span><span class="row-sub">${k.topic}</span></div><span class="chip ok">${icon('check')}erledigt</span></div>`).join('')}</div></div>` : ''}`;
+        ${past.length ? `<div class="section"><h3 class="h-2" style="margin-bottom:12px">Geschrieben</h3><div class="list" style="opacity:.7">${past.map(k => `<a class="exam" href="#/klausur/${k.id}" ${subjStyle(byId[k.fid])}><div class="date"><b>${k.date.getDate()}</b><span>${MONTHS[k.date.getMonth()]}</span></div><div class="row-main"><span class="row-title">${(byId[k.fid] || {}).name || k.subject}</span><span class="row-sub">${k.topic}</span></div><span class="chip ok">${icon('check')}erledigt</span></a>`).join('')}</div></div>` : ''}`;
     } else {
       const wk = state.week || 'all';
       const dayKeys = ['Mo', 'Di', 'Mi', 'Do', 'Fr'];
@@ -735,6 +736,7 @@
     if (a === 'wiederholen') return ['wiederholen'];
     if (a === 'karte') return ['karte', b];
     if (a === 'verlauf') return ['verlauf'];
+    if (a === 'klausur') return ['klausur', b];
     if (a === 'jagd') return ['jagd', b];
     if (a === 'session') return ['session', b];
     if (a === 'ordner') return ['ordner', b];
@@ -832,6 +834,7 @@
   if (window.LRStruktur) LRStruktur.init(APP);
   if (window.LRWdh) LRWdh.init(APP);
   if (window.LRUeberblick) LRUeberblick.init(APP);
+  if (window.LRKlausur) LRKlausur.init(APP);
   paintProfile();
   go({ first: true }); // erste Anzeige ohne Übergang: der kann beim Laden hängen bleiben
   askWho(idleAtStart);

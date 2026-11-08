@@ -156,12 +156,13 @@
       </div>
       <div class="week-cmp">${icon('cal')}<span>Diese Woche: <b>${w0.d} ${w0.d === 1 ? 'Tag' : 'Tage'}</b>, ${w0.a} Aktionen · letzte Woche: ${w1.d} ${w1.d === 1 ? 'Tag' : 'Tage'}, ${w1.a} Aktionen</span></div>
       <div class="vtiles">${tiles.map(([v, l]) => `<div><b class="num">${v}</b><span>${l}</span></div>`).join('')}</div>
+      ${window.LRKlausur ? LRKlausur.calibrationHtml() : ''}
     </div>`;
     return { title: 'Training', back: '#/', nav: 'heute', html };
   }
 
   window.LRUeberblick = {
     init(app) { A = app; A.R.karte = karte; A.R.verlauf = verlauf; },
-    statusOf
+    statusOf, fade
   };
 })();

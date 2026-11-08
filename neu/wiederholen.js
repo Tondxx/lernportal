@@ -65,7 +65,7 @@
   function huntState() {
     const m = A.LR.mistakes(A.LR.events());
     const idx = mistakeIndex();
-    const mk = x => Object.assign({}, x, { info: idx[x.ref] || null });
+    const mk = x => Object.assign({}, x, { info: idx[x.ref] || (x.data && x.data.src === 'klausur' ? { quelle: `Klausur ${x.data.label || ''}`.trim(), frei: x.data.text } : null) });
     return { due: m.due.map(mk), open: m.open.map(mk), fixed: m.fixed, lost: lostParts() };
   }
 
@@ -89,7 +89,7 @@
     const maxT = typeList.length ? typeList[0][1] : 1;
     const row = (x, due) => {
       const inf = x.info;
-      const name = inf ? (inf.wissen ? 'Wissenslücke' : plain(A.M(inf.schritt.name)).trim() || 'Schritt') : 'Fehler';
+      const name = inf ? (inf.frei ? inf.frei : inf.wissen ? 'Wissenslücke' : plain(A.M(inf.schritt.name)).trim() || 'Schritt') : 'Fehler';
       return `<a class="row" href="#/jagd/${encodeURIComponent(x.ref)}"><span class="hunt-dot${x.hyper ? ' hyper' : ''}"></span>
         <span class="row-main"><span class="row-title">${inf && inf.schritt ? M(inf.schritt.name) : esc(name)}</span><span class="row-sub">${esc(inf ? inf.quelle : x.ref)} · ${ago(x.t)}${due ? '' : ` · wieder ${niceDay(x.due)}`}</span></span>
         <span class="row-end">${x.data && x.data.typ ? `<span class="chip warn">${esc(x.data.typ)}</span>` : ''}${icon('right', 'chev')}</span></a>`;
@@ -124,6 +124,10 @@
     if (!inf) {
       body = `<div class="notice">${icon('info')}<div>Zu diesem Fehler gibt es den Inhalt nicht mehr (er wurde geändert oder entfernt).</div></div>
         <button class="btn primary block" type="button" data-hunt="1" style="margin-top:16px">${icon('check')}Als erledigt markieren</button>`;
+    } else if (inf.frei) {
+      body = `<div class="hunt-focus"><span class="kicker">Aus deiner Klausur</span><h3 class="h-2">${esc(inf.frei)}</h3>
+          <div class="paper small">${icon('pencil')}<div>Nimm die korrigierte Klausur oder die Berichtigung. Rechne <b>genau diese Stelle</b> noch einmal ohne hinzusehen, dann vergleiche.</div></div></div>
+        <div class="hunt-rate" id="rate"><p class="sc-q">Hast du es diesmal allein richtig hinbekommen?</p><div class="rate2"><button class="btn" type="button" data-hunt="0">Noch nicht</button><button class="btn primary" type="button" data-hunt="1">${icon('check')}Ja, richtig</button></div></div>`;
     } else if (inf.wissen) {
       body = `<p class="prose">Beim Blurting fehlte dieser Punkt. Was weißt du dazu? Sag es dir laut oder schreib zwei Stichwörter auf.</p>
         <div class="hunt-reveal" id="rev" hidden><div class="kern">${M(inf.wissen)}</div></div>

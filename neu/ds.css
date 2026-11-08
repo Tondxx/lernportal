@@ -1208,3 +1208,78 @@ body.rp-open { overflow: hidden; }
 .rp-btns { display: grid; grid-template-columns: 56px minmax(0, 260px) 56px; gap: 10px; justify-content: center; }
 .rp-btns .btn:not(.primary) { padding: 0; }
 .kmap-legend .kn-c { margin-top: 0; }
+
+/* ==========================================================================
+   S6 (Portalplan 14): Klausur-Seite – Bereitschaft, Countdown, Nachbereitung
+   ========================================================================== */
+.ready-chip { flex: none; font: 800 15px var(--font-display); padding: 6px 12px; border-radius: 999px; background: color-mix(in oklab, var(--subj) 18%, transparent); color: var(--text); }
+.klausur .fach-head .muted { margin-top: 6px; font-size: 15px; }
+.kready { display: flex; align-items: center; gap: 20px; padding: 20px 22px; margin-top: 4px; }
+.kready-ring { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: none; }
+.kready-ring .ring { --ring-c: var(--subj); }
+.kready-ring .ring .mid { display: flex; flex-direction: column; align-items: center; }
+.kready .row-title { font: 700 22px/1.2 var(--font-display); margin: 4px 0; }
+.kms { display: flex; gap: 4px; }
+.kms span { font: 700 11px var(--font-ui); padding: 3px 7px; border-radius: 999px; background: color-mix(in oklab, var(--text) 7%, transparent); color: var(--text-3); }
+.kms span.on { background: var(--subj); color: #0b0d12; }
+.kwhy { margin-top: 10px; }
+.kwhy > summary { cursor: pointer; font-weight: 650; font-size: 14px; color: var(--accent-ink); list-style: none; }
+.kwhy > summary::-webkit-details-marker { display: none; }
+.kwhy .row-sub { margin: 8px 0 10px; }
+.kwhy .kv { font: 700 14px var(--font-display); color: var(--text-2); }
+@media (max-width: 520px) { .kready { flex-direction: column; align-items: stretch; } .kready-ring { align-self: center; } }
+.kn-c.mini { width: 16px; height: 16px; margin-top: 0; flex: none; }
+.kn-c.mini.st-sicher { box-shadow: 0 0 0 3px color-mix(in oklab, var(--subj) 22%, transparent); }
+
+/* Countdown-Leiste T-7 … Danach */
+.ktl { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0; margin: 26px 0 18px; position: relative; }
+.ktl-s { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center; padding: 0 2px; }
+.ktl-s::before { content: ""; position: absolute; top: 9px; left: -50%; right: 50%; height: 3px; background: color-mix(in oklab, var(--text) 10%, transparent); z-index: 0; }
+.ktl-s:first-child::before { display: none; }
+.ktl-s.done::before, .ktl-s.on::before { background: var(--subj); }
+.ktl-s i { position: relative; z-index: 1; width: 20px; height: 20px; border-radius: 50%; background: var(--bg); box-shadow: 0 0 0 2.5px var(--line-2) inset; }
+.ktl-s.done i { background: var(--subj); box-shadow: none; }
+.ktl-s.on i { background: var(--subj); box-shadow: 0 0 0 5px color-mix(in oklab, var(--subj) 25%, transparent); animation: sessPulse 2s ease-in-out infinite; }
+.ktl-s b { font: 800 12.5px var(--font-display); }
+.ktl-s span { font-size: 11px; line-height: 1.25; color: var(--text-3); }
+.ktl-s.on span { color: var(--text); font-weight: 650; }
+@media (max-width: 520px) { .ktl-s span { display: none; } .ktl-s.on span { display: block; position: absolute; top: 44px; white-space: nowrap; } .ktl { margin-bottom: 34px; } }
+
+.kday { padding: 22px; margin-top: 4px; display: flex; flex-direction: column; gap: 8px; }
+.kday .h-1 { margin-top: 2px; }
+.kbtns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+.ablauf { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.ablauf li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 10px; font-size: 16px; line-height: 1.55; }
+.ablauf svg.i { color: var(--ok); margin-top: 3px; }
+.worry { margin-top: 12px; }
+.worry > summary { cursor: pointer; display: inline-flex; gap: 8px; align-items: center; font-weight: 650; font-size: 14px; color: var(--text-2); list-style: none; }
+.worry > summary::-webkit-details-marker { display: none; }
+.kprog { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
+.np-pick { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; }
+.np-pick button { height: 40px; border-radius: 12px; font: 700 15px var(--font-display); background: var(--sunken); box-shadow: 0 0 0 1px var(--line-2) inset; transition: background .2s, transform .15s var(--spring); }
+.np-pick button:active { transform: scale(.94); }
+.np-pick button.on { background: var(--subj); color: #0b0d12; box-shadow: none; }
+@media (min-width: 640px) { .np-pick { grid-template-columns: repeat(16, minmax(0, 1fr)); } }
+.kform { margin-top: 14px; padding: 20px 22px; border-radius: 24px; background: var(--surface); border: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
+.kform .work { margin-top: 0; }
+.kform .ft-chips { margin: 2px 0; }
+.kdone { margin-top: 14px; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 12px; padding: 16px 18px; border-radius: 20px; background: color-mix(in oklab, var(--ok) 9%, var(--surface)); border: 1px solid color-mix(in oklab, var(--ok) 35%, var(--line)); }
+.kdone > svg.i { color: var(--ok); margin-top: 2px; }
+.kdone .link { margin-top: 6px; }
+.kcmp { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: 10px; }
+.kcmp > div { display: flex; flex-direction: column; align-items: center; padding: 16px 8px; border-radius: 20px; background: var(--surface); border: 1px solid var(--line); }
+.kcmp .num { font-size: 34px; font-weight: 800; line-height: 1; }
+.kcmp span { margin-top: 6px; font-size: 12.5px; color: var(--text-2); font-weight: 600; }
+.kcmp-t { margin-top: 10px; }
+.kerr { list-style: none; margin: 4px 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.kerr li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; font-size: 15px; }
+.kerr svg.i { color: var(--warn); margin-top: 2px; }
+
+/* Kalibrierung (Verlauf) */
+.cal .cal-rows { display: flex; flex-direction: column; gap: 10px; }
+.cal-row { display: grid; grid-template-columns: minmax(120px, 150px) minmax(0, 1fr) auto; gap: 12px; align-items: center; font-size: 14.5px; font-weight: 600; }
+.cal-bar { height: 12px; border-radius: 8px; background: color-mix(in oklab, var(--text) 8%, transparent); overflow: hidden; }
+.cal-bar i { display: block; height: 100%; border-radius: 8px; background: var(--ok); }
+.cal-exs { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+.cal-ex { display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
+.fach-head .mono { flex: none; }

@@ -608,4 +608,16 @@
   LRS.tree = fid => TREES[fid] || [];
   LRS.info = info;
   LRS.themenOf = themenOf;
+  // Für die Klausur-Seite (klausur.js): klausurrelevante Themen (Vorbelegung + Tondas Haken) und Probeklausuren des Fachs
+  LRS.relevantThemen = (kid, fid) => {
+    const out = [], seen = new Set();
+    const visit = n => {
+      if (n.typ === 'ordner' && !n.demo) (n.themen || []).forEach(it => { const k = itemKey(it); if (!seen.has(k) && relItem(it, n, kid)) { seen.add(k); out.push(it); } });
+      (n.kinder || []).forEach(visit);
+    };
+    (TREES[fid] || []).forEach(visit);
+    return out;
+  };
+  LRS.probesOf = probesOf;
+  LRS.probeNode = fid => (TREES[fid] || []).find(n => n.typ === 'probes') || null;
 })();
