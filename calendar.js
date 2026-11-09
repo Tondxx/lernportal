@@ -134,7 +134,7 @@ const TONDA_KLAUSUREN = [
     type: "eA (LK)",
     teacher: "Tri",
     room: "PC Sek2",
-    topic: "Klausur 2 (12.1): Datenbanken & Softwareentwurf",
+    topic: "Klausur 2 (12.1): Algorithmik und Datenstrukturen (Struktogramme, Sortieren, Rekursion, verkettete Liste, Stapel, Schlange) laut IServ",
     status: "upcoming",
     color: "#a78bfa"
   },

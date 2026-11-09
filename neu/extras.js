@@ -306,8 +306,8 @@
     const K = kit(), B = K.api(ctx);
     const s = byId[def.fach];
     const html = `<div ${subjStyle(s)} class="rise xpage">
-      <div class="page-head"><span class="kicker">Notation · ${s ? s.name.replace(/ (eA|gA)$/, '') : ''} · Demo</span><h2 class="h-1">${esc(def.titel)}</h2><p class="muted">${esc(def.kurz)}</p><div class="head-tools">${B.ask()}</div>
-        <div class="notice">${icon('info')}<div>Demo-Inhalt zum Testen der Darstellung. Die Schreibweise des Pseudocodes ist noch nicht mit deiner Lehrkraft abgeglichen (UNSICHER). Sobald der Info-Stoff da ist, bekommt jedes Thema dieselben drei Ansichten.</div></div></div>
+      <div class="page-head"><span class="kicker">Notation · ${s ? s.name.replace(/ (eA|gA)$/, '') : ''}${def.demo ? ' · Demo' : ''}</span><h2 class="h-1">${esc(def.titel)}</h2><p class="muted">${esc(def.kurz)}</p><div class="head-tools">${B.ask()}</div>
+        <div class="notice">${icon('info')}<div>${def.demo ? 'Demo-Inhalt zum Testen der Darstellung. ' : ''}Die Schreibweise des Pseudocodes ist noch nicht mit deiner Lehrkraft abgeglichen (UNSICHER). Struktogramm und Python gehören zusammen: Tippe auf einen Kasten oder eine Zeile.</div></div></div>
       <p class="prose">${esc(def.text)}</p>
       <div class="algo-host" id="algoHost"></div>
       ${(window.LR_PY || []).filter(p => p.algo === def.id).map(p => `<a class="cont algo-py" href="#/python/${p.id}"><div class="cont-ico">${icon('code')}</div><div class="row-main"><span class="kicker">Python-Werkstatt</span><span class="row-title" style="font-size:18px">Selbst programmieren und testen</span><span class="row-sub">Schreib die Funktion in Python und lass sie im Browser mit ${p.tests.length} Tests prüfen.</span></div>${icon('right', 'chev')}</a>`).join('')}

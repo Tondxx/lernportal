@@ -6,8 +6,11 @@ const assert = require('assert');
 const path = require('path');
 const { spawnSync } = require('child_process');
 global.window = {};
+require(path.join(__dirname, '..', 'algo.js'));
 require(path.join(__dirname, '..', 'content', 'demo-python.js'));
+require(path.join(__dirname, '..', 'content', 'informatik-algos.js'));
 const TASKS = window.LR_PY;
+const DEMO_IDS = ['py-groesste', 'py-summe-gerade'];
 let n = 0;
 const test = (name, fn) => { fn(); n++; console.log('ok', name); };
 
@@ -19,7 +22,7 @@ test('Format: Pflichtfelder, eindeutige Ids, Tests mit Aufruf und Erwartung', ()
     assert.ok(!ids.has(t.id), `Id doppelt: ${t.id}`); ids.add(t.id);
     assert.ok(Array.isArray(t.tests) && t.tests.length >= 2, `${t.id}: mindestens 2 Tests`);
     t.tests.forEach(c => { assert.ok(c.call && 'erwartet' in c, `${t.id}: Test ohne call/erwartet`); JSON.stringify(c.erwartet); });
-    assert.ok(t.demo === true, `${t.id}: Demo-Inhalte als demo kennzeichnen`);
+    if (t.id.startsWith('py-') && DEMO_IDS.includes(t.id)) assert.ok(t.demo === true, `${t.id}: Demo-Inhalte als demo kennzeichnen`);
   });
 });
 

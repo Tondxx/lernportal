@@ -13,6 +13,8 @@
 (function () {
   const K_MATHE = 'k-19'; // Vorabiturklausur Mathematik, 30.04.2027
   const K_PHYSIK = 'k-10'; // Physik Klausur 2 (12.1), 13.11.2026
+  const K_INFO = 'k-09'; // Informatik Klausur 2 (12.1), 10.11.2026
+  const NOT = ref => ({ typ: 'algo', ref }); // Notation: Struktogramm, Pseudocode, Python
   const L = ref => ({ typ: 'lektion', ref });
 
   window.LR_ORDNER = {
@@ -33,10 +35,19 @@
       { id: 'p-probe', typ: 'probes', titel: 'Probeklausuren', kurz: 'Gemischt aus allen Themen, mit Uhr', klausuren: [K_PHYSIK] },
       { id: 'p-spick', typ: 'seite', ref: 'spick', titel: 'Spickzettel', kurz: 'Alle Formeln auf einer Seite', klausuren: [K_PHYSIK] }
     ],
+    // Informatik: Stoff laut IServ „Grundlagen der Algorithmik“ (Sync 08.11.), Klausur 2 am 10.11.2026 (k-09). Stoff von der Lehrkraft nicht bestätigt.
     informatik: [
-      { id: 'i-python', typ: 'seite', ref: 'python', titel: 'Python-Werkstatt', kurz: 'Code schreiben, im Browser ausführen, mit Tests prüfen' },
-      { id: 'i-demo', typ: 'ordner', demo: true, titel: 'Demo: Notation', kurz: 'Struktogramm, Pseudocode und Python', themen: [{ typ: 'algo', ref: 'demo-algo-max' }] },
-      { id: 'i-alt', typ: 'alt', titel: 'Bisherige Module', kurz: 'Module aus dem alten Portal' }
+      { id: 'i-ablauf', typ: 'ordner', titel: 'Ablauf & Struktogramme', kurz: 'Tracetabelle, Struktogramme, Funktionen, Fehlertypen', klausuren: [K_INFO], themen: ['IF1', 'IF2', 'IF3'].map(L).concat([NOT('inf-erste-negative')]),
+        kinder: [
+          { id: 'i-python', typ: 'seite', ref: 'python', titel: 'Python-Werkstatt', kurz: 'Code schreiben, im Browser ausführen, mit Tests prüfen' },
+          { id: 'i-demo', typ: 'ordner', demo: true, titel: 'Demo: Notation', kurz: 'Struktogramm, Pseudocode und Python', themen: [NOT('demo-algo-max')] },
+          { id: 'i-alt', typ: 'alt', titel: 'Bisherige Module', kurz: 'Module aus dem alten Portal' }
+        ] },
+      { id: 'i-sortieren', typ: 'ordner', titel: 'Listen & Sortieren', kurz: 'Listen, Selection-, Insertion-, Bubblesort, Laufzeit', klausuren: [K_INFO], themen: ['IF4', 'IF5', 'IF6'].map(L).concat([NOT('inf-bubble')]) },
+      { id: 'i-rekursion', typ: 'ordner', titel: 'Rekursion', kurz: 'Abbruch, Aufrufstapel, Fakultät, Fibonacci', klausuren: [K_INFO], themen: ['IF7', 'IF8'].map(L).concat([NOT('inf-fakultaet')]) },
+      { id: 'i-ds', typ: 'ordner', titel: 'Dynamische Datenstrukturen', kurz: 'Verkettete Liste, Stapel, Warteschlange', klausuren: [K_INFO], themen: ['IF9', 'IF10', 'IF11'].map(L).concat([NOT('inf-klammern')]) },
+      { id: 'i-probe', typ: 'probes', titel: 'Probeklausuren', kurz: 'Gemischt aus allen Themen, mit Uhr', klausuren: [K_INFO] },
+      { id: 'i-spick', typ: 'seite', ref: 'spick', titel: 'Spickzettel', kurz: 'Alles Wichtige auf einer Seite', klausuren: [K_INFO] }
     ]
   };
 })();

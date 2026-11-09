@@ -160,7 +160,7 @@
     const html = `<div ${A.subjStyle(s)} class="rise pyw">${crumbs()}
       <div class="page-head"><span class="kicker">Werkzeug · Informatik</span><h2 class="h-1">Python-Werkstatt</h2><p class="muted">Code schreiben, ausführen, mit Tests prüfen. Läuft direkt im Browser, auch auf dem iPad.</p></div>
       <div class="notice">${A.icon('shield')}<div>Python läuft abgeschirmt in einem eigenen Bereich und kommt nicht an deine Lerndaten. Beim ersten Start lädt der Browser einmalig ca. 10 MB (Pyodide), danach geht es schneller.</div></div>
-      <span class="sub">Aufgaben (Demo)</span><div class="list prows">${TASKS().map(taskRow).join('')}</div>
+      <span class="sub">Aufgaben</span><div class="list prows">${TASKS().map(taskRow).join('')}</div>
       <span class="sub">Spielwiese</span>${editorHtml(code)}${stdinHtml(st().stdin)}
       <div class="py-act"><button class="btn primary" type="button" id="pyRun">${A.icon('play')}Ausführen</button><button class="btn" type="button" id="pyClear">Leeren</button></div>
       <div id="pyFallback"></div>${outHtml()}</div>`;
@@ -184,7 +184,7 @@
     const code = P.code[t.id] != null ? P.code[t.id] : t.start;
     const algo = t.algo && (window.LR_ALGOS || []).find(a => a.id === t.algo);
     const html = `<div ${A.subjStyle(s)} class="rise pyw">${crumbs(t.titel)}
-      <div class="page-head"><span class="kicker">Python · Demo-Aufgabe · ${t.tests.length} Tests</span><h2 class="h-1">${A.esc(t.titel)}</h2></div>
+      <div class="page-head"><span class="kicker">Python · ${t.demo ? 'Demo-Aufgabe' : 'Aufgabe'} · ${t.tests.length} Tests</span><h2 class="h-1">${A.esc(t.titel)}</h2></div>
       <div class="prose">${t.text}</div>
       ${algo ? `<p class="row-sub" style="margin-top:8px">Als Struktogramm und Pseudocode: <a class="link" href="#/algo/${algo.id}">Notation · ${A.esc(algo.titel)}</a></p>` : ''}
       <span class="sub">Dein Code</span>${editorHtml(code)}

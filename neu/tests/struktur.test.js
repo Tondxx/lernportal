@@ -10,7 +10,7 @@ require('../algo.js');
 require('../plan.js');
 const cal = fs.readFileSync(path.join(__dirname, '..', '..', 'calendar.js'), 'utf8');
 const KLAUSUREN = new Function(cal.replace(/^const /gm, 'var ') + '; return TONDA_KLAUSUREN;')();
-['demo.js', 'demo-algo.js', 'physik.js', 'physik-treppe.js', 'ordner.js', 'plaene.js'].forEach(f => require(path.join(__dirname, '..', 'content', f)));
+['demo.js', 'demo-algo.js', 'physik.js', 'physik-treppe.js', 'informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js', 'ordner.js', 'plaene.js'].forEach(f => require(path.join(__dirname, '..', 'content', f)));
 
 const D = window.MT_DATA, O = window.LR_ORDNER, PLANS = window.LR_PLANS, TOPICS = window.LR_TOPICS, ALGOS = window.LR_ALGOS;
 const ALL_LESSONS = D.LESSONS.concat(window.LR_LESSONS || []);
@@ -42,7 +42,8 @@ test('Ordner: eindeutige Ids, höchstens 6 Kacheln pro Ebene, höchstens 3 Ebene
 
 test('Themen verweisen auf Vorhandenes; Lektionen liegen genau in einem Ordner', () => {
   const seen = {};
-  ['mathe', 'physik'].forEach(f => walk(O[f], x => (x.themen || []).forEach(it => {
+  ['mathe', 'physik', 'informatik'].forEach(f => walk(O[f], x => (x.themen || []).forEach(it => {
+    if (it.typ === 'algo') { assert.ok(ALGOS.some(a => a.id === it.ref), `Notation ${it.ref} fehlt`); return; }
     if (it.typ === 'lektion') { assert.ok(lessons.has(it.ref), `Lektion ${it.ref} fehlt`); seen[it.ref] = (seen[it.ref] || 0) + 1; }
     else if (it.typ === 'thema') assert.ok(TOPICS.some(t => t.id === it.ref), `Thema ${it.ref} fehlt`);
     else assert.fail(`unbekannter Thema-Typ ${it.typ}`);
@@ -62,7 +63,7 @@ test('Klausur-Vorbelegung nennt nur echte Klausuren des richtigen Fachs', () => 
 
 test('Jede Aufgabe gehört über ihre Lektion zu einem Ordner', () => {
   const inOrdner = new Set();
-  ['mathe', 'physik'].forEach(f => walk(O[f], x => (x.themen || []).forEach(it => it.typ === 'lektion' && inOrdner.add(it.ref))));
+  ['mathe', 'physik', 'informatik'].forEach(f => walk(O[f], x => (x.themen || []).forEach(it => it.typ === 'lektion' && inOrdner.add(it.ref))));
   ALL_TASKS.forEach(t => assert.ok(inOrdner.has(t.lesson), `Aufgabe ${t.id} (Lektion ${t.lesson}) liegt in keinem Ordner`));
 });
 
@@ -97,6 +98,20 @@ test('Physik-Plan deckt alle Lektionen ab, Probeklausur verweist auf echte Physi
   (window.LR_LESSONS || []).filter(l => l.fach === 'physik').forEach(l => assert.ok(have.has('lektion:' + l.id), `Lektion ${l.id} fehlt im Plan`));
   p.items.filter(i => i.typ === 'aufgabe').forEach(i => assert.strictEqual(fachOf(ALL_TASKS.find(t => t.id === i.ref)), 'physik', `${i.ref} ist keine Physik-Aufgabe`));
   (window.LR_PROBES || []).forEach(pr => pr.tasks.forEach(id => assert.ok(tasks.has(id), `Probeklausur ${pr.id}: Aufgabe ${id} fehlt`)));
+});
+
+test('Informatik-Plan deckt alle Lektionen ab, nur Informatik-Aufgaben, Probeklausuren verweisen auf echte Aufgaben', () => {
+  const p = PLANS.find(x => x.id === 'plan-informatik-k09');
+  assert.ok(p, 'Plan plan-informatik-k09 fehlt');
+  const have = new Set(p.items.map(i => window.LRPlan.key(i)));
+  (window.LR_LESSONS || []).filter(l => l.fach === 'informatik').forEach(l => assert.ok(have.has('lektion:' + l.id), `Lektion ${l.id} fehlt im Plan`));
+  (window.LR_TASKS || []).filter(t => t.fach === 'informatik').forEach(t => assert.ok(have.has('aufgabe:' + t.id), `Aufgabe ${t.id} fehlt im Plan`));
+  (window.LR_PROBES || []).filter(pr => pr.fach === 'informatik').forEach(pr => assert.ok(have.has('probe:' + pr.id), `Probeklausur ${pr.id} fehlt im Plan`));
+  p.items.filter(i => i.typ === 'aufgabe').forEach(i => assert.strictEqual(fachOf(ALL_TASKS.find(t => t.id === i.ref)), 'informatik', `${i.ref} ist keine Informatik-Aufgabe`));
+});
+
+test('Informatik: jedes Python-Werkstatt-Thema und jede Notation, auf die verwiesen wird, existiert', () => {
+  (window.LR_PY || []).filter(t => t.algo).forEach(t => assert.ok(ALGOS.some(a => a.id === t.algo), `Python-Aufgabe ${t.id}: Notation ${t.algo} fehlt`));
 });
 
 console.log(`\n${n} Tests bestanden`);

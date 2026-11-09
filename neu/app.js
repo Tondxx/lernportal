@@ -96,7 +96,7 @@
   const taskMax = t => t.parts.reduce((a, p) => a + (p.be || 0), 0);
   const taskGot = t => t.parts.reduce((a, p) => a + (state.scores[p.id] || 0), 0);
   // Physik u. a.: keine Teil-A/B-Trennung wie in Mathe → „mit Taschenrechner“ / „Grundwissen“
-  const teilText = t => fachOf(t) === 'mathe' ? `Teil ${t.teil}` : (t.teil === 'A' ? 'Grundwissen' : 'mit Taschenrechner');
+  const teilText = t => fachOf(t) === 'mathe' ? `Teil ${t.teil}` : fachOf(t) === 'informatik' ? (t.teil === 'A' ? 'Verstehen & Erläutern' : 'Entwickeln & Implementieren') : (t.teil === 'A' ? 'Grundwissen' : 'mit Taschenrechner');
   const lessonsDone = fid => lessonsOf(fid).filter(l => state.done[l.id]).length;
 
   // ------------------------------------------------------------ UI-Bausteine

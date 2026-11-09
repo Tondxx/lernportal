@@ -139,7 +139,7 @@
   const findProbe = id => contentProbes().concat(A.state.probes || []).find(p => p.id === id) || null;
   const poolOf = fid => A.TASKS.filter(t => A.fachOf(t) === fid).map(t => ({ id: t.id, teil: t.teil, lesson: t.lesson, be: A.taskMax(t) }));
   // Bezeichnung der Teile: Mathe Teil A/B (ohne/mit CAS), andere Fächer Grundwissen / mit Taschenrechner
-  const TEILE = fid => fid === 'mathe' ? { a: 'Teil A · ohne Taschenrechner', b: 'Teil B · mit Taschenrechner (CAS)', mix: 'Teil A (ohne Taschenrechner) kommt zuerst, dann Teil B.' } : { a: 'Grundwissen (kurz)', b: 'Rechnen und Erläutern · mit Taschenrechner', mix: 'Kurze Grundwissen-Aufgaben kommen zuerst, dann die Rechenaufgaben.' };
+  const TEILE = fid => fid === 'informatik' ? { a: 'Verstehen & Erläutern (kürzer)', b: 'Entwickeln & Implementieren (Struktogramm, Code)', mix: 'Kurze Verständnisaufgaben kommen zuerst, dann Entwickeln und Implementieren. Ohne Taschenrechner.' } : fid === 'mathe' ? { a: 'Teil A · ohne Taschenrechner', b: 'Teil B · mit Taschenrechner (CAS)', mix: 'Teil A (ohne Taschenrechner) kommt zuerst, dann Teil B.' } : { a: 'Grundwissen (kurz)', b: 'Rechnen und Erläutern · mit Taschenrechner', mix: 'Kurze Grundwissen-Aufgaben kommen zuerst, dann die Rechenaufgaben.' };
 
   // ------------------------------------------------------------ Bausteine (HTML)
   const crumbs = n => {
