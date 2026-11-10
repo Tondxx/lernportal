@@ -338,8 +338,29 @@
   };
 
   // ---- Lektion (Reader)
+  // Größen-Lexikon (content/physik-groessen.js): Lektion → Seite „Größen“, Aufgabe → Kasten „Gegeben / Gesucht“
+  function grRows(fach, list, opts = {}) {
+    const LX = (window.LR_GROESSEN || {})[fach];
+    if (!LX || !list || !list.length) return '';
+    return list.map(it => {
+      const [k, w] = Array.isArray(it) ? it : [it, null];
+      const g = LX[k]; if (!g) return '';
+      const ask = w && /gesucht/.test(w);
+      return `<div class="gr-row"><span class="gr-sym">${g.sym}</span><div class="gr-main"><div class="gr-head"><b>${g.name}</b><span class="gr-unit">${g.einheit}</span></div>${w ? `<div class="gr-val${ask ? ' ask' : ''}">${ask ? '' : 'hier: '}${w}</div>` : ''}<div class="gr-was">${g.was}</div>${opts.bild && g.bild ? `<div class="gr-bild">${g.bild}</div>` : ''}</div></div>`;
+    }).join('');
+  }
+  function grBox(fach, list) {
+    if (!list || !list.length || !(window.LR_GROESSEN || {})[fach]) return '';
+    const norm = list.map(it => Array.isArray(it) ? it : [it, null]);
+    const geg = norm.filter(([, w]) => !w || !/gesucht/.test(w)), ges = norm.filter(([, w]) => w && /gesucht/.test(w));
+    return `<details class="gr-box" open><summary>${icon('book')}<span>Gegeben und gesucht: was die Größen bedeuten</span></summary>
+      ${geg.length ? `<div class="gr-sec">Gegeben</div><div class="gr-list">${M(grRows(fach, geg))}</div>` : ''}
+      ${ges.length ? `<div class="gr-sec">Gesucht</div><div class="gr-list">${M(grRows(fach, ges))}</div>` : ''}</details>`;
+  }
+
   function buildPages(l) {
     const P = [];
+    if (l.groessen && l.groessen.length) P.push({ k: 'groessen', label: 'Größen', html: () => `<div class="page-title"><span class="kicker">Lektion ${l.num} · Bevor es losgeht</span><h2 class="h-1">Die Größen in dieser Lektion</h2><p class="muted" style="margin-top:10px">Lies jede Größe einmal in Ruhe: Was ist das, in welcher Einheit misst man es? Danach kommen die Formeln. Alle Größen auf einmal: Lektion 0.</p></div><div class="gr-list big">${M(grRows(fachOf(l), l.groessen, { bild: true }))}</div>` });
     P.push({ k: 'idee', label: 'Idee', html: () => `<div class="page-title"><span class="kicker">Lektion ${l.num} · ${l.min} Min.</span><h2 class="h-1">${l.title}</h2></div>${demoOnIdee(l) ? demoSlot(l) : ''}${prose(l.idee)}${l.bild ? `<span class="sub">Stell dir vor</span>${prose(l.bild)}` : ''}` });
     if (l.rezept && l.rezept.length) P.push({ k: 'rezept', label: 'Rezept', html: () => `<div class="page-title"><span class="kicker">Schritt für Schritt</span><h2 class="h-1">Das Rezept</h2><p class="muted" style="margin-top:10px">Tippe einen Schritt an, wenn du ihn verstanden hast.</p></div><ol class="recipe">${l.rezept.map(r => `<li tabindex="0"><span class="tick"></span>${prose(r)}</li>`).join('')}</ol>${l.extra ? `<span class="sub">Zum Nachschlagen</span>${prose(l.extra)}` : ''}` });
     if (l.beispiel) P.push({ k: 'beispiel', label: 'Beispiel', html: () => `<div class="page-title"><span class="kicker">Rechne mit</span><h2 class="h-1">Ein Beispiel</h2></div><div class="q">${prose(l.beispiel.q)}</div>${demoOnIdee(l) ? '' : demoSlot(l)}<div id="steps">${l.beispiel.steps.map((st, i) => `<div class="reveal" data-step="${i}"><div><div class="inner"><div class="stepx"><span class="n">${i + 1}</span><div><h4>${st.h}</h4>${prose(st.t)}</div></div></div></div></div>`).join('')}</div><button class="btn reveal-btn" id="revealBtn" type="button">${icon('eye')}<span>Ersten Schritt zeigen</span></button>${l.extraAfter ? `<span class="sub">Mehr dazu</span>${prose(l.extraAfter)}` : ''}` });
@@ -402,7 +423,7 @@
       bindPage();
       window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
     }
-    const nextLabel = () => { const k = pages[cur + 1].k; return { rezept: 'Weiter zum Rezept', beispiel: 'Weiter zum Beispiel', fehler: 'Typische Fehler', test: 'Zum Selbsttest', ende: 'Abschließen' }[k] || 'Weiter'; };
+    const nextLabel = () => { const k = pages[cur + 1].k; return { idee: 'Weiter zur Idee', rezept: 'Weiter zum Rezept', beispiel: 'Weiter zum Beispiel', fehler: 'Typische Fehler', test: 'Zum Selbsttest', ende: 'Abschließen' }[k] || 'Weiter'; };
     function go(d) {
       const n = cur + d;
       if (n < 0) return;
@@ -576,7 +597,7 @@
         <div id="hints-${p.id}"></div>${sol}
       </section>`;
     }).join('');
-    const html = `${prose(t.intro || '')}${figSvg(t.fig)}${parts}`;
+    const html = `${prose(t.intro || '')}${figSvg(t.fig)}${grBox(fachOf(t), t.groessen)}${parts}`;
 
     function bind(root, onScore) {
       $$('[data-check]', root).forEach(b => b.addEventListener('click', () => {

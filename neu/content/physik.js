@@ -22,7 +22,7 @@
   const LESSONS = [
     // ---------------------------------------------------------------- Ordner: Spannung, Energie, Potential
     {
-      id: 'PH1', fach: F, num: 1, min: 12, demo: 'p-energie', demoTitel: 'Schau zuerst: Ein Teilchen fällt durchs Feld',
+      id: 'PH1', fach: F, groessen: ['Q','U','W','eV','I','P','t'], num: 1, min: 12, demo: 'p-energie', demoTitel: 'Schau zuerst: Ein Teilchen fällt durchs Feld',
       title: 'Spannung = Energie pro Ladung',
       short: 'W = Q·U, Elektronvolt, Leistung P = U·I, Akku-Angaben',
       idee: m`<p>Ein elektrisches Feld schiebt Ladungen an. Dabei wird Energie umgewandelt. Die <b>Spannung</b> sagt, wie viel Energie <b>pro Ladung</b> zwischen zwei Punkten frei wird (oder nötig ist).</p>
@@ -58,7 +58,7 @@ ${merke('Merke', m`$$U=\frac{W}{Q}\qquad\Longleftrightarrow\qquad W=Q\cdot U\qqu
       ]
     },
     {
-      id: 'PH2', fach: F, num: 2, min: 14, demo: 'p-potential', demoTitel: 'Probier es aus: die Potentialsonde',
+      id: 'PH2', fach: F, groessen: ['phi','U','E','x','d'], num: 2, min: 14, demo: 'p-potential', demoTitel: 'Probier es aus: die Potentialsonde',
       title: 'Potential und Äquipotentiallinien',
       short: 'φ als „Höhe“ eines Punktes, Potentialsonde, E = Δφ/Δx',
       idee: m`<p>Das <b>Potential</b> $\varphi$ ist die Energie pro Ladung <b>an einem Punkt</b>, gemessen gegenüber einem Bezugspunkt (meist die negative Platte oder die Erde, dort $\varphi=0$).</p>
@@ -96,74 +96,88 @@ ${merke('Merke', m`$$U_{AB}=\varphi_B-\varphi_A\qquad\text{homogenes Feld: }\ \v
 
     // ---------------------------------------------------------------- Ordner: Kondensator
     {
-      id: 'PH3', fach: F, num: 3, min: 15, demo: 'p-platten', demoTitel: 'Probier es aus: Platten verschieben, Glas einschieben',
+      id: 'PH3', fach: F, groessen: ['C', 'Q', 'U', 'A', 'd', 'eps0', 'epsr', 'E', 'sigma'], num: 3, min: 18, demo: 'p-platten', demoTitel: 'Probier es aus: Platten verschieben, Glas einschieben',
       title: 'Kapazität und Plattenkondensator',
       short: 'C = Q/U, C = ε₀·εᵣ·A/d, an der Quelle oder abgetrennt',
-      idee: m`<p>Ein Kondensator speichert Ladung: $+Q$ auf der einen, $-Q$ auf der anderen Platte. Die <b>Kapazität</b> sagt, wie viel Ladung pro Volt draufpasst.</p>
-${merke('Merke', m`$$C=\frac{Q}{U}\qquad C=\varepsilon_0\,\varepsilon_r\,\frac{A}{d}\qquad E=\frac{U}{d}\qquad \sigma=\frac{Q}{A}=\varepsilon_0\,\varepsilon_r\,E$$`)}
-<p>Größere Fläche $A$, kleinerer Abstand $d$, ein <b>Dielektrikum</b> (Isolator mit $\varepsilon_r>1$, z. B. Glas, Getreide) zwischen den Platten: alles macht $C$ größer.</p>`,
-      bild: m`<p>Die wichtigste Frage in jeder Aufgabe: <b>Hängt der Kondensator noch an der Quelle?</b> Dann bleibt $U$ fest und $Q$ ändert sich. <b>Abgetrennt?</b> Dann kann keine Ladung weg, $Q$ bleibt fest und $U$ ändert sich.</p>`,
+      idee: m`<p>Ein <b>Kondensator</b> besteht aus zwei Metallplatten, die sich nicht berühren. Schließt man eine Spannungsquelle an, schiebt sie Elektronen von der einen Platte auf die andere. Die eine Platte wird positiv ($+Q$), die andere genauso stark negativ ($-Q$). Zwischen den Platten entsteht ein elektrisches Feld.</p>
+<h3>1. Kapazität: Wie viel Ladung passt drauf?</h3>
+<p>Doppelte Spannung schiebt doppelt so viel Ladung auf die Platten. Ladung und Spannung sind also proportional. Der Faktor dazwischen ist die <b>Kapazität</b>:</p>
+${merke('Kapazität', m`$$C=\frac{Q}{U}$$<p>$C$ = Kapazität in F · $Q$ = Ladung auf <b>einer</b> Platte in C · $U$ = Spannung zwischen den Platten in V.</p><p>Beispiel: $C=1\,\mu\text{F}$ heißt, pro Volt kommt $1\,\mu\text{C}$ auf die Platte.</p>`)}
+<h3>2. Wovon hängt C ab? Nur vom Bau.</h3>
+${merke('Plattenkondensator', m`$$C=\varepsilon_0\cdot\varepsilon_r\cdot\frac{A}{d}$$`)}
+<ul><li><b>Größere Fläche $A$</b>: mehr Platz für Ladung, also $C$ größer.</li><li><b>Kleinerer Abstand $d$</b>: Die Ladungen auf beiden Platten ziehen sich stärker an, es passt mehr drauf, also $C$ größer.</li><li><b>Isolator zwischen den Platten</b> ($\varepsilon_r>1$, z. B. Glas): $C$ wird $\varepsilon_r$-mal so groß.</li><li>$\varepsilon_0$ ist nur eine feste Zahl aus der Formelsammlung, damit Farad herauskommt.</li></ul>
+<h3>3. Das Feld zwischen den Platten</h3>
+<p>Die Spannung verteilt sich gleichmäßig über den Abstand. Je kürzer der Abstand bei gleicher Spannung, desto stärker das Feld:</p>
+${merke('Feldstärke', m`$$E=\frac{U}{d}\qquad\text{und}\qquad \sigma=\frac{Q}{A}=\varepsilon_0\,\varepsilon_r\,E$$<p>$\sigma$ (sigma) = wie dicht die Ladung auf der Platte sitzt. Dichter gepackte Ladung, stärkeres Feld.</p>`)}`,
+      bild: m`<p>Die wichtigste Frage in jeder Aufgabe: <b>Hängt der Kondensator noch an der Quelle?</b></p><ul><li><b>Ja:</b> Die Quelle hält die Spannung fest. $U$ bleibt, $Q$ passt sich an ($Q=C\cdot U$).</li><li><b>Nein, abgetrennt:</b> Die Ladung kann nirgendwohin. $Q$ bleibt, $U$ passt sich an ($U=Q/C$).</li></ul><p>Probier beides oben in der Simulation aus: Abstand verdoppeln, einmal an der Quelle, einmal abgetrennt.</p>`,
       rezept: [
-        m`<b>Einheiten in SI:</b> $A$ in m² (1 cm² = $10^{-4}$ m²), $d$ in m (1 mm = $10^{-3}$ m). $1\,\text{pF}=10^{-12}\,\text{F}$, $1\,\mu\text{F}=10^{-6}\,\text{F}$.`,
-        m`<b>Kapazität</b> aus der Geometrie: $C=\varepsilon_0\varepsilon_r\dfrac{A}{d}$.`,
-        m`<b>Quelle oder getrennt?</b> Festhalten, was konstant bleibt ($U$ oder $Q$).`,
-        m`<b>Rest</b> über $Q=C\cdot U$ und $E=U/d$ ausrechnen. Kurz begründen, was steigt/sinkt.`
+        m`<b>Erst alle Größen in Grundeinheiten:</b> Fläche in m² (1 cm² = $10^{-4}$ m², 20 cm × 20 cm = 0,20 m · 0,20 m), Abstand in m (1 mm = $10^{-3}$ m).`,
+        m`<b>Kapazität aus dem Bau:</b> $C=\varepsilon_0\varepsilon_r\dfrac{A}{d}$. Die Spannung braucht man dafür nicht.`,
+        m`<b>Fragen: An der Quelle oder abgetrennt?</b> Aufschreiben, was gleich bleibt ($U$ oder $Q$).`,
+        m`<b>Den Rest</b> mit $Q=C\cdot U$ und $E=U/d$ ausrechnen. Am Ende in einem Satz sagen, was gestiegen oder gesunken ist und warum.`
       ],
       beispiel: {
-        q: m`Quadratische Platten, 20 cm × 20 cm, Abstand 4,0 mm, Luft. Der Kondensator liegt an 500 V. Berechne $C$, $Q$, $E$ und $\sigma$.`,
+        q: m`Quadratische Platten, 20 cm × 20 cm, Abstand 4,0 mm, Luft dazwischen. Der Kondensator liegt an 500 V. Berechne $C$, $Q$, $E$ und $\sigma$.`,
         steps: [
-          { h: 'Einheiten', t: m`$A=0{,}20\,\text{m}\cdot0{,}20\,\text{m}=0{,}040\,\text{m}^2$, $d=0{,}0040\,\text{m}$, $\varepsilon_r=1$` },
-          { h: 'Kapazität', t: m`$C=\varepsilon_0\dfrac{A}{d}=8{,}854\cdot10^{-12}\cdot\dfrac{0{,}040}{0{,}0040}\,\text{F}=8{,}85\cdot10^{-11}\,\text{F}=88{,}5\,\text{pF}$` },
-          { h: 'Ladung', t: m`$Q=C\cdot U=8{,}85\cdot10^{-11}\,\text{F}\cdot500\,\text{V}=4{,}43\cdot10^{-8}\,\text{C}$` },
-          { h: 'Feldstärke und Flächenladungsdichte', t: m`$E=\dfrac{U}{d}=\dfrac{500\,\text{V}}{0{,}0040\,\text{m}}=1{,}25\cdot10^{5}\,\tfrac{\text{V}}{\text{m}}$, $\sigma=\dfrac{Q}{A}=1{,}11\cdot10^{-6}\,\tfrac{\text{C}}{\text{m}^2}$` }
+          { h: 'Gegeben und gesucht, alles in m', t: m`<p>Gegeben: Fläche, Abstand, Spannung, Luft ($\varepsilon_r=1$). Gesucht: Kapazität $C$, Ladung $Q$, Feldstärke $E$, Flächenladungsdichte $\sigma$.</p><p>$A=0{,}20\,\text{m}\cdot0{,}20\,\text{m}=0{,}040\,\text{m}^2$, $\quad d=4{,}0\,\text{mm}=0{,}0040\,\text{m}$</p>` },
+          { h: 'Kapazität: nur der Bau zählt', t: m`<p>Für $C$ brauchen wir Fläche, Abstand und Material. Die 500 V spielen hier keine Rolle.</p><p>$C=\varepsilon_0\varepsilon_r\dfrac{A}{d}=8{,}854\cdot10^{-12}\cdot1\cdot\dfrac{0{,}040}{0{,}0040}\,\text{F}=8{,}85\cdot10^{-11}\,\text{F}=88{,}5\,\text{pF}$</p><p>Ein Luftkondensator hat also nur einige Pikofarad.</p>` },
+          { h: 'Ladung: jetzt kommt die Spannung dazu', t: m`<p>Aus $C=\dfrac QU$ wird nach $Q$ umgestellt $Q=C\cdot U$:</p><p>$Q=8{,}85\cdot10^{-11}\,\text{F}\cdot500\,\text{V}=4{,}43\cdot10^{-8}\,\text{C}$</p><p>So viel sitzt auf jeder Platte, auf der einen $+$, auf der anderen $-$.</p>` },
+          { h: 'Feldstärke: Spannung pro Abstand', t: m`<p>500 V verteilen sich auf 4 mm: $E=\dfrac Ud=\dfrac{500\,\text{V}}{0{,}0040\,\text{m}}=1{,}25\cdot10^{5}\,\tfrac{\text{V}}{\text{m}}$</p>` },
+          { h: 'Flächenladungsdichte und Kontrolle', t: m`<p>Ladung pro Fläche: $\sigma=\dfrac QA=\dfrac{4{,}43\cdot10^{-8}\,\text{C}}{0{,}040\,\text{m}^2}=1{,}11\cdot10^{-6}\,\tfrac{\text{C}}{\text{m}^2}$</p><p>Kontrolle mit $\sigma=\varepsilon_0E=8{,}854\cdot10^{-12}\cdot1{,}25\cdot10^5=1{,}11\cdot10^{-6}$. Passt.</p>` }
         ]
       },
+      extraAfter: m`<p><b>Abstand verdoppeln: was passiert?</b> (Das kommt fast immer dran.)</p><table><tr><th></th><th>an der Quelle</th><th>abgetrennt</th></tr><tr><td>bleibt gleich</td><td>$U$</td><td>$Q$</td></tr><tr><td>$C=\varepsilon_0\varepsilon_r\frac Ad$</td><td>halbiert</td><td>halbiert</td></tr><tr><td>$Q$</td><td>halbiert ($Q=CU$, Ladung fließt zurück zur Quelle)</td><td>bleibt</td></tr><tr><td>$U$</td><td>bleibt</td><td>verdoppelt ($U=Q/C$)</td></tr><tr><td>$E$</td><td>halbiert ($E=U/d$)</td><td>bleibt ($E=\sigma/\varepsilon_0$, Ladung pro Fläche gleich)</td></tr></table>`,
       fehler: [
         m`mm und cm² nicht umgerechnet. Das ist der häufigste Fehler beim Plattenkondensator (Faktor 1000 oder 10 000 daneben).`,
         m`Beim Auseinanderziehen eines <b>abgetrennten</b> Kondensators angenommen, $U$ bleibe gleich. Richtig: $Q$ bleibt, $C$ sinkt, also steigt $U$. $E=\sigma/\varepsilon_0$ bleibt gleich.`,
         m`„$C$ hängt von $U$ ab.“ Nein: $C$ hängt nur vom Bau ab ($A$, $d$, $\varepsilon_r$). Doppelte Spannung ergibt doppelte Ladung, $C$ bleibt.`
       ],
       test: [
-        { q: m`Formel für die Kapazität eines Plattenkondensators?`, a: m`$C=\varepsilon_0\,\varepsilon_r\,\dfrac{A}{d}$` },
+        { q: m`Was bedeutet $C=\dfrac QU$ in Worten?`, a: 'Kapazität = wie viel Ladung pro Volt Spannung auf die Platten passt.' },
+        { q: m`Formel für die Kapazität eines Plattenkondensators? Was macht jede Größe?`, a: m`$C=\varepsilon_0\varepsilon_r\dfrac Ad$: größere Fläche $A$ und kleinerer Abstand $d$ machen $C$ größer, ein Isolator mit $\varepsilon_r$ macht $C$ $\varepsilon_r$-mal so groß.` },
         { q: 'Abgetrennter Kondensator, Abstand verdoppelt: Was passiert mit Q, C, U, E?', a: m`$Q$ bleibt, $C$ halbiert, $U$ verdoppelt, $E$ bleibt gleich.` },
-        { q: 'An der Quelle, Glasplatte eingeschoben: Was passiert mit Q?', a: m`$C$ steigt um den Faktor $\varepsilon_r$, $U$ bleibt, also steigt $Q=C\cdot U$ um $\varepsilon_r$.` },
-        { q: m`Was ist $\sigma$ und wie hängt es mit $E$ zusammen?`, a: m`Flächenladungsdichte $\sigma=Q/A$, es gilt $\sigma=\varepsilon_0\varepsilon_r E$.` }
+        { q: 'An der Quelle, Glasplatte eingeschoben: Was passiert mit Q?', a: m`$C$ steigt um den Faktor $\varepsilon_r$, $U$ bleibt, also steigt $Q=C\cdot U$ um $\varepsilon_r$.` }
       ]
     },
     {
-      id: 'PH4', fach: F, num: 4, min: 10, demo: 'p-energiec', demoTitel: 'Schau zu: Laden, Paket für Paket',
+      id: 'PH4', fach: F, groessen: ['W', 'C', 'U', 'Q', 'P', 't'], num: 4, min: 12, demo: 'p-energiec', demoTitel: 'Schau zu: Laden, Paket für Paket',
       title: 'Energie im Kondensator',
       short: 'W = ½·C·U², Fläche im U-Q-Diagramm, Blitzgerät',
-      idee: m`<p>Beim Laden muss jede weitere Ladung gegen die Spannung geschoben werden, die schon da ist. Die Spannung wächst dabei von 0 bis $U$. Im $U$-$Q$-Diagramm ist die gespeicherte Energie die <b>Dreiecksfläche</b>.</p>
-${merke('Merke', m`$$W=\tfrac12\,Q\cdot U=\tfrac12\,C\cdot U^2=\frac{Q^2}{2C}$$`)}
-<p>Doppelte Spannung bedeutet <b>vierfache</b> Energie. Kondensatoren können ihre Energie in sehr kurzer Zeit abgeben: hohe <b>Leistung</b> $P=W/t$ (Blitzgerät, Defibrillator).</p>`,
-      bild: m`<p>Wie ein Wasserturm, der von unten befüllt wird: Die ersten Liter sind leicht hochzupumpen, die letzten müssen gegen den vollen Druck. Im Mittel zählt nur die halbe Endhöhe, darum das $\tfrac12$.</p>`,
+      idee: m`<p>Ein geladener Kondensator speichert Energie. Woher kommt sie? Beim Laden muss die Quelle jede Ladung auf die Platte schieben, und zwar <b>gegen</b> die Spannung, die schon da ist.</p>
+<ul><li>Das <b>erste</b> bisschen Ladung geht ganz leicht, denn der Kondensator ist noch leer (Spannung 0).</li><li>Das <b>letzte</b> bisschen muss gegen die volle Spannung $U$ geschoben werden.</li><li>Im Mittel zählt also nur die <b>halbe</b> Endspannung: $W=Q\cdot\dfrac{U}{2}$.</li></ul>
+${merke('Energie im Kondensator', m`$$W=\tfrac12\,Q\cdot U=\tfrac12\,C\cdot U^2$$<p>$W$ = gespeicherte Energie in J · $C$ = Kapazität in F · $U$ = Spannung am Kondensator in V. Die zweite Form entsteht, wenn man $Q=C\cdot U$ einsetzt.</p>`)}
+<p>Im $U$-$Q$-Diagramm (oben in der Animation) ist $W$ die <b>Dreiecksfläche</b> unter der Geraden: Grundseite $Q$, Höhe $U$, Fläche $\tfrac12QU$.</p>
+<p>Wegen $U^2$ gilt: doppelte Spannung, <b>vierfache</b> Energie.</p>
+<p>Ein Kondensator kann seine Energie sehr schnell abgeben. Dann ist die <b>Leistung</b> $P=\dfrac{W}{t}$ riesig (Blitzgerät, Defibrillator).</p>`,
+      bild: m`<p>Wie ein Wasserturm, der von unten befüllt wird: Die ersten Liter sind leicht hochzupumpen, die letzten müssen gegen den vollen Wasserdruck. Im Mittel zählt nur die halbe Endhöhe, darum das $\tfrac12$.</p>`,
       rezept: [
-        m`$C$ in F (µF $\to\cdot10^{-6}$), $U$ in V einsetzen: $W=\tfrac12CU^2$ in J.`,
-        m`Leistung beim Entladen: $\bar P=\dfrac{W}{t}$ (bzw. nur der genutzte Anteil, z. B. 20 % Licht).`,
-        m`Gesucht ist $C$ für eine Energie? Umstellen: $C=\dfrac{2W}{U^2}$.`
+        m`$C$ in F umrechnen (µF: mal $10^{-6}$), $U$ in V.`,
+        m`Energie: $W=\tfrac12CU^2$. Erst $U^2$ ausrechnen, dann mal $C$, dann halbieren. Ergebnis in J.`,
+        m`Leistung beim Entladen: $P=\dfrac{W}{t}$, nur den genutzten Anteil nehmen (z. B. 20 % Licht: $0{,}20\cdot W$).`,
+        m`Gesucht $C$ für eine bestimmte Energie? Umstellen: $C=\dfrac{2W}{U^2}$.`
       ],
       beispiel: {
-        q: m`Ein Blitzgerät-Kondensator ($200\,\mu\text{F}$) wird auf $320\,\text{V}$ geladen und entlädt sich in $2{,}0\,\text{ms}$. Berechne die Energie und die mittlere Leistung.`,
+        q: m`Ein Blitzgerät-Kondensator ($200\,\mu\text{F}$) wird auf $320\,\text{V}$ geladen und entlädt sich in $2{,}0\,\text{ms}$. Wie viel Energie ist gespeichert, und welche Leistung gibt er im Mittel ab?`,
         steps: [
-          { h: 'Energie', t: m`$W=\tfrac12CU^2=\tfrac12\cdot200\cdot10^{-6}\,\text{F}\cdot(320\,\text{V})^2=10{,}24\,\text{J}\approx10\,\text{J}$` },
-          { h: 'Mittlere Leistung', t: m`$\bar P=\dfrac{W}{t}=\dfrac{10{,}24\,\text{J}}{0{,}0020\,\text{s}}=5120\,\text{W}\approx5{,}1\,\text{kW}$` },
-          { h: 'Deuten', t: 'Kurzzeitig über 5 kW, aus einem kleinen Akku geladen: Der Kondensator sammelt die Energie langsam und gibt sie schlagartig ab.' }
+          { h: 'Gegeben und gesucht', t: m`<p>$C=200\,\mu\text{F}=200\cdot10^{-6}\,\text{F}=2{,}00\cdot10^{-4}\,\text{F}$, $U=320\,\text{V}$, $t=2{,}0\,\text{ms}=0{,}0020\,\text{s}$. Gesucht: Energie $W$ und mittlere Leistung $P$.</p>` },
+          { h: 'Energie', t: m`<p>Wir kennen $C$ und $U$, also passt $W=\tfrac12CU^2$:</p><p>$W=\tfrac12\cdot2{,}00\cdot10^{-4}\,\text{F}\cdot(320\,\text{V})^2=\tfrac12\cdot2{,}00\cdot10^{-4}\cdot102\,400\,\text{J}=10{,}24\,\text{J}$</p>` },
+          { h: 'Mittlere Leistung', t: m`<p>Leistung ist Energie pro Zeit. Die ganzen 10 J werden in 2 ms abgegeben:</p><p>$P=\dfrac{W}{t}=\dfrac{10{,}24\,\text{J}}{0{,}0020\,\text{s}}=5120\,\text{W}\approx5{,}1\,\text{kW}$</p>` },
+          { h: 'Deuten', t: 'Die Energie ist klein (etwa so viel, wie man braucht, um 1 kg einen Meter hochzuheben), aber sie kommt in 2 ms. Deshalb die riesige Leistung von über 5 kW. Genau dafür nimmt man einen Kondensator: langsam laden, schlagartig entladen.' }
         ]
       },
       fehler: [
-        m`$W=Q\cdot U$ statt $\tfrac12QU$ benutzt. Das wäre richtig, wenn die volle Spannung von Anfang an da wäre (Ladung im Feld), nicht beim Laden.`,
+        m`$W=Q\cdot U$ statt $\tfrac12QU$ benutzt. Das $\tfrac12$ kommt daher, dass die Spannung beim Laden erst von 0 an wächst.`,
         m`µF nicht umgerechnet: $200\,\mu\text{F}=2{,}00\cdot10^{-4}\,\text{F}$.`,
         m`$U^2$ vergessen: doppelte Spannung → vierfache Energie.`
       ],
       test: [
         { q: 'Drei Formeln für die Energie im Kondensator?', a: m`$W=\tfrac12QU=\tfrac12CU^2=\dfrac{Q^2}{2C}$` },
-        { q: m`Warum steht dort $\tfrac12$?`, a: 'Beim Laden wächst die Spannung von 0 an mit, die Fläche im U-Q-Diagramm ist ein Dreieck.' },
-        { q: 'Spannung verdreifacht. Energie?', a: 'Neunmal so groß (W ∝ U²).' }
+        { q: m`Warum steht dort $\tfrac12$?`, a: 'Beim Laden wächst die Spannung von 0 an mit. Im Mittel muss jede Ladung nur gegen die halbe Endspannung geschoben werden (Dreiecksfläche im U-Q-Diagramm).' },
+        { q: 'Spannung verdreifacht. Energie?', a: 'Neunmal so groß (W ∼ U²).' }
       ]
     },
     {
-      id: 'PH5', fach: F, num: 5, min: 10, demo: 'p-schaltung', demoTitel: 'Probier es aus: parallel oder in Reihe',
+      id: 'PH5', fach: F, groessen: ['C','Q','U'], num: 5, min: 10, demo: 'p-schaltung', demoTitel: 'Probier es aus: parallel oder in Reihe',
       title: 'Kondensatoren schalten',
       short: 'Parallel: C addieren. Reihe: 1/C addieren. Vergleich mit Widerständen',
       idee: m`<p><b>Parallel</b> liegt an allen Kondensatoren dieselbe Spannung, die Ladungen addieren sich: wie eine größere Plattenfläche. <b>In Reihe</b> tragen alle dieselbe Ladung (die Mittelstücke sind zusammen neutral), die Spannungen addieren sich: wie ein größerer Plattenabstand.</p>
@@ -197,25 +211,28 @@ ${merke('Merke', m`$$\text{parallel: } C=C_1+C_2\qquad\text{Reihe: }\frac1C=\fra
 
     // ---------------------------------------------------------------- Ordner: Braunsche Röhre
     {
-      id: 'PH6', fach: F, num: 6, min: 12, demo: 'p-roehre', demoTitel: 'Schau zuerst: die Röhre in Betrieb',
+      id: 'PH6', fach: F, groessen: ['UB', 'e', 'me', 'v0'], num: 6, min: 12, demo: 'p-roehre', demoTitel: 'Schau zuerst: die Röhre in Betrieb',
       title: 'Braunsche Röhre: Elektronen erzeugen und beschleunigen',
       short: 'Glühelektrischer Effekt, Wehnelt-Zylinder, e·U_B = ½·m·v²',
-      idee: m`<p><b>Glühelektrischer Effekt:</b> Aus einer geheizten Kathode treten Elektronen aus, weil sie genug Energie bekommen, um die Bindung an das Metall (Austrittsenergie) zu überwinden. Kalt tritt fast nichts aus.</p>
-<p>Der <b>Wehnelt-Zylinder</b> (negativ gegenüber der Kathode) bündelt die Elektronen. Zwischen Kathode und <b>Anode</b> beschleunigt die Spannung $U_B$ sie, durch ein Loch fliegen sie mit konstanter Geschwindigkeit weiter bis zum <b>Leuchtschirm</b>. Alles im <b>Vakuum</b>, damit sie nicht mit Luftmolekülen stoßen.</p>
-${merke('Energieerhaltung', m`$$e\cdot U_B=\tfrac12\,m_e\,v_0^2\qquad\Longrightarrow\qquad v_0=\sqrt{\frac{2\,e\,U_B}{m_e}}$$`)}`,
-      bild: m`<p>Wie eine Kugel, die eine Rampe hinunterrollt: Die Höhe ($U_B$) bestimmt die Endgeschwindigkeit. Vierfache Höhe ergibt nur doppelte Geschwindigkeit ($v\sim\sqrt{U_B}$).</p>`,
+      idee: m`<p>Die Braunsche Röhre macht aus einem Draht einen gebündelten, schnellen Elektronenstrahl. Von links nach rechts:</p>
+<ol><li><b>Glühkathode:</b> Ein Draht wird geheizt. Dadurch haben seine Elektronen genug Energie, um das Metall zu verlassen (<b>glühelektrischer Effekt</b>). Kalt tritt fast nichts aus.</li><li><b>Wehnelt-Zylinder:</b> Ein Metallbecher um die Kathode, leicht negativ. Er drückt die Elektronen zur Mitte und bündelt sie.</li><li><b>Anode mit Loch:</b> Sie ist positiv gegenüber der Kathode. Die Spannung $U_B$ zwischen beiden beschleunigt die Elektronen. Durch das Loch fliegen sie weiter.</li><li><b>Danach</b> wirkt keine Kraft mehr: Die Elektronen fliegen mit konstanter Geschwindigkeit $v_0$ bis zum <b>Leuchtschirm</b>.</li><li>Alles im <b>Vakuum</b>: Luftmoleküle würden die Elektronen abbremsen und streuen.</li></ol>
+<h3>Wie schnell werden die Elektronen?</h3>
+<p>Energieerhaltung: Die elektrische Energie, die das Elektron beim Durchlaufen von $U_B$ bekommt ($W=e\cdot U_B$, siehe Lektion 1), wird komplett zu Bewegungsenergie ($\tfrac12mv^2$):</p>
+${merke('Energieerhaltung', m`$$e\cdot U_B=\tfrac12\,m_e\,v_0^2\qquad\Longrightarrow\qquad v_0=\sqrt{\frac{2\,e\,U_B}{m_e}}$$<p>Umstellen: mal 2, durch $m_e$, dann Wurzel ziehen.</p>`)}`,
+      bild: m`<p>Wie eine Kugel, die eine Rampe hinunterrollt: Die Höhe ($U_B$) bestimmt die Endgeschwindigkeit. Wegen der Wurzel gilt: vierfache Höhe ergibt nur doppelte Geschwindigkeit ($v_0\sim\sqrt{U_B}$).</p>`,
       rezept: [
-        m`Ansatz hinschreiben: elektrische Energie = kinetische Energie, $eU_B=\tfrac12m_ev_0^2$.`,
-        m`Nach $v_0$ umstellen und einsetzen (Konstanten aus der Formelsammlung).`,
-        m`Rückwärts: gesucht $U_B$? $U_B=\dfrac{m_ev_0^2}{2e}$.`,
-        'Funktion beschreiben: Glühkathode → Wehnelt (bündeln) → Anode mit Loch (beschleunigen) → Ablenkung → Schirm, Vakuum.'
+        m`Ansatz hinschreiben (gibt Punkte!): $e\,U_B=\tfrac12m_ev_0^2$.`,
+        m`Nach $v_0$ umstellen: $v_0=\sqrt{2eU_B/m_e}$. $e$ und $m_e$ stehen in der Formelsammlung.`,
+        m`Rückwärts, gesucht $U_B$: $U_B=\dfrac{m_ev_0^2}{2e}$.`,
+        'Funktion beschreiben: Glühkathode (Elektronen treten aus) → Wehnelt (bündeln) → Anode mit Loch (beschleunigen) → Schirm; Vakuum.'
       ],
       beispiel: {
         q: m`Elektronen werden mit $U_B=1{,}5\,\text{kV}$ beschleunigt. Berechne ihre Geschwindigkeit.`,
         steps: [
-          { h: 'Ansatz', t: m`$e\,U_B=\tfrac12m_ev_0^2\ \Rightarrow\ v_0=\sqrt{\dfrac{2eU_B}{m_e}}$` },
-          { h: 'Einsetzen', t: m`$v_0=\sqrt{\dfrac{2\cdot1{,}602\cdot10^{-19}\,\text{C}\cdot1500\,\text{V}}{9{,}109\cdot10^{-31}\,\text{kg}}}=2{,}30\cdot10^{7}\,\tfrac{\text{m}}{\text{s}}$` },
-          { h: 'Einordnen', t: m`Das sind etwa 8 % der Lichtgeschwindigkeit. Die klassische Rechnung ist hier noch gut genug.` }
+          { h: 'Gegeben und gesucht', t: m`<p>$U_B=1{,}5\,\text{kV}=1500\,\text{V}$, aus der Formelsammlung $e=1{,}602\cdot10^{-19}\,\text{C}$ und $m_e=9{,}109\cdot10^{-31}\,\text{kg}$. Gesucht: $v_0$.</p>` },
+          { h: 'Ansatz: Energie bleibt erhalten', t: m`<p>Die elektrische Energie wird ganz zu Bewegungsenergie: $e\,U_B=\tfrac12m_ev_0^2$. Umgestellt: $v_0=\sqrt{\dfrac{2eU_B}{m_e}}$.</p>` },
+          { h: 'Einsetzen', t: m`<p>$v_0=\sqrt{\dfrac{2\cdot1{,}602\cdot10^{-19}\,\text{C}\cdot1500\,\text{V}}{9{,}109\cdot10^{-31}\,\text{kg}}}=\sqrt{5{,}28\cdot10^{14}}\,\tfrac{\text{m}}{\text{s}}=2{,}30\cdot10^{7}\,\tfrac{\text{m}}{\text{s}}$</p><p>Tipp für den Taschenrechner: erst den Bruch ausrechnen, dann die Wurzel.</p>` },
+          { h: 'Einordnen', t: m`Das sind 23 000 km pro Sekunde, etwa 8 % der Lichtgeschwindigkeit. Für so „langsame“ Elektronen reicht die normale Formel.` }
         ]
       },
       fehler: [
@@ -224,120 +241,145 @@ ${merke('Energieerhaltung', m`$$e\cdot U_B=\tfrac12\,m_e\,v_0^2\qquad\Longrighta
         'Vergessen zu sagen, warum Vakuum nötig ist (sonst Stöße mit Gasmolekülen, Strahl wird gestreut und abgeschwächt).'
       ],
       test: [
-        { q: 'Warum braucht die Braunsche Röhre eine Heizung?', a: 'Glühelektrischer Effekt: Nur aus heißem Metall treten genügend Elektronen aus (Austrittsenergie).' },
-        { q: m`Formel für die Geschwindigkeit nach der Beschleunigung?`, a: m`$v_0=\sqrt{2eU_B/m_e}$` },
+        { q: 'Warum braucht die Braunsche Röhre eine Heizung?', a: 'Glühelektrischer Effekt: Nur aus heißem Metall treten genügend Elektronen aus.' },
+        { q: m`Woher kommt die Formel $v_0=\sqrt{2eU_B/m_e}$?`, a: m`Energieerhaltung: elektrische Energie $eU_B$ = Bewegungsenergie $\tfrac12m_ev_0^2$, nach $v_0$ umgestellt.` },
         { q: 'Warum fließt in einer Glühdiode nur in einer Richtung Strom?', a: 'Nur die geheizte Elektrode gibt Elektronen ab. Ist die Gegenelektrode negativ, werden sie zurückgedrängt.' },
-        { q: 'Wozu dient der Wehnelt-Zylinder?', a: 'Er ist negativ gegenüber der Kathode und bündelt (fokussiert) den Elektronenstrahl.' }
+        { q: 'Wozu dient der Wehnelt-Zylinder?', a: 'Er ist negativ gegenüber der Kathode und bündelt den Elektronenstrahl.' }
       ]
     },
     {
-      id: 'PH7', fach: F, num: 7, min: 16, demo: 'p-ablenkung', demoTitel: 'Probier es aus: Strahl ablenken',
+      id: 'PH7', fach: F, groessen: ['UB', 'UAbl', 'd', 'l', 'v0', 'a', 'x', 'y', 'alpha', 'L', 'Y'], num: 7, min: 20, demo: 'p-ablenkung', demoTitel: 'Probier es aus: Strahl ablenken',
       title: 'Ablenkung im Querfeld',
       short: 'Parabelbahn wie beim waagerechten Wurf, y = U·x²/(4·d·U_B)',
-      idee: m`<p>Zwischen den Ablenkplatten zieht die Feldkraft $F=e\cdot\dfrac{U}{d}$ das Elektron senkrecht zur Flugrichtung. Die zwei Bewegungen laufen <b>unabhängig</b> voneinander ab:</p>
-<ul><li><b>waagerecht</b>: gleichförmig, $x=v_0\,t$</li><li><b>senkrecht</b>: gleichmäßig beschleunigt, $y=\tfrac12a\,t^2$ mit $a=\dfrac{eU}{m_ed}$</li></ul>
-${merke('Bahngleichung (Parabel)', m`$$y(x)=\frac12\cdot\frac{e}{m_e}\cdot\frac{U}{d}\cdot\frac{x^2}{v_0^2}\qquad\text{mit } v_0^2=\frac{2eU_B}{m_e}:\qquad y(x)=\frac{U\,x^2}{4\,d\,U_B}$$`)}
-<p>Hinter den Platten wirkt keine Kraft mehr: Das Elektron fliegt <b>geradeaus</b> weiter, mit dem Austrittswinkel $\tan\alpha=\dfrac{v_y}{v_0}=\dfrac{U\,l}{2\,d\,U_B}$.</p>`,
-      bild: m`<p>Genau wie ein Ball, der waagerecht vom Tisch rollt: vorwärts konstant, nach unten immer schneller. Statt der Schwerkraft wirkt hier die elektrische Kraft.</p>
+      idee: m`<p>Das Elektron kommt mit der Geschwindigkeit $v_0$ (aus Lektion 6) waagerecht zwischen zwei Platten. An den Platten liegt die Ablenkspannung $U$, oben $+$, unten $-$. Das Feld zieht das Elektron zur positiven Platte. Wir bauen die Bahn in vier Schritten zusammen.</p>
+<h3>Schritt 1: Waagerecht passiert nichts Neues</h3>
+<p>Das Feld zieht nur senkrecht, also gibt es waagerecht keine Kraft. Das Elektron fliegt waagerecht gleichmäßig weiter:</p>
+${merke('waagerecht', m`$$x=v_0\cdot t$$<p>$x$ = wie weit es schon in den Platten ist, $t$ = Zeit seit dem Eintritt.</p>`)}
+<h3>Schritt 2: Senkrecht wirkt eine konstante Kraft</h3>
+<p>Im Plattenkondensator ist das Feld überall gleich ($E=U/d$), also auch die Kraft $F=e\cdot E=\dfrac{e\,U}{d}$. Konstante Kraft heißt konstante Beschleunigung $a=\dfrac{F}{m_e}$, und dafür gilt wie beim freien Fall:</p>
+${merke('senkrecht', m`$$a=\frac{e\,U}{m_e\,d}\qquad y=\tfrac12\,a\,t^2$$`)}
+<h3>Schritt 3: Zusammensetzen (Bahngleichung)</h3>
+<p>Wir wollen $y$ abhängig vom Ort $x$, nicht von der Zeit. Also Schritt 1 nach der Zeit umstellen, $t=\dfrac{x}{v_0}$, und in Schritt 2 einsetzen:</p>
+${merke('Bahn im Kondensator: eine Parabel', m`$$y(x)=\frac12\cdot\frac{e\,U}{m_e\,d}\cdot\frac{x^2}{v_0^2}$$<p>Setzt man noch $v_0^2=\dfrac{2eU_B}{m_e}$ ein, kürzen sich $e$ und $m_e$ weg:</p>$$y(x)=\frac{U\,x^2}{4\,d\,U_B}$$`)}
+<h3>Schritt 4: Hinter den Platten geht es geradeaus</h3>
+<p>Am Plattenende ($x=l$) hört die Kraft auf. Das Elektron fliegt schräg geradeaus weiter, mit dem Winkel $\alpha$: $\tan\alpha=\dfrac{v_y}{v_0}=\dfrac{U\,l}{2\,d\,U_B}$. Auf dem Schirm im Abstand $L$ kommt es bei $Y=y(l)+L\cdot\tan\alpha$ an.</p>`,
+      bild: m`<p>Genau wie ein Ball, der waagerecht vom Tisch rollt: vorwärts konstant schnell, nach unten immer schneller. Statt der Schwerkraft zieht hier die elektrische Kraft. In der Animation zeigt „Bewegung zerlegen“ beide Bewegungen einzeln.</p>
 ${achtung('Wichtig fürs Erläutern', m`<p>In $y=\dfrac{Ux^2}{4dU_B}$ kommt $e/m_e$ nicht mehr vor. Wer nur $U_B$, $U$, $d$ und die Ablenkung misst, kann damit <b>nicht</b> die spezifische Ladung $e/m_e$ bestimmen.</p>`)}`,
       rezept: [
         m`$v_0$ aus der Beschleunigung: $v_0=\sqrt{2eU_B/m_e}$.`,
-        m`Zeit im Feld: $t=l/v_0$. Beschleunigung: $a=\dfrac{eU}{m_ed}$.`,
-        m`Ablenkung am Plattenende: $y=\tfrac12at^2$ (oder direkt $y=\dfrac{Ul^2}{4dU_B}$).`,
-        m`Auftreffpunkt auf dem Schirm (Abstand $L$ hinter den Platten): $Y=y+L\cdot\tan\alpha$ mit $\tan\alpha=\dfrac{Ul}{2dU_B}$.`
+        m`Zeit zwischen den Platten: Strecke durch Geschwindigkeit, $t=\dfrac{l}{v_0}$. Beschleunigung: $a=\dfrac{eU}{m_ed}$.`,
+        m`Ablenkung am Plattenende: $y=\tfrac12at^2$, oder direkt $y=\dfrac{Ul^2}{4dU_B}$. Prüfen: Ist $y$ kleiner als $d/2$? Sonst trifft das Elektron die Platte.`,
+        m`Auftreffpunkt: $\tan\alpha=\dfrac{Ul}{2dU_B}$, dann $Y=y+L\cdot\tan\alpha$.`
       ],
       beispiel: {
-        q: m`$U_B=1000\,\text{V}$, Ablenkspannung $U=200\,\text{V}$, Plattenabstand $d=4{,}0\,\text{cm}$, Plattenlänge $l=8{,}0\,\text{cm}$, Schirm $20\,\text{cm}$ hinter den Platten. Wo trifft der Strahl?`,
+        q: m`$U_B=1000\,\text{V}$, Ablenkspannung $U=200\,\text{V}$, Plattenabstand $d=4{,}0\,\text{cm}$, Plattenlänge $l=8{,}0\,\text{cm}$, Schirm $L=20\,\text{cm}$ hinter den Platten. Wo trifft der Strahl auf?`,
         steps: [
-          { h: 'Ablenkung am Plattenende', t: m`$y=\dfrac{U\,l^2}{4\,d\,U_B}=\dfrac{200\cdot0{,}080^2}{4\cdot0{,}040\cdot1000}\,\text{m}=0{,}0080\,\text{m}=8{,}0\,\text{mm}$` },
-          { h: 'Austrittswinkel', t: m`$\tan\alpha=\dfrac{U\,l}{2\,d\,U_B}=\dfrac{200\cdot0{,}080}{2\cdot0{,}040\cdot1000}=0{,}20\ \Rightarrow\ \alpha=11{,}3^\circ$` },
-          { h: 'Gerade bis zum Schirm', t: m`$Y=y+L\tan\alpha=8{,}0\,\text{mm}+200\,\text{mm}\cdot0{,}20=48\,\text{mm}=4{,}8\,\text{cm}$` },
-          { h: 'Prüfen', t: m`$y=8\,\text{mm}<\tfrac d2=20\,\text{mm}$: Der Strahl verlässt die Platten, ohne sie zu treffen.` }
+          { h: 'Gegeben und gesucht, alles in m', t: m`<p>$U_B=1000\,\text{V}$ (beschleunigt), $U=200\,\text{V}$ (lenkt ab), $d=0{,}040\,\text{m}$, $l=0{,}080\,\text{m}$, $L=0{,}20\,\text{m}$. Gesucht: Auftreffpunkt $Y$.</p>` },
+          { h: 'Ablenkung am Plattenende', t: m`<p>Die Formel ohne $e$ und $m_e$ spart Rechnung. Wir setzen $x=l$ ein (Ende der Platten):</p><p>$y=\dfrac{U\,l^2}{4\,d\,U_B}=\dfrac{200\cdot0{,}080^2}{4\cdot0{,}040\cdot1000}\,\text{m}=\dfrac{1{,}28}{160}\,\text{m}=0{,}0080\,\text{m}=8{,}0\,\text{mm}$</p><p>Kontrolle: Die Platte ist $d/2=20\,\text{mm}$ von der Mitte entfernt, $8\,\text{mm}$ ist weniger. Das Elektron kommt durch.</p>` },
+          { h: 'Austrittswinkel', t: m`<p>Wie schräg fliegt es heraus? $\tan\alpha=\dfrac{U\,l}{2\,d\,U_B}=\dfrac{200\cdot0{,}080}{2\cdot0{,}040\cdot1000}=0{,}20$, also $\alpha=11{,}3^\circ$.</p>` },
+          { h: 'Gerade bis zum Schirm', t: m`<p>Auf $L=200\,\text{mm}$ steigt die Gerade um $L\cdot\tan\alpha=200\,\text{mm}\cdot0{,}20=40\,\text{mm}$. Dazu kommen die $8\,\text{mm}$ aus den Platten:</p><p>$Y=8{,}0\,\text{mm}+40\,\text{mm}=48\,\text{mm}=4{,}8\,\text{cm}$ über der Schirmmitte.</p>` }
         ]
       },
       fehler: [
         'Hinter den Platten weiter mit der Parabel gerechnet. Dort wirkt keine Kraft mehr: Gerade.',
         m`Die waagerechte Geschwindigkeit ändert sich nicht. $v_0$ bleibt, nur $v_y$ kommt hinzu.`,
-        m`Vergessen zu prüfen, ob $y<d/2$ ist. Sonst trifft das Elektron die Platte.`
+        m`Vergessen zu prüfen, ob $y<d/2$ ist. Sonst trifft das Elektron die Platte.`,
+        m`$U$ und $U_B$ verwechselt: $U_B$ beschleunigt (steht im Nenner), $U$ lenkt ab (steht im Zähler).`
       ],
       test: [
-        { q: 'Welche Bewegungen überlagern sich im Querfeld?', a: 'Waagerecht gleichförmig, senkrecht gleichmäßig beschleunigt (wie beim waagerechten Wurf).' },
-        { q: m`Bahngleichung mit $U_B$?`, a: m`$y(x)=\dfrac{U\,x^2}{4\,d\,U_B}$` },
-        { q: m`Beschleunigungsspannung verdoppelt. Ablenkung am Plattenende?`, a: 'Halbiert (y ∼ 1/U_B).' },
+        { q: 'Welche Bewegungen überlagern sich im Querfeld?', a: 'Waagerecht gleichförmig (keine Kraft), senkrecht gleichmäßig beschleunigt (konstante Feldkraft), wie beim waagerechten Wurf.' },
+        { q: 'Wie kommt man von x = v₀t und y = ½at² zur Bahngleichung?', a: m`$t=x/v_0$ in $y=\tfrac12at^2$ einsetzen: $y=\tfrac12a\dfrac{x^2}{v_0^2}$ mit $a=\dfrac{eU}{m_ed}$.` },
+        { q: m`Beschleunigungsspannung verdoppelt. Ablenkung am Plattenende?`, a: m`Halbiert, weil $y\sim\dfrac1{U_B}$ (schnellere Elektronen sind kürzer im Feld).` },
         { q: m`Warum kann man mit diesem Aufbau $e/m$ nicht bestimmen?`, a: m`$e/m$ kürzt sich heraus, wenn man $v_0^2=2eU_B/m$ einsetzt.` }
       ]
     },
 
     // ---------------------------------------------------------------- Ordner: Auf- und Entladen
     {
-      id: 'PH8', fach: F, num: 8, min: 14, demo: 'p-rc', demoTitel: 'Schau zuerst: Laden und Entladen live',
+      id: 'PH8', fach: F, groessen: ['U0', 'UC', 'UR', 'R', 'C', 'I', 'I0', 'tau', 'th', 'euler'], num: 8, min: 18, demo: 'p-rc', demoTitel: 'Schau zuerst: Laden und Entladen live',
       title: 'Auf- und Entladen: die Kurven',
       short: 'τ = R·C, 63 % / 37 %, Halbwertszeit, nach 5 τ fertig',
-      idee: m`<p>Lädt man einen Kondensator über einen Widerstand, fließt anfangs der größte Strom $I_0=\dfrac{U_0}{R}$ (der leere Kondensator wirkt wie ein Kurzschluss). Je voller er ist, desto größer seine Gegenspannung, desto kleiner der Strom. So entstehen <b>e-Funktionen</b>.</p>
-${merke('Formeln (AB 18)', m`$$\tau=R\cdot C\qquad\begin{array}{ll}\text{Laden:} & U_C=U_0\,(1-e^{-t/\tau}),\quad I=\dfrac{U_0}{R}\,e^{-t/\tau}\\[8pt]\text{Entladen:} & U_C=U_0\,e^{-t/\tau},\quad I=-\dfrac{U_0}{R}\,e^{-t/\tau}\end{array}$$`)}
-<ul><li>Nach <b>1 τ</b>: Spannung bei 63 %, Strom bei 37 % ($1/e\approx0{,}37$).</li><li><b>Halbwertszeit</b> $t_h=\tau\cdot\ln2\approx0{,}69\,\tau$: jeweils halbiert.</li><li>Nach <b>5 τ</b> (≈ 7 $t_h$) gilt der Vorgang als beendet (unter 1 %). Voll geladen wirkt der Kondensator wie eine Unterbrechung.</li></ul>`,
+      idee: m`<p>Ein Kondensator wird über einen Widerstand $R$ an eine Quelle mit der Spannung $U_0$ gelegt. Was passiert Schritt für Schritt?</p>
+<ol><li><b>Einschalten:</b> Der Kondensator ist leer, $U_C=0$. Die ganze Spannung liegt am Widerstand. Es fließt der größte Strom: $I_0=\dfrac{U_0}{R}$. (Der leere Kondensator wirkt wie ein Kurzschluss.)</li><li><b>Ladung kommt an:</b> Der Kondensator bekommt eine Spannung $U_C$. Für den Widerstand bleibt nur noch der Rest: $U_R=U_0-U_C$. Also wird der Strom kleiner.</li><li><b>Je voller, desto langsamer:</b> Kleinerer Strom heißt, es kommt langsamer Ladung nach. Der Kondensator nähert sich $U_0$ immer langsamer an.</li><li><b>Voll:</b> $U_C=U_0$, für den Widerstand bleibt nichts, kein Strom mehr. (Der volle Kondensator wirkt wie eine Unterbrechung.)</li></ol>
+<p>„Je mehr schon da ist, desto langsamer geht es weiter“: Genau so ein Verlauf ist eine <b>e-Funktion</b>.</p>
+<h3>Die Zeitkonstante τ: das Tempo</h3>
+${merke('Zeitkonstante', m`$$\tau=R\cdot C$$<p>Großer Widerstand (wenig Strom) oder große Kapazität (viel Platz): Es dauert länger. Einheit: $\Omega\cdot\text{F}=\text{s}$.</p>`)}
+<h3>Die Formeln (AB 18)</h3>
+${merke('Laden', m`$$U_C(t)=U_0\,\bigl(1-e^{-t/\tau}\bigr)\qquad I(t)=\frac{U_0}{R}\,e^{-t/\tau}$$`)}
+${merke('Entladen', m`$$U_C(t)=U_0\,e^{-t/\tau}\qquad I(t)=-\frac{U_0}{R}\,e^{-t/\tau}$$<p>Minus: Der Strom fließt beim Entladen in die andere Richtung.</p>`)}
+<p>So liest du $e^{-t/\tau}$: Das ist der <b>Anteil, der noch übrig ist</b>. Am Anfang 1 (100 %), nach $1\tau$ noch 0,37, nach $5\tau$ fast 0. Beim Laden ist $1-e^{-t/\tau}$ der Anteil, der <b>schon geschafft</b> ist.</p>
+<ul><li>Nach $1\tau$: Spannung beim Laden bei <b>63 %</b>, Strom bei <b>37 %</b>.</li><li><b>Halbwertszeit</b> $t_h=\tau\cdot\ln2\approx0{,}69\,\tau$: In dieser Zeit halbiert sich der Strom (bzw. der Rest).</li><li>Nach $5\tau$ (≈ 7 Halbwertszeiten) gilt der Vorgang als fertig (unter 1 % Rest).</li></ul>`,
       bild: m`<p>Wie eine Badewanne, die über einen dünnen Schlauch abläuft: Am Anfang drückt viel Wasser, es fließt schnell. Je leerer, desto langsamer. Der Widerstand ist der Schlauch, die Kapazität die Größe der Wanne. Beides zusammen bestimmt $\tau$.</p>`,
       rezept: [
-        m`$\tau=R\cdot C$ berechnen (Ω · F = s).`,
-        m`Laden oder Entladen? Passende Formel wählen. Beim Entladen ist $I$ negativ (andere Richtung).`,
-        m`Zeitpunkt einsetzen, mit $e^{-t/\tau}$ rechnen.`,
+        m`$\tau=R\cdot C$ berechnen. kΩ und µF erst umrechnen ($10\,\text{k}\Omega=10\,000\,\Omega$, $470\,\mu\text{F}=0{,}000470\,\text{F}$).`,
+        m`Laden oder Entladen? Die passende Formel aufschreiben. Faustregel: Steigt die Größe, steht $(1-e^{-t/\tau})$ da; fällt sie, nur $e^{-t/\tau}$.`,
+        m`Zeit einsetzen: erst $-t/\tau$ ausrechnen, dann $e^{\ldots}$ mit der Taste $e^x$.`,
         m`Zeit gesucht? Nach $e^{-t/\tau}$ auflösen und logarithmieren (Lektion 9).`
       ],
       beispiel: {
-        q: m`$C=470\,\mu\text{F}$ wird über $R=10\,\text{k}\Omega$ an $U_0=12\,\text{V}$ geladen. Berechne $\tau$, $t_h$, $I_0$ sowie $U_C$ und $I$ nach $5{,}0\,\text{s}$.`,
+        q: m`$C=470\,\mu\text{F}$ wird über $R=10\,\text{k}\Omega$ an $U_0=12\,\text{V}$ geladen (anfangs leer). Berechne $\tau$, $t_h$, $I_0$ sowie $U_C$ und $I$ nach $5{,}0\,\text{s}$.`,
         steps: [
-          { h: 'Zeitkonstante, Halbwertszeit', t: m`$\tau=RC=10\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=4{,}7\,\text{s}$, $\ t_h=\tau\ln2=3{,}26\,\text{s}$` },
-          { h: 'Anfangsstrom', t: m`$I_0=\dfrac{U_0}{R}=\dfrac{12\,\text{V}}{10\,000\,\Omega}=1{,}2\,\text{mA}$` },
-          { h: 'Spannung nach 5 s', t: m`$U_C=12\,\text{V}\cdot\left(1-e^{-5{,}0/4{,}7}\right)=12\,\text{V}\cdot(1-0{,}345)=7{,}86\,\text{V}$` },
-          { h: 'Strom nach 5 s', t: m`$I=1{,}2\,\text{mA}\cdot e^{-5{,}0/4{,}7}=0{,}41\,\text{mA}$` }
+          { h: 'Gegeben und gesucht', t: m`<p>$C=470\cdot10^{-6}\,\text{F}$, $R=10\,000\,\Omega$, $U_0=12\,\text{V}$, Laden. Gesucht: $\tau$, $t_h$, $I_0$, $U_C(5\,\text{s})$, $I(5\,\text{s})$.</p>` },
+          { h: 'Tempo: Zeitkonstante und Halbwertszeit', t: m`<p>$\tau=R\cdot C=10\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=4{,}7\,\text{s}$</p><p>$t_h=\tau\cdot\ln2=4{,}7\,\text{s}\cdot0{,}693=3{,}26\,\text{s}$: Alle 3,26 s halbiert sich der Strom.</p>` },
+          { h: 'Anfangsstrom', t: m`<p>Im ersten Moment ist der Kondensator leer, die ganzen 12 V liegen am Widerstand:</p><p>$I_0=\dfrac{U_0}{R}=\dfrac{12\,\text{V}}{10\,000\,\Omega}=0{,}0012\,\text{A}=1{,}2\,\text{mA}$</p>` },
+          { h: 'Spannung nach 5 s', t: m`<p>Laden, also $U_C=U_0(1-e^{-t/\tau})$. Erst der Anteil, der noch fehlt: $e^{-5{,}0/4{,}7}=e^{-1{,}064}=0{,}345$. Geschafft sind also $1-0{,}345=0{,}655$, gut 65 %:</p><p>$U_C=12\,\text{V}\cdot0{,}655=7{,}86\,\text{V}$</p>` },
+          { h: 'Strom nach 5 s', t: m`<p>Der Strom ist auf denselben Anteil $0{,}345$ gefallen: $I=1{,}2\,\text{mA}\cdot0{,}345=0{,}41\,\text{mA}$.</p><p>Kontrolle mit der Maschenregel: Am Widerstand liegen $12-7{,}86=4{,}14\,\text{V}$, und $\dfrac{4{,}14\,\text{V}}{10\,000\,\Omega}=0{,}41\,\text{mA}$. Passt.</p>` }
         ]
       },
       fehler: [
         m`Lade- und Entladeformel vertauscht. Laden: $U_C$ steigt, also $(1-e^{-t/\tau})$. Entladen: $U_C$ fällt, also $e^{-t/\tau}$.`,
         'kΩ und µF nicht umgerechnet: 10 kΩ · 470 µF = 10 000 Ω · 0,00047 F = 4,7 s.',
-        m`Halbwertszeit mit $\tau$ verwechselt: $t_h=\tau\cdot\ln2$, nicht $\tau$.`
+        m`Halbwertszeit mit $\tau$ verwechselt: $t_h=\tau\cdot\ln2$, nicht $\tau$.`,
+        m`Das $e$ in $e^{-t/\tau}$ für die Elementarladung gehalten. Hier ist es die Zahl 2,718.`
       ],
       test: [
-        { q: m`Wie viel Prozent der Endspannung sind nach $1\,\tau$ erreicht?`, a: '63 %' },
-        { q: 'Wie verhält sich ein leerer Kondensator im Einschaltmoment?', a: m`Wie ein Kurzschluss: maximaler Strom $I_0=U_0/R$, keine Spannung am Kondensator.` },
+        { q: 'Warum ist der Ladestrom am Anfang am größten?', a: m`Der Kondensator ist leer ($U_C=0$), die ganze Spannung liegt am Widerstand: $I_0=U_0/R$. Mit wachsender $U_C$ bleibt für $R$ weniger.` },
+        { q: m`Wie viel Prozent der Endspannung sind nach $1\,\tau$ erreicht?`, a: '63 % (Strom: noch 37 %).' },
+        { q: m`Was bedeutet $e^{-t/\tau}$ in Worten?`, a: 'Der Anteil, der noch übrig ist (Strom beim Laden, Spannung beim Entladen): am Anfang 1, nach τ 0,37.' },
         { q: m`Zusammenhang Halbwertszeit und Zeitkonstante?`, a: m`$t_h=\tau\cdot\ln2\approx0{,}69\,\tau$` },
         { q: 'Nach wie vielen τ gilt der Ladevorgang als beendet?', a: 'Nach 5 τ (unter 1 % Rest).' }
       ]
     },
     {
-      id: 'PH9', fach: F, num: 9, min: 18, demo: 'p-messung', demoTitel: 'Probier es aus: C aus der Kurve bestimmen',
+      id: 'PH9', fach: F, groessen: ['tE', 'tau', 'R', 'C', 'U0', 'UC', 'dQ', 'euler'], num: 9, min: 20, demo: 'p-messung', demoTitel: 'Probier es aus: C aus der Kurve bestimmen',
       title: 'Rechnen mit der e-Funktion und C messen',
-      short: 'Nach t auflösen (ln), C = t_E/(R·ln 3), Linearisierung, DGL, Messunsicherheit',
-      idee: m`<p><b>Zeit gesucht:</b> Gleichung so umformen, dass $e^{-t/\tau}$ allein steht, dann <b>ln</b> auf beiden Seiten: $\ln(e^{-t/\tau})=-t/\tau$.</p>
-${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Rightarrow\ t=-\tau\,\ln\frac{U}{U_0}=\tau\,\ln\frac{U_0}{U}\qquad\text{z. B. bis }\tfrac13U_0:\ t_E=\tau\ln3\ \Rightarrow\ C=\frac{t_E}{R\,\ln3}$$`)}
-<p><b>Linearisierung:</b> Trägt man $\ln(U/U_0)$ gegen $t$ auf, ergibt sich eine <b>Gerade</b> mit der Steigung $-1/\tau$. So prüft man, ob wirklich eine e-Funktion vorliegt, und bestimmt $\tau$ per Regression.</p>
-<p><b>Herleitung (Infoblatt DGL):</b> Maschenregel $U_0=R\,I+\dfrac{Q}{C}$, nach $t$ ableiten ($\dot Q=I$): $0=R\,\dot I+\dfrac{I}{C}$. Der Ansatz $I=I_0e^{kt}$ löst das mit $k=-\dfrac1{RC}$.</p>`,
-      bild: m`<p><b>Messunsicherheit (Regel aus „Runden und Messunsicherheit“):</b> Die relative Unsicherheit des Ergebnisses ist so groß wie die <b>größte</b> relative Unsicherheit der Eingangsgrößen. Unsicherheiten mit zwei signifikanten Stellen angeben.</p>`,
+      short: 'Nach t auflösen (ln), C = t_E/(R·ln 3) herleiten, Linearisierung, Messunsicherheit',
+      idee: m`<h3>1. Der Logarithmus holt die Zeit herunter</h3>
+<p>Die Zeit $t$ steckt im Exponenten von $e^{-t/\tau}$. Um sie herauszuholen, braucht man den <b>natürlichen Logarithmus</b> $\ln$. Er ist die Umkehrung von $e^x$:</p>
+${merke('Die eine Regel', m`$$\ln\!\left(e^{x}\right)=x\qquad\text{also}\qquad \ln\!\left(e^{-t/\tau}\right)=-\frac{t}{\tau}$$`)}
+<p>Vorgehen: Erst die e-Funktion <b>allein auf eine Seite</b> bringen, dann auf beiden Seiten $\ln$ nehmen. Weil $e^{-t/\tau}$ zwischen 0 und 1 liegt, ist sein Logarithmus negativ. Das Minus hebt sich mit dem Minus vor $t/\tau$ weg, $t$ wird positiv.</p>
+<h3>2. Kapazität messen: die Herleitung von C = t_E / (R·ln 3)</h3>
+<p>Wie in der Abi-Aufgabe „Kornfeuchte“: Man entlädt über einen bekannten Widerstand $R$ und stoppt die Zeit $t_E$, bis die Spannung auf ein Drittel gefallen ist. Daraus folgt $C$, Schritt für Schritt im Beispiel unten.</p>
+<h3>3. Linearisierung: ist es wirklich eine e-Funktion?</h3>
+<p>Trägt man nicht $U$, sondern $\ln(U/U_0)$ gegen $t$ auf, wird aus der Kurve eine <b>Gerade</b> mit der Steigung $-\dfrac1\tau$. Denn $\ln(U/U_0)=\ln(e^{-t/\tau})=-\dfrac1\tau\cdot t$. Liegen Messpunkte so auf einer Geraden, ist es eine e-Funktion, und aus der Steigung (Regression) folgt $\tau$.</p>`,
+      bild: m`<p><b>Messunsicherheit (Regel aus „Runden und Messunsicherheit“):</b> Die relative Unsicherheit des Ergebnisses ist so groß wie die <b>größte</b> relative Unsicherheit der Eingangsgrößen. Beispiel: Widerstand ±5 %, Zeit ±2 %: Ergebnis ±5 %. Unsicherheiten mit zwei signifikanten Stellen angeben.</p>`,
       rezept: [
-        m`Formel aufschreiben, $e^{-t/\tau}$ isolieren.`,
-        m`Logarithmieren: $-\dfrac t\tau=\ln(\ldots)$, nach $t$, $R$ oder $C$ auflösen.`,
-        m`Abgeflossene Ladung beim Entladen: $\Delta Q=Q_0\,(1-e^{-t/\tau})$ mit $Q_0=CU_0$.`,
-        m`Messreihe: Mittelwert bilden, $C=\dfrac{\bar t_E}{R\ln3}$, relative Unsicherheit = größte relative Unsicherheit der Eingangsgrößen.`
+        m`Passende Formel aufschreiben (Laden oder Entladen) und die bekannten Werte einsetzen.`,
+        m`$e^{-t/\tau}$ isolieren: durch $U_0$ teilen (beim Laden vorher $1-\ldots$ umstellen).`,
+        m`Beide Seiten logarithmieren: $-\dfrac t\tau=\ln(\ldots)$, dann nach $t$, $R$ oder $C$ auflösen.`,
+        m`Kontrolle: Zeit positiv? Größenordnung passt zu $\tau$ (0,7 τ für die Hälfte, 1,1 τ für ein Drittel, 2,3 τ für 10 %)?`
       ],
       beispiel: {
-        q: m`Ein Kondensator ($\tau=4{,}7\,\text{s}$) wird von $12\,\text{V}$ aus entladen. Nach welcher Zeit liegt nur noch $2{,}0\,\text{V}$ an?`,
+        q: m`Herleitung wie im Abi: Ein Kondensator wird über $R$ entladen. $t_E$ ist die Zeit, bis die Spannung von $U_0$ auf $\tfrac13U_0$ gefallen ist. Zeige $C=\dfrac{t_E}{R\cdot\ln3}$ und berechne $C$ für $R=47\,\text{k}\Omega$, $t_E=50{,}0\,\text{s}$.`,
         steps: [
-          { h: 'Ansatz', t: m`$2{,}0\,\text{V}=12\,\text{V}\cdot e^{-t/4{,}7\,\text{s}}$` },
-          { h: 'e-Funktion isolieren', t: m`$e^{-t/4{,}7\,\text{s}}=\dfrac{2{,}0}{12}=\dfrac16$` },
-          { h: 'Logarithmieren', t: m`$-\dfrac{t}{4{,}7\,\text{s}}=\ln\tfrac16\ \Rightarrow\ t=4{,}7\,\text{s}\cdot\ln6=8{,}42\,\text{s}$` },
-          { h: 'Mit CAS', t: m`<code>solve(2=12*e^(-t/4.7),t)</code> → $t\approx8{,}42$. Ansatz trotzdem aufschreiben.` }
+          { h: 'Entladegesetz aufschreiben', t: m`<p>Beim Entladen gilt $U_C(t)=U_0\cdot e^{-t/(RC)}$ (mit $\tau=RC$ ausgeschrieben, weil wir $C$ suchen).</p>` },
+          { h: 'Messbedingung einsetzen', t: m`<p>Zur Zeit $t=t_E$ ist noch ein Drittel übrig: $\tfrac13U_0=U_0\cdot e^{-t_E/(RC)}$.</p><p>Durch $U_0$ teilen. Die Startspannung fällt heraus, man muss sie also gar nicht kennen: $\tfrac13=e^{-t_E/(RC)}$.</p>` },
+          { h: 'Logarithmieren', t: m`<p>$\ln$ auf beiden Seiten: $\ln\tfrac13=-\dfrac{t_E}{RC}$.</p><p>Weil $\ln\tfrac13=-\ln3$, kann man beide Minus streichen: $\ln3=\dfrac{t_E}{RC}$.</p>` },
+          { h: 'Nach C umstellen', t: m`<p>Mal $C$, dann durch $\ln3$: $\;C=\dfrac{t_E}{R\cdot\ln3}$. Fertig hergeleitet.</p>` },
+          { h: 'Zahlen einsetzen', t: m`<p>$C=\dfrac{50{,}0\,\text{s}}{47\,000\,\Omega\cdot1{,}0986}=9{,}68\cdot10^{-4}\,\text{F}\approx0{,}97\,\text{mF}$</p><p>Plausibel? $\tau=RC\approx45\,\text{s}$, und für ein Drittel braucht man $\ln3\approx1{,}1$ Zeitkonstanten, also etwa 50 s. Passt.</p>` }
         ]
       },
+      extraAfter: m`<p><b>Noch ein Rechenbeispiel: Zeit gesucht.</b> Ein Kondensator ($\tau=4{,}7\,\text{s}$) wird von 12 V aus entladen. Wann liegen nur noch 2,0 V an?</p><p>$2{,}0=12\cdot e^{-t/4{,}7}\ \Rightarrow\ e^{-t/4{,}7}=\tfrac{2{,}0}{12}=\tfrac16\ \Rightarrow\ -\tfrac{t}{4{,}7}=\ln\tfrac16=-1{,}79\ \Rightarrow\ t=4{,}7\,\text{s}\cdot1{,}79=8{,}4\,\text{s}$</p><p><b>Abgeflossene Ladung</b> nach der Zeit $t$: Anfangsladung minus Rest, $\Delta Q=Q_0-Q_0e^{-t/\tau}=Q_0\,(1-e^{-t/\tau})$ mit $Q_0=C\cdot U_0$.</p>`,
       fehler: [
         m`$\ln$ auf eine Summe angewendet: $\ln(U_0(1-e^{-t/\tau}))$ geht nicht direkt. Erst $1-e^{-t/\tau}$ ausrechnen und $e^{-t/\tau}$ isolieren.`,
         m`Vorzeichen: $\ln$ von Zahlen kleiner 1 ist negativ, $t$ muss am Ende positiv sein.`,
         'Bei der Messunsicherheit die Unsicherheiten addiert. Nach der Regel aus dem Unterricht zählt die größte relative Unsicherheit.'
       ],
       test: [
-        { q: m`Formel für $C$, wenn $t_E$ die Zeit bis $U_0/3$ ist?`, a: m`$C=\dfrac{t_E}{R\ln3}$` },
+        { q: m`Herleitung von $C=\dfrac{t_E}{R\ln3}$ in vier Schritten?`, a: m`1. $U=U_0e^{-t/(RC)}$ · 2. $\tfrac13U_0$ bei $t_E$ einsetzen, durch $U_0$ teilen · 3. logarithmieren: $\ln\tfrac13=-\tfrac{t_E}{RC}$ · 4. nach $C$ umstellen.` },
+        { q: m`Wie löst man $0{,}2=e^{-t/\tau}$ nach $t$?`, a: m`$\ln$ nehmen: $-\tfrac t\tau=\ln0{,}2$, also $t=-\tau\ln0{,}2=1{,}61\,\tau$.` },
         { q: m`Was trägt man auf, um eine Gerade zu bekommen? Steigung?`, a: m`$\ln(U/U_0)$ gegen $t$, Steigung $-1/\tau$.` },
-        { q: 'Wie lautet die DGL für den Ladestrom?', a: m`$0=R\,\dot I+\dfrac IC$ (aus $U_0=RI+Q/C$ abgeleitet).` },
-        { q: m`Wie lange dauert es, bis $U$ auf $U_0/2$ gefallen ist?`, a: m`$t_h=\tau\ln2$` }
+        { q: 'Widerstand ±5 %, gemessene Zeit ±1,7 %. Unsicherheit von C?', a: '±5 % (größte relative Unsicherheit).' }
       ]
     }
   ];
@@ -348,7 +390,7 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
   const TASKS = [
     // ---------------------------------------------------------------- PH1
     {
-      id: 'PE1', fach: F, teil: 'A', lesson: 'PH1', title: 'Elektronvolt und Joule', afb: 'I', ops: 'Berechnen',
+      id: 'PE1', fach: F, groessen: [['e','1,602·10⁻¹⁹ C'],['U','2,5 kV = 2500 V'],['W','gesucht (in eV und J)']], teil: 'A', lesson: 'PH1', title: 'Elektronvolt und Joule', afb: 'I', ops: 'Berechnen',
       intro: KONST,
       parts: [
         { id: 'PE1a', label: 'a)', be: 2, text: m`Ein Elektron durchläuft die Spannung $U=2{,}5\,\text{kV}$. Berechnen Sie die aufgenommene Energie in eV und in J.`,
@@ -362,7 +404,7 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
       ]
     },
     {
-      id: 'PE2', fach: F, teil: 'B', lesson: 'PH1', title: 'Powerbank: Was steht auf dem Etikett?', afb: 'II', ops: 'Interpretieren, Berechnen',
+      id: 'PE2', fach: F, groessen: [['U','3,7 V'],['Q','5000 mAh (das ist eine Ladung!)'],['P','1,2 W (Leuchte)'],['W','gesucht'],['t','Betriebsdauer, gesucht']], teil: 'B', lesson: 'PH1', title: 'Powerbank: Was steht auf dem Etikett?', afb: 'II', ops: 'Interpretieren, Berechnen',
       intro: m`Auf einer kleinen Powerbank steht: <b>3,7 V / 5000 mAh</b>. Damit wird eine LED-Leuchte mit der Leistung $P=1{,}2\,\text{W}$ betrieben (Spannung 3,7 V).`,
       parts: [
         { id: 'PE2a', label: 'a)', be: 2, text: 'Interpretieren Sie die Angabe „5000 mAh“ und berechnen Sie die zugehörige Größe in SI-Einheiten.',
@@ -380,7 +422,7 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
       ]
     },
     {
-      id: 'PE3', fach: F, teil: 'A', lesson: 'PH1', title: 'Wird eine Kugel durch Laden schwerer?', afb: 'II', ops: 'Berechnen, Begründen',
+      id: 'PE3', fach: F, groessen: [['Q','−3,2·10⁻⁹ C (negativ: Elektronen dazu)'],['e','1,602·10⁻¹⁹ C'],['me','9,109·10⁻³¹ kg']], teil: 'A', lesson: 'PH1', title: 'Wird eine Kugel durch Laden schwerer?', afb: 'II', ops: 'Berechnen, Begründen',
       intro: m`Eine Metallkugel wird auf $Q=-3{,}2\cdot10^{-9}\,\text{C}$ geladen. ${KONST}`,
       parts: [
         { id: 'PE3a', label: 'a)', be: 2, text: 'Berechnen Sie die Anzahl der zusätzlichen Elektronen.',
@@ -395,7 +437,7 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
     },
     // ---------------------------------------------------------------- PH2
     {
-      id: 'PP1', fach: F, teil: 'B', lesson: 'PH2', title: 'Messung mit der Potentialsonde', afb: 'II', ops: 'Bestimmen, Zeichnen, Erläutern',
+      id: 'PP1', fach: F, groessen: [['d','8,0 cm = 0,080 m'],['x','Abstand von der negativen Platte: A bei 1,5 cm, B bei 6,0 cm'],['phi','4,5 V in A, 18,0 V in B, 0 an der negativen Platte'],['E','gesucht'],['U0','Spannung am Kondensator, gesucht'],['W','Arbeit von A nach B, gesucht']], teil: 'B', lesson: 'PH2', title: 'Messung mit der Potentialsonde', afb: 'II', ops: 'Bestimmen, Zeichnen, Erläutern',
       intro: m`Ein Plattenkondensator hat den Plattenabstand $d=8{,}0\,\text{cm}$. Die negative Platte hat das Potential $\varphi=0$. Mit einer Potentialsonde wird im homogenen Bereich gemessen: Punkt A ($x_A=1{,}5\,\text{cm}$ von der negativen Platte): $\varphi_A=4{,}5\,\text{V}$; Punkt B ($x_B=6{,}0\,\text{cm}$): $\varphi_B=18{,}0\,\text{V}$.`,
       parts: [
         { id: 'PP1a', label: 'a)', be: 3, text: 'Bestimmen Sie den Betrag der elektrischen Feldstärke.',
@@ -416,7 +458,7 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
       ]
     },
     {
-      id: 'PP2', fach: F, teil: 'A', lesson: 'PH2', title: 'Äquipotentiallinien verstehen', afb: 'II', ops: 'Begründen, Erläutern',
+      id: 'PP2', fach: F, groessen: ['phi','U','W'], teil: 'A', lesson: 'PH2', title: 'Äquipotentiallinien verstehen', afb: 'II', ops: 'Begründen, Erläutern',
       intro: 'Beantworten Sie ohne Rechnung, in ganzen Sätzen.',
       parts: [
         { id: 'PP2a', label: 'a)', be: 2, text: 'Begründen Sie, dass beim Verschieben einer Ladung entlang einer Äquipotentiallinie keine Arbeit verrichtet wird.',
@@ -429,36 +471,38 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
     },
     // ---------------------------------------------------------------- PH3
     {
-      id: 'PC1', fach: F, teil: 'B', lesson: 'PH3', title: 'Plattenkondensator berechnen', afb: 'I', ops: 'Berechnen',
+      id: 'PC1', fach: F, groessen: [['A', '(0,25 m)² = 0,0625 m²'], ['d', '2,0 mm = 0,0020 m'], ['epsr', '1 (Luft)'], ['eps0', '8,854·10⁻¹² As/(Vm)'], ['U', '400 V'], ['C', 'gesucht'], ['Q', 'gesucht'], ['E', 'gesucht'], ['sigma', 'gesucht']],
+      teil: 'B', lesson: 'PH3', title: 'Plattenkondensator berechnen', afb: 'I', ops: 'Berechnen',
       intro: m`Ein Plattenkondensator mit quadratischen Platten (Kantenlänge 25 cm, Abstand 2,0 mm, Luft) liegt an $U=400\,\text{V}$. ${KONST}`,
       parts: [
         { id: 'PC1a', label: 'a)', be: 2, text: 'Berechnen Sie die Kapazität.', nums: [{ label: 'C in pF', ans: 276.7, tol: 0.01 }],
-          hints: [m`$A=(0{,}25\,\text{m})^2$, $d=0{,}0020\,\text{m}$`],
-          sol: m`<p>$C=\varepsilon_0\dfrac Ad=8{,}854\cdot10^{-12}\cdot\dfrac{0{,}0625}{0{,}0020}\,\text{F}=2{,}77\cdot10^{-10}\,\text{F}=277\,\text{pF}$</p>` },
+          hints: ['Die Kapazität hängt nur vom Bau ab: Fläche, Abstand, Material.', m`$A=(0{,}25\,\text{m})^2$, $d=0{,}0020\,\text{m}$`],
+          sol: m`<p><b>Gedanke:</b> Kapazität kommt nur aus dem Bau, die Spannung brauchen wir hier nicht.</p><p><b>Formel:</b> $C=\varepsilon_0\varepsilon_r\dfrac Ad$</p><p><b>Einsetzen:</b> $C=8{,}854\cdot10^{-12}\cdot1\cdot\dfrac{0{,}0625}{0{,}0020}\,\text{F}=2{,}77\cdot10^{-10}\,\text{F}$</p><p><b>Ergebnis:</b> $C\approx277\,\text{pF}$</p><ul><li>Formel mit umgerechneten Größen (1 BE), Ergebnis (1 BE)</li></ul>` },
         { id: 'PC1b', label: 'b)', be: 1, text: 'Berechnen Sie die Ladung auf einer Platte.', nums: [{ label: 'Q in nC', ans: 110.7, tol: 0.01 }],
-          sol: m`<p>$Q=CU=2{,}77\cdot10^{-10}\,\text{F}\cdot400\,\text{V}=1{,}11\cdot10^{-7}\,\text{C}$</p>` },
+          sol: m`<p><b>Gedanke:</b> $C=\tfrac QU$ heißt „Ladung pro Volt“. Mal Spannung ergibt die Ladung.</p><p>$Q=C\cdot U=2{,}77\cdot10^{-10}\,\text{F}\cdot400\,\text{V}=1{,}11\cdot10^{-7}\,\text{C}$ auf jeder Platte (+ bzw. −).</p>` },
         { id: 'PC1c', label: 'c)', be: 2, text: 'Berechnen Sie die Feldstärke und die Flächenladungsdichte.',
           nums: [{ label: 'E in kV/m', ans: 200, tol: 0.01 }, { label: 'σ in 10⁻⁶ C/m²', ans: 1.771, tol: 0.01 }],
-          sol: m`<p>$E=\dfrac Ud=\dfrac{400\,\text{V}}{0{,}0020\,\text{m}}=2{,}0\cdot10^5\,\tfrac{\text{V}}{\text{m}}$; $\ \sigma=\dfrac QA=\dfrac{1{,}11\cdot10^{-7}}{0{,}0625}\,\tfrac{\text{C}}{\text{m}^2}=1{,}77\cdot10^{-6}\,\tfrac{\text{C}}{\text{m}^2}$ (Kontrolle: $\sigma=\varepsilon_0E$).</p>` }
+          sol: m`<p><b>Feldstärke</b> = Spannung pro Abstand: $E=\dfrac Ud=\dfrac{400\,\text{V}}{0{,}0020\,\text{m}}=2{,}0\cdot10^5\,\tfrac{\text{V}}{\text{m}}$</p><p><b>Flächenladungsdichte</b> = Ladung pro Fläche: $\sigma=\dfrac QA=\dfrac{1{,}11\cdot10^{-7}\,\text{C}}{0{,}0625\,\text{m}^2}=1{,}77\cdot10^{-6}\,\tfrac{\text{C}}{\text{m}^2}$</p><p>Kontrolle: $\varepsilon_0E=8{,}854\cdot10^{-12}\cdot2{,}0\cdot10^5=1{,}77\cdot10^{-6}$. Passt.</p>` }
       ]
     },
     {
-      id: 'PC2', fach: F, teil: 'B', lesson: 'PH3', title: 'Platten auseinanderziehen: an der Quelle oder getrennt?', afb: 'II', ops: 'Bestimmen, Erklären',
+      id: 'PC2', fach: F, groessen: [['C', '277 pF vor dem Auseinanderziehen'], ['d', '2,0 mm vorher, 4,0 mm nachher'], ['U', '400 V vorher'], ['Q', '1,11·10⁻⁷ C vorher'], ['E', '2,0·10⁵ V/m vorher'], ['C', 'nachher, gesucht'], ['U', 'nachher, gesucht'], ['Q', 'nachher, gesucht'], ['E', 'nachher, gesucht']],
+      teil: 'B', lesson: 'PH3', title: 'Platten auseinanderziehen: an der Quelle oder getrennt?', afb: 'II', ops: 'Bestimmen, Erklären',
       intro: m`Der Kondensator aus der Aufgabe „Plattenkondensator berechnen“ ($C=277\,\text{pF}$, $d=2{,}0\,\text{mm}$) wurde auf $400\,\text{V}$ geladen. Danach wird der Plattenabstand auf $4{,}0\,\text{mm}$ verdoppelt.`,
       parts: [
         { id: 'PC2a', label: 'a)', be: 4, text: 'Fall 1: Der Kondensator wurde vorher von der Quelle getrennt. Bestimmen Sie Q, C, U und E nach dem Auseinanderziehen.',
           nums: [{ label: 'U in V', ans: 800, tol: 0.01 }, { label: 'C in pF', ans: 138.3, tol: 0.01 }],
-          hints: ['Getrennt: Was kann sich nicht ändern?', m`$C\sim\dfrac1d$`],
-          sol: m`<p>Getrennt: $Q=1{,}11\cdot10^{-7}\,\text{C}$ bleibt. $C$ halbiert sich auf $138\,\text{pF}$. $U=\dfrac QC$ verdoppelt sich auf $800\,\text{V}$. $E=\dfrac Ud=\dfrac{800\,\text{V}}{0{,}0040\,\text{m}}=2{,}0\cdot10^5\,\tfrac{\text{V}}{\text{m}}$ bleibt gleich.</p><ul><li>je Größe 1 BE</li></ul>` },
+          hints: ['Getrennt: Wohin könnte die Ladung fließen?', m`$C\sim\dfrac1d$: doppelter Abstand, halbe Kapazität.`],
+          sol: m`<p><b>Was bleibt?</b> Abgetrennt kann keine Ladung weg oder dazu: $Q=1{,}11\cdot10^{-7}\,\text{C}$ bleibt.</p><p><b>C:</b> $C=\varepsilon_0\tfrac Ad$, $d$ doppelt, also $C$ halb: $138\,\text{pF}$.</p><p><b>U:</b> Gleiche Ladung, halbe Kapazität: $U=\dfrac QC$ wird doppelt so groß, $800\,\text{V}$.</p><p><b>E:</b> $E=\dfrac Ud=\dfrac{800\,\text{V}}{0{,}0040\,\text{m}}=2{,}0\cdot10^5\,\tfrac{\text{V}}{\text{m}}$, also gleich wie vorher.</p><ul><li>je Größe 1 BE</li></ul>` },
         { id: 'PC2b', label: 'b)', be: 3, text: 'Fall 2: Der Kondensator bleibt an der Quelle. Bestimmen Sie Q, C, U und E.',
           nums: [{ label: 'Q in nC', ans: 55.34, tol: 0.01 }, { label: 'E in kV/m', ans: 100, tol: 0.01 }],
-          sol: m`<p>An der Quelle: $U=400\,\text{V}$ bleibt, $C=138\,\text{pF}$, $Q=CU=5{,}53\cdot10^{-8}\,\text{C}$ (halbiert, Ladung fließt zur Quelle zurück), $E=\dfrac{400\,\text{V}}{0{,}0040\,\text{m}}=1{,}0\cdot10^5\,\tfrac{\text{V}}{\text{m}}$ (halbiert).</p>` },
+          sol: m`<p><b>Was bleibt?</b> Die Quelle hält die Spannung fest: $U=400\,\text{V}$.</p><p><b>C:</b> wie in a) halbiert, $138\,\text{pF}$.</p><p><b>Q:</b> $Q=C\cdot U=138\cdot10^{-12}\,\text{F}\cdot400\,\text{V}=5{,}53\cdot10^{-8}\,\text{C}$, halbiert. Die Hälfte der Ladung fließt zur Quelle zurück.</p><p><b>E:</b> $E=\dfrac{400\,\text{V}}{0{,}0040\,\text{m}}=1{,}0\cdot10^5\,\tfrac{\text{V}}{\text{m}}$, halbiert (gleiche Spannung auf doppelter Strecke).</p>` },
         { id: 'PC2c', label: 'c)', be: 3, text: 'Erklären Sie, warum die Feldstärke in Fall 1 trotz größerem Abstand gleich bleibt.',
-          sol: m`<p>Die Feldstärke hängt nur von der Flächenladungsdichte ab: $E=\dfrac{\sigma}{\varepsilon_0}=\dfrac{Q}{\varepsilon_0A}$. Im getrennten Fall ändern sich weder $Q$ noch $A$, also bleibt $E$. Die Spannung $U=E\cdot d$ steigt, weil der gleiche Feldstärkewert über eine doppelt so lange Strecke wirkt.</p><ul><li>$E=\sigma/\varepsilon_0$ (1 BE), Q und A konstant (1 BE), U = E·d gedeutet (1 BE)</li></ul>` }
+          sol: m`<p>Die Feldstärke hängt nur davon ab, wie dicht die Ladung auf den Platten sitzt: $E=\dfrac{\sigma}{\varepsilon_0}=\dfrac{Q}{\varepsilon_0A}$. Im getrennten Fall ändern sich weder $Q$ noch $A$, also bleibt $E$. Die Spannung $U=E\cdot d$ steigt nur, weil dieselbe Feldstärke jetzt über eine doppelt so lange Strecke wirkt.</p><ul><li>$E=\sigma/\varepsilon_0$ (1 BE), Q und A konstant (1 BE), U = E·d gedeutet (1 BE)</li></ul>` }
       ]
     },
     {
-      id: 'PC3', fach: F, teil: 'B', lesson: 'PH3', title: 'ε₀ messen und ein Dielektrikum einschieben', afb: 'II', ops: 'Bestimmen, Beurteilen',
+      id: 'PC3', fach: F, groessen: [['A','π·(0,12 m)²'],['d','3,0 mm'],['U','250 V'],['Q','3,3·10⁻⁸ C (gemessen), mit Glas 2,3·10⁻⁷ C'],['eps0','gesucht (aus der Messung)'],['epsr','von Glas, gesucht']], teil: 'B', lesson: 'PH3', title: 'ε₀ messen und ein Dielektrikum einschieben', afb: 'II', ops: 'Bestimmen, Beurteilen',
       intro: m`Ein Kondensator mit kreisförmigen Platten ($r=12\,\text{cm}$, $d=3{,}0\,\text{mm}$) wird an $250\,\text{V}$ angeschlossen. Ein Ladungsmessgerät zeigt $Q=3{,}3\cdot10^{-8}\,\text{C}$.`,
       parts: [
         { id: 'PC3a', label: 'a)', be: 3, text: m`Bestimmen Sie aus den Messwerten die elektrische Feldkonstante $\varepsilon_0$ und die prozentuale Abweichung vom Literaturwert $8{,}854\cdot10^{-12}\,\tfrac{\text{As}}{\text{Vm}}$.`,
@@ -474,20 +518,22 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
     },
     // ---------------------------------------------------------------- PH4
     {
-      id: 'PW1', fach: F, teil: 'B', lesson: 'PH4', title: 'Blitzgerät', afb: 'II', ops: 'Berechnen, Begründen',
+      id: 'PW1', fach: F, groessen: [['C', '330 µF = 330·10⁻⁶ F'], ['U', '300 V'], ['t', '1,5 ms = 0,0015 s (Blitzdauer)'], ['W', 'gesucht'], ['P', 'mittlere Lichtleistung, gesucht']],
+      teil: 'B', lesson: 'PH4', title: 'Blitzgerät', afb: 'II', ops: 'Berechnen, Begründen',
       intro: m`Der Kondensator eines Blitzgeräts ($C=330\,\mu\text{F}$) wird aus zwei Batterien (zusammen 3 V) über eine Elektronik auf $U=300\,\text{V}$ geladen.`,
       parts: [
         { id: 'PW1a', label: 'a)', be: 2, text: 'Berechnen Sie die gespeicherte Energie.', nums: [{ label: 'W in J', ans: 14.85, tol: 0.01 }],
-          sol: m`<p>$W=\tfrac12CU^2=\tfrac12\cdot330\cdot10^{-6}\,\text{F}\cdot(300\,\text{V})^2=14{,}85\,\text{J}\approx15\,\text{J}$</p>` },
+          hints: [m`$C$ und $U$ sind bekannt: Welche Energieformel passt?`],
+          sol: m`<p><b>Gedanke:</b> $C$ und $U$ sind gegeben, also $W=\tfrac12CU^2$.</p><p><b>Einsetzen:</b> $W=\tfrac12\cdot330\cdot10^{-6}\,\text{F}\cdot(300\,\text{V})^2=\tfrac12\cdot330\cdot10^{-6}\cdot90\,000\,\text{J}=14{,}85\,\text{J}\approx15\,\text{J}$</p>` },
         { id: 'PW1b', label: 'b)', be: 3, text: m`Der Blitz dauert $1{,}5\,\text{ms}$, 20 % der Energie werden zu Licht. Berechnen Sie die mittlere Lichtleistung.`,
           nums: [{ label: 'P in W', ans: 1980, tol: 0.01 }],
-          sol: m`<p>$P=\dfrac{0{,}20\cdot W}{t}=\dfrac{0{,}20\cdot14{,}85\,\text{J}}{1{,}5\cdot10^{-3}\,\text{s}}\approx2{,}0\cdot10^3\,\text{W}$</p>` },
+          sol: m`<p><b>Gedanke:</b> Leistung = Energie pro Zeit, aber nur der Lichtanteil zählt.</p><p><b>Lichtenergie:</b> $0{,}20\cdot14{,}85\,\text{J}=2{,}97\,\text{J}$</p><p><b>Leistung:</b> $P=\dfrac{2{,}97\,\text{J}}{0{,}0015\,\text{s}}\approx2{,}0\cdot10^3\,\text{W}=2{,}0\,\text{kW}$</p>` },
         { id: 'PW1c', label: 'c)', be: 2, text: 'Begründen Sie, warum man die Blitzröhre nicht direkt an die Batterien anschließt.',
-          sol: m`<p>Die Batterien liefern nur 3 V und können nicht genug Strom liefern, um in 1,5 ms rund 15 J abzugeben (das wären mehrere kW). Der Kondensator wird langsam geladen (kleine Leistung) und gibt die Energie in sehr kurzer Zeit ab (große Leistung). Außerdem zündet die Röhre erst bei hoher Spannung.</p>` }
+          sol: m`<p>Die Batterien haben nur 3 V und können nicht genug Strom liefern, um in 1,5 ms rund 15 J abzugeben (das wären etwa 10 kW). Der Kondensator wird langsam geladen (kleine Leistung) und gibt die Energie dann schlagartig ab (große Leistung). Außerdem zündet die Blitzröhre erst bei hoher Spannung.</p>` }
       ]
     },
     {
-      id: 'PW2', fach: F, teil: 'B', lesson: 'PH4', title: 'Defibrillator', afb: 'II', ops: 'Berechnen, Begründen',
+      id: 'PW2', fach: F, groessen: [['W','200 J'],['U','2,0 kV = 2000 V'],['t','5 ms (Dauer der Entladung)'],['C','gesucht'],['Q','gesucht'],['I','mittlere Stromstärke, gesucht']], teil: 'B', lesson: 'PH4', title: 'Defibrillator', afb: 'II', ops: 'Berechnen, Begründen',
       intro: m`Ein Defibrillator soll beim Entladen $200\,\text{J}$ abgeben. Sein Kondensator wird auf $2{,}0\,\text{kV}$ geladen.`,
       parts: [
         { id: 'PW2a', label: 'a)', be: 2, text: 'Berechnen Sie die nötige Kapazität.', nums: [{ label: 'C in µF', ans: 100, tol: 0.01 }],
@@ -501,7 +547,7 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
       ]
     },
     {
-      id: 'PW3', fach: F, teil: 'A', lesson: 'PH4', title: 'Ist ein Kondensator wie ein Eimer?', afb: 'III', ops: 'Berechnen, Erläutern',
+      id: 'PW3', fach: F, groessen: [['C','100 µF'],['U','2,0 V bzw. 4,0 V'],['Q','gesucht']], teil: 'A', lesson: 'PH4', title: 'Ist ein Kondensator wie ein Eimer?', afb: 'III', ops: 'Berechnen, Erläutern',
       intro: m`Ein Kondensator mit $C=100\,\mu\text{F}$ wird einmal an $2{,}0\,\text{V}$ und einmal an $4{,}0\,\text{V}$ angeschlossen.`,
       parts: [
         { id: 'PW3a', label: 'a)', be: 2, text: 'Berechnen Sie jeweils die gespeicherte Ladung.', nums: [{ label: 'Q bei 4 V in µC', ans: 400, tol: 0.01 }],
@@ -512,7 +558,7 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
     },
     // ---------------------------------------------------------------- PH5
     {
-      id: 'PS1', fach: F, teil: 'B', lesson: 'PH5', title: 'Zwei Kondensatoren an 12 V', afb: 'II', ops: 'Berechnen, Begründen',
+      id: 'PS1', fach: F, groessen: [['C','C₁ = 20 µF, C₂ = 30 µF'],['U','12 V'],['C','Gesamtkapazität, gesucht'],['Q','Ladungen, gesucht']], teil: 'B', lesson: 'PH5', title: 'Zwei Kondensatoren an 12 V', afb: 'II', ops: 'Berechnen, Begründen',
       intro: m`$C_1=20\,\mu\text{F}$ und $C_2=30\,\mu\text{F}$ werden an $U=12\,\text{V}$ angeschlossen.`,
       parts: [
         { id: 'PS1a', label: 'a)', be: 3, text: 'Parallelschaltung: Berechnen Sie die Gesamtkapazität und die Ladungen auf beiden Kondensatoren.',
@@ -527,7 +573,7 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
       ]
     },
     {
-      id: 'PS2', fach: F, teil: 'A', lesson: 'PH5', title: 'Kombinationen aus 60-µF-Kondensatoren', afb: 'II', ops: 'Angeben, Begründen',
+      id: 'PS2', fach: F, groessen: [['C','je 60 µF']], teil: 'A', lesson: 'PH5', title: 'Kombinationen aus 60-µF-Kondensatoren', afb: 'II', ops: 'Angeben, Begründen',
       intro: m`Es stehen beliebig viele Kondensatoren mit je $60\,\mu\text{F}$ zur Verfügung.`,
       parts: [
         { id: 'PS2a', label: 'a)', be: 3, text: m`Geben Sie Schaltungen für $120\,\mu\text{F}$, $30\,\mu\text{F}$ und $90\,\mu\text{F}$ an und begründen Sie rechnerisch.`,
@@ -536,7 +582,7 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
     },
     // ---------------------------------------------------------------- PH6
     {
-      id: 'PR1', fach: F, teil: 'B', lesson: 'PH6', title: 'Wie schnell sind die Elektronen?', afb: 'II', ops: 'Herleiten, Berechnen, Begründen',
+      id: 'PR1', fach: F, groessen: [['UB','2,0 kV = 2000 V'],['e','1,602·10⁻¹⁹ C'],['me','9,109·10⁻³¹ kg'],['v0','gesucht']], teil: 'B', lesson: 'PH6', title: 'Wie schnell sind die Elektronen?', afb: 'II', ops: 'Herleiten, Berechnen, Begründen',
       intro: m`In einer Elektronenstrahlröhre werden Elektronen mit $U_B=2{,}0\,\text{kV}$ beschleunigt. ${KONST}`,
       parts: [
         { id: 'PR1a', label: 'a)', be: 3, text: m`Leiten Sie die Formel für die Geschwindigkeit $v_0$ her und berechnen Sie $v_0$.`,
@@ -549,7 +595,7 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
       ]
     },
     {
-      id: 'PR2', fach: F, teil: 'A', lesson: 'PH6', title: 'Aufbau der Elektronenstrahlröhre', afb: 'I', ops: 'Beschreiben, Erklären',
+      id: 'PR2', fach: F, groessen: ['UB','v0'], teil: 'A', lesson: 'PH6', title: 'Aufbau der Elektronenstrahlröhre', afb: 'I', ops: 'Beschreiben, Erklären',
       intro: 'Beantworten Sie in Text und Skizze.',
       parts: [
         { id: 'PR2a', label: 'a)', be: 4, text: 'Beschreiben Sie in Text und Skizze die Erzeugung des Elektronenstrahls in einer Elektronenstrahlröhre.',
@@ -560,36 +606,39 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
     },
     // ---------------------------------------------------------------- PH7
     {
-      id: 'PR3', fach: F, teil: 'B', lesson: 'PH7', title: 'Elektronenstrahl im Querfeld', afb: 'II', ops: 'Berechnen, Bestimmen',
+      id: 'PR3', fach: F, groessen: [['UB', '1,2 kV = 1200 V'], ['l', '6,0 cm = 0,060 m'], ['d', '2,5 cm = 0,025 m'], ['UAbl', '150 V'], ['L', '15 cm = 0,15 m'], ['e', '1,602·10⁻¹⁹ C'], ['me', '9,109·10⁻³¹ kg'], ['v0', 'gesucht'], ['t', 'Flugzeit zwischen den Platten, gesucht'], ['a', 'gesucht'], ['y', 'am Plattenende, gesucht'], ['Y', 'gesucht']],
+      teil: 'B', lesson: 'PH7', title: 'Elektronenstrahl im Querfeld', afb: 'II', ops: 'Berechnen, Bestimmen',
       intro: m`Elektronen werden mit $U_B=1{,}2\,\text{kV}$ beschleunigt und treten mittig und parallel zu den Platten in einen Plattenkondensator ein (Plattenlänge $l=6{,}0\,\text{cm}$, Abstand $d=2{,}5\,\text{cm}$, Spannung $U=150\,\text{V}$). Der Schirm steht $15\,\text{cm}$ hinter dem Plattenende. ${KONST}`,
       parts: [
         { id: 'PR3a', label: 'a)', be: 2, text: m`Berechnen Sie $v_0$.`, nums: [{ label: 'v₀ in 10⁷ m/s', ans: 2.054, tol: 0.01 }],
-          sol: m`<p>$v_0=\sqrt{2eU_B/m_e}=2{,}05\cdot10^7\,\tfrac{\text{m}}{\text{s}}$</p>` },
+          sol: m`<p><b>Gedanke:</b> Energieerhaltung bei der Beschleunigung: $eU_B=\tfrac12m_ev_0^2$.</p><p>$v_0=\sqrt{\dfrac{2eU_B}{m_e}}=\sqrt{\dfrac{2\cdot1{,}602\cdot10^{-19}\cdot1200}{9{,}109\cdot10^{-31}}}\,\tfrac{\text{m}}{\text{s}}=2{,}05\cdot10^7\,\tfrac{\text{m}}{\text{s}}$</p>` },
         { id: 'PR3b', label: 'b)', be: 2, text: 'Berechnen Sie die Flugzeit zwischen den Platten und die Beschleunigung senkrecht zur Flugrichtung.',
           nums: [{ label: 't in ns', ans: 2.920, tol: 0.01 }, { label: 'a in 10¹⁵ m/s²', ans: 1.055, tol: 0.01 }],
-          sol: m`<p>$t=\dfrac l{v_0}=\dfrac{0{,}060}{2{,}05\cdot10^7}\,\text{s}=2{,}92\cdot10^{-9}\,\text{s}$; $\ a=\dfrac{eU}{m_ed}=\dfrac{1{,}602\cdot10^{-19}\cdot150}{9{,}109\cdot10^{-31}\cdot0{,}025}\,\tfrac{\text{m}}{\text{s}^2}=1{,}06\cdot10^{15}\,\tfrac{\text{m}}{\text{s}^2}$</p>` },
+          sol: m`<p><b>Flugzeit:</b> Waagerecht konstant schnell, also Zeit = Strecke : Geschwindigkeit: $t=\dfrac l{v_0}=\dfrac{0{,}060\,\text{m}}{2{,}05\cdot10^7\,\tfrac{\text{m}}{\text{s}}}=2{,}92\cdot10^{-9}\,\text{s}$</p><p><b>Beschleunigung:</b> Kraft $F=\dfrac{eU}{d}$ durch Masse: $a=\dfrac{eU}{m_ed}=\dfrac{1{,}602\cdot10^{-19}\cdot150}{9{,}109\cdot10^{-31}\cdot0{,}025}\,\tfrac{\text{m}}{\text{s}^2}=1{,}06\cdot10^{15}\,\tfrac{\text{m}}{\text{s}^2}$</p>` },
         { id: 'PR3c', label: 'c)', be: 2, text: 'Berechnen Sie die Ablenkung am Plattenende und prüfen Sie, ob das Elektron die Platten verlässt.',
           nums: [{ label: 'y in mm', ans: 4.5, tol: 0.01 }],
-          sol: m`<p>$y=\tfrac12at^2=4{,}5\cdot10^{-3}\,\text{m}$ (Kontrolle: $y=\dfrac{Ul^2}{4dU_B}=\dfrac{150\cdot0{,}06^2}{4\cdot0{,}025\cdot1200}\,\text{m}=4{,}5\,\text{mm}$). Da $4{,}5\,\text{mm}<\tfrac d2=12{,}5\,\text{mm}$, verlässt es die Platten.</p>` },
+          sol: m`<p><b>Gedanke:</b> Senkrecht gleichmäßig beschleunigt, also $y=\tfrac12at^2$ mit der Zeit aus b).</p><p>$y=\tfrac12\cdot1{,}06\cdot10^{15}\cdot(2{,}92\cdot10^{-9})^2\,\text{m}=4{,}5\cdot10^{-3}\,\text{m}=4{,}5\,\text{mm}$</p><p>Kontrolle mit $y=\dfrac{Ul^2}{4dU_B}=\dfrac{150\cdot0{,}06^2}{4\cdot0{,}025\cdot1200}\,\text{m}=4{,}5\,\text{mm}$.</p><p><b>Prüfen:</b> Bis zur Platte sind es $\tfrac d2=12{,}5\,\text{mm}$. $4{,}5\,\text{mm}$ ist weniger, das Elektron kommt durch.</p>` },
         { id: 'PR3d', label: 'd)', be: 3, text: 'Bestimmen Sie den Auftreffpunkt auf dem Schirm (Abstand von der Mittelachse).',
           nums: [{ label: 'Y in cm', ans: 2.7, tol: 0.02 }],
           hints: [m`Hinter den Platten geradlinig: $\tan\alpha=\dfrac{v_y}{v_0}=\dfrac{Ul}{2dU_B}$`],
-          sol: m`<p>$\tan\alpha=\dfrac{Ul}{2dU_B}=\dfrac{150\cdot0{,}060}{2\cdot0{,}025\cdot1200}=0{,}15$; $\ Y=y+L\tan\alpha=4{,}5\,\text{mm}+150\,\text{mm}\cdot0{,}15=27\,\text{mm}=2{,}7\,\text{cm}$</p>` }
+          sol: m`<p><b>Gedanke:</b> Hinter den Platten keine Kraft mehr, das Elektron fliegt schräg geradeaus. Die Schräge ist $\tan\alpha$.</p><p>$\tan\alpha=\dfrac{Ul}{2dU_B}=\dfrac{150\cdot0{,}060}{2\cdot0{,}025\cdot1200}=0{,}15$</p><p>Auf $L=150\,\text{mm}$ kommen $150\,\text{mm}\cdot0{,}15=22{,}5\,\text{mm}$ dazu.</p><p>$Y=4{,}5\,\text{mm}+22{,}5\,\text{mm}=27\,\text{mm}=2{,}7\,\text{cm}$</p>` }
       ]
     },
     {
-      id: 'PR4', fach: F, teil: 'B', lesson: 'PH7', title: 'Bahngleichung herleiten', afb: 'III', ops: 'Herleiten, Erläutern',
+      id: 'PR4', fach: F, groessen: [['F', 'F = U·e/d (gegeben)'], ['UAbl', 'Spannung an den Platten'], ['d', 'Plattenabstand'], ['UB', 'Beschleunigungsspannung'], ['v0', 'Eintrittsgeschwindigkeit'], ['x', 'Weg im Feld'], ['y', 'Bahngleichung y(x), gesucht']],
+      teil: 'B', lesson: 'PH7', title: 'Bahngleichung herleiten', afb: 'III', ops: 'Herleiten, Erläutern',
       intro: m`Ein Elektron tritt mit $v_0$ senkrecht zu den Feldlinien in das homogene Feld eines Plattenkondensators (Spannung $U$, Abstand $d$) ein. Es wurde vorher mit $U_B$ beschleunigt. Die Kraft im Feld ist $F=\dfrac{U\,e}{d}$.`,
       parts: [
         { id: 'PR4a', label: 'a)', be: 5, text: m`Leiten Sie die Bahngleichung $y(x)=\dfrac12\cdot\dfrac{e}{m_e}\cdot\dfrac Ud\cdot\dfrac{x^2}{v_0^2}$ begründet her.`,
-          hints: ['Zerlege in zwei unabhängige Bewegungen.', m`$x=v_0t$ nach $t$ auflösen und in $y=\tfrac12at^2$ einsetzen.`],
-          sol: m`<ul><li>Unabhängige Überlagerung: in $x$-Richtung keine Kraft → gleichförmig: $x=v_0t$ (1 BE)</li><li>in $y$-Richtung konstante Kraft → gleichmäßig beschleunigt: $y=\tfrac12at^2$ (1 BE)</li><li>$a=\dfrac F{m_e}=\dfrac{eU}{m_ed}$ (1 BE)</li><li>$t=\dfrac x{v_0}$ einsetzen (1 BE): $y=\tfrac12\cdot\dfrac{eU}{m_ed}\cdot\dfrac{x^2}{v_0^2}$, eine Parabel (1 BE)</li></ul>` },
+          hints: ['Zerlege in zwei unabhängige Bewegungen: waagerecht und senkrecht.', 'Waagerecht keine Kraft, senkrecht konstante Kraft.', m`$x=v_0t$ nach $t$ auflösen und in $y=\tfrac12at^2$ einsetzen.`],
+          sol: m`<p><b>Begründung der Zerlegung:</b> Die Feldkraft wirkt nur senkrecht zu den Platten. Beide Richtungen kann man getrennt betrachten (unabhängige Überlagerung). (1 BE)</p><p><b>Waagerecht:</b> keine Kraft, also gleichförmig: $x=v_0\,t$ (1 BE)</p><p><b>Senkrecht:</b> konstante Kraft, also gleichmäßig beschleunigt aus der Ruhe: $y=\tfrac12a\,t^2$ mit $a=\dfrac F{m_e}=\dfrac{eU}{m_ed}$ (1 BE)</p><p><b>Zeit eliminieren:</b> $t=\dfrac x{v_0}$ in $y$ einsetzen (1 BE):</p><p>$y=\tfrac12\cdot\dfrac{eU}{m_ed}\cdot\dfrac{x^2}{v_0^2}=\dfrac12\cdot\dfrac{e}{m_e}\cdot\dfrac Ud\cdot\dfrac{x^2}{v_0^2}$, eine Parabel (1 BE).</p>` },
         { id: 'PR4b', label: 'b)', be: 4, text: m`Zeigen Sie, dass mit $v_0$ aus der Beschleunigung gilt $y=\dfrac{Ux^2}{4dU_B}$, und erläutern Sie, dass man mit diesem Experiment die spezifische Ladung $e/m_e$ nicht bestimmen kann.`,
-          sol: m`<p>$v_0^2=\dfrac{2eU_B}{m_e}$ einsetzen: $y=\tfrac12\cdot\dfrac{e}{m_e}\cdot\dfrac Ud\cdot\dfrac{x^2m_e}{2eU_B}=\dfrac{Ux^2}{4dU_B}$. Die Ablenkung hängt nur von $U$, $U_B$, $d$ und $x$ ab, $e/m_e$ kürzt sich heraus. Alle Teilchen mit gleichem Ladungsvorzeichen nehmen dieselbe Bahn; aus der gemessenen Bahn lässt sich $e/m_e$ also nicht berechnen. (Dafür braucht man z. B. zusätzlich ein Magnetfeld.)</p>` }
+          hints: [m`Aus $eU_B=\tfrac12m_ev_0^2$ folgt $v_0^2=\dfrac{2eU_B}{m_e}$.`],
+          sol: m`<p><b>Einsetzen:</b> Aus $eU_B=\tfrac12m_ev_0^2$ folgt $\dfrac1{v_0^2}=\dfrac{m_e}{2eU_B}$. Damit:</p><p>$y=\dfrac12\cdot\dfrac{e}{m_e}\cdot\dfrac Ud\cdot x^2\cdot\dfrac{m_e}{2eU_B}=\dfrac{Ux^2}{4dU_B}$ ($e$ und $m_e$ kürzen sich).</p><p><b>Erläuterung:</b> Die Ablenkung hängt nur noch von $U$, $U_B$, $d$ und $x$ ab. Jedes Teilchen mit gleichem Ladungsvorzeichen, das dieselbe Spannung durchlaufen hat, nimmt dieselbe Bahn. Aus der gemessenen Bahn kann man $e/m_e$ also nicht ausrechnen; man bräuchte eine zweite, unabhängige Messung (z. B. mit einem Magnetfeld).</p>` }
       ]
     },
     {
-      id: 'PR5', fach: F, teil: 'B', lesson: 'PH7', title: 'Wann trifft der Strahl die Platte?', afb: 'II', ops: 'Bestimmen, Begründen',
+      id: 'PR5', fach: F, groessen: [['UB','1,2 kV'],['l','6,0 cm'],['d','2,5 cm (Mitte bis Platte: 1,25 cm)'],['UAbl','größte mögliche, gesucht']], teil: 'B', lesson: 'PH7', title: 'Wann trifft der Strahl die Platte?', afb: 'II', ops: 'Bestimmen, Begründen',
       intro: m`Aufbau wie in „Elektronenstrahl im Querfeld“: $U_B=1{,}2\,\text{kV}$, $l=6{,}0\,\text{cm}$, $d=2{,}5\,\text{cm}$, Eintritt mittig.`,
       parts: [
         { id: 'PR5a', label: 'a)', be: 4, text: 'Bestimmen Sie die größte Ablenkspannung, bei der die Elektronen den Kondensator gerade noch verlassen.',
@@ -602,22 +651,24 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
     },
     // ---------------------------------------------------------------- PH8
     {
-      id: 'PL1', fach: F, teil: 'B', lesson: 'PH8', title: 'Ladekurve berechnen', afb: 'II', ops: 'Berechnen',
+      id: 'PL1', fach: F, groessen: [['C', '470 µF = 470·10⁻⁶ F'], ['R', '22 kΩ = 22 000 Ω'], ['U0', '9,0 V (Quelle)'], ['tau', 'gesucht'], ['I0', 'gesucht'], ['UC', 'nach 10 s, gesucht'], ['th', 'gesucht'], ['t', 'bis 99 %, gesucht']],
+      teil: 'B', lesson: 'PH8', title: 'Ladekurve berechnen', afb: 'II', ops: 'Berechnen',
       intro: m`Ein Kondensator ($C=470\,\mu\text{F}$) wird über $R=22\,\text{k}\Omega$ an einer Quelle mit $U_0=9{,}0\,\text{V}$ geladen. Zu Beginn ist er leer.`,
       parts: [
         { id: 'PL1a', label: 'a)', be: 2, text: m`Berechnen Sie die Zeitkonstante und den Anfangsstrom.`, nums: [{ label: 'τ in s', ans: 10.34, tol: 0.01 }, { label: 'I₀ in µA', ans: 409.1, tol: 0.01 }],
-          sol: m`<p>$\tau=RC=22\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=10{,}3\,\text{s}$; $\ I_0=\dfrac{U_0}R=\dfrac{9{,}0\,\text{V}}{22\,000\,\Omega}=4{,}1\cdot10^{-4}\,\text{A}$</p>` },
+          sol: m`<p><b>Zeitkonstante</b> (das Tempo): $\tau=R\cdot C=22\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=10{,}3\,\text{s}$</p><p><b>Anfangsstrom:</b> Im ersten Moment ist der Kondensator leer, die ganzen 9 V liegen am Widerstand: $I_0=\dfrac{U_0}R=\dfrac{9{,}0\,\text{V}}{22\,000\,\Omega}=4{,}1\cdot10^{-4}\,\text{A}=409\,\mu\text{A}$</p>` },
         { id: 'PL1b', label: 'b)', be: 2, text: m`Berechnen Sie die Kondensatorspannung nach $10\,\text{s}$.`, nums: [{ label: 'U_C in V', ans: 5.578, tol: 0.01 }],
-          sol: m`<p>$U_C=U_0\,(1-e^{-t/\tau})=9{,}0\,\text{V}\cdot(1-e^{-10/10{,}34})=5{,}6\,\text{V}$</p>` },
+          hints: ['Laden: Die Spannung steigt. Welche der beiden Formeln steigt?'],
+          sol: m`<p><b>Formel:</b> Laden, also $U_C=U_0\,(1-e^{-t/\tau})$.</p><p><b>Anteil, der noch fehlt:</b> $e^{-10/10{,}34}=e^{-0{,}967}=0{,}380$. Geschafft sind $1-0{,}380=0{,}620$, also 62 %.</p><p><b>Ergebnis:</b> $U_C=9{,}0\,\text{V}\cdot0{,}620=5{,}6\,\text{V}$ (passt: knapp unter $1\tau$, knapp unter 63 %).</p>` },
         { id: 'PL1c', label: 'c)', be: 2, text: 'Berechnen Sie die Halbwertszeit des Ladestroms.', nums: [{ label: 't_h in s', ans: 7.167, tol: 0.01 }],
-          sol: m`<p>$t_h=\tau\ln2=10{,}34\,\text{s}\cdot0{,}693=7{,}2\,\text{s}$</p>` },
+          sol: m`<p><b>Gedanke:</b> Nach der Halbwertszeit ist nur noch die Hälfte des Stroms übrig: $e^{-t_h/\tau}=\tfrac12$, also $t_h=\tau\ln2$.</p><p>$t_h=10{,}34\,\text{s}\cdot0{,}693=7{,}2\,\text{s}$</p>` },
         { id: 'PL1d', label: 'd)', be: 2, text: 'Berechnen Sie, nach welcher Zeit 99 % der Endspannung erreicht sind.', nums: [{ label: 't in s', ans: 47.62, tol: 0.01 }],
           hints: [m`$0{,}99=1-e^{-t/\tau}\Rightarrow e^{-t/\tau}=0{,}01$`],
-          sol: m`<p>$e^{-t/\tau}=0{,}01\Rightarrow t=\tau\ln100=10{,}34\,\text{s}\cdot4{,}61=47{,}6\,\text{s}$ (etwa $4{,}6\,\tau$)</p>` }
+          sol: m`<p><b>Ansatz:</b> $0{,}99\,U_0=U_0\,(1-e^{-t/\tau})$. Durch $U_0$ teilen und umstellen: $e^{-t/\tau}=0{,}01$ (es fehlt nur noch 1 %).</p><p><b>Logarithmieren:</b> $-\dfrac t\tau=\ln0{,}01=-4{,}61$, also $t=4{,}61\cdot10{,}34\,\text{s}=47{,}6\,\text{s}$.</p><p>Das sind etwa $4{,}6\,\tau$, passt zur Regel „nach 5 τ fertig“.</p>` }
       ]
     },
     {
-      id: 'PL2', fach: F, teil: 'A', lesson: 'PH8', title: 'Lade- und Entladekurven deuten', afb: 'II', ops: 'Begründen, Angeben',
+      id: 'PL2', fach: F, groessen: ['tau','th','I0','euler'], teil: 'A', lesson: 'PH8', title: 'Lade- und Entladekurven deuten', afb: 'II', ops: 'Begründen, Angeben',
       intro: 'Ein Kondensator wird über einen Widerstand geladen und später wieder entladen.',
       parts: [
         { id: 'PL2a', label: 'a)', be: 2, text: 'Begründen Sie, warum der Ladestrom am Anfang am größten ist und am Ende null wird.',
@@ -631,7 +682,7 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
     },
     // ---------------------------------------------------------------- PH9
     {
-      id: 'PL3', fach: F, teil: 'B', lesson: 'PH9', title: 'Entladen über einen großen Widerstand', afb: 'II', ops: 'Berechnen, Bestimmen',
+      id: 'PL3', fach: F, groessen: [['C','100 µF'],['U0','50 V (Start des Entladens)'],['R','2,0 MΩ = 2 000 000 Ω'],['dQ','in den ersten 30 s, gesucht'],['th','gesucht'],['R','für t_h = 60 s, gesucht'],['I0','beim Wiederaufladen, gesucht']], teil: 'B', lesson: 'PH9', title: 'Entladen über einen großen Widerstand', afb: 'II', ops: 'Berechnen, Bestimmen',
       intro: m`Ein Kondensator ($C=100\,\mu\text{F}$) wurde auf $U_0=50\,\text{V}$ geladen und wird über $R=2{,}0\,\text{M}\Omega$ entladen.`,
       parts: [
         { id: 'PL3a', label: 'a)', be: 3, text: m`Berechnen Sie die Ladung, die in den ersten $30\,\text{s}$ abfließt.`, nums: [{ label: 'ΔQ in µC', ans: 696.4, tol: 0.01 }],
@@ -648,24 +699,26 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
       ]
     },
     {
-      id: 'PL4', fach: F, teil: 'B', lesson: 'PH9', title: 'Kapazität aus der Entladezeit (Messreihe)', afb: 'III', ops: 'Herleiten, Berechnen, Erläutern',
+      id: 'PL4', fach: F, groessen: [['R', '33 kΩ (± 5 %)'], ['tE', '36,4 s; 37,1 s; 35,9 s (gemessen)'], ['U0', 'Startspannung (Wert egal, kürzt sich)'], ['C', 'gesucht']],
+      teil: 'B', lesson: 'PH9', title: 'Kapazität aus der Entladezeit (Messreihe)', afb: 'III', ops: 'Herleiten, Berechnen, Erläutern',
       intro: m`Ein Kondensator unbekannter Kapazität wird geladen und dann über $R=33\,\text{k}\Omega$ (Toleranz $\pm5\,\%$) entladen. Ein Voltmeter liegt parallel. Gemessen wird die Zeit $t_E$, in der die Spannung von $U_0$ auf $\tfrac13U_0$ fällt: $36{,}4\,\text{s}$; $37{,}1\,\text{s}$; $35{,}9\,\text{s}$.<br><span class="dim">Angelehnt an Zentralabitur Niedersachsen 2026 (Kontext Kondensator-Messung), eigene Werte.</span>`,
       parts: [
         { id: 'PL4a', label: 'a)', be: 4, text: m`Leiten Sie die Gleichung $C=\dfrac{t_E}{R\cdot\ln3}$ her.`,
-          sol: m`<p>$U(t)=U_0e^{-t/(RC)}$. Bei $t=t_E$: $\tfrac13U_0=U_0e^{-t_E/(RC)}\Rightarrow e^{-t_E/(RC)}=\tfrac13\Rightarrow-\dfrac{t_E}{RC}=\ln\tfrac13=-\ln3\Rightarrow C=\dfrac{t_E}{R\ln3}$</p><ul><li>Entladegesetz (1 BE), Einsetzen (1 BE), Logarithmieren (1 BE), Umstellen (1 BE)</li></ul>` },
+          hints: ['Starte mit dem Entladegesetz für die Spannung.', m`Bei $t=t_E$ ist $U=\tfrac13U_0$. Einsetzen, durch $U_0$ teilen.`, m`$\ln\tfrac13=-\ln3$`],
+          sol: m`<p><b>1. Entladegesetz:</b> $U(t)=U_0\,e^{-t/(RC)}$ (1 BE)</p><p><b>2. Messbedingung einsetzen:</b> Bei $t=t_E$ ist ein Drittel übrig: $\tfrac13U_0=U_0\,e^{-t_E/(RC)}$. Durch $U_0$ teilen: $\tfrac13=e^{-t_E/(RC)}$ (1 BE)</p><p><b>3. Logarithmieren:</b> $\ln\tfrac13=-\dfrac{t_E}{RC}$, und weil $\ln\tfrac13=-\ln3$: $\ln3=\dfrac{t_E}{RC}$ (1 BE)</p><p><b>4. Nach C umstellen:</b> $C=\dfrac{t_E}{R\ln3}$ (1 BE)</p>` },
         { id: 'PL4b', label: 'b)', be: 3, text: 'Berechnen Sie mit dem Mittelwert der Entladezeiten die Kapazität.',
           nums: [{ label: 'Mittelwert in s', ans: 36.47, tol: 0.005 }, { label: 'C in µF', ans: 1006, tol: 0.01 }],
-          sol: m`<p>$\bar t_E=\dfrac{36{,}4+37{,}1+35{,}9}{3}\,\text{s}=36{,}5\,\text{s}$; $\ C=\dfrac{36{,}47\,\text{s}}{33\,000\,\Omega\cdot\ln3}=1{,}01\cdot10^{-3}\,\text{F}\approx1{,}0\,\text{mF}$</p>` },
+          sol: m`<p><b>Mittelwert:</b> Drei Messungen, damit Zufallsfehler sich ausgleichen: $\bar t_E=\dfrac{36{,}4+37{,}1+35{,}9}{3}\,\text{s}=36{,}47\,\text{s}$</p><p><b>Einsetzen in a):</b> $C=\dfrac{36{,}47\,\text{s}}{33\,000\,\Omega\cdot1{,}0986}=1{,}01\cdot10^{-3}\,\text{F}\approx1{,}0\,\text{mF}$</p>` },
         { id: 'PL4c', label: 'c)', be: 3, text: 'Schätzen Sie die Messunsicherheit von C nach der im Unterricht vereinbarten Regel ab.',
           nums: [{ label: 'ΔC in µF', ans: 50.3, tol: 0.05 }],
           hints: ['Relative Unsicherheiten vergleichen: Streuung der Zeiten und Toleranz von R. Die größte zählt.'],
-          sol: m`<p>Zeiten: größte Abweichung vom Mittelwert $\approx0{,}6\,\text{s}$, relativ $\approx1{,}7\,\%$. Widerstand: $5\,\%$. Die größte relative Unsicherheit ($5\,\%$) wird übernommen: $\Delta C=0{,}05\cdot1{,}006\,\text{mF}\approx0{,}050\,\text{mF}$, also $C=(1{,}01\pm0{,}050)\,\text{mF}$ bzw. gerundet $(1{,}0\pm0{,}05)\,\text{mF}$.</p>` },
+          sol: m`<p><b>Zeiten:</b> Die Messwerte weichen höchstens etwa $0{,}6\,\text{s}$ vom Mittelwert ab, relativ $\tfrac{0{,}6}{36{,}5}\approx1{,}7\,\%$.</p><p><b>Widerstand:</b> $\pm5\,\%$.</p><p><b>Regel:</b> Die größte relative Unsicherheit wird übernommen, also $5\,\%$: $\Delta C=0{,}05\cdot1{,}006\,\text{mF}\approx0{,}050\,\text{mF}$.</p><p><b>Ergebnis:</b> $C=(1{,}01\pm0{,}050)\,\text{mF}$.</p>` },
         { id: 'PL4d', label: 'd)', be: 4, text: 'Nennen Sie zwei weitere Einflussgrößen, die zu Unsicherheiten führen, und erläutern Sie ihre Auswirkung auf die berechnete Kapazität.',
-          sol: m`<ul><li><b>Reaktionszeit beim Stoppen:</b> Start und Stopp per Hand, je nach Reaktion zu lange oder zu kurze Zeiten → C streut in beide Richtungen.</li><li><b>Innenwiderstand des Voltmeters:</b> Er liegt parallel zu R, der Gesamtwiderstand ist kleiner, die Entladung schneller → gemessene $t_E$ zu klein → berechnetes C zu klein.</li><li>Auch möglich: Ablesegenauigkeit der Spannung $U_0/3$, Leckströme des Kondensators (→ C zu klein).</li></ul><p>Je Einflussgröße 1 BE, je Auswirkung 1 BE.</p>` }
+          sol: m`<ul><li><b>Reaktionszeit beim Stoppen:</b> Start und Stopp per Hand, mal zu früh, mal zu spät → gemessene Zeiten streuen → C streut in beide Richtungen.</li><li><b>Innenwiderstand des Voltmeters:</b> Er liegt parallel zu R, der Kondensator entlädt sich zusätzlich über das Messgerät, also schneller → $t_E$ zu klein → berechnetes C zu klein.</li><li>Auch möglich: Ablesen des genauen Moments $U_0/3$, Leckströme des Kondensators (→ C zu klein).</li></ul><p>Je Einflussgröße 1 BE, je Auswirkung 1 BE.</p>` }
       ]
     },
     {
-      id: 'PL5', fach: F, teil: 'B', lesson: 'PH9', title: 'Entladung auswerten: Linearisierung', afb: 'II', ops: 'Zeigen, Bestimmen',
+      id: 'PL5', fach: F, groessen: [['R','50 kΩ'],['t','0 bis 50 s'],['UC','Messwerte in der Tabelle'],['tau','gesucht'],['C','gesucht']], teil: 'B', lesson: 'PH9', title: 'Entladung auswerten: Linearisierung', afb: 'II', ops: 'Zeigen, Bestimmen',
       intro: m`Ein Kondensator wird über $R=50\,\text{k}\Omega$ entladen. Messreihe:<table class="mt-table" style="margin-top:10px"><tr><th>t in s</th><td>0</td><td>10</td><td>20</td><td>30</td><td>40</td><td>50</td></tr><tr><th>U in V</th><td>12,0</td><td>8,1</td><td>5,4</td><td>3,6</td><td>2,4</td><td>1,6</td></tr></table>`,
       parts: [
         { id: 'PL5a', label: 'a)', be: 2, text: 'Zeigen Sie mit Quotienten aufeinanderfolgender Messwerte, dass eine exponentielle Abnahme vorliegt.',
@@ -679,7 +732,7 @@ ${merke('Entladen bis auf einen Bruchteil', m`$$\frac{U}{U_0}=e^{-t/\tau}\ \Righ
       ]
     },
     {
-      id: 'PL6', fach: F, teil: 'B', lesson: 'PH9', title: 'Differentialgleichung des Ladevorgangs', afb: 'III', ops: 'Herleiten, Zeigen',
+      id: 'PL6', fach: F, groessen: [['U0','Quellenspannung (konstant)'],['R','Widerstand'],['C','Kapazität'],['I','Strom I(t)'],['Q','Ladung Q(t) auf dem Kondensator'],['UR','am Widerstand'],['UC','am Kondensator']], teil: 'B', lesson: 'PH9', title: 'Differentialgleichung des Ladevorgangs', afb: 'III', ops: 'Herleiten, Zeigen',
       intro: m`Ein Kondensator $C$ wird über einen Widerstand $R$ an einer Quelle mit der Spannung $U_0$ geladen (vgl. Infoblatt DGL).`,
       parts: [
         { id: 'PL6a', label: 'a)', be: 3, text: m`Stellen Sie mit der Maschenregel eine Gleichung für $I(t)$ und $Q(t)$ auf und leiten Sie daraus die Differentialgleichung $0=R\,\dot I(t)+\dfrac{I(t)}{C}$ her.`,

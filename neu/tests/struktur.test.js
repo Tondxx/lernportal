@@ -10,7 +10,7 @@ require('../algo.js');
 require('../plan.js');
 const cal = fs.readFileSync(path.join(__dirname, '..', '..', 'calendar.js'), 'utf8');
 const KLAUSUREN = new Function(cal.replace(/^const /gm, 'var ') + '; return TONDA_KLAUSUREN;')();
-['demo.js', 'demo-algo.js', 'physik.js', 'physik-treppe.js', 'informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js', 'informatik-beispiele.js', 'ordner.js', 'plaene.js'].forEach(f => require(path.join(__dirname, '..', 'content', f)));
+['demo.js', 'demo-algo.js', 'physik.js', 'physik-groessen.js', 'physik-treppe.js', 'informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js', 'informatik-beispiele.js', 'ordner.js', 'plaene.js'].forEach(f => require(path.join(__dirname, '..', 'content', f)));
 
 const D = window.MT_DATA, O = window.LR_ORDNER, PLANS = window.LR_PLANS, TOPICS = window.LR_TOPICS, ALGOS = window.LR_ALGOS;
 const ALL_LESSONS = D.LESSONS.concat(window.LR_LESSONS || []);
@@ -92,10 +92,11 @@ test('Mathe-Plan deckt alle klausurrelevanten Lektionen und deren Aufgaben ab', 
   [].concat(D.EXAM1.tasks, D.EXTRA).forEach(t => assert.ok(have.has('aufgabe:' + t.id), `Aufgabe ${t.id} fehlt im Plan`));
 });
 
-test('Physik-Plan deckt alle Lektionen ab, Probeklausur verweist auf echte Physik-Aufgaben', () => {
+test('Physik-Plan enthält die Kernlektionen, Probeklausur verweist auf echte Physik-Aufgaben', () => {
   const p = PLANS.find(x => x.id === 'plan-physik-k10');
   const have = new Set(p.items.map(i => window.LRPlan.key(i)));
-  (window.LR_LESSONS || []).filter(l => l.fach === 'physik').forEach(l => assert.ok(have.has('lektion:' + l.id), `Lektion ${l.id} fehlt im Plan`));
+  ['PH0', 'PH3', 'PH8', 'PH9', 'PH7'].forEach(id => assert.ok(have.has('lektion:' + id), `Kernlektion ${id} fehlt im Plan`));
+  p.items.filter(i => i.typ === 'lektion').forEach(i => assert.strictEqual(fachOf(ALL_LESSONS.find(l => l.id === i.ref)), 'physik', `${i.ref} ist keine Physik-Lektion`));
   p.items.filter(i => i.typ === 'aufgabe').forEach(i => assert.strictEqual(fachOf(ALL_TASKS.find(t => t.id === i.ref)), 'physik', `${i.ref} ist keine Physik-Aufgabe`));
   (window.LR_PROBES || []).forEach(pr => pr.tasks.forEach(id => assert.ok(tasks.has(id), `Probeklausur ${pr.id}: Aufgabe ${id} fehlt`)));
 });
@@ -112,6 +113,11 @@ test('Informatik-Plan deckt alle Lektionen ab, nur Informatik-Aufgaben, Probekla
 
 test('Informatik: jedes Python-Werkstatt-Thema und jede Notation, auf die verwiesen wird, existiert', () => {
   (window.LR_PY || []).filter(t => t.algo).forEach(t => assert.ok(ALGOS.some(a => a.id === t.algo), `Python-Aufgabe ${t.id}: Notation ${t.algo} fehlt`));
+});
+
+test('Physik: jede Größe in Lektionen und Aufgaben steht im Lexikon', () => {
+  const G = (window.LR_GROESSEN || {}).physik; assert.ok(G, 'Lexikon fehlt');
+  ALL_LESSONS.concat(ALL_TASKS).filter(x => x.fach === 'physik').forEach(x => (x.groessen || []).forEach(it => { const k = Array.isArray(it) ? it[0] : it; assert.ok(G[k], `${x.id}: Größe ${k} fehlt im Lexikon`); }));
 });
 
 console.log(`\n${n} Tests bestanden`);

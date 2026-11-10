@@ -1643,3 +1643,27 @@ kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; 
 .ic-tab th.nl, .bf-ex .ic-tab th { text-transform: none; letter-spacing: 0; font-size: 12.5px; }
 
 .bf-mini { margin: 0; padding: 8px 10px; font-size: 13px; line-height: 1.5; border-radius: 10px; } .bf-anlegen { box-shadow: 0 0 0 1.5px color-mix(in oklab, var(--ok) 55%, transparent) inset; } .bf-load { margin-top: 10px; }
+
+/* Größen-Lexikon (Lektion „Größen“, Aufgaben „Gegeben / Gesucht“, Lektion 0) */
+.gr-box { margin: 18px 0 8px; border: 1px solid var(--line-2); border-radius: 18px; padding: 4px 16px 10px; background: color-mix(in oklab, var(--subj) 5%, transparent); }
+.gr-box > summary { display: flex; align-items: center; gap: 10px; min-height: 48px; cursor: pointer; font: 700 15px var(--font-ui); color: var(--text); list-style: none; }
+.gr-box > summary::-webkit-details-marker { display: none; }
+.gr-box > summary svg.i { color: var(--subj); width: 20px; height: 20px; flex: none; }
+.gr-box[open] > summary { border-bottom: 1px solid var(--line); margin-bottom: 4px; }
+.gr-sec { font: 700 12px var(--font-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin: 12px 0 2px; }
+.gr-list { display: grid; gap: 2px; }
+.gr-row { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+.gr-row:first-child { border-top: 0; }
+.gr-sym { font-size: 20px; color: var(--subj); text-align: center; padding-top: 2px; overflow-wrap: anywhere; }
+.gr-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.gr-head b { font-size: 16px; }
+.gr-unit { font-size: 13.5px; color: var(--text-3); }
+.gr-val { display: inline-block; margin-top: 4px; padding: 2px 10px; border-radius: 999px; font: 600 14px var(--font-ui); background: color-mix(in oklab, var(--subj) 16%, transparent); color: var(--text); }
+.gr-val.ask { background: color-mix(in oklab, var(--warn) 20%, transparent); }
+.gr-was { margin-top: 4px; font-size: 15px; line-height: 1.6; color: var(--text-2); }
+.gr-bild { margin-top: 6px; font-size: 14.5px; line-height: 1.55; color: var(--text-3); font-style: italic; }
+.gr-list.big .gr-row { padding: 14px 0; }
+.gr-list.big .gr-was { font-size: 16.5px; }
+.prose table.gr-table td { vertical-align: top; }
+.prose table.gr-table td.gr-sym { width: 70px; font-size: 1.15em; }
+@media (max-width: 520px) { .gr-row { grid-template-columns: 48px minmax(0, 1fr); gap: 8px; } .gr-box { padding: 2px 12px 8px; } }

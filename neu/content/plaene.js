@@ -41,20 +41,17 @@
       id: 'plan-physik-k10',
       fach: 'physik',
       klausur: 'k-10', // Physik Klausur 2 (12.1), 13.11.2026
-      titel: 'Physik: Kondensator, Braunsche Röhre, Auf- und Entladen',
-      hinweis: 'Stoff nach der 1. Klausur laut IServ (Ordner 04 bis 07). Grundlagen aus Klausur 1 (Coulomb, Feldstärke) nicht im Plan, bei Bedarf im Ordner „Spannung, Energie, Potential“.',
-      stand: '2026-11-08',
+      titel: 'Physik kompakt: Kondensator, Auf- und Entladen, Braunsche Röhre',
+      hinweis: 'Kompakt-Plan für die letzten drei Tage (Tonda, 10.11.: der volle Plan war zu viel). Reihenfolge nach Wichtigkeit: erst Größen, dann Kondensator und Auf-/Entladen, zuletzt die Röhre. Nicht im Plan, aber in den Ordnern: Lektion 1, 2 und 5, die Lerntreppen, weitere Aufgaben und die Probeklausur.',
+      stand: '2026-11-10',
       items: [
-        L('PH1'), A('PE1'),
-        L('PH2'), A('PP1'),
+        L('PH0'),
         L('PH3'), A('PC1'), A('PC2'),
         L('PH4'), A('PW1'),
-        L('PH5'), A('PS1'),
-        L('PH6'), A('PR1'),
-        L('PH7'), { typ: 'thema', ref: 'ph-querfeld' }, A('PR3'),
         L('PH8'), A('PL1'),
-        L('PH9'), { typ: 'thema', ref: 'ph-entladen' }, A('PL4'),
-        { typ: 'probe', ref: 'PK1', pin: 'T-2' }
+        L('PH9'), A('PL4'),
+        L('PH6'),
+        L('PH7'), A('PR3'), A('PR4')
       ]
     },
     {
