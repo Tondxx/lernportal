@@ -16,14 +16,15 @@ global.window = {}; global.document = {}; global.matchMedia = () => ({ matches: 
 const path = require('path'), base = process.argv[1];
 require(path.join(base, 'algo.js'));
 ['informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js', 'informatik-beispiele.js'].forEach(f => require(path.join(base, 'content', f)));
-const out = { nums: {}, blocks: [], algos: {}, examples: [] };
+const out = { nums: {}, blocks: [], algos: {}, examples: [], anlegen: [] };
 const grab = (id, s) => { (String(s).match(/<pre class="ic-code">[\s\S]*?<\/pre>/g) || []).forEach(b => out.blocks.push({ id, code: b.replace(/^<pre class="ic-code">/, '').replace(/<\/pre>$/, '') })); };
 const walk = (id, o) => { if (typeof o === 'string') grab(id, o); else if (Array.isArray(o)) o.forEach(x => walk(id, x)); else if (o && typeof o === 'object') Object.values(o).forEach(x => walk(id, x)); };
 window.LR_LESSONS.filter(l => l.fach === 'informatik').forEach(l => walk(l.id, l));
 window.LR_TASKS.filter(t => t.fach === 'informatik').forEach(t => { walk(t.id, t); t.parts.forEach(p => (p.nums || []).forEach((n, i) => { out.nums[p.id + '#' + i] = n.ans; })); });
 window.LR_PY.filter(t => t.id.startsWith('py-') && !t.demo).forEach(t => { out.blocks.push({ id: t.id, code: t.loesung.replace(/&/g, '&amp;') }); });
 window.LR_ALGOS.filter(a => a.id.startsWith('inf-')).forEach(a => { out.algos[a.id] = { py: window.LRAlgo.pyText(a.algo), checkpoints: a.ablauf.checkpoints.map(c => [c.id, c.wert]) }; });
-window.INF_BEISPIELE.beispiele.forEach(e => out.examples.push({ id: e.id, art: e.art, py: e.pyText, tests: e.tests, name: e.algo.name }));
+window.INF_BEISPIELE.beispiele.forEach(e => out.examples.push({ id: e.id, art: e.art, py: e.pyText, tests: e.tests, name: e.algo.name, haupt: e.hauptCode, out: e.haupt.out }));
+out.anlegen = window.INF_BEISPIELE.anlegen.map(a => ({ typ: a.typ, programm: a.programm, ausgabe: a.ausgabe, n: a.schritte.length }));
 console.log(JSON.stringify(out));
 """
 
@@ -318,6 +319,30 @@ check(f"{len(D['examples'])} Beispiele/Aufgaben je Datentyp: alle Python-Fassung
 VERBOTEN = ['sorted(', '.sort(', 'min(', 'max(', 'sum(', '.reverse(', '.remove(', '.index(', '.count(', '.upper(', '.lower(', '.split(', '.replace(', '.find(', '.join(', 'reversed(', 'dict(', ' dict']
 verb = [(e['id'], v) for e in D['examples'] for v in VERBOTEN if v in e['py']]
 check('Beispiele benutzen keine verbotenen Python-Abkürzungen', not verb, verb)
+
+# ---------------------------------------------------------------- 5. Hauptprogramme und „So legst du es an“-Programme laufen und liefern genau die angegebene Ausgabe
+import io, contextlib
+def run(code):
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        exec(code, {})
+    return buf.getvalue().strip()
+bad = []
+for e in D['examples']:
+    try:
+        got = run(e['haupt'])
+    except Exception as ex:
+        bad.append((e['id'], 'Fehler', str(ex))); continue
+    if got != e['out'].strip(): bad.append((e['id'], got, e['out']))
+check(f"{len(D['examples'])} Hauptprogramme (Struktur anlegen, füllen, aufrufen) liefern die angegebene Ausgabe", not bad, bad)
+bad = []
+for a in D['anlegen']:
+    try:
+        got = run(a['programm'])
+    except Exception as ex:
+        bad.append((a['typ'], 'Fehler', str(ex))); continue
+    if got != a['ausgabe'].strip(): bad.append((a['typ'], got, a['ausgabe']))
+check(f"{len(D['anlegen'])} „So legst du es an“-Programme liefern die angegebene Ausgabe", not bad, bad)
 
 print()
 if fails:

@@ -457,10 +457,148 @@
   EX.forEach(e => { if (typeof e.algo === 'string') e.algo = (window.INF_A || {})[e.algo]; });
   EX.forEach(e => { e.pyText = LA.pyText(e.algo); });
 
+
+  // ======================================================================
+  // „SO LEGST DU ES AN UND BENUTZT ES“: pro Datentyp Schritt für Schritt, mit Beipackzettel-Befehl, Python und Inhalt danach
+  // schritte: [Beipackzettel/Struktogramm, Python, Ergebnis/Inhalt danach]. programm + ausgabe werden in tests/informatik_check.py mit Python ausgeführt.
+  // ======================================================================
+  const ANLEGEN = [
+    {
+      typ: 'zeichen', titel: 'Zeichenketten anlegen und benutzen',
+      text: 'Eine Zeichenkette legst du einfach mit Anführungszeichen an. Sie lässt sich nicht verändern: Du baust bei Bedarf eine <b>neue</b> Zeichenkette (Verbinden, Teilzeichenkette).',
+      schritte: [
+        ['wort ← "Hallo"', 'wort = "Hallo"', 'Zeichenkette mit 5 Zeichen'],
+        ['länge(wort)', 'len(wort)', '5'],
+        ['zeichen(wort, 1)', 'wort[1]', '"a" (Zählung ab 0)'],
+        ['teil(wort, 1, 4)', 'wort[1:4]', '"all" (Position 1 bis vor 4)'],
+        ['neu ← wort + " Welt"', 'neu = wort + " Welt"', '"Hallo Welt"'],
+        ['"all" in wort ?', '"all" in wort', 'wahr'],
+        ['ascii(zeichen(wort, 0))  ·  zeichenZu(72)', 'ord(wort[0])  ·  chr(72)', '72  ·  "H"'],
+        ['ersatz ← "J" + teil(wort, 1, 5)', 'ersatz = "J" + wort[1:5]', '"Jallo": ein Zeichen „ändern“ = neue Kette bauen']
+      ],
+      programm: 'wort = "Hallo"\nprint(len(wort))\nprint(wort[1])\nprint(wort[1:4])\nneu = wort + " Welt"\nprint(neu)\nprint("all" in wort)\nprint(ord(wort[0]))\nprint(chr(72))\nersatz = "J" + wort[1:5]\nprint(ersatz)\n',
+      ausgabe: '5\na\nall\nHallo Welt\nTrue\n72\nH\nJallo'
+    },
+    {
+      typ: 'rechnen', titel: 'Rechnen mit /, mod, Zufall und Runden',
+      text: 'Im Struktogramm schreibst du <code>/</code> und <code>mod</code>, in Python <code>//</code> und <code>%</code>. Zufallszahlen und Runden brauchen in Python <code>import random</code> bzw. <code>round</code>.',
+      schritte: [
+        ['17 / 5', '17 // 5', '3 (ganzzahlig, ohne Rest)'],
+        ['17 mod 5', '17 % 5', '2 (Rest)'],
+        ['wurf ← Zufallszahl von 1 bis 6', 'import random\nwurf = random.randint(1, 6)', 'eine ganze Zahl von 1 bis 6 (beide eingeschlossen)'],
+        ['runde(3,7)', 'round(3.7)', '4'],
+        ['zeichenZu(48 + 7)', 'chr(48 + 7)', '"7" (Ziffer als Zeichen über ASCII)']
+      ],
+      programm: 'print(17 // 5)\nprint(17 % 5)\nimport random\nwurf = random.randint(1, 6)\nprint(wurf >= 1 and wurf <= 6)\nprint(round(3.7))\nprint(chr(48 + 7))\n',
+      ausgabe: '3\n2\nTrue\n4\n7'
+    },
+    {
+      typ: 'static', titel: 'Statische Reihung anlegen und benutzen',
+      text: 'Eine statische Reihung hat eine <b>feste Größe</b>: Du legst sie mit ihren Werten an und liest oder überschreibst Elemente über den Index (ab 0). Es gibt <b>kein</b> <code>append</code>, <code>insertAt</code> oder <code>delete</code>. Zwei Dimensionen: <code>[Zeile][Spalte]</code>.',
+      schritte: [
+        ['zahlen ← statische Reihung mit 3, 5, 2', 'zahlen = [3, 5, 2]', '[3, 5, 2], Größe 3'],
+        ['zahlen[1]', 'zahlen[1]', '5'],
+        ['zahlen[1] ← 9', 'zahlen[1] = 9', '[3, 9, 2]'],
+        ['Größe von zahlen', 'len(zahlen)', '3'],
+        ['für jedes x in zahlen: summe ← summe + x', 'for x in zahlen:\n    summe = summe + x', 'summe = 14'],
+        ['tabelle ← Tabelle mit 2 Zeilen und 3 Spalten: (1 2 3) (4 5 6)', 'tabelle = [[1, 2, 3], [4, 5, 6]]', 'zweidimensional'],
+        ['tabelle[1][2]', 'tabelle[1][2]', '6 (Zeile 1, Spalte 2)'],
+        ['Zeilen / Spalten von tabelle', 'len(tabelle)  ·  len(tabelle[0])', '2  ·  3']
+      ],
+      programm: 'zahlen = [3, 5, 2]\nprint(zahlen[1])\nzahlen[1] = 9\nprint(zahlen)\nprint(len(zahlen))\nsumme = 0\nfor x in zahlen:\n    summe = summe + x\nprint(summe)\ntabelle = [[1, 2, 3], [4, 5, 6]]\nprint(tabelle[1][2])\nprint(len(tabelle), len(tabelle[0]))\n',
+      ausgabe: '5\n[3, 9, 2]\n3\n14\n6\n2 3'
+    },
+    {
+      typ: 'dyn', titel: 'DynArray anlegen, füllen und verändern',
+      text: 'Mit <code>DynArray()</code> legst du eine <b>leere</b> dynamische Reihung an. Danach fügst du Elemente mit <code>append</code> (hinten) oder <code>insertAt</code> (an einer Position) ein und verwaltest sie mit den übrigen Befehlen des Beipackzettels. Der Name ist frei wählbar (hier <code>meineListe</code>).',
+      schritte: [
+        ['meineListe ← DynArray()', 'meineListe = []', 'leer: []'],
+        ['meineListe.isEmpty()', 'len(meineListe) == 0', 'wahr'],
+        ['meineListe.append(4)', 'meineListe.append(4)', '[4]'],
+        ['meineListe.append(9)  ·  append(7)', 'meineListe.append(9)\nmeineListe.append(7)', '[4, 9, 7]'],
+        ['meineListe.insertAt(1, 5)', 'meineListe.insert(1, 5)', '[4, 5, 9, 7] (der Rest rückt nach hinten)'],
+        ['meineListe.getItem(2)', 'meineListe[2]', 'liefert 9, ändert nichts'],
+        ['meineListe.setItem(0, 1)', 'meineListe[0] = 1', '[1, 5, 9, 7]'],
+        ['meineListe.delete(1)', 'del meineListe[1]', '[1, 9, 7] (der Rest rückt nach vorn)'],
+        ['meineListe.getLength()', 'len(meineListe)', '3'],
+        ['für jedes x in meineListe: gib x aus', 'for x in meineListe:\n    print(x)', '1, 9, 7 der Reihe nach']
+      ],
+      programm: 'meineListe = []\nprint(len(meineListe) == 0)\nmeineListe.append(4)\nmeineListe.append(9)\nmeineListe.append(7)\nprint(meineListe)\nmeineListe.insert(1, 5)\nprint(meineListe)\nprint(meineListe[2])\nmeineListe[0] = 1\nprint(meineListe)\ndel meineListe[1]\nprint(meineListe)\nprint(len(meineListe))\nfor x in meineListe:\n    print(x)\n',
+      ausgabe: 'True\n[4, 9, 7]\n[4, 5, 9, 7]\n9\n[1, 5, 9, 7]\n[1, 9, 7]\n3\n1\n9\n7'
+    },
+    {
+      typ: 'stack', titel: 'Stapel anlegen und benutzen',
+      text: 'Mit <code>Stack()</code> legst du einen leeren Stapel an. Du legst mit <code>push</code> oben drauf und nimmst mit <code>pop</code> oben weg. Einen Index oder eine Länge gibt es nicht: Zum Leeren machst du <code>solange nicht isEmpty()</code> mit <code>pop</code>.',
+      schritte: [
+        ['meinStapel ← Stack()', 'meinStapel = []', 'leer'],
+        ['meinStapel.isEmpty()', 'len(meinStapel) == 0', 'wahr'],
+        ['push("A")  ·  push("B")  ·  push("C")', 'meinStapel.append("A")\nmeinStapel.append("B")\nmeinStapel.append("C")', 'A B C (C oben)'],
+        ['meinStapel.top()', 'meinStapel[-1]', '"C", der Stapel bleibt A B C'],
+        ['meinStapel.pop()', 'meinStapel.pop()', 'liefert "C", Stapel danach A B'],
+        ['solange nicht meinStapel.isEmpty(): gib meinStapel.pop() aus', 'while len(meinStapel) != 0:\n    print(meinStapel.pop())', 'B, dann A, danach leer'],
+        ['meinStapel.isEmpty()', 'len(meinStapel) == 0', 'wahr']
+      ],
+      programm: 'meinStapel = []\nprint(len(meinStapel) == 0)\nmeinStapel.append("A")\nmeinStapel.append("B")\nmeinStapel.append("C")\nprint(meinStapel[-1])\nprint(meinStapel.pop())\nprint(meinStapel)\nwhile len(meinStapel) != 0:\n    print(meinStapel.pop())\nprint(len(meinStapel) == 0)\n',
+      ausgabe: 'True\nC\nC\n[\'A\', \'B\']\nB\nA\nTrue'
+    },
+    {
+      typ: 'queue', titel: 'Schlange anlegen und benutzen',
+      text: 'Mit <code>Queue()</code> legst du eine leere Schlange an. Du stellst mit <code>enqueue</code> hinten an und holst mit <code>dequeue</code> vorn heraus. <code>head</code> schaut nur nach vorn, ohne etwas zu entnehmen.',
+      schritte: [
+        ['meineSchlange ← Queue()', 'meineSchlange = []', 'leer'],
+        ['meineSchlange.isEmpty()', 'len(meineSchlange) == 0', 'wahr'],
+        ['enqueue("A")  ·  enqueue("B")  ·  enqueue("C")', 'meineSchlange.append("A")\nmeineSchlange.append("B")\nmeineSchlange.append("C")', 'A B C (A vorn)'],
+        ['meineSchlange.head()', 'meineSchlange[0]', '"A", die Schlange bleibt A B C'],
+        ['meineSchlange.dequeue()', 'meineSchlange.pop(0)', 'liefert "A", Schlange danach B C'],
+        ['solange nicht meineSchlange.isEmpty(): gib meineSchlange.dequeue() aus', 'while len(meineSchlange) != 0:\n    print(meineSchlange.pop(0))', 'B, dann C, danach leer'],
+        ['meineSchlange.isEmpty()', 'len(meineSchlange) == 0', 'wahr']
+      ],
+      programm: 'meineSchlange = []\nprint(len(meineSchlange) == 0)\nmeineSchlange.append("A")\nmeineSchlange.append("B")\nmeineSchlange.append("C")\nprint(meineSchlange[0])\nprint(meineSchlange.pop(0))\nprint(meineSchlange)\nwhile len(meineSchlange) != 0:\n    print(meineSchlange.pop(0))\nprint(len(meineSchlange) == 0)\n',
+      ausgabe: 'True\nA\nA\n[\'B\', \'C\']\nB\nC\nTrue'
+    }
+  ];
+
+  // ======================================================================
+  // HAUPTPROGRAMME: Struktur anlegen, füllen, die Operation aufrufen, Ergebnis ausgeben (Beipackzettel-Schreibweise und Python)
+  // ======================================================================
+  const H = (h, out) => ({ h, out });
+  const HAUPT = {
+    vokale: H([['wort ← "informatik"', 'wort = "informatik"'], ['n ← anzahlVokale(wort)', 'n = anzahlVokale(wort)'], ['gib n aus', 'print(n)']], '4'),
+    umdrehen: H([['wort ← "Abc"', 'wort = "Abc"'], ['r ← umdrehen(wort)', 'r = umdrehen(wort)'], ['gib r aus', 'print(r)']], 'cbA'),
+    caesar: H([['geheim ← caesar("HALLO WELT", 1)', 'geheim = caesar("HALLO WELT", 1)'], ['gib geheim aus', 'print(geheim)'], ['gib caesar(geheim, 25) aus   // 25 Stellen weiter = 1 zurück', 'print(caesar(geheim, 25))']], 'IBMMP XFMU\nHALLO WELT'),
+    palindrom: H([['gib istPalindrom("otto") aus', 'print(istPalindrom("otto"))'], ['gib istPalindrom("abc") aus', 'print(istPalindrom("abc"))']], 'True\nFalse'),
+    zaehleteil: H([['n ← zaehleTeil("abababa", "aba")', 'n = zaehleTeil("abababa", "aba")'], ['gib n aus', 'print(n)']], '3'),
+    quersumme: H([['n ← quersumme(5832)', 'n = quersumme(5832)'], ['gib n aus', 'print(n)']], '18'),
+    binaer: H([['gib alsBinaer(13) aus', 'print(alsBinaer(13))'], ['gib alsBinaer(8) aus', 'print(alsBinaer(8))']], '1101\n1000'),
+    prim: H([['primzahlen ← DynArray()', 'primzahlen = []'], ['für i von 2 bis 20: wenn istPrim(i), dann primzahlen.append(i)', 'for i in range(2, 21):\n    if istPrim(i):\n        primzahlen.append(i)'], ['gib primzahlen aus', 'print(primzahlen)']], '[2, 3, 5, 7, 11, 13, 17, 19]'),
+    ggt: H([['gib ggT(48, 18) aus', 'print(ggT(48, 18))'], ['gib ggT(17, 5) aus', 'print(ggT(17, 5))']], '6\n1'),
+    summe: H([['zahlen ← statische Reihung mit 3, 5, 2', 'zahlen = [3, 5, 2]'], ['s ← summe(zahlen)', 's = summe(zahlen)'], ['gib s aus', 'print(s)']], '10'),
+    posmax: H([['zahlen ← statische Reihung mit 4, 9, 2, 9, 5', 'zahlen = [4, 9, 2, 9, 5]'], ['p ← positionMaximum(zahlen)', 'p = positionMaximum(zahlen)'], ['gib p und zahlen[p] aus', 'print(p, zahlen[p])']], '1 9'),
+    diagonale: H([['t ← Tabelle (3 5 2) (4 1 6) (7 0 8)', 't = [[3, 5, 2], [4, 1, 6], [7, 0, 8]]'], ['gib diagonalsumme(t) aus', 'print(diagonalsumme(t))']], '12'),
+    spiegeln: H([['a ← statische Reihung mit 1, 2, 3, 4', 'a = [1, 2, 3, 4]'], ['spiegeln(a)', 'spiegeln(a)'], ['gib a aus', 'print(a)']], '[4, 3, 2, 1]'),
+    sortiert: H([['a ← statische Reihung mit 1, 2, 2, 5', 'a = [1, 2, 2, 5]'], ['gib istSortiert(a) aus', 'print(istSortiert(a))'], ['a[3] ← 0', 'a[3] = 0'], ['gib istSortiert(a) aus', 'print(istSortiert(a))']], 'True\nFalse'),
+    allefelder: H([['t ← Tabelle (1 2) (3 4)', 't = [[1, 2], [3, 4]]'], ['gib summeAllerFelder(t) aus', 'print(summeAllerFelder(t))']], '10'),
+    negative: H([['meineListe ← DynArray()', 'meineListe = []'], ['append(4), append(−2), append(−5), append(7)', 'meineListe.append(4)\nmeineListe.append(-2)\nmeineListe.append(-5)\nmeineListe.append(7)'], ['entferneNegative(meineListe)', 'entferneNegative(meineListe)'], ['gib meineListe aus', 'print(meineListe)']], '[4, 7]'),
+    sortiertein: H([['meineListe ← DynArray()', 'meineListe = []'], ['append(1), append(3), append(5)', 'meineListe.append(1)\nmeineListe.append(3)\nmeineListe.append(5)'], ['fuegeSortiertEin(meineListe, 4)', 'fuegeSortiertEin(meineListe, 4)'], ['gib meineListe aus', 'print(meineListe)']], '[1, 3, 4, 5]'),
+    doppelte: H([['d ← DynArray()', 'd = []'], ['append(3), append(1), append(3), append(2), append(1)', 'd.append(3)\nd.append(1)\nd.append(3)\nd.append(2)\nd.append(1)'], ['neu ← ohneDoppelte(d)', 'neu = ohneDoppelte(d)'], ['gib neu und d aus', 'print(neu, d)']], '[3, 1, 2] [3, 1, 3, 2, 1]'),
+    ersteansende: H([['d ← DynArray()', 'd = []'], ['append(1), append(2), append(3)', 'd.append(1)\nd.append(2)\nd.append(3)'], ['ersteAnsEnde(d)', 'ersteAnsEnde(d)'], ['gib d aus', 'print(d)']], '[2, 3, 1]'),
+    stapelumkehren: H([['d ← DynArray()', 'd = []'], ['append(1), append(2), append(3)', 'd.append(1)\nd.append(2)\nd.append(3)'], ['r ← umkehren(d)', 'r = umkehren(d)'], ['gib r aus', 'print(r)']], '[3, 2, 1]'),
+    klammern: H([['gib klammernOk("([x])") aus', 'print(klammernOk("([x])"))'], ['gib klammernOk("([x])]") aus', 'print(klammernOk("([x])]"))']], 'True\nFalse'),
+    tauscheoberste: H([['s ← Stack()', 's = []'], ['push(1), push(2), push(3)', 's.append(1)\ns.append(2)\ns.append(3)'], ['tauscheOberste(s)', 'tauscheOberste(s)'], ['gib s.pop() dreimal aus', 'print(s.pop(), s.pop(), s.pop())']], '2 3 1'),
+    textstapel: H([['gib rueckwaerts("Abc") aus', 'print(rueckwaerts("Abc"))']], 'cbA'),
+    stapelsumme: H([['s ← Stack()', 's = []'], ['push(4), push(5), push(6)', 's.append(4)\ns.append(5)\ns.append(6)'], ['n ← summeStapel(s)', 'n = summeStapel(s)'], ['gib n und s.isEmpty() aus', 'print(n, len(s) == 0)']], '15 True'),
+    drehe: H([['q ← Queue()', 'q = []'], ['enqueue(1) bis enqueue(4)', 'q.append(1)\nq.append(2)\nq.append(3)\nq.append(4)'], ['dreheUm(q, 2)', 'dreheUm(q, 2)'], ['gib q aus', 'print(q)']], '[3, 4, 1, 2]'),
+    mischen: H([['q1 ← Queue(), q2 ← Queue()', 'q1 = []\nq2 = []'], ['q1: 1, 2, 3 · q2: 7, 8 einreihen', 'q1.append(1)\nq1.append(2)\nq1.append(3)\nq2.append(7)\nq2.append(8)'], ['e ← mischen(q1, q2)', 'e = mischen(q1, q2)'], ['gib e aus', 'print(e)']], '[1, 7, 2, 8, 3]'),
+    zaehleschlange: H([['q ← Queue()', 'q = []'], ['enqueue(4), enqueue(8), enqueue(15)', 'q.append(4)\nq.append(8)\nq.append(15)'], ['n ← anzahlWartende(q)', 'n = anzahlWartende(q)'], ['gib n aus', 'print(n)']], '3'),
+    wartezeit: H([['q ← Queue()', 'q = []'], ['enqueue(5), enqueue(8), enqueue(3)', 'q.append(5)\nq.append(8)\nq.append(3)'], ['n ← wartezeit(q, 3)', 'n = wartezeit(q, 3)'], ['gib n aus', 'print(n)']], '2'),
+    palistack: H([['gib istPalindromSQ("anna") aus', 'print(istPalindromSQ("anna"))'], ['gib istPalindromSQ("abca") aus', 'print(istPalindromSQ("abca"))']], 'True\nFalse')
+  };
+  EX.forEach(e => { e.haupt = HAUPT[e.id]; e.hauptCode = e.pyText + '\n\n' + e.haupt.h.map(r => r[1]).join('\n') + '\n'; });
+
   const fmt = v => (typeof v === 'string' ? `"${v}"` : typeof v === 'boolean' ? (v ? 'wahr' : 'falsch') : Array.isArray(v) ? '[' + v.map(fmt).join(', ') + ']' : String(v));
   EX.forEach(e => { e.probe = e.tests.map(t => [t.call, fmt(t.erwartet)]); });
 
-  window.INF_BEISPIELE = { typen: TYPEN, beispiele: EX, fmt };
+  window.INF_BEISPIELE = { typen: TYPEN, beispiele: EX, anlegen: ANLEGEN, fmt };
 
   // ======================================================================
   // Aufgaben (art 'aufgabe') → LR_TASKS und Python-Werkstatt LR_PY
@@ -482,7 +620,9 @@
           hints: [e.tipp || 'Startwerte, Schleife, Verzweigung, Rückgabe.'],
           sol: LA.nsHtml(e.algo) + (e.tipp ? `<p>${e.tipp}</p>` : '') + list(['Startwerte und Schleife passend zum Datentyp (2 BE)', 'Verzweigung oder Schleifenkörper mit den Befehlen des Beipackzettels (2 BE)', 'Absicherung gegen Laufzeitfehler / Sonderfälle (1 BE)', 'Rückgabe (1 BE)']) },
         { id: id + 'c', label: 'c)', be: 4, text: 'Implementieren Sie die Operation in Python.',
-          sol: code(e.pyText) + list(['Schleifen/Bedingungen richtig übertragen (2 BE)', 'Befehle des Beipackzettels in Python-Syntax (1 BE)', 'Rückgabe (1 BE)']) }
+          sol: code(e.pyText) + list(['Schleifen/Bedingungen richtig übertragen (2 BE)', 'Befehle des Beipackzettels in Python-Syntax (1 BE)', 'Rückgabe (1 BE)']) },
+        { id: id + 'd', label: 'd)', be: 3, text: `Schreiben Sie ein <b>Hauptprogramm</b>: Legen Sie die benötigte Struktur an (z. B. <code>meineListe ← DynArray()</code>, <code>Stack()</code>, <code>Queue()</code> oder eine Zeichenkette bzw. Reihung), füllen Sie sie mit Werten und rufen Sie <code>${esc(e.algo.name)}</code> so auf, dass die Ausgabe <code>${esc(e.haupt.out.split('\n')[0])}</code> erscheint.`,
+          sol: `<table class="ic-tab"><thead><tr><th>Beipackzettel</th><th>Python</th></tr></thead><tbody>${e.haupt.h.map(r => `<tr><td><code>${esc(r[0])}</code></td><td>${code(r[1])}</td></tr>`).join('')}</tbody></table><p>Ausgabe: <code>${esc(e.haupt.out.replace(/\n/g, '  |  '))}</code></p>` + list(['Struktur mit dem passenden Befehl anlegen (1 BE)', 'Werte einfügen bzw. einreihen (1 BE)', 'Aufruf und Ausgabe (1 BE)']) }
       ]
     });
     const startArgs = e.algo.params.join(', ');

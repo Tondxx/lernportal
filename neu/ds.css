@@ -1641,3 +1641,5 @@ kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; 
 .bf-show { margin-top: 4px; }
 
 .ic-tab th.nl, .bf-ex .ic-tab th { text-transform: none; letter-spacing: 0; font-size: 12.5px; }
+
+.bf-mini { margin: 0; padding: 8px 10px; font-size: 13px; line-height: 1.5; border-radius: 10px; } .bf-anlegen { box-shadow: 0 0 0 1.5px color-mix(in oklab, var(--ok) 55%, transparent) inset; } .bf-load { margin-top: 10px; }

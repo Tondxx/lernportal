@@ -31,25 +31,35 @@
 
   // ------------------------------------------------------------ Beispiele und Aufgaben je Datentyp
   function tabHtml(kopf, zeilen) { return `<div class="ic-tabw"><table class="ic-tab"><thead><tr>${kopf.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${zeilen.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`; }
+  function anlegenCard(t) {
+    const a = ((window.INF_BEISPIELE || {}).anlegen || []).find(x => x.typ === t.id); if (!a) return '';
+    return `<details class="bf-sec bf-anlegen" open><summary><span class="bf-nr">＋</span><span class="bf-t">So legst du es an und benutzt es</span><span class="chip bf-gruen">Schritt für Schritt</span></summary>
+      <div class="prose bf-intro">${a.text}</div>
+      <div class="ic-tabw"><table class="ic-tab bf-tab"><thead><tr><th>Beipackzettel</th><th>Python</th><th>Ergebnis</th></tr></thead><tbody>${a.schritte.map(s => `<tr><td><code>${esc(s[0])}</code></td><td><pre class="ic-code bf-mini">${esc(s[1])}</pre></td><td>${esc(s[2])}</td></tr>`).join('')}</tbody></table></div>
+      <div class="bf-exbody"><p class="bf-lbl">Das ganze Programm</p>${code(a.programm)}<p class="row-sub">Ausgabe: <code>${esc(a.ausgabe.replace(/\n/g, '  |  '))}</code></p>
+      <button class="btn small primary bf-load" type="button" data-loadanl="${t.id}">${A.icon('code')}In die Python-Werkstatt laden und ausführen</button></div></details>`;
+  }
   function beispiele() {
     const E = window.INF_BEISPIELE; if (!E || !E.beispiele) return '<p class="muted">Keine Beispiele geladen.</p>';
     const card = e => {
       const isB = e.art === 'beispiel', typ = E.typen.find(t => t.id === e.typ);
       const probe = tabHtml(['Aufruf', 'Rückgabe'], e.probe.map(r => [`<code>${esc(r[0])}</code>`, `<b>${esc(r[1])}</b>`]));
+      const haupt = `<p class="bf-lbl">Hauptprogramm: anlegen, füllen, aufrufen</p>${tabHtml(['Beipackzettel', 'Python'], e.haupt.h.map(r => [`<code>${esc(r[0])}</code>`, `<pre class="ic-code bf-mini">${esc(r[1])}</pre>`]))}<p class="row-sub">Ausgabe: <code>${esc(e.haupt.out.replace(/\n/g, '  |  '))}</code></p><button class="btn small bf-load" type="button" data-load="${e.id}">${A.icon('code')}In die Python-Werkstatt laden und ausführen</button>`;
       const body = isB ? `<div class="bf-ex-sol" hidden>
           <div class="algo-host" data-algo="${e.id}"></div>
           ${e.ablauf ? `<p class="bf-lbl">Probelauf Schritt für Schritt</p><p class="row-sub">${e.ablauf.text}</p>${tabHtml(e.ablauf.kopf, e.ablauf.zeilen)}` : ''}
           <p class="bf-lbl">Wie funktioniert das?</p><ul class="bf-expl">${e.erklaerung.map(x => `<li>${x}</li>`).join('')}</ul>
-          <p class="bf-lbl">Probeläufe</p>${probe}</div>
+          <p class="bf-lbl">Probeläufe</p>${probe}${haupt}</div>
           <button class="btn small primary bf-show" type="button">${A.icon('eye')}Lösung zeigen</button>`
         : `<p class="bf-lbl">Aufrufe zum Prüfen</p>${tabHtml(['Aufruf'], e.probe.map(r => [`<code>${esc(r[0])}</code>`]))}
           <div class="pd-btns"><a class="btn small primary" href="#/aufgabe/IX-${e.id}">${A.icon('check')}Aufgabe bearbeiten (mit Musterlösung)</a><a class="btn small" href="#/python/py-${e.id}">${A.icon('code')}In der Python-Werkstatt</a></div>`;
+      const _unused = 0;
       return `<details class="bf-sec bf-ex" data-typ="${e.typ}" data-id="${e.id}"><summary><span class="bf-nr ${isB ? '' : 'bf-o'}">${isB ? 'B' : 'A'}</span><span class="bf-t">${esc(e.titel)}</span><span class="chip">${isB ? 'Beispiel' : 'Aufgabe'}</span></summary>
         <div class="prose bf-intro">${e.aufgabe}</div><div class="bf-exbody">${body}</div></details>`;
     };
     return `<p class="muted">Zu jedem Datentyp des Beipackzettels: erst <b>Beispielprogramme</b> (Aufgabe lesen, selbst überlegen, dann „Lösung zeigen“) mit Struktogramm, Python und Erklärung. Danach <b>Aufgaben</b> zum Selbermachen mit Musterlösung und Python-Werkstatt.</p>
       <div class="pd-seg" id="bsel" role="group"><button type="button" data-v="" class="on" aria-pressed="true">Alle</button>${E.typen.map(t => `<button type="button" data-v="${t.id}" aria-pressed="false">${esc(t.titel)}</button>`).join('')}</div>
-      <div id="bflist">${E.typen.map(t => `<div class="bf-grp" data-grp="${t.id}"><h3 class="bf-gh">${esc(t.titel)}</h3>${E.beispiele.filter(e => e.typ === t.id).map(card).join('')}</div>`).join('')}</div>`;
+      <div id="bflist">${E.typen.map(t => `<div class="bf-grp" data-grp="${t.id}"><h3 class="bf-gh">${esc(t.titel)}</h3>${anlegenCard(t)}${E.beispiele.filter(e => e.typ === t.id).map(card).join('')}</div>`).join('')}</div>`;
   }
 
   // ------------------------------------------------------------ Regeln
@@ -153,6 +163,9 @@ wenn i ≥ 0 UND i ≤ d.getLength():
           $$('#bsel button', root).forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); });
           $$('.bf-grp', root).forEach(g => { g.hidden = !!b.dataset.v && g.dataset.grp !== b.dataset.v; });
         }));
+        const toWerkstatt = text => { const s = A.state; if (!s.py || typeof s.py !== 'object') s.py = {}; if (!s.py.code || typeof s.py.code !== 'object') s.py.code = {}; s.py.code.spiel = text; A.save(); location.hash = '#/python'; };
+        $$('[data-load]', root).forEach(b => b.addEventListener('click', () => { const e = EXS.find(x => x.id === b.dataset.load); if (e) toWerkstatt(e.hauptCode); }));
+        $$('[data-loadanl]', root).forEach(b => b.addEventListener('click', () => { const a = ((window.INF_BEISPIELE || {}).anlegen || []).find(x => x.typ === b.dataset.loadanl); if (a) toWerkstatt(a.programm); }));
         $$('.bf-ex .bf-show', root).forEach(b => b.addEventListener('click', () => {
           const card = b.closest('.bf-ex'), sol = $('.bf-ex-sol', card), host = $('.algo-host', sol), e = EXS.find(x => x.id === card.dataset.id);
           if (sol.hidden) { sol.hidden = false; if (!host.dataset.done && window.LRAlgo && e) { window.LRAlgo.mount(host, e.algo); host.dataset.done = '1'; } b.lastChild.textContent = 'Lösung verbergen'; }
