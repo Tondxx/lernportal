@@ -66,23 +66,26 @@
       stand: '2026-11-09',
       items: [
         // Kern (am wichtigsten für den Klausurtermin)
+        L('IB1'), A('IT28'), A('IT30'),
+        L('IB2'), A('IT29'),
         L('IF1'), A('IT1'), A('IT2'),
         L('IF2'), A('IT3'), A('IT4'),
         L('IF5'), A('IT10'), A('IT11'),
         L('IF7'), A('IT14'), A('IT15'),
         L('IF9'), A('IT21'),
         L('IF10'), A('IT23'), A('IT24'),
-        L('IF11'), A('IT25'), A('IT27'),
+        L('IF11'), A('IT25'), A('IT31'), A('IT27'),
         { typ: 'probe', ref: 'PI1' },
         // Rest
-        L('IF3'), A('IT5'), A('IT6'),
+        L('IB3'), L('IF3'), A('IT5'), A('IT6'),
         L('IF4'), A('IT7'), A('IT8'), A('IT9'),
         L('IF6'), A('IT13'), A('IT12'),
         A('IT16'),
         L('IF8'), A('IT18'),
         A('IT26'),
         { typ: 'probe', ref: 'PI2' },
-        { typ: 'probe', ref: 'PI3' }
+        { typ: 'probe', ref: 'PI3' },
+        { typ: 'probe', ref: 'PI4' }
       ]
     }
   ]);

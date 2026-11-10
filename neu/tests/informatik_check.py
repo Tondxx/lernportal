@@ -46,7 +46,7 @@ bad = []
 n_code = 0
 for b in D['blocks']:
     src = html.unescape(b['code']).strip('\n')
-    if src.startswith(NOT_PY) or '├' in src or '→ [' in src or b['id'] == 'IT6':
+    if src.startswith(NOT_PY) or '├' in src or '→ [' in src or b['id'] == 'IT6' or '←' in src or src.startswith('// '):
         continue
     # Ausschnitte aus Klassen (def laenge(self): …) sind eingerückt/ohne Klasse: trotzdem kompilierbar
     try:
@@ -155,6 +155,10 @@ EXPECT = {
     'IT23b#0': size8,
     'IT25b#0': 1,
     'IT26c#0': 4, 'IT26c#1': 6,
+    'IT28a#0': len('Informatik'),
+    'IT29b#0': 3, 'IT29b#1': 3,
+    'IT30a#0': 47 // 5, 'IT30a#1': 47 % 5, 'IT30a#2': 20 % 4, 'IT30b#0': sum(int(c) for c in '5832'),
+    'IT30c#0': ord('C'), 'IT30c#1': ord('c'),
 }
 for k, v in EXPECT.items():
     got = D['nums'].get(k)
@@ -202,6 +206,39 @@ def eintragen(qv, z, s, schlange=False):
         out.append(row[::-1] if schlange and i % 2 == 1 else row)
     return out
 check('IT26c', eintragen([1, 2, 3, 4, 5, 6], 2, 3)[1][0] == 4 and eintragen([1, 2, 3, 4, 5, 6], 2, 3, True)[1][0] == 6)
+# IT29: Befehlsfolge auf dynamischer Reihung
+d29 = []
+d29.append(8); d29.append(3); d29.append(5); d29.insert(1, 6); del d29[0]; d29[2] = 1
+check('IT29a: [6, 3, 1], getItem(1) = 3', d29 == [6, 3, 1] and d29[1] == 3)
+check('IT29c: insertAt(4, …) bei Länge 3 ist ungültig, insertAt(3, …) gültig', not (0 <= 4 <= len(d29)) and (0 <= 3 <= len(d29)))
+# IT31: Stapel und Schlange
+s31 = []; r31 = []
+for op in ['A', 'B', 'top', 'pop', 'C', 'pop', 'pop', 'empty']:
+    if op in 'ABC' and len(op) == 1: s31.append(op); r31.append(None)
+    elif op == 'top': r31.append(s31[-1])
+    elif op == 'pop': r31.append(s31.pop())
+    else: r31.append(len(s31) == 0)
+check('IT31a Rückgaben B, B, C, A, wahr', [x for x in r31 if x is not None] == ['B', 'B', 'C', 'A', True], r31)
+q31 = []; r31 = []
+for op in [1, 2, 'head', 'deq', 3, 'deq', 'head', 'empty']:
+    if isinstance(op, int): q31.append(op)
+    elif op == 'head': r31.append(q31[0])
+    elif op == 'deq': r31.append(q31.pop(0))
+    else: r31.append(len(q31) == 0)
+check('IT31b Rückgaben 1, 1, 2, 3, falsch; Rest [3]', r31 == [1, 1, 2, 3, False] and q31 == [3], r31)
+# IT28: Zeichenketten
+s28 = 'Informatik'
+check('IT28a: Position 2 = f, 0 bis vor 6 = Inform, mat in, Zebra < apfel', s28[2] == 'f' and s28[0:6] == 'Inform' and 'mat' in s28 and 'Zebra' < 'apfel')
+def umdrehen(s):
+    e = ''
+    for i in range(len(s) - 1, -1, -1): e = e + s[i]
+    return e
+def pal(s):
+    for i in range(len(s) // 2):
+        if s[i] != s[len(s) - 1 - i]: return False
+    return True
+check('IT28b/c: umdrehen, Palindrom', umdrehen('Abc') == 'cbA' and pal('otto') and pal('anna') and not pal('abca') and pal('') and pal('a'))
+check('IT30c: d = ASCII 100, Kleinbuchstaben 32 höher', chr(100) == 'd' and ord('c') - ord('C') == 32 and chr(ord('Z') + 1) == '[')
 # Lektion IF4 max_mit_position, IF2 Schaltjahr, IF10 Klammern
 def max_pos(l):
     m, p = l[0], 0

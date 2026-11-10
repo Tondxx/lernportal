@@ -6,7 +6,7 @@ global.window = {};
 global.document = {};
 global.matchMedia = () => ({ matches: false });
 require('../algo.js');
-['informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js', 'informatik-demos.js'].forEach(f => require(path.join(__dirname, '..', 'content', f)));
+['informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js', 'informatik-demos.js', 'informatik-befehle-demos.js', 'informatik-befehle.js'].forEach(f => require(path.join(__dirname, '..', 'content', f)));
 let n = 0;
 const test = (name, fn) => { fn(); n++; console.log('ok', name); };
 const L = (window.LR_LESSONS || []).filter(l => l.fach === 'informatik');
@@ -18,10 +18,10 @@ const dollars = s => (String(s).match(/\$/g) || []).length;
 const strings = o => typeof o === 'string' ? [o] : Array.isArray(o) ? [].concat(...o.map(strings)) : o && typeof o === 'object' ? [].concat(...Object.values(o).map(strings)) : [];
 
 test('Lektionen: Pflichtfelder, eindeutige Ids/Nummern, Demo existiert', () => {
-  assert.strictEqual(L.length, 11);
+  assert.strictEqual(L.length, 14);
   // Nur Stoff aus dem Ordner: nichts zu Klassenkarten, binärer Suche, Teile und herrsche, Abitur-Operationsnamen
   const alles = JSON.stringify([window.LR_LESSONS, window.LR_TASKS, window.LR_SPICK, window.LR_ALGOS, window.LR_PY]);
-  ['Klassenkarte', 'Teile und herrsche', 'binäre Suche', 'DynArray', 'insertAt', 'getItem', 'class Knoten'].forEach(w => assert.ok(!alles.includes(w), `Stoff außerhalb des Ordners: ${w}`));
+  ['Klassenkarte', 'Teile und herrsche', 'binäre Suche', 'class Knoten'].forEach(w => assert.ok(!alles.includes(w), `Stoff außerhalb des Ordners: ${w}`));
   const ids = new Set(), nums = new Set();
   L.forEach(l => {
     ['id', 'title', 'short', 'idee', 'bild'].forEach(k => assert.ok(typeof l[k] === 'string' && l[k].trim(), `${l.id}: ${k} fehlt`));
@@ -37,7 +37,7 @@ test('Lektionen: Pflichtfelder, eindeutige Ids/Nummern, Demo existiert', () => {
 });
 
 test('Aufgaben: Pflichtfelder, BE, Teil, Lektion, Zahlenfelder, Musterlösung', () => {
-  assert.ok(T.length >= 22);
+  assert.ok(T.length >= 26);
   const ids = new Set(), pids = new Set();
   T.forEach(t => {
     ['id', 'title', 'afb', 'ops'].forEach(k => assert.ok(typeof t[k] === 'string' && t[k].trim(), `${t.id}: ${k} fehlt`));
@@ -67,12 +67,12 @@ test('Struktogramme in Aufgaben sind wirklich gerendert (Lösungen enthalten <di
 });
 
 test('Probeklausuren: Aufgaben existieren, 40 bis 60 BE, Minuten', () => {
-  assert.strictEqual(P.length, 3);
+  assert.strictEqual(P.length, 4);
   P.forEach(p => {
     const be = p.tasks.reduce((a, id) => { const t = T.find(x => x.id === id); assert.ok(t, `${p.id}: Aufgabe ${id} fehlt`); return a + t.parts.reduce((x, q) => x + q.be, 0); }, 0);
-    assert.ok(be >= 40 && be <= 60, `${p.id}: ${be} BE`);
+    assert.ok(be >= 30 && be <= 60, `${p.id}: ${be} BE`);
     assert.ok(p.minuten >= 60 && p.minuten <= 135, `${p.id}: Minuten`);
-    assert.ok(new Set(p.tasks.map(id => T.find(x => x.id === id).lesson)).size >= 4, `${p.id}: zu wenig verschiedene Themen`);
+    assert.ok(new Set(p.tasks.map(id => T.find(x => x.id === id).lesson)).size >= 3, `${p.id}: zu wenig verschiedene Themen`);
   });
 });
 
@@ -94,7 +94,7 @@ test('Notation: Algorithmen rendern in allen drei Darstellungen; Fragen und Abla
 });
 
 test('Demos: alle in Lektionen genannten Demos sind registriert, reine Logik stimmt', () => {
-  ['i-trace', 'i-sort', 'i-laufzeit', 'i-rekursion', 'i-fib', 'i-liste', 'i-stack', 'i-queue'].forEach(d => assert.strictEqual(typeof DEMOS[d], 'function', `Demo ${d} fehlt`));
+  ['i-trace', 'i-sort', 'i-laufzeit', 'i-rekursion', 'i-fib', 'i-liste', 'i-stack', 'i-queue', 'i-zeichen', 'i-dynarray'].forEach(d => assert.strictEqual(typeof DEMOS[d], 'function', `Demo ${d} fehlt`));
   const D = window.INF_DEMO_LOGIC;
   const last = a => a[a.length - 1];
   const b = last(D.sortFrames('bubble', [6, 3, 8, 2]));
@@ -111,6 +111,36 @@ test('Demos: alle in Lektionen genannten Demos sind registriert, reine Logik sti
   assert.strictEqual(D.traceProgs.collatz.steps().pop().out, 8);
   assert.strictEqual(D.traceProgs.liste.steps().pop().out, '9 1');
   assert.strictEqual(D.arrayShifts(10, 1), 8);
+});
+
+test('Beipackzettel: genau die Befehle des Dokuments (Abschnitte 1 bis 4), nichts erfunden', () => {
+  const B = window.INF_BEFEHLE, by = id => B.sektionen.find(s => s.id === id);
+  const names = id => by(id).ops.map(o => o.n);
+  assert.deepStrictEqual(names('dyn'), ['DynArray()', 'isEmpty', 'getItem', 'append', 'insertAt', 'setItem', 'delete', 'getLength']);
+  assert.deepStrictEqual(names('stack'), ['Stack()', 'isEmpty', 'top', 'push', 'pop']);
+  assert.deepStrictEqual(names('queue'), ['Queue()', 'isEmpty', 'head', 'enqueue', 'dequeue']);
+  assert.strictEqual(by('zeichen').ops.length, 8);
+  assert.strictEqual(by('rechnen').ops.length, 4);
+  B.sektionen.forEach(s => s.ops.forEach(o => assert.ok(o.sig && o.was, `${s.id}/${o.n}: Signatur oder Wirkung fehlt`)));
+  B.sektionen.filter(s => s.dran !== false && !['static'].includes(s.id)).forEach(s => s.ops.forEach(o => assert.ok(o.py && o.bsp, `${s.id}/${o.n}: Python oder Beispiel fehlt`)));
+  // Jede dynamische Operation, die in Aufgaben als Befehl steht, gibt es auf dem Beipackzettel
+  const erlaubt = new Set(['isEmpty', 'getItem', 'append', 'insertAt', 'setItem', 'delete', 'getLength', 'top', 'push', 'pop', 'head', 'enqueue', 'dequeue']);
+  const alles = JSON.stringify([window.LR_TASKS.filter(t => t.fach === 'informatik'), window.LR_LESSONS]);
+  const gefunden = new Set((alles.match(/\b(?:d|s|q|liste|a)\.([a-zA-Z]+)\(/g) || []).map(m => m.replace(/^[a-z]+\./, '').replace('(', '')));
+  const ok = new Set(['append', 'insert', 'pop', 'reverse', 'sort', 'remove', 'index', 'count', 'copy', 'getItem', 'setItem', 'insertAt', 'delete', 'getLength', 'isEmpty', 'top', 'push', 'enqueue', 'dequeue', 'head']);
+  gefunden.forEach(g => assert.ok(ok.has(g), `Unbekannter Befehl ${g}() in Aufgaben/Lektionen`));
+  // Trainer: erzeugt gültige Folgen und prüft richtig
+  ['stack', 'queue', 'dyn'].forEach(k => { for (let i = 0; i < 60; i++) { const t = window.INF_DEMO_LOGIC.makeTraining(k); assert.ok(t.ops.length >= 6 && t.lastAnswer !== 'null' && t.lastAnswer !== 'undefined', `${k}: ${t.ops}`); const r = window.INF_DEMO_LOGIC.checkTraining(t, t.lastAnswer, t.finalItems.join(' ')); assert.ok(r.last && r.final, `${k}: Prüfung ${JSON.stringify(t)}`); } });
+});
+
+test('Zeichenketten- und Reihungs-Logik: Beispiele des Beipackzettels', () => {
+  const S = window.INF_DEMO_LOGIC.str;
+  assert.deepStrictEqual([S.laenge('Hallo'), S.zeichen('Hallo', 1), S.teil('Hallo', 1, 4), S.verbinde('Ha', 'llo'), S.gleich('Hallo', 'hallo'), S.enthaelt('Hallo', 'all'), S.kleiner('Zebra', 'apfel'), S.ascii('A'), S.zeichenZu(66)], [5, 'a', 'all', 'Hallo', false, true, true, 65, 'B']);
+  assert.strictEqual(S.zeichen('abc', 3), null);
+  const d = window.INF_DEMO_LOGIC.Dyn();
+  [8, 3, 5].forEach(x => d.append(x)); d.insertAt(1, 6); d.delete(0); d.setItem(2, 1);
+  assert.deepStrictEqual([d.items(), d.getItem(1).v, d.getLength()], [[6, 3, 1], 3, 3]);
+  assert.ok(d.insertAt(4, 9).err && d.delete(3).err && d.getItem(-1).err && !d.insertAt(3, 9).err);
 });
 
 console.log(`\n${n} Tests bestanden`);

@@ -12,12 +12,15 @@
   const A = window.LRAlgo ? window.LRAlgo.A : null;
   const INF_A = {};
   if (A) {
+    // Schreibweise wie im Beipackzettel (Ergänzende Hinweise, Abschnitt 4/5): getItem/setItem/getLength, Stack/Queue-Operationen,
+    // „mod“, „gib … zurück“. Die Python-Zeile steht jeweils als zweiter Text.
+    const swap = (a, b) => [A.do(`h ← liste.getItem(${a})`, `h = liste[${a}]`), A.do(`liste.setItem(${a}, liste.getItem(${b}))`, `liste[${a}] = liste[${b}]`), A.do(`liste.setItem(${b}, h)`, `liste[${b}] = h`)];
     INF_A.ersteNegative = {
       name: 'ersteNegative', params: ['liste'],
       body: [
         A.do('i ← 0', 'i = 0'),
-        A.while('i < len(liste) UND liste[i] ≥ 0', 'i < len(liste) and liste[i] >= 0', [A.do('i ← i + 1', 'i = i + 1')]),
-        A.if('i = len(liste)', 'i == len(liste)', [A.ret('−1', '-1')], [A.ret('i')])
+        A.while('i < liste.getLength() UND liste.getItem(i) ≥ 0', 'i < len(liste) and liste[i] >= 0', [A.do('i ← i + 1', 'i = i + 1')]),
+        A.if('i = liste.getLength()', 'i == len(liste)', [A.ret('−1', '-1')], [A.ret('i')])
       ]
     };
     INF_A.versandkosten = {
@@ -29,23 +32,22 @@
     INF_A.selectionsort = {
       name: 'selectionsort', params: ['liste'],
       body: [
-        A.each('i', 'range(len(liste) - 1)', [
+        A.count('i', '0', 'liste.getLength() − 2', [
           A.do('kleinste ← i', 'kleinste = i'),
-          A.each('j', 'range(i + 1, len(liste))', [A.if('liste[j] < liste[kleinste]', null, [A.do('kleinste ← j', 'kleinste = j')])]),
-          A.do('vertausche liste[i] und liste[kleinste]', 'liste[i], liste[kleinste] = liste[kleinste], liste[i]')
-        ]),
+          A.count('j', 'i + 1', 'liste.getLength() − 1', [A.if('liste.getItem(j) < liste.getItem(kleinste)', 'liste[j] < liste[kleinste]', [A.do('kleinste ← j', 'kleinste = j')])], 'i + 1, len(liste)')
+        ].concat(swap('i', 'kleinste')), 'len(liste) - 1'),
         A.ret('liste')
       ]
     };
     INF_A.bubblesort = {
       name: 'bubblesort', params: ['liste'],
       body: [
-        A.do('n ← len(liste)', 'n = len(liste)'),
-        A.each('i', 'range(n - 1)', [
-          A.each('j', 'range(n - 1 - i)', [
-            A.if('liste[j] > liste[j + 1]', null, [A.do('vertausche liste[j] und liste[j + 1]', 'liste[j], liste[j + 1] = liste[j + 1], liste[j]')])
-          ])
-        ]),
+        A.do('n ← liste.getLength()', 'n = len(liste)'),
+        A.count('i', '0', 'n − 2', [
+          A.count('j', '0', 'n − 2 − i', [
+            A.if('liste.getItem(j) > liste.getItem(j + 1)', 'liste[j] > liste[j + 1]', swap('j', 'j + 1'))
+          ], 'n - 1 - i')
+        ], 'n - 1'),
         A.ret('liste')
       ]
     };
@@ -56,37 +58,57 @@
     INF_A.maxRek = {
       name: 'max_rek', params: ['liste', 'i'],
       body: [
-        A.if('i = len(liste) − 1', 'i == len(liste) - 1', [A.ret('liste[i]')]),
+        A.if('i = liste.getLength() − 1', 'i == len(liste) - 1', [A.ret('liste.getItem(i)', 'liste[i]')]),
         A.do('rest ← max_rek(liste, i + 1)', 'rest = max_rek(liste, i + 1)'),
-        A.if('rest > liste[i]', null, [A.ret('rest')], [A.ret('liste[i]')])
+        A.if('rest > liste.getItem(i)', 'rest > liste[i]', [A.ret('rest')], [A.ret('liste.getItem(i)', 'liste[i]')])
       ]
     };
+    // Zeichenketten: nur Länge und Zeichen an Position (Beipackzettel Abschnitt 1)
     INF_A.klammernOk = {
       name: 'klammernOk', params: ['text'],
       body: [
         A.do('s ← Stack()', 's = []'),
-        A.do('Zuordnung: ) → (   ] → [   } → {', 'paar = {")": "(", "]": "[", "}": "{"}'),
-        A.each('z', 'text', [
-          A.if('z ist öffnende Klammer', 'z in "([{"', [A.do('s.push(z)', 's.append(z)')], [
-            A.if('z ist schließende Klammer', 'z in ")]}"', [
+        A.count('k', '0', 'länge(text) − 1', [
+          A.do('z ← Zeichen an Position k in text', 'z = text[k]'),
+          A.if('z = "(" ODER z = "[" ODER z = "{"', 'z == "(" or z == "[" or z == "{"', [A.do('s.push(z)', 's.append(z)')], [
+            A.if('z = ")" ODER z = "]" ODER z = "}"', 'z == ")" or z == "]" or z == "}"', [
               A.if('s.isEmpty()', 'len(s) == 0', [A.ret('falsch', 'False')]),
               A.do('o ← s.pop()', 'o = s.pop()'),
-              A.if('o passt nicht zu z', 'o != paar[z]', [A.ret('falsch', 'False')])
+              A.if('o und z bilden kein Klammerpaar', 'not ((o == "(" and z == ")") or (o == "[" and z == "]") or (o == "{" and z == "}"))', [A.ret('falsch', 'False')])
             ])
           ])
-        ]),
+        ], 'len(text)'),
         A.ret('s.isEmpty()', 'len(s) == 0')
+      ]
+    };
+    INF_A.grossbuchstaben = {
+      name: 'anzahlGross', params: ['wort'],
+      body: [
+        A.do('anzahl ← 0', 'anzahl = 0'),
+        A.count('i', '0', 'länge(wort) − 1', [
+          A.do('z ← Zeichen an Position i in wort', 'z = wort[i]'),
+          A.if('ascii(z) ≥ 65 UND ascii(z) ≤ 90', 'ord(z) >= 65 and ord(z) <= 90', [A.do('anzahl ← anzahl + 1', 'anzahl = anzahl + 1')])
+        ], 'len(wort)'),
+        A.ret('anzahl')
+      ]
+    };
+    INF_A.anzahlGerade = {
+      name: 'anzahlGerade', params: ['a'],
+      body: [
+        A.do('anzahl ← 0', 'anzahl = 0'),
+        A.each('x', 'a', [A.if('x mod 2 = 0', 'x % 2 == 0', [A.do('anzahl ← anzahl + 1', 'anzahl = anzahl + 1')])]),
+        A.ret('anzahl')
       ]
     };
     INF_A.eintragen = {
       name: 'eintragen', params: ['q', 'zeilen', 'spalten'],
       body: [
-        A.do('ergebnis ← leere Liste', 'ergebnis = []'),
-        A.each('z', 'range(zeilen)', [
-          A.do('zeile ← leere Liste', 'zeile = []'),
-          A.each('s', 'range(spalten)', [A.do('zeile.append(q.dequeue())', 'zeile.append(q.pop(0))')]),
+        A.do('ergebnis ← DynArray()', 'ergebnis = []'),
+        A.count('z', '0', 'zeilen − 1', [
+          A.do('zeile ← DynArray()', 'zeile = []'),
+          A.count('s', '0', 'spalten − 1', [A.do('zeile.append(q.dequeue())', 'zeile.append(q.pop(0))')], 'spalten'),
           A.do('ergebnis.append(zeile)')
-        ]),
+        ], 'zeilen'),
         A.ret('ergebnis')
       ]
     };
@@ -103,7 +125,7 @@
       text: 'Der Algorithmus sortiert eine Liste aufsteigend. Der innere Durchlauf vergleicht Nachbarn und tauscht sie, wenn sie falsch stehen. Danach steht das größte Element ganz hinten.',
       algo: INF_A.bubblesort, beispiel: [6, 3, 8, 2],
       fragen: [
-        { frage: 'Warum läuft die innere Schleife nur bis n − 1 − i?', optionen: ['Die letzten i Elemente sind schon endgültig sortiert, und l[j + 1] darf nicht über das Ende hinausgreifen.', 'Damit das Programm schneller aussieht.', 'Weil Python bei 0 anfängt zu zählen.'], richtig: 0, erklaerung: 'Nach i Durchläufen stehen die i größten Elemente richtig hinten. Außerdem wäre bei j = n − 1 der Zugriff auf l[j + 1] ein IndexError.' },
+        { frage: 'Warum läuft die innere Schleife nur bis n − 2 − i?', optionen: ['Die letzten i Elemente sind schon endgültig sortiert, und liste.getItem(j + 1) darf nicht über das Ende hinausgreifen.', 'Damit das Programm schneller aussieht.', 'Weil Python bei 0 anfängt zu zählen.'], richtig: 0, erklaerung: 'Nach i Durchläufen stehen die i größten Elemente richtig hinten. Außerdem wäre bei j = n − 1 der Zugriff auf Position j + 1 ein Fehler (es gibt sie nicht).' },
         { frage: 'Wie viele Vergleiche macht der Algorithmus bei 5 Elementen (immer, auch bei sortierter Liste)?', optionen: ['10', '5', '25'], richtig: 0, erklaerung: '4 + 3 + 2 + 1 = 10 = 5·4/2. Ohne Abbruchbedingung hängt die Zahl nicht von der Anordnung ab.' },
         { frage: 'Welche Ordnung hat die Laufzeit im schlimmsten Fall?', optionen: ['O(n)', 'O(n²)', 'O(2ⁿ)'], richtig: 1, erklaerung: 'Zwei geschachtelte Schleifen über die Liste: n(n−1)/2 Vergleiche, also O(n²).' }
       ],
@@ -143,8 +165,8 @@
       text: 'Der Algorithmus bekommt eine Liste und gibt die Position des ersten negativen Elements zurück, oder −1, wenn es keines gibt.',
       algo: INF_A.ersteNegative, beispiel: [3, 5, -2, 7],
       fragen: [
-        { frage: 'Was gibt ersteNegative([4, 0, 7]) zurück?', optionen: ['−1', '1', '0'], richtig: 0, erklaerung: 'Die Null ist nicht negativ (liste[i] ≥ 0). Die Schleife läuft bis i = 3 = len(liste), dann wird −1 zurückgegeben.' },
-        { frage: 'Warum muss „i < len(liste)“ vor „liste[i] ≥ 0“ geprüft werden?', optionen: ['Sonst greift liste[i] bei i = len(liste) ins Leere (IndexError).', 'Das ist nur Geschmackssache.', 'Weil UND links zuerst gerechnet werden muss, damit es schneller ist.'], richtig: 0, erklaerung: 'Python wertet „A and B“ von links aus. Ist A falsch, wird B gar nicht erst ausgewertet. So wird der Zugriff außerhalb der Liste verhindert.' },
+        { frage: 'Was gibt ersteNegative([4, 0, 7]) zurück?', optionen: ['−1', '1', '0'], richtig: 0, erklaerung: 'Die Null ist nicht negativ (liste.getItem(i) ≥ 0). Die Schleife läuft bis i = 3 = liste.getLength(), dann wird −1 zurückgegeben.' },
+        { frage: 'Warum muss „i < liste.getLength()“ vor „liste.getItem(i) ≥ 0“ geprüft werden?', optionen: ['Sonst greift liste.getItem(i) bei i = liste.getLength() ins Leere (Laufzeitfehler).', 'Das ist nur Geschmackssache.', 'Weil UND links zuerst gerechnet werden muss, damit es schneller ist.'], richtig: 0, erklaerung: 'Python wertet „A and B“ von links aus. Ist A falsch, wird B gar nicht erst ausgewertet. So wird der Zugriff außerhalb der Liste verhindert. Der Beipackzettel verlangt genau das: Laufzeitfehler müssen durch Abfragen ausgeschlossen werden.' },
         { frage: 'Welche Rückgabe liefert ersteNegative([−1, −2])?', optionen: ['0', '1', '−1'], richtig: 0, erklaerung: 'Das erste Element ist schon negativ: Die Schleife läuft keinmal, i bleibt 0.' }
       ],
       ablauf: {
@@ -289,19 +311,37 @@
     },
     {
       id: 'py-klammern', fach: 'informatik', algo: 'inf-klammern', titel: 'Klammerprüfung mit Stapel', kurz: 'Ein Stapel merkt sich die offenen Klammern.',
-      text: 'Schreibe <code>klammern_ok(text)</code>: Die Funktion prüft mit einem <b>Stapel</b> (Python-Liste mit <code>append</code> und <code>pop</code>), ob alle Klammern <code>()</code>, <code>[]</code>, <code>{}</code> im Text richtig geöffnet und geschlossen sind. Andere Zeichen werden ignoriert.',
+      text: 'Schreibe <code>klammern_ok(text)</code>: Die Funktion prüft mit einem <b>Stapel</b> (Python-Liste mit <code>append</code> und <code>pop</code>), ob alle Klammern <code>()</code>, <code>[]</code>, <code>{}</code> im Text richtig geöffnet und geschlossen sind. Andere Zeichen werden ignoriert. Benutze nur Befehle des Beipackzettels (kein Wörterbuch).',
       start: 'def klammern_ok(text):\n    stapel = []\n    # Dein Code hier\n    pass\n\n\nprint(klammern_ok("([x])"))\n',
       tests: [{ call: 'klammern_ok("([x])")', erwartet: true }, { call: 'klammern_ok("([x])]")', erwartet: false }, { call: 'klammern_ok("((")', erwartet: false }, { call: 'klammern_ok(")(")', erwartet: false }, { call: 'klammern_ok("")', erwartet: true }, { call: 'klammern_ok("{[()]}")', erwartet: true }, { call: 'klammern_ok("(]")', erwartet: false }],
       hinweis: 'Öffnende Klammer: append. Schließende: ist der Stapel leer → False; sonst pop und prüfen, ob es die passende öffnende war. Am Ende muss der Stapel leer sein.',
-      loesung: 'def klammern_ok(text):\n    stapel = []\n    paar = {")": "(", "]": "[", "}": "{"}\n    for z in text:\n        if z in "([{":\n            stapel.append(z)\n        elif z in ")]}":\n            if len(stapel) == 0:\n                return False\n            oben = stapel.pop()\n            if oben != paar[z]:\n                return False\n    return len(stapel) == 0\n'
+      loesung: 'def klammern_ok(text):\n    stapel = []\n    for i in range(len(text)):\n        z = text[i]\n        if z == "(" or z == "[" or z == "{":\n            stapel.append(z)\n        elif z == ")" or z == "]" or z == "}":\n            if len(stapel) == 0:\n                return False\n            oben = stapel.pop()\n            if not ((oben == "(" and z == ")") or (oben == "[" and z == "]") or (oben == "{" and z == "}")):\n                return False\n    return len(stapel) == 0\n'
     },
     {
       id: 'py-backspace', fach: 'informatik', titel: 'Textfeld mit Rücktaste', kurz: 'Ein Stapel speichert die getippten Zeichen.',
-      text: 'Schreibe <code>tippen(eingabe)</code>. Die Zeichenkette <code>eingabe</code> besteht aus Buchstaben und dem Zeichen <code>&lt;</code> für die <b>Rücktaste</b>, die das zuletzt getippte Zeichen löscht (bei leerem Text passiert nichts). Gib den entstandenen Text zurück. Benutze einen Stapel.',
+      text: 'Schreibe <code>tippen(eingabe)</code>. Die Zeichenkette <code>eingabe</code> besteht aus Buchstaben und dem Zeichen <code>&lt;</code> für die <b>Rücktaste</b>, die das zuletzt getippte Zeichen löscht (bei leerem Text passiert nichts). Gib den entstandenen Text zurück. Benutze einen Stapel (<code>append</code>/<code>pop</code>) und baue die Zeichenkette mit <code>+</code> zusammen (kein <code>join</code>).',
       start: 'def tippen(eingabe):\n    stapel = []\n    # Dein Code hier\n    pass\n\n\nprint(tippen("ab<c"))\n',
       tests: [{ call: 'tippen("ab<c")', erwartet: 'ac' }, { call: 'tippen("abc<<")', erwartet: 'a' }, { call: 'tippen("<a")', erwartet: 'a' }, { call: 'tippen("")', erwartet: '' }, { call: 'tippen("x<y<z<")', erwartet: '' }, { call: 'tippen("STAX<PEN<L")', erwartet: 'STAPEL' }],
       hinweis: 'Zeichen ≠ „<“: append. Zeichen = „<“: pop, aber nur wenn der Stapel nicht leer ist. Am Ende die Zeichen zu einem Text verbinden.',
-      loesung: 'def tippen(eingabe):\n    stapel = []\n    for z in eingabe:\n        if z == "<":\n            if len(stapel) > 0:\n                stapel.pop()\n        else:\n            stapel.append(z)\n    return "".join(stapel)\n'
+      loesung: 'def tippen(eingabe):\n    stapel = []\n    for i in range(len(eingabe)):\n        z = eingabe[i]\n        if z == "<":\n            if len(stapel) > 0:\n                stapel.pop()\n        else:\n            stapel.append(z)\n    ergebnis = ""\n    for k in range(len(stapel)):\n        ergebnis = ergebnis + stapel[k]\n    return ergebnis\n'
+    },
+    {
+      id: 'py-gross', fach: 'informatik', titel: 'Großbuchstaben zählen (nur Beipackzettel-Befehle)', kurz: 'Länge, Zeichen an Position und ASCII-Wert.',
+      text: 'Schreibe <code>anzahl_gross(wort)</code>: Die Funktion zählt die Großbuchstaben A bis Z in der Zeichenkette. Erlaubt sind nur die Zeichenketten-Operationen des Beipackzettels: <code>len</code>, <code>wort[i]</code> und <code>ord</code> (A = 65 bis Z = 90). Kein <code>isupper()</code>, kein <code>for z in wort</code> mit Zusatzfunktionen.',
+      start: 'def anzahl_gross(wort):\n    # Dein Code hier\n    pass\n\n\nprint(anzahl_gross("Hallo Welt"))\n',
+      tests: [{ call: 'anzahl_gross("Hallo Welt")', erwartet: 2 }, { call: 'anzahl_gross("")', erwartet: 0 }, { call: 'anzahl_gross("abc")', erwartet: 0 }, { call: 'anzahl_gross("ABC def GHI")', erwartet: 6 }, { call: 'anzahl_gross("Z")', erwartet: 1 }],
+      verbot: ['isupper', 'upper(', 'lower('],
+      hinweis: 'Schleife über die Positionen 0 bis len(wort) − 1. Ein Zeichen z ist ein Großbuchstabe, wenn ord(z) zwischen 65 und 90 liegt.',
+      loesung: 'def anzahl_gross(wort):\n    anzahl = 0\n    for i in range(len(wort)):\n        z = wort[i]\n        if ord(z) >= 65 and ord(z) <= 90:\n            anzahl = anzahl + 1\n    return anzahl\n'
+    },
+    {
+      id: 'py-entferne-negative', fach: 'informatik', titel: 'Negative Zahlen aus der Reihung löschen', kurz: 'delete von hinten nach vorn.',
+      text: 'Schreibe <code>entferne_negative(d)</code>: Aus der Liste <code>d</code> (eine dynamische Reihung mit ganzen Zahlen) werden alle negativen Zahlen mit <code>del d[i]</code> gelöscht (Beipackzettel: <code>delete(i)</code>). Die Funktion verändert <code>d</code> und gibt <code>d</code> zurück. Kein <code>remove</code>, kein neues Zusammenbauen der Liste.',
+      start: 'def entferne_negative(d):\n    # Dein Code hier\n    pass\n\n\nprint(entferne_negative([4, -2, -5, 7]))\n',
+      tests: [{ call: 'entferne_negative([4, -2, -5, 7])', erwartet: [4, 7] }, { call: 'entferne_negative([-1, -2, -3])', erwartet: [] }, { call: 'entferne_negative([])', erwartet: [] }, { call: 'entferne_negative([1, 2, 3])', erwartet: [1, 2, 3] }, { call: 'entferne_negative([-3, 5, -1, 6, -8])', erwartet: [5, 6] }],
+      verbot: ['remove(', 'filter('],
+      hinweis: 'Lauf von hinten nach vorn (i = len(d) − 1 bis 0). Dann stören die nachrückenden Elemente nicht.',
+      loesung: 'def entferne_negative(d):\n    i = len(d) - 1\n    while i >= 0:\n        if d[i] < 0:\n            del d[i]\n        i = i - 1\n    return d\n'
     },
     {
       id: 'py-taxi', fach: 'informatik', titel: 'Taxistand prüfen (Schlange)', kurz: 'Protokoll ist nur gültig, wenn immer das vorderste Taxi ausfährt.',

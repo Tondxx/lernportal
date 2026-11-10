@@ -5,7 +5,8 @@
    Tippen/Klicken auf eine Zeile oder einen Kasten markiert dieselbe Stelle in allen drei.
 
    Bausteine (A.*):  do(pseudo, python)  ·  out(pseudo, python)  ·  ret(pseudo, python)
-                     if(bedPseudo, bedPython, ja[], nein[])  ·  each(var, sammlung, körper[])
+                     if(bedPseudo, bedPython, ja[], nein[])  ·  each(var, sammlung, körper[], sammlungPython?)
+                     count(var, von, bis, körper[], rangePython?)   zählergesteuert: „für i von 0 bis n − 1“
                      while(bedPseudo, bedPython, körper[])
    Algorithmus:      { name, params:[…], body:[…] }
    UNSICHER: Schreibweise des Pseudocodes (Schlüsselwörter) ist noch nicht mit Tondas Lehrkraft abgeglichen.
@@ -22,7 +23,8 @@
     out: (p, y) => ({ t: 'out', p, y: y == null ? p : y }),
     ret: (p, y) => ({ t: 'ret', p, y: y == null ? p : y }),
     if: (cp, cy, ja, nein) => ({ t: 'if', cp, cy: cy == null ? cp : cy, ja: ja || [], nein: nein || [] }),
-    each: (v, coll, body) => ({ t: 'each', v, coll, body: body || [] }),
+    each: (v, coll, body, collPy) => ({ t: 'each', v, coll, collPy, body: body || [] }),
+    count: (v, from, to, body, py) => ({ t: 'count', v, from, to, py, body: body || [] }),
     while: (cp, cy, body) => ({ t: 'while', cp, cy: cy == null ? cp : cy, body: body || [] })
   };
 
@@ -50,6 +52,10 @@
         walk(x.ja, d + 1);
         if (x.nein.length) { L(d, x.id, ['SONST', 1]); walk(x.nein, d + 1); }
         L(d, x.id, ['ENDE WENN', 1]);
+      } else if (x.t === 'count') {
+        L(d, x.id, ['FÜR', 1], [` ${x.v} `, 0], ['VON', 1], [` ${x.from} `, 0], ['BIS', 1], [' ' + x.to, 0]);
+        walk(x.body, d + 1);
+        L(d, x.id, ['ENDE FÜR', 1]);
       } else if (x.t === 'each') {
         L(d, x.id, ['FÜR JEDES', 1], [` ${x.v} `, 0], ['IN', 1], [' ' + x.coll, 0]);
         walk(x.body, d + 1);
@@ -79,7 +85,8 @@
         else if (x.t === 'if') {
           L(d, x.id, `if ${x.cy}:`); walk(x.ja, d + 1);
           if (x.nein.length) { L(d, x.id, 'else:'); walk(x.nein, d + 1); }
-        } else if (x.t === 'each') { L(d, x.id, `for ${x.v} in ${x.coll}:`); walk(x.body, d + 1); }
+        } else if (x.t === 'count') { L(d, x.id, `for ${x.v} in range(${x.py != null ? x.py : `${x.from}, ${x.to} + 1`}):`); walk(x.body, d + 1); }
+        else if (x.t === 'each') { L(d, x.id, `for ${x.v} in ${x.collPy || x.coll}:`); walk(x.body, d + 1); }
         else if (x.t === 'while') { L(d, x.id, `while ${x.cy}:`); walk(x.body, d + 1); }
       });
     };
@@ -105,11 +112,11 @@
     const list = nodes => nodes.map(x => {
       if (x.t === 'do') return `<div class="ns-n ns-do" data-n="${x.id}">${esc(x.p)}</div>`;
       if (x.t === 'out') return `<div class="ns-n ns-do" data-n="${x.id}">Ausgabe: ${esc(x.p)}</div>`;
-      if (x.t === 'ret') return `<div class="ns-n ns-do" data-n="${x.id}">Rückgabe: ${esc(x.p)}</div>`;
+      if (x.t === 'ret') return `<div class="ns-n ns-do" data-n="${x.id}">gib ${esc(x.p)} zurück</div>`;
       if (x.t === 'if') return `<div class="ns-n ns-if" data-n="${x.id}">
           <div class="ns-if-h"><svg class="ns-tri" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 L50 100 L100 0" vector-effect="non-scaling-stroke"/></svg><span class="ns-cond">${esc(x.cp)}</span><span class="ns-ja">ja</span><span class="ns-nein">nein</span></div>
           <div class="ns-cols"><div class="ns-col">${list(x.ja)}</div><div class="ns-col">${list(x.nein)}</div></div></div>`;
-      const head = x.t === 'each' ? `für jedes ${esc(x.v)} in ${esc(x.coll)}` : `solange ${esc(x.cp)}`;
+      const head = x.t === 'count' ? `für ${esc(x.v)} von ${esc(x.from)} bis ${esc(x.to)}` : x.t === 'each' ? `für jedes ${esc(x.v)} in ${esc(x.coll)}` : `solange ${esc(x.cp)}`;
       return `<div class="ns-n ns-loop" data-n="${x.id}"><div class="ns-loop-h">${head}</div><div class="ns-loop-b">${list(x.body)}</div></div>`;
     }).join('');
     return `<div class="ns" role="img" aria-label="Struktogramm ${esc(a.name)}"><div class="ns-title" data-n="0">${esc(a.name)}(${esc(a.params.join(', '))})</div>${list(a.body)}</div>`;

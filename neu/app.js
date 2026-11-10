@@ -771,6 +771,7 @@
     if (a === 'algo') return ['algo', b];
     if (a === 'python') return ['python', b];
     if (a === 'skript') return ['skript', b || 'mathe'];
+    if (a === 'befehle') return ['befehle'];
     return ['heute'];
   }
 
@@ -866,6 +867,7 @@
   if (window.LRSuche && me) LRSuche.init(APP);
   if (window.LRPython) LRPython.init(APP);
   if (window.LRSkript) LRSkript.init(APP);
+  if (window.LRBefehle) LRBefehle.init(APP);
   paintProfile();
   go({ first: true }); // erste Anzeige ohne Übergang: der kann beim Laden hängen bleiben
   askWho(idleAtStart);

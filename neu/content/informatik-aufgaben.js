@@ -1,7 +1,9 @@
 /* ==========================================================================
    INFORMATIK eA (IF13-Tri) · Aufgaben, Probeklausuren, Spickzettel für Klausur 2 (12.1), Di 10.11.2026
    Alle Aufgaben sind EIGENE Aufgaben (eigene Daten und Zahlen), angelehnt an die IServ-Arbeitsblätter.
-   Nur Stoff aus dem IServ-Ordner (keine Klassenkarten, keine binäre Suche, keine Bäume). Aufgabentypen wie in der Abitur-Operatoren-Liste (Angeben, Dokumentieren, Erläutern, Entwickeln, Implementieren).
+   Nur Stoff aus dem IServ-Ordner (keine Klassenkarten, keine binäre Suche, keine Bäume). Es gelten NUR die Befehle des Beipackzettels
+   (INF_Ergaenzende-Hinweise_GO_Neufassung_2025d.pdf, grüne Abschnitte 1 bis 4; Tonda 10.11.: „die Befehle sind Pflicht, es gibt keine anderen“).
+   Aufgabentypen wie in der Operatoren-Liste (Angeben, Dokumentieren, Erläutern, Entwickeln, Implementieren).
    Code und Zahlen geprüft: neu/tests/informatik_check.py.
    Aufgabe: { id, fach, teil ('A' verstehen/erläutern | 'B' entwickeln/implementieren), lesson, title, afb, ops, intro, parts[{id,label,be,text,hints,sol,nums[{label,ans,tol}]}] }
    ========================================================================== */
@@ -13,7 +15,7 @@
   const ns = a => (window.LRAlgo && a ? window.LRAlgo.nsHtml(a) : '');
   const IA = window.INF_A || {};
   const list = items => `<ul>${items.map(i => `<li>${i}</li>`).join('')}</ul>`;
-  const DYN = `<p class="dim" style="font-size:14px">Programmiersprache: Python. Stapel: <code>push</code> und <code>pop</code> (zusätzlich <code>top</code>, <code>isEmpty</code>), Schlange: <code>enqueue</code> und <code>dequeue</code> (zusätzlich <code>head</code>, <code>isEmpty</code>).</p>`;
+  const DYN = `<p class="dim" style="font-size:14px">Es gelten nur die Befehle des <a class="link" href="#/befehle">Beipackzettels</a>: dynamische Reihung (<code>DynArray()</code>, <code>isEmpty</code>, <code>getItem</code>, <code>append</code>, <code>insertAt</code>, <code>setItem</code>, <code>delete</code>, <code>getLength</code>), Stapel (<code>Stack()</code>, <code>isEmpty</code>, <code>top</code>, <code>push</code>, <code>pop</code>), Schlange (<code>Queue()</code>, <code>isEmpty</code>, <code>head</code>, <code>enqueue</code>, <code>dequeue</code>). Laufzeitfehler müssen durch Abfragen ausgeschlossen werden. Beim Implementieren: Python.</p>`;
 
   const TASKS = [
     // ---------------------------------------------------------------- IF1: Tracetabelle
@@ -181,16 +183,16 @@ def kleinste(temp):
       ]
     },
     {
-      id: 'IT8', fach: F, teil: 'A', lesson: 'IF4', title: 'Listen-Operationen verfolgen', afb: 'I', ops: 'Angeben, Nennen',
-      intro: `Eine leere Liste <code>d = []</code> wird angelegt. Dann werden der Reihe nach ausgeführt: <code>d.append(4)</code>, <code>d.append(7)</code>, <code>d.insert(1, 5)</code>, <code>d[0] = 9</code>, <code>del d[2]</code>, <code>d.append(3)</code>.`,
+      id: 'IT8', fach: F, teil: 'A', lesson: 'IF4', title: 'Dynamische Reihung: Befehle verfolgen', afb: 'I', ops: 'Angeben, Nennen',
+      intro: `${DYN}Eine leere dynamische Reihung <code>d</code> wird angelegt (<code>DynArray()</code>). Dann werden der Reihe nach ausgeführt: <code>d.append(4)</code>, <code>d.append(7)</code>, <code>d.insertAt(1, 5)</code>, <code>d.setItem(0, 9)</code>, <code>d.delete(2)</code>, <code>d.append(3)</code>.`,
       parts: [
         { id: 'IT8a', label: 'a)', be: 3, text: 'Geben Sie den Inhalt der Liste nach jeder Operation an.',
-          sol: tab(['Operation', 'Inhalt'], [['append(4)', '[4]'], ['append(7)', '[4, 7]'], ['insert(1, 5)', '[4, 5, 7] (die 7 rückt nach hinten)'], ['d[0] = 9', '[9, 5, 7]'], ['del d[2]', '[9, 5] (Index 2 war die 7)'], ['append(3)', '[9, 5, 3]']]) + list(['insert (1 BE)', 'Zuweisung und del (1 BE)', 'Rest (1 BE)']) },
-        { id: 'IT8b', label: 'b)', be: 2, text: 'Welche Werte liefern <code>len(d)</code> und <code>d[1]</code> am Ende?',
-          nums: [{ label: 'len(d)', ans: 3, tol: 0.01 }, { label: 'd[1]', ans: 5, tol: 0.01 }],
-          sol: `<p><code>len(d)</code> = 3, <code>d[1]</code> = 5 (Zählung beginnt bei 0).</p>` },
+          sol: tab(['Operation', 'Inhalt'], [['append(4)', '[4]'], ['append(7)', '[4, 7]'], ['insertAt(1, 5)', '[4, 5, 7] (die 7 rückt nach hinten)'], ['setItem(0, 9)', '[9, 5, 7]'], ['delete(2)', '[9, 5] (Index 2 war die 7)'], ['append(3)', '[9, 5, 3]']]) + list(['insertAt (1 BE)', 'setItem und delete (1 BE)', 'Rest (1 BE)']) },
+        { id: 'IT8b', label: 'b)', be: 2, text: 'Welche Werte liefern <code>d.getLength()</code> und <code>d.getItem(1)</code> am Ende?',
+          nums: [{ label: 'getLength()', ans: 3, tol: 0.01 }, { label: 'getItem(1)', ans: 5, tol: 0.01 }],
+          sol: `<p><code>getLength()</code> = 3, <code>getItem(1)</code> = 5 (Zählung beginnt bei 0).</p>` },
         { id: 'IT8c', label: 'c)', be: 2, text: 'Welche der Operationen verschieben andere Elemente?',
-          sol: `<p><code>insert</code> (alle folgenden Elemente nach hinten) und <code>del</code> (alle folgenden nach vorn). <code>append</code> und die Zuweisung <code>d[0] = 9</code> verschieben nichts.</p>` }
+          sol: `<p><code>insertAt</code> (alle folgenden Elemente nach hinten) und <code>delete</code> (alle folgenden nach vorn). <code>append</code> und <code>setItem</code> verschieben nichts.</p>` }
       ]
     },
     {
@@ -423,21 +425,21 @@ Anker → [Messer|•] → [Schild|•] → [Bogen|•] → [Kompass|NULL]`)}</p
           sol: ns(IA.klammernOk) + list(['Stapel anlegen, Schleife über alle Zeichen (1 BE)', 'öffnende Klammern push (1 BE)', 'schließende: leer prüfen (1 BE)', 'schließende: pop und Typ vergleichen (2 BE)', 'Rückgabe: Stapel leer? (1 BE)']) },
         { id: 'IT24b', label: 'b)', be: 3, text: 'Dokumentieren Sie den Stapel nach jedem Zeichen für <code>{[a]}(</code> und geben Sie die Rückgabe an.',
           sol: tab(['Zeichen', 'Operation', 'Stapel (unten → oben)'], [['{', 'push', '{'], ['[', 'push', '{ ['], ['a', 'ignoriert', '{ ['], [']', 'pop → [ (passt)', '{'], ['}', 'pop → { (passt)', 'leer'], ['(', 'push', '(']]) + `<p>Am Ende liegt noch <code>(</code> auf dem Stapel: <code>isEmpty()</code> ist falsch → Rückgabe <b>falsch</b> (eine öffnende Klammer wurde nie geschlossen).</p>` },
-        { id: 'IT24c', label: 'c)', be: 5, text: 'Implementieren Sie <code>klammernOk</code> in Python (eine Liste als Stapel mit <code>append</code> und <code>pop</code>).',
+        { id: 'IT24c', label: 'c)', be: 5, text: 'Implementieren Sie <code>klammernOk</code> in Python (eine Python-Liste als Stapel: <code>append</code> für <code>push</code>, <code>pop</code> für <code>pop</code>).',
           sol: code(`
 def klammern_ok(text):
     stapel = []
-    paar = {")": "(", "]": "[", "}": "{"}
-    for z in text:
-        if z in "([{":
+    for i in range(len(text)):
+        z = text[i]
+        if z == "(" or z == "[" or z == "{":
             stapel.append(z)
-        elif z in ")]}":
+        elif z == ")" or z == "]" or z == "}":
             if len(stapel) == 0:
                 return False
             oben = stapel.pop()
-            if oben != paar[z]:
+            if not ((oben == "(" and z == ")") or (oben == "[" and z == "]") or (oben == "{" and z == "}")):
                 return False
-    return len(stapel) == 0`) + list(['Schleife und öffnende (1 BE)', 'schließende mit Leerprüfung (2 BE)', 'Zuordnung der Paare (1 BE)', 'Rückgabe (1 BE)']) }
+    return len(stapel) == 0`) + list(['Schleife und öffnende (1 BE)', 'schließende mit Leerprüfung (2 BE)', 'Prüfung, ob die Klammern zusammenpassen (1 BE)', 'Rückgabe (1 BE)']) }
       ]
     },
 
@@ -476,6 +478,75 @@ def klammern_ok(text):
         { id: 'IT27b', label: 'b)', be: 3, text: 'Eine Schlange wird mit einer verketteten Liste (Anker) umgesetzt. Erläutern Sie, warum man zusätzlich einen Zeiger auf den <b>letzten</b> Knoten speichert.',
           sol: `<p>Mit <code>enqueue</code> wird hinten angehängt. Ohne Zeiger auf das Ende müsste man bei jedem <code>enqueue</code> die ganze Liste vom Anker aus durchlaufen (O(n)). Mit dem Endzeiger genügt es, den Zeiger des letzten Knotens auf den neuen zu setzen und den Endzeiger umzubiegen (O(1)). <code>dequeue</code> arbeitet am Anker und braucht den Endzeiger nicht.</p>` + list(['enqueue hängt hinten an (1 BE)', 'ohne Endzeiger Durchlauf nötig (1 BE)', 'mit Endzeiger direkt (1 BE)']) }
       ]
+    },
+
+    // ---------------------------------------------------------------- Beipackzettel: Zeichenketten, Rechnen, Reihung, Stapel/Schlange
+    {
+      id: 'IT28', fach: F, teil: 'B', lesson: 'IB1', title: 'Zeichenketten mit den erlaubten Befehlen', afb: 'II', ops: 'Angeben, Implementieren',
+      intro: `Es dürfen nur die Zeichenketten-Operationen des <a class="link" href="#/befehle">Beipackzettels</a> verwendet werden (Länge, Zeichen an Position, Teilzeichenkette, Verbinden, Gleichheit, Teilzeichenkette prüfen, lexikographischer Vergleich, ASCII-Wert). Positionen beginnen bei 0.`,
+      parts: [
+        { id: 'IT28a', label: 'a)', be: 3, text: 'Geben Sie für <code>s = "Informatik"</code> an: die Länge, das Zeichen an Position 2, die Teilzeichenkette von Position 0 bis vor Position 6, ob <code>"mat"</code> in <code>s</code> vorkommt, und ob <code>"Zebra"</code> lexikographisch vor <code>"apfel"</code> steht.',
+          nums: [{ label: 'Länge', ans: 10, tol: 0.01 }],
+          hints: ['Zähle die Buchstaben von Hand und schreibe die Positionen 0, 1, 2 … darüber.'],
+          sol: tab(['Operation', 'Ergebnis'], [['Länge', '10'], ['Zeichen an Position 2', '"f"'], ['Teilzeichenkette 0 bis vor 6', '"Inform"'], ['"mat" in s', 'wahr'], ['"Zebra" vor "apfel"?', 'wahr (Z hat den ASCII-Wert 90, a hat 97)']]) + list(['Länge und Zeichen (1 BE)', 'Teilzeichenkette und Vorkommen (1 BE)', 'lexikographischer Vergleich mit Begründung (1 BE)']) },
+        { id: 'IT28b', label: 'b)', be: 4, text: 'Implementieren Sie <code>umdrehen(s: Zeichenkette): Zeichenkette</code>, die die Zeichen in umgekehrter Reihenfolge zurückgibt (<code>"Abc"</code> ergibt <code>"cbA"</code>). Es sind keine weiteren Operationen als die des Beipackzettels erlaubt.',
+          hints: ['Beginne mit einer leeren Zeichenkette und hänge die Zeichen von hinten nach vorn mit + an.'],
+          sol: code(`
+def umdrehen(s):
+    ergebnis = ""
+    for i in range(len(s) - 1, -1, -1):
+        ergebnis = ergebnis + s[i]
+    return ergebnis`) + list(['leere Zeichenkette als Start (1 BE)', 'Schleife von Länge − 1 bis 0 (2 BE)', 'Verbinden und Rückgabe (1 BE)']) },
+        { id: 'IT28c', label: 'c)', be: 4, text: 'Implementieren Sie <code>istPalindrom(s: Zeichenkette): Wahrheitswert</code>: wahr, wenn <code>s</code> vorwärts und rückwärts gleich gelesen wird (<code>"otto"</code>, <code>"anna"</code>).',
+          sol: code(`
+def ist_palindrom(s):
+    for i in range(len(s) // 2):
+        if s[i] != s[len(s) - 1 - i]:
+            return False
+    return True`) + `<p>Es genügt, die erste Hälfte mit der zweiten zu vergleichen: Position <code>i</code> gegen Position <code>Länge − 1 − i</code>.</p>` + list(['Paarweiser Vergleich (2 BE)', 'Schleifengrenze (Länge / 2) (1 BE)', 'Rückgabe wahr/falsch (1 BE)']) }
+      ]
+    },
+    {
+      id: 'IT29', fach: F, teil: 'A', lesson: 'IB2', title: 'Dynamische Reihung: Befehle und Laufzeitfehler', afb: 'II', ops: 'Dokumentieren, Angeben, Erläutern',
+      intro: `${DYN}Eine leere dynamische Reihung <code>d</code> (<code>DynArray()</code>) wird der Reihe nach bearbeitet: <code>append(8)</code>, <code>append(3)</code>, <code>append(5)</code>, <code>insertAt(1, 6)</code>, <code>delete(0)</code>, <code>setItem(2, 1)</code>, <code>getItem(1)</code>.`,
+      parts: [
+        { id: 'IT29a', label: 'a)', be: 4, text: 'Dokumentieren Sie den Inhalt von <code>d</code> nach jeder Operation und notieren Sie, wenn eine Operation einen Wert zurückgibt, diesen.',
+          sol: tab(['Nr.', 'Operation', 'Rückgabe', 'Inhalt (Position 0, 1, 2 …)'], [['1', 'append(8)', '–', '[8]'], ['2', 'append(3)', '–', '[8, 3]'], ['3', 'append(5)', '–', '[8, 3, 5]'], ['4', 'insertAt(1, 6)', '–', '[8, 6, 3, 5]'], ['5', 'delete(0)', '–', '[6, 3, 5]'], ['6', 'setItem(2, 1)', '–', '[6, 3, 1]'], ['7', 'getItem(1)', '3', '[6, 3, 1]']]) + list(['Nr. 1 bis 3 (1 BE)', 'insertAt (1 BE)', 'delete und setItem (1 BE)', 'getItem mit Rückgabe (1 BE)']) },
+        { id: 'IT29b', label: 'b)', be: 2, text: 'Welche Werte liefern <code>getLength()</code> und <code>getItem(1)</code> nach der letzten Operation?',
+          nums: [{ label: 'getLength()', ans: 3, tol: 0.01 }, { label: 'getItem(1)', ans: 3, tol: 0.01 }],
+          sol: `<p><code>getLength()</code> = 3, <code>getItem(1)</code> = 3 (Reihung <code>[6, 3, 1]</code>).</p>` },
+        { id: 'IT29c', label: 'c)', be: 3, text: 'Danach soll <code>insertAt(4, 9)</code> ausgeführt werden. Erläutern Sie, warum das einen Laufzeitfehler auslöst, und geben Sie die Abfrage an, die ihn ausschließt.',
+          sol: `<p>Bei 3 Elementen sind für <code>insertAt</code> nur die Positionen 0 bis 3 erlaubt (3 = <code>getLength()</code> heißt „hinten anfügen“). Position 4 gibt es nicht: Laufzeitfehler. Absicherung: <code>wenn i ≥ 0 UND i ≤ d.getLength()</code> dann <code>d.insertAt(i, 9)</code>, sonst nichts tun (oder <code>append</code> verwenden).</p>` + list(['gültiger Bereich 0 bis getLength() (1 BE)', 'Position 4 liegt außerhalb (1 BE)', 'Abfrage (1 BE)']) }
+      ]
+    },
+    {
+      id: 'IT30', fach: F, teil: 'A', lesson: 'IB1', title: 'Division, Rest und ASCII', afb: 'I', ops: 'Angeben, Dokumentieren, Erläutern',
+      intro: `Im Struktogramm gilt: <code>/</code> ist bei zwei ganzen Zahlen die ganzzahlige Division ohne Rest, <code>mod</code> der (positive) Rest. Die ASCII-Tabelle steht auf dem Beipackzettel (Abschnitt 11).`,
+      parts: [
+        { id: 'IT30a', label: 'a)', be: 3, text: 'Geben Sie an: <code>47 / 5</code>, <code>47 mod 5</code> und <code>20 mod 4</code>.',
+          nums: [{ label: '47 / 5', ans: 9, tol: 0.01 }, { label: '47 mod 5', ans: 2, tol: 0.01 }, { label: '20 mod 4', ans: 0, tol: 0.01 }],
+          sol: `<p>47 / 5 = 9 (denn 9 · 5 = 45), 47 mod 5 = 2, 20 mod 4 = 0.</p>` },
+        { id: 'IT30b', label: 'b)', be: 3, text: 'Die Quersumme von <code>n = 5832</code> wird so berechnet: <code>summe ← 0</code>, <code>solange n &gt; 0</code>: <code>summe ← summe + n mod 10</code>, <code>n ← n / 10</code>. Dokumentieren Sie <code>n</code> und <code>summe</code> nach jedem Durchlauf und geben Sie das Ergebnis an.',
+          nums: [{ label: 'Quersumme', ans: 18, tol: 0.01 }],
+          sol: tab(['Durchlauf', 'n mod 10', 'summe', 'n'], [['Start', '–', '0', '5832'], ['1', '2', '2', '583'], ['2', '3', '5', '58'], ['3', '8', '13', '5'], ['4', '5', '18', '0']]) + `<p>Die Schleife endet, weil <code>n &gt; 0</code> falsch ist. Quersumme: <b>18</b>.</p>` },
+        { id: 'IT30c', label: 'c)', be: 3, text: 'Geben Sie den ASCII-Wert von „C“ und von „c“ an und sagen Sie, welches Zeichen zum Wert 100 gehört.',
+          nums: [{ label: 'ASCII von „C“', ans: 67, tol: 0.01 }, { label: 'ASCII von „c“', ans: 99, tol: 0.01 }],
+          sol: `<p>„C“ = 67, „c“ = 99, 100 ist „d“. Kleinbuchstaben liegen genau 32 über den Großbuchstaben.</p>` },
+        { id: 'IT30d', label: 'd)', be: 2, text: 'Erläutern Sie, wie man mit ASCII-Werten aus einem Großbuchstaben <code>z</code> den nächsten Buchstaben des Alphabets bildet (A wird B), und welcher Sonderfall beachtet werden muss.',
+          sol: `<p>Den ASCII-Wert um 1 erhöhen und das Zeichen zu diesem Wert nehmen (in Python <code>chr(ord(z) + 1)</code>). Sonderfall: Auf „Z“ (90) folgt „[“ (91), nicht „A“; hier muss wieder bei „A“ (65) angefangen werden.</p>` }
+      ]
+    },
+    {
+      id: 'IT31', fach: F, teil: 'A', lesson: 'IF11', title: 'Stapel und Schlange: Befehlsfolgen', afb: 'II', ops: 'Dokumentieren, Angeben, Erläutern',
+      intro: `${DYN}Ein leerer Stapel <code>s</code> (<code>Stack()</code>) und eine leere Schlange <code>q</code> (<code>Queue()</code>) werden bearbeitet.`,
+      parts: [
+        { id: 'IT31a', label: 'a)', be: 4, text: 'Stapel: <code>push("A")</code>, <code>push("B")</code>, <code>top()</code>, <code>pop()</code>, <code>push("C")</code>, <code>pop()</code>, <code>pop()</code>, <code>isEmpty()</code>. Dokumentieren Sie nach jeder Operation den Stapel (unten → oben) und die Rückgabe.',
+          sol: tab(['Nr.', 'Operation', 'Rückgabe', 'Stapel'], [['1', 'push("A")', '–', 'A'], ['2', 'push("B")', '–', 'A B'], ['3', 'top()', 'B', 'A B'], ['4', 'pop()', 'B', 'A'], ['5', 'push("C")', '–', 'A C'], ['6', 'pop()', 'C', 'A'], ['7', 'pop()', 'A', 'leer'], ['8', 'isEmpty()', 'wahr', 'leer']]) + list(['top lässt B liegen (1 BE)', 'pop-Rückgaben B, C, A (2 BE)', 'isEmpty (1 BE)']) },
+        { id: 'IT31b', label: 'b)', be: 4, text: 'Schlange: <code>enqueue(1)</code>, <code>enqueue(2)</code>, <code>head()</code>, <code>dequeue()</code>, <code>enqueue(3)</code>, <code>dequeue()</code>, <code>head()</code>, <code>isEmpty()</code>. Dokumentieren Sie nach jeder Operation die Schlange (vorn → hinten) und die Rückgabe.',
+          sol: tab(['Nr.', 'Operation', 'Rückgabe', 'Schlange'], [['1', 'enqueue(1)', '–', '1'], ['2', 'enqueue(2)', '–', '1 2'], ['3', 'head()', '1', '1 2'], ['4', 'dequeue()', '1', '2'], ['5', 'enqueue(3)', '–', '2 3'], ['6', 'dequeue()', '2', '3'], ['7', 'head()', '3', '3'], ['8', 'isEmpty()', 'falsch', '3']]) + list(['head lässt das Element stehen (1 BE)', 'dequeue-Rückgaben 1 und 2 (2 BE)', 'Endzustand und isEmpty (1 BE)']) },
+        { id: 'IT31c', label: 'c)', be: 2, text: 'Auf die Schlange aus b) werden nun zwei <code>dequeue()</code>-Operationen hintereinander angewendet. Warum führt die zweite zu einem Laufzeitfehler, und wie schließt man das aus?',
+          sol: `<p>Nach b) liegt nur noch die 3 in der Schlange. Das erste <code>dequeue()</code> liefert 3, danach ist die Schlange leer; <code>dequeue()</code> auf einer leeren Schlange ist ein Laufzeitfehler. Absicherung: <code>wenn nicht q.isEmpty()</code> dann <code>x ← q.dequeue()</code>.</p>` }
+      ]
     }
   ];
 
@@ -484,16 +555,19 @@ def klammern_ok(text):
   // ======================================================================
   const PROBES = [
     { id: 'PI1', fach: F, titel: 'Probeklausur Informatik 1: Lesen, Dokumentieren, Verstehen', tasks: ['IT1', 'IT4', 'IT10', 'IT14', 'IT21'], minuten: 90 },
-    { id: 'PI2', fach: F, titel: 'Probeklausur Informatik 2: Sortieren, Rekursion, Datenstrukturen', tasks: ['IT5', 'IT11', 'IT13', 'IT25', 'IT18'], minuten: 90 },
-    { id: 'PI3', fach: F, titel: 'Probeklausur Informatik 3: Entwickeln und Implementieren', tasks: ['IT7', 'IT15', 'IT24', 'IT26'], minuten: 90 }
+    { id: 'PI2', fach: F, titel: 'Probeklausur Informatik 2: Sortieren, Rekursion, Datenstrukturen', tasks: ['IT5', 'IT11', 'IT29', 'IT25', 'IT18'], minuten: 90 },
+    { id: 'PI3', fach: F, titel: 'Probeklausur Informatik 3: Entwickeln und Implementieren', tasks: ['IT7', 'IT15', 'IT24', 'IT26'], minuten: 90 },
+    { id: 'PI4', fach: F, titel: 'Probeklausur Informatik 4: Nur Beipackzettel-Befehle', tasks: ['IT28', 'IT29', 'IT30', 'IT31', 'IT8'], minuten: 60 }
   ];
 
-  const SPICK = `<h3>Ablauf lesen</h3>
+  const SPICK = `<h3>Beipackzettel: nur diese Befehle (Abschnitte 1 bis 4)</h3>
+<ul><li><b>Zeichenketten:</b> Länge · Zeichen an Position · Teilzeichenkette (Bereich) · Verbinden · Gleichheit · Teilzeichenkette prüfen · lexikographisch vergleichen · ASCII-Wert ↔ Zeichen. Sonst nichts.</li><li><b>Rechnen:</b> <code>/</code> ganzzahlig (Struktogramm), <code>mod</code> Rest, ganzzahlige Zufallszahl, Runden.</li><li><b>Statische Reihung:</b> feste Größe, <code>[Zeile][Spalte]</code>, Größe auslesen, for-each.</li><li><b>DynArray:</b> <code>isEmpty</code> · <code>getItem(i)</code> · <code>append(x)</code> · <code>insertAt(i, x)</code> · <code>setItem(i, x)</code> · <code>delete(i)</code> · <code>getLength()</code>. Gültig: 0 bis Länge − 1 (<code>insertAt</code>: bis Länge).</li><li><b>Stack:</b> <code>isEmpty</code> · <code>top</code> (ansehen) · <code>push</code> · <code>pop</code> (entnehmen). <b>Queue:</b> <code>isEmpty</code> · <code>head</code> (ansehen) · <code>enqueue</code> (hinten) · <code>dequeue</code> (vorn).</li><li>Laufzeitfehler (leerer Stapel, falsche Position) <b>vorher durch eine Abfrage ausschließen</b>.</li></ul>
+<h3>Ablauf lesen</h3>
 <ul><li>Tracetabelle: Spalte pro Variable, Zeile pro Durchlauf; Schleifenbedingung einmal öfter prüfen, als der Rumpf läuft.</li><li><code>=</code> zuweisen, <code>==</code> vergleichen; <code>/</code> Kommazahl, <code>//</code> abschneiden, <code>%</code> Rest.</li><li>Fehler: <b>Syntax</b> (vor dem Start), <b>Laufzeit</b> (Abbruch, z. B. IndexError), <b>Logik</b> (läuft, falsches Ergebnis).</li><li>Lokal: Parameter und Variablen im Rumpf. Liste als Parameter: Änderung wirkt auch außen. Zahl: Kopie.</li></ul>
 <h3>Struktogramm</h3>
 <ul><li>Folge · Verzweigung (ja/nein) · Mehrfachauswahl · Schleife kopf-/fußgesteuert/zählergesteuert · Unterprogramm (Doppelstrich).</li><li>Keine Python-Syntax. Initialisierung ja, Deklaration nein. Operation: <code>name(Parameter)</code>, „Rückgabe“.</li></ul>
 <h3>Listen (Listeen)</h3>
-<ul><li>Index ab 0, letzter <code>len − 1</code>. <code>l[i]</code> · <code>append</code> · <code>insert</code> · <code>l[i] = x</code> · <code>del l[i]</code> · <code>len</code>. Tupel (nicht veränderbar).</li><li>Maximum: Startwert = 1. Element. Summe/Zählen: Start 0. 2D: <code>m[zeile][spalte]</code>.</li></ul>
+<ul><li>Index ab 0, letzter Index <code>getLength() − 1</code>. Python: <code>d[i]</code> · <code>append</code> · <code>insert</code> · <code>d[i] = x</code> · <code>del d[i]</code> · <code>len(d)</code>. Tupel (nicht veränderbar).</li><li>Maximum: Startwert = 1. Element. Summe/Zählen: Start 0. 2D: <code>m[zeile][spalte]</code>.</li></ul>
 <h3>Sortieren (alle O(n²))</h3>
 <ul><li><b>Selection:</b> kleinstes im Rest suchen, nach vorn tauschen; immer n(n−1)/2 Vergleiche.</li><li><b>Insertion:</b> Element einsortieren, Größere nach rechts schieben; sortiert: n−1 Vergleiche.</li><li><b>Bubble:</b> Nachbarn vergleichen/tauschen, innen bis <code>n−1−i</code>; nach Durchlauf i stehen die i größten hinten.</li><li>Tauschen: Hilfsvariable (Python: <code>a, b = b, a</code>).</li></ul>
 <h3>Laufzeit</h3>

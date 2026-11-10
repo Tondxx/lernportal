@@ -1610,3 +1610,27 @@ kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; 
 .id-log { margin-top: 12px; display: grid; gap: 3px; font-size: 14px; color: var(--text-2); min-height: 40px; } .id-log code { font-family: var(--font-mono); font-size: .92em; }
 .id-preset { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); }
 .pd-msg.bad { color: var(--bad); }
+
+/* ---------- Beipackzettel (befehle.js) ---------- */
+.bf-search { margin: 14px 0 6px; } .bf-search .input { width: 100%; min-height: 44px; padding: 0 14px; border-radius: 14px; border: 1px solid var(--line-2); background: var(--bg); color: var(--text); font: 600 16px var(--font-ui); }
+.bf-tabs { margin: 16px 0 6px; } .bf section[data-p] { margin-top: 10px; }
+.bf-sec { margin: 14px 0; border-radius: 16px; box-shadow: 0 0 0 1px var(--line) inset; background: var(--surface); }
+.bf-sec > summary { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; list-style: none; } .bf-sec > summary::-webkit-details-marker { display: none; }
+.bf-nr { width: 30px; height: 30px; border-radius: 10px; display: grid; place-items: center; background: color-mix(in oklab, var(--ok) 28%, transparent); font: 800 14px var(--font-ui); flex: none; }
+.bf-t { font: 700 17px var(--font-ui); flex: 1; min-width: 0; }
+.bf-gruen { background: color-mix(in oklab, var(--ok) 22%, transparent); }
+.bf-intro { padding: 0 16px; font-size: 15.5px; margin: 0 0 8px; max-width: none; }
+.bf-sec .ic-tabw { margin: 8px 12px 14px; }
+.bf-tab td:first-child { min-width: 150px; } .bf-sig { white-space: normal; word-break: break-word; font-weight: 700; }
+.bf-err { margin-top: 6px; font-size: 13px; color: var(--warn); }
+.bf-none { padding: 14px; color: var(--text-2); }
+.bf-g, .bf-o { color: var(--text); } .bf-g { background: color-mix(in oklab, var(--ok) 28%, transparent) !important; } .bf-o { background: color-mix(in oklab, var(--warn) 28%, transparent) !important; }
+.bf-w { cursor: default; }
+.bf-task { margin-top: 14px; padding: 14px 16px; border-radius: 14px; background: var(--sunken); box-shadow: 0 0 0 1px var(--line) inset; }
+.bf-ops { margin: 8px 0 0; padding-left: 1.6em; display: grid; gap: 4px; } .bf-ops li.last { font-weight: 700; } .bf-ops li.last code { background: color-mix(in oklab, var(--subj) 25%, transparent); }
+.bf-rules h3 { margin: 1.6em 0 .4em; font: 700 19px var(--font-ui); } .bf-links { margin-top: 18px; }
+.id-chars { display: flex; flex-wrap: wrap; gap: 4px; margin: 12px 0; }
+.id-ch { display: flex; flex-direction: column; align-items: center; min-width: 30px; padding: 6px 4px 3px; border-radius: 8px; background: var(--sunken); box-shadow: 0 0 0 1px var(--line-2) inset; font: 700 16px var(--font-mono); }
+.id-ch small { font: 600 10.5px var(--font-ui); color: var(--text-3); } .id-ch.rg { background: color-mix(in oklab, var(--subj) 22%, transparent); } .id-ch.on { box-shadow: 0 0 0 2.5px var(--subj) inset; }
+.id-ix { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); font: 700 10.5px var(--font-ui); font-style: normal; color: var(--text-3); }
+.id-row .id-cell { margin-top: 10px; } .bad { color: var(--bad); }

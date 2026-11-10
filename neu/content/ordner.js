@@ -37,17 +37,20 @@
     ],
     // Informatik: Stoff laut IServ „Grundlagen der Algorithmik“ (Sync 08.11.), Klausur 2 am 10.11.2026 (k-09). Stoff von der Lehrkraft nicht bestätigt.
     informatik: [
-      { id: 'i-ablauf', typ: 'ordner', titel: 'Ablauf & Struktogramme', kurz: 'Tracetabelle, Struktogramme, Funktionen, Fehlertypen', klausuren: [K_INFO], themen: ['IF1', 'IF2', 'IF3'].map(L).concat([NOT('inf-erste-negative')]),
+      { id: 'i-befehle', typ: 'seite', ref: 'befehle', titel: 'Beipackzettel: die Befehle', kurz: 'Alle erlaubten Befehle, ausprobieren, trainieren', klausuren: [K_INFO] },
+      { id: 'i-ablauf', typ: 'ordner', titel: 'Ablauf & Struktogramme', kurz: 'Tracetabelle, Struktogramme, Funktionen, Fehlertypen', klausuren: [K_INFO], themen: ['IB1', 'IB3', 'IF1', 'IF2', 'IF3'].map(L).concat([NOT('inf-erste-negative')]),
         kinder: [
           { id: 'i-python', typ: 'seite', ref: 'python', titel: 'Python-Werkstatt', kurz: 'Code schreiben, im Browser ausführen, mit Tests prüfen' },
           { id: 'i-demo', typ: 'ordner', demo: true, titel: 'Demo: Notation', kurz: 'Struktogramm, Pseudocode und Python', themen: [NOT('demo-algo-max')] },
           { id: 'i-alt', typ: 'alt', titel: 'Bisherige Module', kurz: 'Module aus dem alten Portal' }
         ] },
-      { id: 'i-sortieren', typ: 'ordner', titel: 'Listen & Sortieren', kurz: 'Listen, Selection-, Insertion-, Bubblesort, Laufzeit', klausuren: [K_INFO], themen: ['IF4', 'IF5', 'IF6'].map(L).concat([NOT('inf-bubble')]) },
+      { id: 'i-sortieren', typ: 'ordner', titel: 'Reihungen & Sortieren', kurz: 'Beipackzettel-Befehle, Listen, Sortierverfahren, Laufzeit', klausuren: [K_INFO], themen: ['IB2', 'IF4', 'IF5', 'IF6'].map(L).concat([NOT('inf-bubble')]) },
       { id: 'i-rekursion', typ: 'ordner', titel: 'Rekursion', kurz: 'Abbruch, Aufrufstapel, Fakultät, Fibonacci', klausuren: [K_INFO], themen: ['IF7', 'IF8'].map(L).concat([NOT('inf-fakultaet')]) },
       { id: 'i-ds', typ: 'ordner', titel: 'Dynamische Datenstrukturen', kurz: 'Verkettete Liste, Stapel, Warteschlange', klausuren: [K_INFO], themen: ['IF9', 'IF10', 'IF11'].map(L).concat([NOT('inf-klammern')]) },
-      { id: 'i-probe', typ: 'probes', titel: 'Probeklausuren', kurz: 'Gemischt aus allen Themen, mit Uhr', klausuren: [K_INFO] },
-      { id: 'i-spick', typ: 'seite', ref: 'spick', titel: 'Spickzettel', kurz: 'Alles Wichtige auf einer Seite', klausuren: [K_INFO] }
+      { id: 'i-pruefen', typ: 'ordner', titel: 'Prüfen & Nachschlagen', kurz: 'Probeklausuren und Spickzettel', klausuren: [K_INFO], kinder: [
+        { id: 'i-probe', typ: 'probes', titel: 'Probeklausuren', kurz: 'Gemischt aus allen Themen, mit Uhr', klausuren: [K_INFO] },
+        { id: 'i-spick', typ: 'seite', ref: 'spick', titel: 'Spickzettel', kurz: 'Alles Wichtige auf einer Seite', klausuren: [K_INFO] }
+      ] }
     ]
   };
 })();

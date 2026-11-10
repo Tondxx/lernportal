@@ -22,6 +22,7 @@
   // Struktogramm aus dem Algorithmus-Baum (algo.js); ohne algo.js (z. B. im Test) bleibt es leer
   const ns = a => (window.LRAlgo ? window.LRAlgo.nsHtml(a) : '');
   const A = window.LRAlgo ? window.LRAlgo.A : null;
+  const INF_A = window.INF_A || {};
   const schaltjahr = A && {
     name: 'istSchaltjahr', params: ['jahr'],
     body: [A.if('jahr mod 400 = 0', 'jahr % 400 == 0', [A.ret('wahr', 'True')], [
@@ -29,9 +30,173 @@
   };
 
   const LESSONS = [
+    // ---------------------------------------------------------------- Ordner: Beipackzettel (Hilfsmittel in der Klausur)
+    {
+      id: 'IB1', fach: F, num: 1, min: 14, demo: 'i-zeichen', demoTitel: 'Probier es aus: Die acht Zeichenketten-Befehle',
+      title: 'Beipackzettel 1: Zeichenketten und Rechnen',
+      short: 'Länge, Zeichen, Teilzeichenkette, Verbinden, ASCII, / und mod',
+      idee: `<p>Auf dem Beipackzettel (grün: Abschnitt 1 und 2) stehen <b>alle</b> Befehle, die du für Zeichenketten und das Rechnen benutzen darfst. <b>Andere gibt es nicht.</b> Alles weitere baust du selbst daraus. Die komplette Liste mit Python-Schreibweise: <a class="link" href="#/befehle">Beipackzettel im Lernraum</a>.</p>
+${tab(['Beipackzettel', 'Python', 'Beispiel'], [
+        ['Länge bestimmen', '<code>len(s)</code>', '<code>len("Hallo")</code> = 5'],
+        ['Zeichen an Position auslesen', '<code>s[i]</code>', '<code>"Hallo"[1]</code> = "a"'],
+        ['Teilzeichenkette in einem Bereich', '<code>s[a:b]</code> (bis <b>vor</b> b)', '<code>"Hallo"[1:4]</code> = "all"'],
+        ['Zwei Zeichenketten verbinden', '<code>s + t</code>', '<code>"Ha" + "llo"</code>'],
+        ['Auf Gleichheit prüfen', '<code>s == t</code>', 'Groß/Klein zählt'],
+        ['Auf Teilzeichenkette prüfen', '<code>t in s</code>', '<code>"all" in "Hallo"</code> = wahr'],
+        ['Lexikographisch vergleichen', '<code>s &lt; t</code>', '<code>"Apfel" &lt; "Birne"</code> = wahr'],
+        ['ASCII-Wert ↔ Zeichen', '<code>ord(z)</code>, <code>chr(n)</code>', 'A = 65, a = 97, 0 = 48']
+      ])}
+${merke('Rechnen (Abschnitt 2)', `<p>Im Struktogramm ist <code>/</code> bei zwei ganzen Zahlen die <b>ganzzahlige Division</b> (17 / 5 = 3) und <code>mod</code> der <b>Rest</b> (17 mod 5 = 2). In Python schreibst du <code>//</code> und <code>%</code>. Außerdem darfst du <b>ganzzahlige Zufallszahlen</b> in einem Bereich (<code>random.randint(a, b)</code>) und <b>Runden</b> (<code>round(x)</code>) benutzen.</p>`)}
+<p><b>Nicht erlaubt:</b> <code>upper()</code>, <code>lower()</code>, <code>split()</code>, <code>replace()</code>, <code>find()</code>, <code>reversed()</code> und alles Ähnliche.</p>`,
+      bild: `<p>Eine Zeichenkette ist wie eine <b>Perlenkette mit nummerierten Perlen</b> (ab 0). Du darfst nur die Länge zählen, einzelne Perlen anschauen, Stücke abschneiden und Ketten aneinanderhängen. Eine Perle zu ändern oder umzudrehen geht nur, indem du eine neue Kette baust.</p>`,
+      rezept: [
+        `<b>Zeichen einzeln holen:</b> Schleife <code>für i von 0 bis länge − 1</code> und <code>z ← Zeichen an Position i</code>.`,
+        `<b>Zeichenart über ASCII erkennen:</b> Großbuchstabe: 65 ≤ ASCII ≤ 90, Kleinbuchstabe: 97 ≤ ASCII ≤ 122, Ziffer: 48 ≤ ASCII ≤ 57 (Tabelle auf dem Beipackzettel, Abschnitt 11).`,
+        `<b>Neue Zeichenkette bauen:</b> Mit einer leeren Zeichenkette starten und Zeichen für Zeichen mit <code>+</code> anhängen.`,
+        `<b>Ziffern einer Zahl:</b> letzte Ziffer <code>n mod 10</code>, Rest <code>n / 10</code>.`
+      ],
+      beispiel: {
+        q: `Entwickle <code>anzahlGross(wort: Zeichenkette): Ganzzahl</code>, die die Großbuchstaben (A bis Z) zählt. Teste mit „Hallo Welt“.`,
+        steps: [
+          { h: 'Plan', t: `Jedes Zeichen einzeln holen (Position 0 bis Länge − 1) und prüfen, ob sein ASCII-Wert zwischen 65 (A) und 90 (Z) liegt. <code>upper()</code> oder <code>isupper()</code> gibt es nicht auf dem Beipackzettel.` },
+          { h: 'Struktogramm', t: ns(INF_A.grossbuchstaben) },
+          { h: 'Python', t: code(`
+def anzahl_gross(wort):
+    anzahl = 0
+    for i in range(len(wort)):
+        z = wort[i]
+        if ord(z) >= 65 and ord(z) <= 90:
+            anzahl = anzahl + 1
+    return anzahl`) },
+          { h: 'Test mit „Hallo Welt“', t: tab(['i', 'z', 'ASCII', 'Großbuchstabe?', 'anzahl'], [['0', 'H', '72', 'ja', '1'], ['1 bis 4', 'a l l o', '97 bis 111', 'nein', '1'], ['5', '␣', '32', 'nein', '1'], ['6', 'W', '87', 'ja', '2'], ['7 bis 9', 'e l t', '101 bis 116', 'nein', '2']]) + `Ergebnis: <b>2</b>.` }
+        ]
+      },
+      fehler: [
+        `Eine Abkürzung wie <code>wort.upper()</code> oder <code>wort.isupper()</code> benutzen. Die gibt es auf dem Beipackzettel nicht.`,
+        `Position bei 1 beginnen. Das erste Zeichen hat die Position <b>0</b>, das letzte <code>länge − 1</code>.`,
+        `<code>s[a:b]</code> endet <b>vor</b> Position b: <code>"Hallo"[1:4]</code> ist „all“, nicht „allo“.`,
+        `Groß- und Kleinbuchstaben vergleichen: <code>"A" == "a"</code> ist falsch, und <code>"Zebra" &lt; "apfel"</code> ist wahr (Großbuchstaben haben kleinere ASCII-Werte).`
+      ],
+      test: [
+        { q: `Was liefert <code>len("Info 1")</code>?`, a: `6 (das Leerzeichen zählt mit).` },
+        { q: `Wie bekommst du den ASCII-Wert von „B“, und welchen Wert hat er?`, a: `<code>ord("B")</code> = 66.` },
+        { q: `Wie schreibt man im Struktogramm „Rest von 17 geteilt durch 5“ und in Python?`, a: `<code>17 mod 5</code> (= 2); in Python <code>17 % 5</code>.` },
+        { q: `Was ist <code>"Computer"[2:5]</code>?`, a: `„mpu“ (Positionen 2, 3, 4).` }
+      ]
+    },
+    {
+      id: 'IB2', fach: F, num: 2, min: 16, demo: 'i-dynarray', demoTitel: 'Probier es aus: Die Befehle der dynamischen Reihung',
+      title: 'Beipackzettel 2: Reihungen, statisch und dynamisch',
+      short: 'DynArray-Befehle, statische Reihung, [Zeile][Spalte], for-each, Laufzeitfehler vermeiden',
+      idee: `<p>Auf dem Beipackzettel (grün: Abschnitt 3 und 4) stehen zwei Arten von Reihungen:</p>
+<ul><li><b>Statische Reihung:</b> feste Größe. Du liest und überschreibst Elemente über den Index (ab 0). Zwei Dimensionen: <code>[Zeile][Spalte]</code>. Die Größe kannst du auslesen (<code>len(a)</code>, <code>len(a[0])</code>).</li><li><b>Dynamische Reihung</b> (<code>DynArray</code>): wächst und schrumpft, mit genau diesen Befehlen:</li></ul>
+${tab(['Befehl', 'Python', 'Wirkung'], [
+        ['<code>DynArray()</code>', '<code>d = []</code>', 'leere Reihung'],
+        ['<code>isEmpty(): Wahrheitswert</code>', '<code>len(d) == 0</code>', 'leer?'],
+        ['<code>getItem(index): Inhaltstyp</code>', '<code>d[index]</code>', 'Element lesen'],
+        ['<code>append(inhalt)</code>', '<code>d.append(x)</code>', 'hinten anfügen'],
+        ['<code>insertAt(index, inhalt)</code>', '<code>d.insert(index, x)</code>', 'einfügen, Rest rückt nach hinten (index = Länge: hinten anfügen)'],
+        ['<code>setItem(index, inhalt)</code>', '<code>d[index] = x</code>', 'ersetzen'],
+        ['<code>delete(index)</code>', '<code>del d[index]</code>', 'entfernen, Rest rückt nach vorn'],
+        ['<code>getLength(): Ganzzahl</code>', '<code>len(d)</code>', 'Anzahl Elemente']
+      ])}
+${merke('Pflicht: Laufzeitfehler vorher ausschließen', `<p>Löschen oder Lesen an einer Position, die es nicht gibt, ist ein <b>Laufzeitfehler</b>. In Prüfungsaufgaben musst du das mit einer <b>Abfrage vorher</b> verhindern: gültig sind bei <code>getItem</code>, <code>setItem</code>, <code>delete</code> die Positionen <b>0 bis getLength() − 1</b>, bei <code>insertAt</code> <b>0 bis getLength()</b>.</p>`)}
+<p>Reihungen sind <b>iterierbar</b>: <code>für jedes x in d</code> geht alle Elemente der Reihe nach durch (ohne Index).</p>`,
+      bild: `<p>Eine dynamische Reihung ist wie eine <b>Reihe nummerierter Stühle</b>, bei der Stühle dazukommen oder wegfallen. Wer in der Mitte einen Stuhl einschiebt (<code>insertAt</code>), schiebt alle dahinter ein Stück weiter, und wer einen entfernt (<code>delete</code>), lässt alle dahinter aufrücken.</p>`,
+      rezept: [
+        `<b>Aufschreiben:</b> Reihung mit den Positionen darüber (0, 1, 2 …) hinschreiben.`,
+        `<b>Befehle der Reihe nach</b> ausführen, nach jedem den <b>ganzen Inhalt</b> neu aufschreiben (bei <code>insertAt</code>/<code>delete</code> verschiebt sich der Rest).`,
+        `<b>Position prüfen:</b> Liegt der Index im erlaubten Bereich? Wenn nicht: Laufzeitfehler, in Programmen vorher mit <code>getLength()</code> abfragen.`,
+        `<b>Beim Löschen in einer Schleife</b> von <b>hinten nach vorn</b> laufen, sonst werden Elemente übersprungen.`
+      ],
+      beispiel: {
+        q: `Entwickle eine Operation, die aus einer dynamischen Reihung <code>d</code> mit ganzen Zahlen alle <b>negativen</b> Zahlen entfernt. Teste mit <code>[4, −2, −5, 7]</code>.`,
+        steps: [
+          { h: 'Idee: von hinten nach vorn', t: `Nach <code>delete(i)</code> rücken alle folgenden Elemente nach vorn. Läuft man von vorn, wird das Element übersprungen, das auf Position <code>i</code> nachrückt (bei <code>[−2, −5]</code> bliebe die −5). Von hinten nach vorn sind die noch nicht untersuchten Positionen davon nicht betroffen.` },
+          { h: 'Struktogramm in Befehlen des Beipackzettels', t: code(`
+entferneNegative(d: dynamische Reihung vom Inhaltstyp Ganzzahl)
+    i ← d.getLength() − 1
+    solange i ≥ 0
+        wenn d.getItem(i) < 0
+            d.delete(i)          // i ist hier gültig: 0 ≤ i < getLength()
+        i ← i − 1`) },
+          { h: 'Python', t: code(`
+def entferne_negative(d):
+    i = len(d) - 1
+    while i >= 0:
+        if d[i] < 0:
+            del d[i]
+        i = i - 1`) },
+          { h: 'Tracetabelle für [4, −2, −5, 7]', t: tab(['i', 'd.getItem(i)', 'negativ?', 'Reihung danach'], [['3', '7', 'nein', '[4, −2, −5, 7]'], ['2', '−5', 'ja → delete(2)', '[4, −2, 7]'], ['1', '−2', 'ja → delete(1)', '[4, 7]'], ['0', '4', 'nein', '[4, 7]']]) + `Ergebnis: <code>[4, 7]</code>.` }
+        ]
+      },
+      fehler: [
+        `<code>delete(d.getLength())</code> oder <code>getItem(d.getLength())</code>: Diese Position gibt es nicht (die letzte ist <code>getLength() − 1</code>). Nur <code>insertAt</code> darf an <code>getLength()</code> einfügen.`,
+        `Beim Löschen von vorn nach hinten ein Element überspringen, weil der Rest nachrückt.`,
+        `Eine Abkürzung benutzen, die nicht auf dem Beipackzettel steht: <code>d.sort()</code>, <code>min(d)</code>, <code>d.remove(x)</code>, <code>x in d</code>, <code>d.index(x)</code>.`,
+        `Bei zwei Dimensionen <code>[Spalte][Zeile]</code> statt <code>[Zeile][Spalte]</code> schreiben.`
+      ],
+      test: [
+        { q: `Welche Positionen sind bei <code>insertAt(index, x)</code> erlaubt, wenn die Reihung 5 Elemente hat?`, a: `0 bis 5 (bei 5 wird hinten angefügt).` },
+        { q: `Reihung <code>[4, 9, 7]</code>. Was ergibt <code>insertAt(1, 5)</code>?`, a: `<code>[4, 5, 9, 7]</code>.` },
+        { q: `Was ist der Unterschied zwischen statischer und dynamischer Reihung?`, a: `Statisch: feste Größe, nur lesen/überschreiben. Dynamisch: kann mit <code>append</code>, <code>insertAt</code>, <code>delete</code> wachsen und schrumpfen.` },
+        { q: `Wie muss man vor <code>delete(i)</code> absichern?`, a: `Mit einer Abfrage, dass <code>0 ≤ i</code> und <code>i &lt; getLength()</code> gilt.` }
+      ]
+    },
+    {
+      id: 'IB3', fach: F, num: 3, min: 12,
+      title: 'Beipackzettel 3: Struktogramme in Abitur-Schreibweise',
+      short: 'Signatur, //-Kommentare, „gib … zurück“, for-each, mod und /',
+      idee: `<p>In den zentralen Prüfungen werden Algorithmen als <b>Struktogramm</b> dargestellt (Beipackzettel, Abschnitt 5). Wenn du selbst eins entwickelst, nutzt du dieselbe Schreibweise:</p>
+${tab(['Was', 'So schreibt man es'], [
+        ['Signatur der Operation', '<code>name(parameter: Typ, …): Rückgabetyp</code>, z. B. <code>anzahlGerade(a: dynamische Reihung vom Inhaltstyp Ganzzahl): Ganzzahl</code>'],
+        ['Zuweisung', '<code>anzahl ← anzahl + 1</code> (oder sprachlich: „erhöhe anzahl um 1“)'],
+        ['Kommentar', '<code>// Kommentar</code> (zwei Schrägstriche)'],
+        ['Rückgabe', '<code>gib anzahl zurück</code>. Die Operation endet an dieser Stelle.'],
+        ['Schleifen', '<code>für jedes x in a</code> (for-each), <code>für i von 0 bis n − 1</code> (zählergesteuert), <code>solange …</code>'],
+        ['Division und Rest', '<code>a / b</code> ganzzahlig, <code>a mod b</code> Rest'],
+        ['Zugriff', 'Dynamische Reihung: <code>a.getItem(i)</code>, <code>a.getLength()</code>; Stapel: <code>s.push(x)</code>, <code>s.pop()</code>; Schlange: <code>q.enqueue(x)</code>, <code>q.dequeue()</code>'],
+        ['Zählung', 'Positionen beginnen bei 0 (im Struktogramm). Beim Implementieren gilt die Indizierung deiner Sprache.']
+      ])}
+<p>Das Struktogramm ist <b>unabhängig von der Programmiersprache</b>: Es enthält kein <code>range</code>, keinen Doppelpunkt, kein <code>len</code>.</p>`,
+      bild: `<p>Das Struktogramm ist wie ein <b>Bauplan</b>, der überall auf der Welt gelesen werden kann. Python ist nur eine der Sprachen, in die du ihn später übersetzt.</p>`,
+      rezept: [
+        `<b>Kopf:</b> Signatur mit Parametern, Typen und Rückgabetyp aufschreiben.`,
+        `<b>Zerlegen:</b> Startwerte, dann Schleife (for-each, wenn du den Index nicht brauchst), darin Verzweigung, am Ende Rückgabe.`,
+        `<b>Befehle des Beipackzettels</b> benutzen, keine Python-Abkürzungen.`,
+        `<b>Testen:</b> Tracetabelle mit einem kleinen Beispiel.`
+      ],
+      beispiel: {
+        q: `Entwickle <code>anzahlGerade(a: dynamische Reihung vom Inhaltstyp Ganzzahl): Ganzzahl</code>, die zählt, wie viele Zahlen gerade sind. Teste mit <code>[3, 8, 6, 5]</code>.`,
+        steps: [
+          { h: 'Plan', t: `Den Index brauchen wir nicht, also reicht eine <b>for-each-Schleife</b>. Gerade heißt: <code>x mod 2 = 0</code>.` },
+          { h: 'Struktogramm', t: ns(INF_A.anzahlGerade) },
+          { h: 'Python', t: code(`
+def anzahl_gerade(a):
+    anzahl = 0
+    for x in a:
+        if x % 2 == 0:
+            anzahl = anzahl + 1
+    return anzahl`) },
+          { h: 'Tracetabelle für [3, 8, 6, 5]', t: tab(['x', 'x mod 2 = 0?', 'anzahl'], [['Start', '–', '0'], ['3', 'nein', '0'], ['8', 'ja', '1'], ['6', 'ja', '2'], ['5', 'nein', '2']]) + `Rückgabe: <b>2</b>.` }
+        ]
+      },
+      fehler: [
+        `Python-Syntax im Struktogramm (<code>range(...)</code>, <code>len(a)</code>, <code>:</code>).`,
+        `<code>/</code> mit der Kommadivision verwechseln: Im Struktogramm ist <code>/</code> bei ganzen Zahlen die Division ohne Rest.`,
+        `Die Rückgabe vergessen oder in die Schleife gesetzt: „gib … zurück“ beendet die Operation sofort.`,
+        `Signatur ohne Rückgabetyp, obwohl die Operation etwas zurückgibt.`
+      ],
+      test: [
+        { q: `Was bedeutet „gib x zurück“ im Struktogramm?`, a: `Der Wert wird zurückgegeben und die Operation endet an dieser Stelle.` },
+        { q: `Wie schreibt man einen Kommentar im Struktogramm?`, a: `Mit zwei Schrägstrichen: <code>// Kommentar</code>.` },
+        { q: `Wann nimmst du eine for-each-Schleife?`, a: `Wenn alle Elemente der Reihe nach bearbeitet werden und du den Index nicht brauchst.` },
+        { q: `Was ist <code>23 / 5</code> und <code>23 mod 5</code> im Struktogramm?`, a: `4 und 3.` }
+      ]
+    },
     // ---------------------------------------------------------------- Ordner: Ablauf & Struktogramme
     {
-      id: 'IF1', fach: F, num: 1, min: 14, demo: 'i-trace', demoTitel: 'Schau zuerst: Ein Programm Schritt für Schritt',
+      id: 'IF1', fach: F, num: 4, min: 14, demo: 'i-trace', demoTitel: 'Schau zuerst: Ein Programm Schritt für Schritt',
       title: 'Programme lesen: Variablen und Tracetabelle',
       short: 'Zuweisung, Verzweigung, Schleife, Datentypen, // und %, Tracetabelle',
       idee: `<p>Ein <b>Algorithmus</b> ist eine eindeutige Schritt-für-Schritt-Anleitung. Um zu verstehen, was ein Programm tut, <b>spielst du den Computer</b>: Du führst jede Anweisung einzeln aus und schreibst auf, welche Werte die Variablen danach haben. Diese Tabelle heißt <b>Tracetabelle</b> (Ablaufprotokoll).</p>
@@ -48,7 +213,7 @@ ${tab(['Operator', 'Bedeutung', '7 ? 2'], [
         ['<code>%</code>', 'Rest bei der Division (Modulo)', '1'],
         ['<code>==</code> &nbsp; <code>!=</code>', 'gleich / ungleich (Vergleich)', 'False / True']
       ])}
-<p><b>Zeichenketten</b> (<code>str</code>) sind Folgen von Zeichen: <code>len("Hallo")</code> ist 5, <code>"Hallo"[0]</code> ist <code>"H"</code> (Zählung ab 0), <code>"Ha" + "llo"</code> verbindet, <code>==</code> vergleicht.</p>
+<p><b>Zeichenketten</b> (<code>str</code>) sind Folgen von Zeichen: <code>len("Hallo")</code> ist 5, <code>"Hallo"[0]</code> ist <code>"H"</code> (Zählung ab 0), <code>"Ha" + "llo"</code> verbindet, <code>==</code> vergleicht. Welche Zeichenketten-Befehle in der Klausur erlaubt sind, steht auf dem <a class="link" href="#/befehle">Beipackzettel</a> (Lektion „Beipackzettel 1“).</p>
 <p>Drei Bausteine reichen für jedes Programm: <b>Folge</b> (Anweisungen nacheinander), <b>Verzweigung</b> (<code>if</code>/<code>else</code>) und <b>Schleife</b> (<code>while</code>, <code>for</code>).</p>`,
       bild: `<p>Die Tracetabelle ist wie ein <b>Spielprotokoll beim Schach</b>: Nach jedem Zug steht fest, wie das Brett aussieht. Du brauchst den Code nicht zu „verstehen“, nur sauber auszuführen.</p>`,
       rezept: [
@@ -87,7 +252,7 @@ print(s)`)}`,
       ]
     },
     {
-      id: 'IF2', fach: F, num: 2, min: 16,
+      id: 'IF2', fach: F, num: 5, min: 16,
       title: 'Struktogramme lesen und zeichnen',
       short: 'Nassi-Shneiderman: Folge, Verzweigung, Schleifen, Unterprogramm; Python ↔ Struktogramm',
       idee: `<p>Ein <b>Struktogramm</b> (Nassi-Shneiderman-Diagramm, DIN 66261) stellt einen Algorithmus <b>ohne Sprünge</b> dar. Es ist <b>unabhängig von der Programmiersprache</b>: Wer es liest, soll den Ablauf in jede Sprache übertragen können.</p>
@@ -100,7 +265,7 @@ ${tab(['Baustein', 'Aussehen', 'Python'], [
         ['Schleife zählergesteuert', '<code>für i von 1 bis n</code>', '<code>for i in range(…)</code>'],
         ['Unterprogramm', 'Rechteck mit <b>Doppelstrich</b> an den Seiten', 'Funktionsaufruf']
       ])}
-${merke('Regeln', `<ul><li>Im Struktogramm steht <b>keine Programmiersprachen-Syntax</b> (kein <code>range</code>, keine Doppelpunkte). Zuweisung mit Pfeil: <code>x ← x + 1</code>.</li><li>Die <b>Initialisierung</b> (Startwert setzen) gehört hinein, die <b>Deklaration</b> (Typ festlegen) nicht.</li><li>Eine Operation bekommt einen Kopf: <code>name(Parameter)</code> und liefert über „Rückgabe“ ihr Ergebnis.</li></ul>`)}`,
+${merke('Regeln', `<ul><li>Im Struktogramm steht <b>keine Programmiersprachen-Syntax</b> (kein <code>range</code>, keine Doppelpunkte). Zuweisung mit Pfeil: <code>x ← x + 1</code>.</li><li>Die <b>Initialisierung</b> (Startwert setzen) gehört hinein, die <b>Deklaration</b> (Typ festlegen) nicht.</li><li>Eine Operation bekommt einen Kopf <code>name(Parameter: Typ): Rückgabetyp</code> und liefert ihr Ergebnis mit <code>gib … zurück</code> (die Operation endet dort). Kommentare mit <code>//</code>. Division <code>/</code> ganzzahlig, Rest mit <code>mod</code>. Mehr dazu: Lektion „Beipackzettel 3“.</li></ul>`)}`,
       bild: `<p>Wie ein <b>Bauplan mit festen Bauteilen</b>: Jedes Teil hat genau einen Eingang oben und einen Ausgang unten. Wer ein Teil in ein anderes steckt (Schleife in Verzweigung), schachtelt sie ineinander.</p>`,
       rezept: [
         `<b>Klären:</b> Was kommt rein (Parameter/Eingabe), was soll raus (Rückgabe/Ausgabe)?`,
@@ -138,7 +303,7 @@ def ist_schaltjahr(jahr):
       ]
     },
     {
-      id: 'IF3', fach: F, num: 3, min: 14,
+      id: 'IF3', fach: F, num: 6, min: 14,
       title: 'Funktionen, lokale Variablen und Fehlertypen',
       short: 'Parameter, return, lokal/global, Modularisierung, Syntax-/Laufzeit-/Logikfehler',
       idee: `<p>Eine <b>Funktion</b> (in der Schule oft „Operation“ oder „Unterprogramm“) ist ein benannter Block mit <b>Parametern</b> (Eingabe) und einem <b>Rückgabewert</b> (Ergebnis).</p>
@@ -191,18 +356,20 @@ print(x, y, l)`)}`,
 
     // ---------------------------------------------------------------- Ordner: Listen & Sortieren
     {
-      id: 'IF4', fach: F, num: 4, min: 16,
+      id: 'IF4', fach: F, num: 7, min: 16,
       title: 'Listen und Standardalgorithmen',
-      short: 'Index ab 0, Summe, Maximum, Suchen, Zählen, 2D-Listen, Tupel',
+      short: 'Index ab 0, Summe, Maximum, Suchen, Zählen, 2D-Reihungen, Tupel',
       idee: `<p>Eine <b>Liste</b> (auch Reihung oder Array genannt) speichert viele Werte unter einem Namen. Der <b>Index beginnt bei 0</b>, der letzte Index ist <code>len(liste) - 1</code>.</p>
-${tab(['Aufgabe', 'Python', 'Wirkung'], [
-        ['leere Liste', '<code>l = []</code>', 'Anfang'],
-        ['Element lesen', '<code>l[i]</code>', 'an Position i'],
-        ['hinten anfügen', '<code>l.append(x)</code>', 'Liste wird länger'],
-        ['einfügen', '<code>l.insert(i, x)</code>', 'Rest rückt nach hinten'],
-        ['ersetzen', '<code>l[i] = x</code>', 'Element überschreiben'],
-        ['entfernen', '<code>del l[i]</code>', 'Rest rückt nach vorn'],
-        ['Länge', '<code>len(l)</code>', 'Anzahl Elemente']
+<p>In der Klausur gelten für <b>dynamische Reihungen</b> genau die Befehle des <a class="link" href="#/befehle">Beipackzettels</a>:</p>
+${tab(['Beipackzettel', 'Python', 'Wirkung'], [
+        ['<code>DynArray()</code>', '<code>l = []</code>', 'leere Reihung'],
+        ['<code>getItem(i)</code>', '<code>l[i]</code>', 'Element an Position i lesen'],
+        ['<code>append(x)</code>', '<code>l.append(x)</code>', 'hinten anfügen'],
+        ['<code>insertAt(i, x)</code>', '<code>l.insert(i, x)</code>', 'einfügen, Rest rückt nach hinten'],
+        ['<code>setItem(i, x)</code>', '<code>l[i] = x</code>', 'Element überschreiben'],
+        ['<code>delete(i)</code>', '<code>del l[i]</code>', 'entfernen, Rest rückt nach vorn'],
+        ['<code>getLength()</code>', '<code>len(l)</code>', 'Anzahl Elemente'],
+        ['<code>isEmpty()</code>', '<code>len(l) == 0</code>', 'leer?']
       ])}
 ${merke('Standardmuster (immer dasselbe Gerüst)', `<ul><li><b>Summe/Zählen:</b> Startwert 0, in der Schleife addieren bzw. bei Treffer um 1 erhöhen.</li><li><b>Maximum/Minimum:</b> Startwert = <b>erstes Element</b> (nicht 0!), jedes weitere vergleichen.</li><li><b>Suchen:</b> Schleife über alle Positionen, bei Treffer merken oder zurückgeben.</li><li><b>2D-Liste:</b> Liste von Listen, <code>m[zeile][spalte]</code>, zwei geschachtelte Schleifen.</li></ul>`)}
 <p>Ein <b>Tupel</b> (<code>(3, 5)</code>) ist wie eine Liste, aber <b>nicht veränderbar</b>. Zwei Werte gleichzeitig zurückgeben geht über ein Tupel: <code>return maximum, position</code>.</p>`,
@@ -238,13 +405,13 @@ def max_mit_position(liste):
       ],
       test: [
         { q: `Wie lautet der letzte gültige Index einer Liste mit 7 Elementen?`, a: `6 (Zählung beginnt bei 0).` },
-        { q: `Was bewirkt <code>l.insert(2, "x")</code> mit den Elementen ab Position 2?`, a: `Sie rücken alle ein Feld nach hinten, "x" steht dann an Position 2.` },
+        { q: `Welcher Beipackzettel-Befehl entspricht <code>l.insert(2, "x")</code>?`, a: `<code>insertAt(2, "x")</code>: Das Element an Position 2 und alle folgenden rücken nach hinten.` },
         { q: `Warum ist <code>maximum = 0</code> als Startwert riskant?`, a: `Bei nur negativen Zahlen würde 0 als „Maximum“ gelten, obwohl es nicht in der Liste steht.` },
         { q: `Wie greift man auf Zeile 1, Spalte 2 einer 2D-Liste <code>m</code> zu?`, a: `<code>m[1][2]</code> (Zeile zuerst, beide ab 0).` }
       ]
     },
     {
-      id: 'IF5', fach: F, num: 5, min: 18, demo: 'i-sort', demoTitel: 'Schau zuerst: Drei Sortierverfahren im Vergleich',
+      id: 'IF5', fach: F, num: 8, min: 18, demo: 'i-sort', demoTitel: 'Schau zuerst: Drei Sortierverfahren im Vergleich',
       title: 'Sortieren: Selection-, Insertion- und Bubblesort',
       short: 'Drei einfache Verfahren, Ablauf, Code, Vergleiche und Vertauschungen zählen',
       idee: `<p>Ein Sortierverfahren ordnet eine Liste, hier <b>aufsteigend</b>. Die drei einfachen Verfahren arbeiten „vorn nach hinten“, unterscheiden sich aber im Vorgehen:</p>
@@ -311,7 +478,7 @@ ${merke('Vertauschen', `<p>Zwei Werte tauschen geht in Python mit <code>a, b = b
       ]
     },
     {
-      id: 'IF6', fach: F, num: 6, min: 14, demo: 'i-laufzeit', demoTitel: 'Probier es aus: Wie schnell wächst die Rechenzeit?',
+      id: 'IF6', fach: F, num: 9, min: 14, demo: 'i-laufzeit', demoTitel: 'Probier es aus: Wie schnell wächst die Rechenzeit?',
       title: 'Laufzeit und Komplexität',
       short: 'Schritte zählen, O(1), O(n), O(n²), O(2ⁿ), Verdopplungstest',
       idee: `<p>Die <b>Laufzeitkomplexität</b> sagt, wie stark die Anzahl der Schritte mit der Eingabegröße <b>n</b> wächst. Man zählt Grundoperationen (Vergleiche, Zuweisungen), <b>keine Sekunden</b>: Sekunden hängen vom Rechner ab, die Schrittzahl nicht.</p>
@@ -354,7 +521,7 @@ ${merke('So bestimmst du die Ordnung', `<ul><li>Zähle, wie oft die <b>innerste 
 
     // ---------------------------------------------------------------- Ordner: Rekursion
     {
-      id: 'IF7', fach: F, num: 7, min: 18, demo: 'i-rekursion', demoTitel: 'Schau zuerst: Der Aufrufstapel wächst und schrumpft',
+      id: 'IF7', fach: F, num: 10, min: 18, demo: 'i-rekursion', demoTitel: 'Schau zuerst: Der Aufrufstapel wächst und schrumpft',
       title: 'Rekursion: Abbruch, Schritt, Aufrufstapel',
       short: 'Selbstaufruf, Abbruchbedingung, Problemreduktion, summe(n), Fakultät',
       idee: `<p>Eine Funktion ist <b>rekursiv</b>, wenn sie sich <b>selbst aufruft</b>. Jede rekursive Funktion braucht zwei Teile:</p>
@@ -399,7 +566,7 @@ def fakultaet(n):        # n! = n * (n-1)!, 0! = 1
       ]
     },
     {
-      id: 'IF8', fach: F, num: 8, min: 18, demo: 'i-fib', demoTitel: 'Schau zuerst: Der Aufrufbaum von Fibonacci',
+      id: 'IF8', fach: F, num: 11, min: 18, demo: 'i-fib', demoTitel: 'Schau zuerst: Der Aufrufbaum von Fibonacci',
       title: 'Fibonacci: rekursiv oder mit Schleife?',
       short: 'fib(n) rekursiv/iterativ, Aufrufbaum, Laufzeit',
       idee: `<p>Die <b>Fibonacci-Folge</b>: 0, 1, 1, 2, 3, 5, 8, 13, 21, … Jede Zahl ist die Summe der beiden davor: <code>fib(n) = fib(n−1) + fib(n−2)</code>, Abbruch: <code>fib(0) = 0</code>, <code>fib(1) = 1</code>.</p>
@@ -459,7 +626,7 @@ fib(4)
 
     // ---------------------------------------------------------------- Ordner: Dynamische Datenstrukturen
     {
-      id: 'IF9', fach: F, num: 9, min: 18, demo: 'i-liste', demoTitel: 'Probier es aus: Zeiger umbiegen',
+      id: 'IF9', fach: F, num: 12, min: 18, demo: 'i-liste', demoTitel: 'Probier es aus: Zeiger umbiegen',
       title: 'Verkettete Liste',
       short: 'Knoten, Zeiger, Anker, NULL, Einfügen und Löschen durch Umbiegen',
       idee: `<p>Arrays haben feste Länge, speichern meist nur einen Typ, und <b>Einfügen in der Mitte verschiebt alle folgenden Elemente</b>. Die <b>verkettete Liste</b> (dynamische Datenstruktur) vermeidet das: Jedes Element ist ein <b>Knoten</b> mit <b>Daten</b> und einem <b>Zeiger</b> auf den nächsten Knoten.</p>
@@ -504,17 +671,18 @@ Anker → [Messer|•] → [Schwert|•] → [Kompass|NULL]`)}` },
       ]
     },
     {
-      id: 'IF10', fach: F, num: 10, min: 16, demo: 'i-stack', demoTitel: 'Probier es aus: Push und Pop',
+      id: 'IF10', fach: F, num: 13, min: 16, demo: 'i-stack', demoTitel: 'Probier es aus: Push und Pop',
       title: 'Stapel (Stack): Last In, First Out',
       short: 'push, pop, top, isEmpty, Anwendungen, Klammerprüfung',
       idee: `<p>Ein <b>Stapel</b> (Stack, Keller) ist eine dynamische Datenstruktur, bei der man immer nur an das <b>oberste Element</b> herankommt: <b>LIFO</b> (Last In, First Out).</p>
-${tab(['Operation', 'Wirkung', 'Python (Liste als Stapel)'], [
+${tab(['Beipackzettel-Befehl', 'Wirkung', 'Python (Liste als Stapel)'], [
         ['<code>Stack()</code>', 'leeren Stapel anlegen', '<code>s = []</code>'],
         ['<code>push(x)</code>', 'x oben drauflegen', '<code>s.append(x)</code>'],
         ['<code>pop()</code>', 'oberstes Element <b>entnehmen und zurückgeben</b>', '<code>s.pop()</code>'],
         ['<code>top()</code>', 'oberstes Element <b>ansehen</b> (bleibt liegen)', '<code>s[-1]</code>'],
         ['<code>isEmpty()</code>', 'Stapel leer?', '<code>len(s) == 0</code>']
       ])}
+<p>Die Befehle stehen auf dem <a class="link" href="#/befehle">Beipackzettel</a> (Abschnitt 4). Mehr gibt es nicht.</p>
 <p><b>Anwendungen:</b> Browser-Zurück-Taste, <b>Rückgängig</b> (Undo), Rücksprungadressen bei Funktionsaufrufen (Aufrufstapel der Rekursion), <b>Klammerprüfung</b>, Backspace beim Tippen.</p>
 ${merke('Klammerprüfung mit Stapel', `<p>Text von links nach rechts lesen. <b>Öffnende</b> Klammer → <code>push</code>. <b>Schließende</b> Klammer → ist der Stapel leer oder passt die entnommene Klammer nicht dazu → <b>falsch</b>. Am Ende muss der Stapel <b>leer</b> sein.</p>`)}`,
       bild: `<p>Wie ein <b>Tellerstapel</b> in der Mensa: Du nimmst immer den obersten Teller und legst neue oben drauf. Einen mittleren Teller kommst du nicht ran, ohne die oberen abzuheben.</p>`,
@@ -548,17 +716,18 @@ ${merke('Klammerprüfung mit Stapel', `<p>Text von links nach rechts lesen. <b>�
       ]
     },
     {
-      id: 'IF11', fach: F, num: 11, min: 16, demo: 'i-queue', demoTitel: 'Probier es aus: Enqueue und Dequeue',
+      id: 'IF11', fach: F, num: 14, min: 16, demo: 'i-queue', demoTitel: 'Probier es aus: Enqueue und Dequeue',
       title: 'Warteschlange (Queue): First In, First Out',
       short: 'enqueue, dequeue, head, isEmpty, Stapel vs. Schlange, Umsetzung mit Liste',
       idee: `<p>In einer <b>Warteschlange</b> (Queue) wird hinten <b>angehängt</b> und vorn <b>entnommen</b>: <b>FIFO</b> (First In, First Out). Wer zuerst kommt, wird zuerst bedient.</p>
-${tab(['Operation', 'Wirkung', 'Python'], [
+${tab(['Beipackzettel-Befehl', 'Wirkung', 'Python'], [
         ['<code>Queue()</code>', 'leere Schlange anlegen', '<code>q = []</code>'],
         ['<code>enqueue(x)</code>', 'x <b>hinten</b> anhängen', '<code>q.append(x)</code>'],
         ['<code>dequeue()</code>', 'vorderstes Element <b>entnehmen und zurückgeben</b>', '<code>q.pop(0)</code>'],
         ['<code>head()</code>', 'vorderstes Element <b>ansehen</b>', '<code>q[0]</code>'],
         ['<code>isEmpty()</code>', 'Schlange leer?', '<code>len(q) == 0</code>']
       ])}
+<p>Die Befehle stehen auf dem <a class="link" href="#/befehle">Beipackzettel</a> (Abschnitt 4). Mehr gibt es nicht.</p>
 <p><b>Anwendungen:</b> Druckaufträge, Puffer (Audio/Video), Nachrichten zwischen Programmen, Prozessverwaltung im Betriebssystem, Taxistand, Kundenschlange.</p>
 ${tab(['', 'Stapel', 'Schlange'], [['Prinzip', 'LIFO', 'FIFO'], ['Einfügen', 'oben (<code>push</code>)', 'hinten (<code>enqueue</code>)'], ['Entnehmen', 'oben (<code>pop</code>)', 'vorn (<code>dequeue</code>)'], ['Typisch für', 'rückwärts abarbeiten, Rekursion, Undo', 'der Reihe nach abarbeiten, Warteliste']])}
 ${merke('Umsetzung mit verketteter Liste', `<p><b>Stapel:</b> <code>push</code> und <code>pop</code> am <b>Anker</b> (vorn). <b>Schlange:</b> <code>dequeue</code> am Anker, <code>enqueue</code> hinten. Damit hinten schnell angehängt werden kann, merkt man sich zusätzlich einen Zeiger auf den <b>letzten Knoten</b>.</p>`)}`,

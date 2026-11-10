@@ -95,6 +95,7 @@
     page('Stundenplan', '#/plan', 'A- und B-Woche', 'unterricht stunden', () => { A.state.planTab = 'stunden'; A.save(); });
     page('Geräte verbinden', '#/sync', 'Sync-Code, verschlüsselt', 'sync handy ipad');
     page('Python-Werkstatt', '#/python', 'Code schreiben und im Browser ausführen', 'programmieren informatik code ausfuhren');
+    page('Beipackzettel (Informatik)', '#/befehle', 'Alle erlaubten Befehle: Zeichenketten, Reihung, Stapel, Schlange', 'befehle beipackzettel hilfsmittel push pop top enqueue dequeue head insertat getitem delete append getlength isempty ascii mod informatik');
     page('Altes Portal', '../alt/', 'Bisherige Module (neuer Tab)', 'alt iserv physik module');
 
     A.SUBJECTS.filter(s => A.mine(s.id)).forEach(s => {
