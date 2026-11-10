@@ -1634,3 +1634,10 @@ kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; 
 .id-ch small { font: 600 10.5px var(--font-ui); color: var(--text-3); } .id-ch.rg { background: color-mix(in oklab, var(--subj) 22%, transparent); } .id-ch.on { box-shadow: 0 0 0 2.5px var(--subj) inset; }
 .id-ix { position: absolute; top: -9px; left: 50%; transform: translateX(-50%); font: 700 10.5px var(--font-ui); font-style: normal; color: var(--text-3); }
 .id-row .id-cell { margin-top: 10px; } .bad { color: var(--bad); }
+
+.bf-gh { margin: 22px 0 6px; font: 700 18px var(--font-ui); } .bf-lbl { margin: 16px 0 6px; font: 700 12px var(--font-ui); letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); }
+.bf-exbody { padding: 0 16px 16px; } .bf-expl { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; font-size: 15.5px; line-height: 1.6; }
+.bf-ex .algo-host { margin-top: 12px; } .bf-ex .ic-tabw { margin: 8px 0; } .bf-ex .pd-btns { margin-top: 12px; } .bf-ex .btn { text-decoration: none; }
+.bf-show { margin-top: 4px; }
+
+.ic-tab th.nl, .bf-ex .ic-tab th { text-transform: none; letter-spacing: 0; font-size: 12.5px; }

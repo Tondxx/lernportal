@@ -10,7 +10,7 @@ require('../algo.js');
 require('../plan.js');
 const cal = fs.readFileSync(path.join(__dirname, '..', '..', 'calendar.js'), 'utf8');
 const KLAUSUREN = new Function(cal.replace(/^const /gm, 'var ') + '; return TONDA_KLAUSUREN;')();
-['demo.js', 'demo-algo.js', 'physik.js', 'physik-treppe.js', 'informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js', 'ordner.js', 'plaene.js'].forEach(f => require(path.join(__dirname, '..', 'content', f)));
+['demo.js', 'demo-algo.js', 'physik.js', 'physik-treppe.js', 'informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js', 'informatik-beispiele.js', 'ordner.js', 'plaene.js'].forEach(f => require(path.join(__dirname, '..', 'content', f)));
 
 const D = window.MT_DATA, O = window.LR_ORDNER, PLANS = window.LR_PLANS, TOPICS = window.LR_TOPICS, ALGOS = window.LR_ALGOS;
 const ALL_LESSONS = D.LESSONS.concat(window.LR_LESSONS || []);

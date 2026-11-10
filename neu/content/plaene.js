@@ -83,6 +83,8 @@
         A('IT16'),
         L('IF8'), A('IT18'),
         A('IT26'),
+        // Aufgaben zu den Datentypen (Beipackzettel)
+        A('IX-palindrom'), A('IX-zaehleteil'), A('IX-prim'), A('IX-ggt'), A('IX-spiegeln'), A('IX-sortiert'), A('IX-allefelder'), A('IX-doppelte'), A('IX-ersteansende'), A('IX-tauscheoberste'), A('IX-textstapel'), A('IX-stapelsumme'), A('IX-zaehleschlange'), A('IX-wartezeit'),
         { typ: 'probe', ref: 'PI2' },
         { typ: 'probe', ref: 'PI3' },
         { typ: 'probe', ref: 'PI4' }

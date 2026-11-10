@@ -29,6 +29,29 @@
       <p class="row-sub" style="margin-top:12px">Quelle: Ergänzende Hinweise zum Kerncurriculum Informatik (Neufassung Juni 2025), IServ → 0. Vorgaben. Das hier ist eine eigene Zusammenfassung mit Python-Entsprechung; maßgeblich ist dein Ausdruck.</p>`;
   }
 
+  // ------------------------------------------------------------ Beispiele und Aufgaben je Datentyp
+  function tabHtml(kopf, zeilen) { return `<div class="ic-tabw"><table class="ic-tab"><thead><tr>${kopf.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${zeilen.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`; }
+  function beispiele() {
+    const E = window.INF_BEISPIELE; if (!E || !E.beispiele) return '<p class="muted">Keine Beispiele geladen.</p>';
+    const card = e => {
+      const isB = e.art === 'beispiel', typ = E.typen.find(t => t.id === e.typ);
+      const probe = tabHtml(['Aufruf', 'Rückgabe'], e.probe.map(r => [`<code>${esc(r[0])}</code>`, `<b>${esc(r[1])}</b>`]));
+      const body = isB ? `<div class="bf-ex-sol" hidden>
+          <div class="algo-host" data-algo="${e.id}"></div>
+          ${e.ablauf ? `<p class="bf-lbl">Probelauf Schritt für Schritt</p><p class="row-sub">${e.ablauf.text}</p>${tabHtml(e.ablauf.kopf, e.ablauf.zeilen)}` : ''}
+          <p class="bf-lbl">Wie funktioniert das?</p><ul class="bf-expl">${e.erklaerung.map(x => `<li>${x}</li>`).join('')}</ul>
+          <p class="bf-lbl">Probeläufe</p>${probe}</div>
+          <button class="btn small primary bf-show" type="button">${A.icon('eye')}Lösung zeigen</button>`
+        : `<p class="bf-lbl">Aufrufe zum Prüfen</p>${tabHtml(['Aufruf'], e.probe.map(r => [`<code>${esc(r[0])}</code>`]))}
+          <div class="pd-btns"><a class="btn small primary" href="#/aufgabe/IX-${e.id}">${A.icon('check')}Aufgabe bearbeiten (mit Musterlösung)</a><a class="btn small" href="#/python/py-${e.id}">${A.icon('code')}In der Python-Werkstatt</a></div>`;
+      return `<details class="bf-sec bf-ex" data-typ="${e.typ}" data-id="${e.id}"><summary><span class="bf-nr ${isB ? '' : 'bf-o'}">${isB ? 'B' : 'A'}</span><span class="bf-t">${esc(e.titel)}</span><span class="chip">${isB ? 'Beispiel' : 'Aufgabe'}</span></summary>
+        <div class="prose bf-intro">${e.aufgabe}</div><div class="bf-exbody">${body}</div></details>`;
+    };
+    return `<p class="muted">Zu jedem Datentyp des Beipackzettels: erst <b>Beispielprogramme</b> (Aufgabe lesen, selbst überlegen, dann „Lösung zeigen“) mit Struktogramm, Python und Erklärung. Danach <b>Aufgaben</b> zum Selbermachen mit Musterlösung und Python-Werkstatt.</p>
+      <div class="pd-seg" id="bsel" role="group"><button type="button" data-v="" class="on" aria-pressed="true">Alle</button>${E.typen.map(t => `<button type="button" data-v="${t.id}" aria-pressed="false">${esc(t.titel)}</button>`).join('')}</div>
+      <div id="bflist">${E.typen.map(t => `<div class="bf-grp" data-grp="${t.id}"><h3 class="bf-gh">${esc(t.titel)}</h3>${E.beispiele.filter(e => e.typ === t.id).map(card).join('')}</div>`).join('')}</div>`;
+  }
+
   // ------------------------------------------------------------ Regeln
   function regeln(B) {
     return `<div class="prose bf-rules">
@@ -109,8 +132,9 @@ wenn i ≥ 0 UND i ≤ d.getLength():
       <div class="page-head"><span class="kicker">Informatik · Hilfsmittel in der Klausur</span><h2 class="h-1">Beipackzettel: die erlaubten Befehle</h2>
         <p class="muted">Alles, was auf dem Beipackzettel <b>grün</b> hinterlegt ist, darfst du mit in die Klausur nehmen. Die Befehle dort sind <b>Pflicht, und es gibt keine anderen</b>. Hier lernst du, mit ihnen zu arbeiten.</p></div>
       <div class="notice">${A.icon('info')}<div>Der Beipackzettel ist dein Ausdruck von <code>INF_Ergaenzende-Hinweise_GO_Neufassung_2025d.pdf</code> (Abschnitte 1 bis 4 sind der Kern). Prüf im Zweifel immer deine Papierversion.</div></div>
-      <div class="pd-seg bf-tabs" id="bft" role="tablist">${[['nach', 'Nachschlagen'], ['test', 'Ausprobieren'], ['train', 'Training'], ['regel', 'So arbeitest du damit']].map(([v, l], i) => `<button type="button" role="tab" data-v="${v}" class="${i === 0 ? 'on' : ''}" aria-selected="${i === 0}">${l}</button>`).join('')}</div>
+      <div class="pd-seg bf-tabs" id="bft" role="tablist">${[['nach', 'Nachschlagen'], ['bsp', 'Beispiele & Aufgaben'], ['test', 'Ausprobieren'], ['train', 'Training'], ['regel', 'So arbeitest du damit']].map(([v, l], i) => `<button type="button" role="tab" data-v="${v}" class="${i === 0 ? 'on' : ''}" aria-selected="${i === 0}">${l}</button>`).join('')}</div>
       <section data-p="nach">${nachschlagen(B)}</section>
+      <section data-p="bsp" hidden>${beispiele()}</section>
       <section data-p="test" hidden><div class="pd-seg" id="bfd" role="group">${[['i-zeichen', 'Zeichenketten'], ['i-dynarray', 'Dynamische Reihung'], ['i-stack', 'Stapel'], ['i-queue', 'Schlange']].map(([v, l], i) => `<button type="button" data-v="${v}" class="${i === 0 ? 'on' : ''}" aria-pressed="${i === 0}">${l}</button>`).join('')}</div><div class="demo pdemo" id="bfdemo"></div></section>
       <section data-p="train" hidden><div class="demo pdemo" id="bftrain"></div></section>
       <section data-p="regel" hidden>${regeln(B)}</section>
@@ -123,6 +147,17 @@ wenn i ≥ 0 UND i ≤ d.getLength():
         const mountDemo = name => { const h = $('#bfdemo', root); h.innerHTML = ''; (window.LR_DEMOS || {})[name](h); };
         $$('#bfd button', root).forEach(b => b.addEventListener('click', () => { $$('#bfd button', root).forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); }); mountDemo(b.dataset.v); }));
         mountDemo('i-zeichen');
+        // Beispiele: Filter, Lösung lazy einbauen
+        const EXS = (window.INF_BEISPIELE || {}).beispiele || [];
+        $$('#bsel button', root).forEach(b => b.addEventListener('click', () => {
+          $$('#bsel button', root).forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); });
+          $$('.bf-grp', root).forEach(g => { g.hidden = !!b.dataset.v && g.dataset.grp !== b.dataset.v; });
+        }));
+        $$('.bf-ex .bf-show', root).forEach(b => b.addEventListener('click', () => {
+          const card = b.closest('.bf-ex'), sol = $('.bf-ex-sol', card), host = $('.algo-host', sol), e = EXS.find(x => x.id === card.dataset.id);
+          if (sol.hidden) { sol.hidden = false; if (!host.dataset.done && window.LRAlgo && e) { window.LRAlgo.mount(host, e.algo); host.dataset.done = '1'; } b.lastChild.textContent = 'Lösung verbergen'; }
+          else { sol.hidden = true; b.lastChild.textContent = 'Lösung zeigen'; }
+        }));
         training($('#bftrain', root));
         const q = $('#bfq', root);
         q.addEventListener('input', () => {

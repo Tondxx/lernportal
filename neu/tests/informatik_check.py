@@ -15,14 +15,15 @@ NODE_DUMP = r"""
 global.window = {}; global.document = {}; global.matchMedia = () => ({ matches: false });
 const path = require('path'), base = process.argv[1];
 require(path.join(base, 'algo.js'));
-['informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js'].forEach(f => require(path.join(base, 'content', f)));
-const out = { nums: {}, blocks: [], algos: {} };
+['informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js', 'informatik-beispiele.js'].forEach(f => require(path.join(base, 'content', f)));
+const out = { nums: {}, blocks: [], algos: {}, examples: [] };
 const grab = (id, s) => { (String(s).match(/<pre class="ic-code">[\s\S]*?<\/pre>/g) || []).forEach(b => out.blocks.push({ id, code: b.replace(/^<pre class="ic-code">/, '').replace(/<\/pre>$/, '') })); };
 const walk = (id, o) => { if (typeof o === 'string') grab(id, o); else if (Array.isArray(o)) o.forEach(x => walk(id, x)); else if (o && typeof o === 'object') Object.values(o).forEach(x => walk(id, x)); };
 window.LR_LESSONS.filter(l => l.fach === 'informatik').forEach(l => walk(l.id, l));
 window.LR_TASKS.filter(t => t.fach === 'informatik').forEach(t => { walk(t.id, t); t.parts.forEach(p => (p.nums || []).forEach((n, i) => { out.nums[p.id + '#' + i] = n.ans; })); });
 window.LR_PY.filter(t => t.id.startsWith('py-') && !t.demo).forEach(t => { out.blocks.push({ id: t.id, code: t.loesung.replace(/&/g, '&amp;') }); });
 window.LR_ALGOS.filter(a => a.id.startsWith('inf-')).forEach(a => { out.algos[a.id] = { py: window.LRAlgo.pyText(a.algo), checkpoints: a.ablauf.checkpoints.map(c => [c.id, c.wert]) }; });
+window.INF_BEISPIELE.beispiele.forEach(e => out.examples.push({ id: e.id, art: e.art, py: e.pyText, tests: e.tests, name: e.algo.name }));
 console.log(JSON.stringify(out));
 """
 
@@ -295,6 +296,28 @@ for z in '([x])]':
     elif z in ')]}' and s_: s_.pop()
     h.append(len(s_))
 check('Notation Klammern Checkpoints 2,1,0,6', [cp['inf-klammern'][k] for k in ('k2', 'k4', 'k5', 'kz')] == [h[1], h[3], h[4], 6], h)
+
+# ---------------------------------------------------------------- 4. Beispielprogramme und Aufgaben je Datentyp: jede Python-Fassung besteht ihre Tests
+import copy
+bad = []
+for e in D['examples']:
+    ns_ = {}
+    try:
+        exec(e['py'], ns_)
+    except Exception as ex:
+        bad.append((e['id'], 'exec', str(ex))); continue
+    for t in e['tests']:
+        try:
+            got = eval(t['call'], ns_)
+        except Exception as ex:
+            bad.append((e['id'], t['call'], 'Fehler ' + str(ex))); continue
+        if got != t['erwartet']:
+            bad.append((e['id'], t['call'], got, t['erwartet']))
+check(f"{len(D['examples'])} Beispiele/Aufgaben je Datentyp: alle Python-Fassungen bestehen alle Tests", not bad, bad)
+# Beipackzettel-Befehle: im Python-Text der Beispiele nur erlaubte Operationen (keine verbotenen Abkürzungen)
+VERBOTEN = ['sorted(', '.sort(', 'min(', 'max(', 'sum(', '.reverse(', '.remove(', '.index(', '.count(', '.upper(', '.lower(', '.split(', '.replace(', '.find(', '.join(', 'reversed(', 'dict(', ' dict']
+verb = [(e['id'], v) for e in D['examples'] for v in VERBOTEN if v in e['py']]
+check('Beispiele benutzen keine verbotenen Python-Abkürzungen', not verb, verb)
 
 print()
 if fails:

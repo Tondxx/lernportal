@@ -9,6 +9,7 @@ global.window = {};
 require(path.join(__dirname, '..', 'algo.js'));
 require(path.join(__dirname, '..', 'content', 'demo-python.js'));
 require(path.join(__dirname, '..', 'content', 'informatik-algos.js'));
+require(path.join(__dirname, '..', 'content', 'informatik-beispiele.js'));
 const TASKS = window.LR_PY;
 const DEMO_IDS = ['py-groesste', 'py-summe-gerade'];
 let n = 0;

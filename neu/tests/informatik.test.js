@@ -6,7 +6,7 @@ global.window = {};
 global.document = {};
 global.matchMedia = () => ({ matches: false });
 require('../algo.js');
-['informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js', 'informatik-demos.js', 'informatik-befehle-demos.js', 'informatik-befehle.js'].forEach(f => require(path.join(__dirname, '..', 'content', f)));
+['informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js', 'informatik-beispiele.js', 'informatik-demos.js', 'informatik-befehle-demos.js', 'informatik-befehle.js'].forEach(f => require(path.join(__dirname, '..', 'content', f)));
 let n = 0;
 const test = (name, fn) => { fn(); n++; console.log('ok', name); };
 const L = (window.LR_LESSONS || []).filter(l => l.fach === 'informatik');
@@ -111,6 +111,27 @@ test('Demos: alle in Lektionen genannten Demos sind registriert, reine Logik sti
   assert.strictEqual(D.traceProgs.collatz.steps().pop().out, 8);
   assert.strictEqual(D.traceProgs.liste.steps().pop().out, '9 1');
   assert.strictEqual(D.arrayShifts(10, 1), 8);
+});
+
+test('Beispiele und Aufgaben je Datentyp: vollständig, Aufgaben haben Struktogramm, Python und Probelauf', () => {
+  const E = window.INF_BEISPIELE;
+  assert.ok(E.beispiele.length >= 28, 'zu wenig Beispiele');
+  E.typen.forEach(t => {
+    const mine = E.beispiele.filter(e => e.typ === t.id);
+    assert.ok(mine.some(e => e.art === 'beispiel'), `${t.id}: kein Beispiel`);
+    if (t.id !== 'kombi') assert.ok(mine.some(e => e.art === 'aufgabe') && mine.filter(e => e.art === 'beispiel').length >= 2, `${t.id}: Aufgabe oder zweites Beispiel fehlt`);
+  });
+  const ids = new Set();
+  E.beispiele.forEach(e => {
+    assert.ok(!ids.has(e.id), `doppelt: ${e.id}`); ids.add(e.id);
+    assert.ok(e.titel && e.aufgabe && e.algo && e.pyText.startsWith('def ') && e.tests.length >= 3, `${e.id}: unvollständig`);
+    assert.ok(e.probe.length === e.tests.length, `${e.id}: Probelauf`);
+    if (e.art === 'beispiel') assert.ok(e.erklaerung && e.erklaerung.length >= 2, `${e.id}: Erklärung fehlt`);
+    else { assert.ok(T.some(t => t.id === 'IX-' + e.id), `${e.id}: Aufgabe IX fehlt`); assert.ok((window.LR_PY || []).some(p => p.id === 'py-' + e.id), `${e.id}: Python-Aufgabe fehlt`); }
+    // Struktogramm benutzt die Schreibweise des Beipackzettels, kein Python
+    const ps = window.LRAlgo.pseudoText(e.algo);
+    assert.ok(!/\blen\(|range\(|\.pop\(0\)|\bdel /.test(ps), `${e.id}: Python-Syntax im Pseudocode/Struktogramm`);
+  });
 });
 
 test('Beipackzettel: genau die Befehle des Dokuments (Abschnitte 1 bis 4), nichts erfunden', () => {
