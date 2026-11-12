@@ -41,17 +41,29 @@
       id: 'plan-physik-k10',
       fach: 'physik',
       klausur: 'k-10', // Physik Klausur 2 (12.1), 13.11.2026
-      titel: 'Physik kompakt: Kondensator, Auf- und Entladen, Braunsche Röhre',
-      hinweis: 'Kompakt-Plan für die letzten drei Tage (Tonda, 10.11.: der volle Plan war zu viel). Reihenfolge nach Wichtigkeit: erst Größen, dann Kondensator und Auf-/Entladen, zuletzt die Röhre. Nicht im Plan, aber in den Ordnern: Lektion 1, 2 und 5, die Lerntreppen, weitere Aufgaben und die Probeklausur.',
-      stand: '2026-11-10',
+      titel: 'Physik Endspurt: alle sieben Klausurthemen, garantierte zuerst',
+      hinweis: 'Nach der Themenliste der Lehrkraft (12.11.) geordnet, alle sieben Themen sind drin. Garantiert dran (Sternchen): Kondensator und Gleichung herleiten, darum Block 1 und 2. Dazu: Braunsche Röhre und Bewegung im elektrischen Feld (Block 2), Auf- und Entladen (Block 3), alle Herleitungen auf einmal (Block 4), Arbeit/Energie/Leistung (Block 5), Begründen mit funktionalen Abhängigkeiten und Taschenrechner (Block 6). Wenn die Zeit knapp wird: von oben nach unten abarbeiten, Block 6 und 5 zuerst kürzen. Nicht im Plan, aber in den Ordnern: Lektion 1/2/5-Wiederholungen, die Lerntreppen, weitere Aufgaben und die Probeklausur.',
+      stand: '2026-11-12',
       items: [
-        L('PH0'),
-        L('PH3'), A('PC1'), A('PC2'),
+        // Block 1 · Kondensator (garantiert): Aufbau, Berechnung, Anwendung, Schaltungen
+        L('PH3'), A('PC2'),
         L('PH4'), A('PW1'),
-        L('PH8'), A('PL1'),
-        L('PH9'), A('PL4'),
-        L('PH6'),
-        L('PH7'), A('PR3'), A('PR4')
+        L('PH5'), A('PS1'),
+        // Block 2 · Gleichung herleiten (garantiert), Braunsche Röhre, Bewegung im elektrischen Feld
+        L('PH6'), A('PR2'),
+        L('PH7'), A('PR4'), A('PR3'),
+        // Block 3 · Auf- und Entladen: Kurven, C aus t_E, Differenzialgleichung
+        L('PH8'), A('PL1'), A('PL3'),
+        L('PH9'), A('PL6'), A('PL4'),
+        // Block 4 · Gleichung herleiten (garantiert): alle Herleitungen auf einmal
+        L('PH12'), A('PR1'),
+        // Block 5 · Arbeit, Energie, Leistung (Größen, Spannung, Potential)
+        L('PH0'),
+        L('PH1'), A('PE2'),
+        L('PH2'),
+        // Block 6 · Begründen mit funktionalen Abhängigkeiten, Taschenrechner
+        L('PH10'), A('PB1'), A('PB2'),
+        L('PH11'), A('PT1')
       ]
     },
     {

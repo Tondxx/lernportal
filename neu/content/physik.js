@@ -235,6 +235,10 @@ ${merke('Energieerhaltung', m`$$e\cdot U_B=\tfrac12\,m_e\,v_0^2\qquad\Longrighta
           { h: 'Einordnen', t: m`Das sind 23 000 km pro Sekunde, etwa 8 % der Lichtgeschwindigkeit. Für so „langsame“ Elektronen reicht die normale Formel.` }
         ]
       },
+      extraAfter: m`<p><b>So wird es im Unterricht aufgeschrieben:</b> Formel hinschreiben, dann jede Umformung mit der Rechenoperation rechts. Genau so wird in der Klausur „Gleichung herleiten“ bewertet.</p>
+<p>$$\begin{aligned}E_{kin}&=E_{el}\\\tfrac12\,m\,v^2&=q\cdot U\qquad&&\big|\cdot2\\m\,v^2&=2\,q\,U&&\big|:m\\v^2&=\dfrac{2\,q\,U}{m}&&\big|\sqrt{\ }\\v&=\sqrt{\dfrac{2\,q\,U}{m}}\end{aligned}$$</p>
+<p>Einsetzen für $U_B=3{,}6\,\text{kV}$ (Zahlen immer mit Einheit, $q=e$): $v=\sqrt{\dfrac{2\cdot1{,}602\cdot10^{-19}\,\text{C}\cdot3600\,\text{V}}{9{,}109\cdot10^{-31}\,\text{kg}}}=3{,}57\cdot10^{7}\,\tfrac{\text{m}}{\text{s}}$</p>
+<p><b>Aufbau und Verschaltung (wird gefragt):</b> Glühkathode (Heizspannung $U_H$) → Wehnelt-Zylinder (leicht negativ, bündelt die Elektronen) → Anode mit Loch (Beschleunigungsspannung $U_B$ zwischen Kathode und Anode) → Ablenkplatten → Leuchtschirm, alles im Vakuum. Der <b>Heizkreis</b> und der <b>Beschleunigungskreis</b> sind zwei getrennte Stromkreise.</p>`,
       fehler: [
         m`$v\sim U_B$ angenommen. Richtig ist $v\sim\sqrt{U_B}$.`,
         'Glühelektrischer Effekt mit Photoeffekt verwechselt: Hier liefert die Heizung die Energie, nicht Licht.',
@@ -280,6 +284,12 @@ ${achtung('Wichtig fürs Erläutern', m`<p>In $y=\dfrac{Ux^2}{4dU_B}$ kommt $e/m
           { h: 'Gerade bis zum Schirm', t: m`<p>Auf $L=200\,\text{mm}$ steigt die Gerade um $L\cdot\tan\alpha=200\,\text{mm}\cdot0{,}20=40\,\text{mm}$. Dazu kommen die $8\,\text{mm}$ aus den Platten:</p><p>$Y=8{,}0\,\text{mm}+40\,\text{mm}=48\,\text{mm}=4{,}8\,\text{cm}$ über der Schirmmitte.</p>` }
         ]
       },
+      extraAfter: m`<p><b>Die Herleitung so, wie sie im Unterricht aufgeschrieben wird</b> (zwei Bewegungen getrennt, jede Umformung mit Operation rechts):</p>
+<p><b>$x$-Richtung (gleichförmig):</b> $$\begin{aligned}s_x&=v\cdot t&&\big|:v\\t&=\dfrac{s_x}{v}\end{aligned}$$</p>
+<p><b>$y$-Richtung (gleichmäßig beschleunigt):</b> $$\begin{aligned}F&=m\cdot a&&\big|:m\\a&=\dfrac{F}{m}=\dfrac{E\cdot e}{m}=\dfrac{U_A\,e}{d\,m}\end{aligned}$$</p>
+<p><b>Zusammensetzen:</b> $$\begin{aligned}s_y&=\tfrac12\,a\,t^2=\tfrac12\cdot\dfrac{U_A\,e}{d\,m}\cdot\left(\dfrac{s_x}{v}\right)^2&&\big|\ v^2=\dfrac{2\,e\,U_B}{m}\ \text{einsetzen}\\s_y&=\tfrac12\cdot\dfrac{U_A\,e}{d\,m}\cdot s_x^2\cdot\dfrac{m}{2\,e\,U_B}&&\big|\ e,\ m\ \text{kürzen}\\s_y&=\dfrac{U_A}{4\,d\,U_B}\cdot s_x^2\end{aligned}$$</p>
+<p><b>Bis zum Leuchtschirm:</b> Hinter den Platten fliegt das Elektron <b>tangential</b> weiter. Die Steigung der Parabel im Punkt $x=l$ ist $s_y'(l)=\dfrac{U_A\,l}{2\,d\,U_B}$. Bei dem Abstand $b$ bis zum Schirm kommt $s_{y2}=s_y'(l)\cdot b=\dfrac{U_A\,l\,b}{2\,d\,U_B}$ dazu, insgesamt $Y=s_y(l)+s_{y2}$.</p>
+<p>Herleitung der Abi-2006-Art (Elektron trifft gerade den Plattenrand, $s_y=\tfrac d2$): $\tfrac d2=\dfrac{U_C}{4\,d\,U_B}x^2\ \Rightarrow\ U_B=\dfrac{U_C}{2\,d^2}\,x^2$.</p>`,
       fehler: [
         'Hinter den Platten weiter mit der Parabel gerechnet. Dort wirkt keine Kraft mehr: Gerade.',
         m`Die waagerechte Geschwindigkeit ändert sich nicht. $v_0$ bleibt, nur $v_y$ kommt hinzu.`,
@@ -380,6 +390,151 @@ ${merke('Die eine Regel', m`$$\ln\!\left(e^{x}\right)=x\qquad\text{also}\qquad \
         { q: m`Wie löst man $0{,}2=e^{-t/\tau}$ nach $t$?`, a: m`$\ln$ nehmen: $-\tfrac t\tau=\ln0{,}2$, also $t=-\tau\ln0{,}2=1{,}61\,\tau$.` },
         { q: m`Was trägt man auf, um eine Gerade zu bekommen? Steigung?`, a: m`$\ln(U/U_0)$ gegen $t$, Steigung $-1/\tau$.` },
         { q: 'Widerstand ±5 %, gemessene Zeit ±1,7 %. Unsicherheit von C?', a: '±5 % (größte relative Unsicherheit).' }
+      ]
+    },
+
+    // ---------------------------------------------------------------- Klausurthema „Begründen mit funktionalen Abhängigkeiten“ (12.11.)
+    {
+      id: 'PH10', fach: F, groessen: ['C', 'Q', 'U', 'E', 'd', 'A', 'epsr', 'v0', 'UB', 'y', 'tau', 'R'], num: 10, min: 15,
+      title: 'Begründen mit funktionalen Abhängigkeiten',
+      short: 'Je-desto richtig begründen: was bleibt gleich, welche Formel, welcher Faktor',
+      idee: m`<p>Auf der Themenliste der Lehrkraft steht „<b>Begründen mit funktionalen Abhängigkeiten</b>“. In der Klausur heißt das: „Begründen Sie, wie sich … ändert, wenn …“. Das ist keine Rechenaufgabe. Du zeigst, dass du siehst, <b>welche Formel</b> die Größen verbindet und <b>was dabei gleich bleibt</b>. Der Taschenrechner hilft dir hier nicht, das Denken schon.</p>
+<h3>Die vier Bausteine einer vollständigen Begründung</h3>
+<ol><li><b>Was bleibt gleich?</b> ($U$ an der Quelle, $Q$ beim abgetrennten Kondensator, $R$, $d$ …)</li><li><b>Welche Formel</b> verbindet die geänderte mit der gesuchten Größe? Hinschreiben.</li><li><b>Faktor bestimmen.</b> Alles, was sich nicht ändert, kürzt sich. Was übrig bleibt, ist der Faktor.</li><li><b>Ergebnis in einem Satz</b> mit „weil“ und dem richtigen Wort (proportional, antiproportional, quadratisch …).</li></ol>
+${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel</th><th>$y$ ändert sich um</th><th>Sprechweise</th></tr><tr><td>$y=c\cdot x$</td><td>$k$</td><td>proportional: doppelt, dann doppelt</td></tr><tr><td>$y=\dfrac cx$</td><td>$\dfrac1k$</td><td>antiproportional: doppelt, dann halb</td></tr><tr><td>$y=c\cdot x^2$</td><td>$k^2$</td><td>quadratisch: doppelt, dann vierfach</td></tr><tr><td>$y=c\cdot\sqrt x$</td><td>$\sqrt k$</td><td>Wurzel: vierfach, dann doppelt</td></tr></table>`)}
+<h3>Die Zusammenhänge dieser Klausur</h3>
+<table><tr><th>Größe</th><th>Formel</th><th>Abhängigkeit</th></tr>
+<tr><td>Kapazität</td><td>$C=\varepsilon_0\varepsilon_r\dfrac Ad$</td><td>$\propto A$, $\propto\varepsilon_r$, $\propto\dfrac1d$</td></tr>
+<tr><td>Feldstärke (an der Quelle)</td><td>$E=\dfrac Ud$</td><td>$\propto U$, $\propto\dfrac1d$</td></tr>
+<tr><td>Feldstärke (abgetrennt)</td><td>$E=\dfrac{\sigma}{\varepsilon_0\varepsilon_r}$, $\sigma=\dfrac QA$</td><td>unabhängig von $d$, $\propto\dfrac1{\varepsilon_r}$</td></tr>
+<tr><td>Energie</td><td>$W=\tfrac12CU^2=\dfrac{Q^2}{2C}$</td><td>an der Quelle $\propto C$ und $\propto U^2$; abgetrennt $\propto\dfrac1C$</td></tr>
+<tr><td>Geschwindigkeit nach Beschleunigung</td><td>$v_0=\sqrt{\dfrac{2eU_B}{m_e}}$</td><td>$\propto\sqrt{U_B}$, <b>nicht</b> von $U_A$ abhängig</td></tr>
+<tr><td>Ablenkung im Querfeld</td><td>$y=\dfrac{U_A\,x^2}{4\,d\,U_B}$</td><td>$\propto U_A$, $\propto x^2$, $\propto\dfrac1d$, $\propto\dfrac1{U_B}$</td></tr>
+<tr><td>Zeitkonstante</td><td>$\tau=R\cdot C$</td><td>$\propto R$, $\propto C$ (und $t_h=\tau\ln2$ mit)</td></tr>
+<tr><td>Anfangsstrom</td><td>$I_0=\dfrac{U_0}{R}$</td><td>$\propto U_0$, $\propto\dfrac1R$; hängt nicht von $C$ ab</td></tr></table>`,
+      bild: m`<p>Eine gute Begründung ist eine <b>Kette</b>: Ursache → Formel → Folge. Zum Beispiel: „$d$ wird halbiert → $C=\varepsilon_0\varepsilon_rA/d$ → $C$ verdoppelt sich“. Ein Satz ohne Formel („je kleiner der Abstand, desto größer …“) ist nur eine Behauptung und bringt wenig Punkte.</p>`,
+      rezept: [
+        m`<b>Gleich bleibt:</b> Aufschreiben, was festgehalten wird (Quelle: $U$; abgetrennt: $Q$; Röhre: Platten und $U_A$; Entladen: $U_0$).`,
+        m`<b>Formel:</b> Die Formel hinschreiben, in der die geänderte Größe vorkommt. Bei Ketten (Röhre) Formel für Formel durchgehen.`,
+        m`<b>Faktor:</b> Neue Größe durch alte Größe teilen, alles Gleiche kürzt sich. Zahl für Zahl im Kopf: halbiert $\to\frac12$, vervierfacht $\to4$, unter Wurzel $\to\sqrt4=2$.`,
+        m`<b>Satz mit „weil“:</b> „… ändert sich um den Faktor …, weil …“ plus Fachwort.`
+      ],
+      beispiel: {
+        q: m`Elektronen werden mit $U_B$ beschleunigt und laufen durch ein Plattenpaar (Länge $l$, Abstand $d$, Spannung $U_A$). Die Beschleunigungsspannung wird <b>vervierfacht</b>, alles andere bleibt. Begründen Sie, wie sich $v_0$, die Flugzeit zwischen den Platten und die Ablenkung am Plattenende ändern.`,
+        steps: [
+          { h: 'Was bleibt gleich?', t: m`Platten ($l$, $d$), Plattenspannung $U_A$, also auch die Beschleunigung im Querfeld $a=\dfrac{eU_A}{m_ed}$.` },
+          { h: 'Geschwindigkeit $v_0$', t: m`$v_0=\sqrt{\dfrac{2eU_B}{m_e}}$. Vierfaches $U_B$: $\sqrt4=2$. Die Elektronen sind <b>doppelt so schnell</b>.` },
+          { h: 'Flugzeit', t: m`Waagerecht gleichförmig: $t=\dfrac l{v_0}$. Doppeltes $v_0$ bei gleichem $l$ heißt: <b>halbe Flugzeit</b>.` },
+          { h: 'Ablenkung', t: m`Senkrecht gleichmäßig beschleunigt: $y=\tfrac12at^2$. Mit $\dfrac t2$ statt $t$ und gleichem $a$: $y\to\tfrac12a\left(\dfrac t2\right)^2=\dfrac14\cdot\tfrac12at^2$. Die Ablenkung wird <b>ein Viertel</b>.` },
+          { h: 'Satz', t: m`Je größer die Beschleunigungsspannung, desto schneller die Elektronen, desto kürzer bleiben sie im Querfeld, desto weniger werden sie abgelenkt. Die Ablenkung ist antiproportional zu $U_B$: $y=\dfrac{U_Ax^2}{4dU_B}$.` }
+        ]
+      },
+      extraAfter: m`<p><b>Gleiche Frage, andere Aufgabe (aus dem Unterricht):</b> Ein abgetrennter Plattenkondensator, der Plattenabstand wird halbiert.</p><table><tr><th></th><th>Faktor</th><th>Begründung</th></tr><tr><td>$Q$</td><td>1</td><td>abgetrennt, die Ladung kann nirgendwohin</td></tr><tr><td>$C$</td><td>2</td><td>$C\propto\frac1d$</td></tr><tr><td>$U$</td><td>$\frac12$</td><td>$U=\frac QC$</td></tr><tr><td>$E$</td><td>1</td><td>$E=\frac Ud$, beide halbiert (oder $E=\frac{\sigma}{\varepsilon_0}$, $\sigma$ gleich)</td></tr><tr><td>$W$</td><td>$\frac12$</td><td>$W=\frac{Q^2}{2C}$</td></tr></table>`,
+      fehler: [
+        m`Nur „je … desto …“ hingeschrieben, ohne Formel und ohne zu sagen, was gleich bleibt. Das ist keine Begründung.`,
+        m`Quelle und abgetrennt verwechselt. Frage zuerst: Hängt der Kondensator noch an der Spannungsquelle?`,
+        m`$v_0\propto U_B$ gesagt. Richtig: $v_0\propto\sqrt{U_B}$ (aus $\tfrac12mv^2=eU$), und $y\propto\dfrac1{U_B}$ (nicht $\sqrt{\ }$).`,
+        m`Gedacht, ein größerer Widerstand ändere die gespeicherte Ladung. Nein: $Q_0=C\cdot U_0$. $R$ ändert nur, <b>wie lange</b> es dauert ($\tau=RC$) und wie groß $I_0=U_0/R$ ist.`
+      ],
+      test: [
+        { q: m`$U_B$ wird vervierfacht. Um welchen Faktor ändert sich $v_0$?`, a: m`Um den Faktor 2, weil $v_0\propto\sqrt{U_B}$.` },
+        { q: m`Plattenkondensator an der Quelle, Abstand verdoppelt: Faktoren für $C$, $Q$, $E$?`, a: m`$C\to\frac12$, $Q=CU\to\frac12$, $E=\frac Ud\to\frac12$.` },
+        { q: m`Vier Bausteine einer Begründung?`, a: m`Was bleibt gleich, welche Formel, welcher Faktor, Satz mit „weil“.` },
+        { q: m`$R$ wird verdoppelt, $C$ und $U_0$ bleiben. Was passiert mit $I_0$, $\tau$, $Q_0$?`, a: m`$I_0$ halbiert, $\tau$ verdoppelt, $Q_0=CU_0$ bleibt gleich.` }
+      ]
+    },
+
+    // ---------------------------------------------------------------- Taschenrechner (12.11.)
+    {
+      id: 'PH11', fach: F, groessen: ['tau', 'R', 'C', 'I0', 'Q', 't'], num: 11, min: 12,
+      title: 'Der Taschenrechner in der Physik-Klausur',
+      short: 'Was der Rechner übernimmt (Regression, Integral, ln) und was du selbst aufschreiben musst',
+      idee: m`<p>In der Klausur sind <b>Taschenrechner und Formelsammlung</b> erlaubt. Damit sind das Einsetzen und das Rechnen mit $\ln$ und $e^x$ nicht mehr das Problem. Die Punkte gibt es für das, was der Rechner nicht kann.</p>
+<table><tr><th>Das machst du</th><th>Das macht der Rechner</th></tr>
+<tr><td>Formel wählen und aufschreiben, Größen in SI-Einheiten, Skizze</td><td>Zahlen einsetzen, Zehnerpotenzen, $\ln$, $e^x$, Wurzel</td></tr>
+<tr><td>Gleichung herleiten (Formelsammlung hat $v_0$ und die Bahngleichung <b>nicht</b>)</td><td>Gleichung nach einer Größe umstellen</td></tr>
+<tr><td>Regression ansetzen: <b>welche</b> Art? Ergebnis deuten</td><td>Regression rechnen ($a$, $b$, $R^2$)</td></tr>
+<tr><td>Ergebnis mit Einheit, Größenordnung prüfen</td><td>Integral $\int I\,dt$ numerisch</td></tr></table>
+<h3>Befehle (TI-Nspire CAS)</h3>
+<ul><li><b>Zehnerpotenz:</b> Taste für Zehnerpotenzen (ᴇ), z. B. <code>1.602ᴇ-19</code>. Nicht „· 10 ^ (−19)“ tippen, das gibt Klammerfehler.</li><li><b>Umstellen:</b> <code>solve(U=R*I, I)</code>; <b>numerisch:</b> <code>nSolve(e^(-t/25)=1/3, t)</code></li><li><b>Regression</b> (Tabellenkalkulation, zwei Spalten, Menü Statistik): <code>LinReg</code> ($mx+b$), <code>QuadReg</code> ($ax^2+bx+c$), <code>ExpReg</code> ($a\cdot b^x$), <code>PowerReg</code> ($a\cdot x^b$)</li><li><b>Integral:</b> Vorlage $\int$ oder <code>nInt(f(t), t, 0, 60)</code>, bis unendlich mit $\infty$</li></ul>
+<p class="dim" style="font-size:14px"><b>UNSICHER:</b> Die Menüwege am Gerät sind hier nicht geprüft, nur die Befehlsnamen. Probiere das an deinem Rechner einmal aus, bevor es ernst wird.</p>
+<h3>Auswertung von Messwerten so aufschreiben, wie es im Unterricht vereinbart ist</h3>
+<ol><li><b>Vermutung:</b> „Wenn sich $x$ verdoppelt, vervierfacht sich $y$ ungefähr. Vermutung: $y\sim x^2$.“</li><li><b>Regression</b> mit passender Art durchführen, Gleichung mit den Zahlen angeben.</li><li><b>$R^2$ auswerten:</b> „Das Bestimmtheitsmaß liegt sehr dicht an 1, der Zusammenhang ist bestätigt.“</li><li><b>Funktionsgleichung</b> mit Einheiten angeben, danach ein Beispiel rechnen.</li></ol>
+<p class="dim" style="font-size:14px">Alternativ <b>Quotienten-/Produktbildung</b>: bei $y\sim x^2$ ist $y/x^2$ für jeden Messwert (fast) gleich, bei $y\sim1/x$ ist $y\cdot x$ gleich. Quelle: Mitschrift eines Mitschülers (12.11.), passt zu „Dokumentation in der im Unterricht vereinbarten Form“ aus den Abi-Aufgaben. Wenn die Lehrkraft es anders sagt, gilt die Lehrkraft.</p>`,
+      bild: m`<p>Aus einer Entladekurve wird mit $Q=\int I\,dt$ die Ladung. Der Rechner liefert die Zahl, <b>du</b> sagst, was die Fläche unter der Kurve bedeutet: die Ladung, die durch den Widerstand geflossen ist, also die Anfangsladung des Kondensators.</p>`,
+      rezept: [
+        m`<b>Messreihe in zwei Spalten</b> (Zeit, Strom) eingeben. Einheiten merken (µA, s).`,
+        m`<b>Regression:</b> <code>ExpReg</code> für Entladung. Ergebnis $I(t)=a\cdot b^t$ ablesen. $a$ ist der Anfangsstrom $I_0$.`,
+        m`<b>Zeitkonstante:</b> $b^t=e^{t\ln b}$, also $\tau=-\dfrac1{\ln b}$.`,
+        m`<b>Ladung:</b> $Q=\displaystyle\int_0^\infty a\,e^{-t/\tau}\,dt=a\cdot\tau$. Oder direkt $\int$ am Rechner, dann bis zur Messzeit.`,
+        m`<b>Weiter:</b> $C=\dfrac{Q_0}{U_0}$, $R=\dfrac{U_0}{I_0}$. Kontrolle: $\tau=RC$.`
+      ],
+      beispiel: {
+        q: m`Ein Kondensator wird über einen Widerstand entladen, die Quellenspannung war $U_0=12\,\text{V}$. Gemessen: $t=0;10;20;30;40\,\text{s}$ und $I=120;\ 80{,}4;\ 53{,}9;\ 36{,}1;\ 24{,}2\,\mu\text{A}$. Bestimme $\tau$, die Ladung $Q_0$, $C$ und $R$.`,
+        steps: [
+          { h: 'Regression', t: m`<code>ExpReg</code> auf $(t, I)$ liefert etwa $I(t)=120\,\mu\text{A}\cdot0{,}9608^{\,t/\text{s}}$. Also $I_0=120\,\mu\text{A}$.` },
+          { h: 'Zeitkonstante', t: m`$\tau=-\dfrac1{\ln0{,}9608}=\dfrac1{0{,}04}=25\,\text{s}$` },
+          { h: 'Ladung als Fläche', t: m`$Q_0=\int_0^\infty I\,dt=I_0\cdot\tau=120\,\mu\text{A}\cdot25\,\text{s}=3000\,\mu\text{C}=3{,}0\,\text{mC}$` },
+          { h: 'Kapazität', t: m`$C=\dfrac{Q_0}{U_0}=\dfrac{3{,}0\cdot10^{-3}\,\text{C}}{12\,\text{V}}=2{,}5\cdot10^{-4}\,\text{F}=250\,\mu\text{F}$` },
+          { h: 'Widerstand und Kontrolle', t: m`$R=\dfrac{U_0}{I_0}=\dfrac{12\,\text{V}}{120\,\mu\text{A}}=100\,\text{k}\Omega$. Kontrolle: $RC=10^5\,\Omega\cdot2{,}5\cdot10^{-4}\,\text{F}=25\,\text{s}=\tau$. Stimmt.` }
+        ]
+      },
+      fehler: [
+        m`$I$ in µA und $t$ in s stehen lassen, aber das Ergebnis „in C“ nennen. $\mu\text{A}\cdot\text{s}=\mu\text{C}$, also $3000\,\mu\text{C}$ ist $3{,}0\cdot10^{-3}\,\text{C}$.`,
+        m`Die Regressionsart nicht begründet. Bei Entladung nimmt die Stromstärke bei gleichen Zeitschritten immer um denselben Faktor ab: Exponentialfunktion.`,
+        m`Rechner-Ergebnis ohne Rundung auf sinnvolle Stellen und ohne Einheit abgeschrieben.`,
+        m`Gleichung nur im Rechner umgestellt und nicht hingeschrieben. Bei „Gleichung herleiten“ zählt der aufgeschriebene Weg.`
+      ],
+      test: [
+        { q: m`Was bedeutet $b$ bei $\text{ExpReg}$ $y=a\cdot b^x$?`, a: m`Der Faktor pro Schritt von $x$; $\tau=-\dfrac1{\ln b}$ bei Zeit in s.` },
+        { q: m`Wie erhält man aus der Stromkurve die Ladung?`, a: m`$Q=\int I\,dt$ (Fläche unter der Kurve); bei $I_0e^{-t/\tau}$ bis $\infty$: $Q=I_0\tau$.` },
+        { q: m`Woran erkennt man $y\sim x^2$ ohne Regression?`, a: m`$y/x^2$ ist für alle Messwerte (fast) gleich.` },
+        { q: 'Welche zwei Formeln sind nicht in der Formelsammlung?', a: m`$v_0=\sqrt{2eU_B/m_e}$ und die Bahngleichung $y=\dfrac{U_Ax^2}{4dU_B}$ (sie müssen hergeleitet werden).` }
+      ]
+    },
+
+    // ---------------------------------------------------------------- Klausurthema 2 (garantiert): Gleichung herleiten
+    {
+      id: 'PH12', fach: F, groessen: ['UB', 'e', 'me', 'v0', 'a', 'UAbl', 'd', 'x', 'y', 'tE', 'th', 'R', 'C', 'U0', 'UC', 'euler'], num: 12, min: 20,
+      title: 'Gleichungen herleiten (garantiert dran)',
+      short: 'Alle Herleitungen der Klausur auf einer Seite, jede Umformung mit Rechenoperation',
+      idee: m`<p>„<b>Gleichung herleiten</b>“ kommt in der Klausur garantiert dran (Sternchen auf der Themenliste der Lehrkraft). Gemeint sind die Formeln, die <b>nicht</b> in der Formelsammlung stehen. Hier sind alle auf einer Seite, jeweils mit <b>Start</b> (was darf man benutzen) und <b>Ziel</b>.</p>
+<table><tr><th>Herleitung</th><th>Start (Formelsammlung oder Grundwissen)</th><th>Ziel</th></tr>
+<tr><td>1 Geschwindigkeit nach Beschleunigung</td><td>$E_{kin}=E_{el}$, d. h. $\tfrac12mv^2=eU_B$</td><td>$v_0=\sqrt{\dfrac{2eU_B}{m_e}}$</td></tr>
+<tr><td>2 Bahn im Querfeld</td><td>$x=v_0t$, $F=ma$, $E=\dfrac Ud$, $y=\tfrac12at^2$</td><td>$y=\dfrac{U_A\,x^2}{4\,d\,U_B}$</td></tr>
+<tr><td>3 Kapazität aus der Entladezeit</td><td>$U_C=U_0e^{-t/(RC)}$ (Formelsammlung S. 27)</td><td>$C=\dfrac{t_E}{R\cdot\ln3}$</td></tr>
+<tr><td>4 Halbwertszeit</td><td>$U_C=U_0e^{-t/(RC)}$</td><td>$t_H=R\,C\cdot\ln2$</td></tr>
+<tr><td>5 Plattenrand (Abi-Art)</td><td>Bahngleichung mit $y=\tfrac d2$</td><td>$U_B=\dfrac{U_C}{2\,d^2}\,x^2$</td></tr>
+<tr><td>6 Energie des Kondensators</td><td>$U=\dfrac QC$, Fläche im $U$-$Q$-Diagramm</td><td>$W=\tfrac12\,C\,U^2$</td></tr></table>
+<p>Die Formel für die Differenzialgleichung beim Laden ($U_0=R\,I+\tfrac QC$, abgeleitet $0=R\dot I+\tfrac IC$) übst du in Aufgabe PL6.</p>`,
+      bild: m`<p>Eine Herleitung ist wie ein Weg von A nach B über lauter kleine Schritte. Bewertet wird nicht das Ergebnis (das steht in der Aufgabe), sondern <b>der Weg</b>: Startformel, jede Umformung sichtbar, am Ende das Ziel.</p>`,
+      rezept: [
+        m`<b>Startformel hinschreiben</b> (die Bedingung der Aufgabe: Energie bleibt erhalten, $t=t_E$ erreicht, Spannung auf ein Drittel gefallen …).`,
+        m`<b>Gegebene Bedingung einsetzen</b> und, wo möglich, schon kürzen (z. B. $U_0$ fällt weg).`,
+        m`<b>Umformen, jede Umformung einzeln</b> mit Operation rechts ($\big|\cdot2$, $\big|:m$, $\big|\ln$, $\big|\sqrt{\ }$).`,
+        m`<b>Ziel prüfen:</b> Steht genau die verlangte Formel da? Einheit passt? Zahl plausibel?`
+      ],
+      beispiel: {
+        q: m`Leiten Sie die vier wichtigsten Formeln her: (1) $v_0$, (2) die Bahngleichung, (3) $C=\dfrac{t_E}{R\ln3}$, (4) $t_H=RC\ln2$. Schreiben Sie wie im Unterricht jede Umformung mit der Rechenoperation rechts auf.`,
+        steps: [
+          { h: '1 · Geschwindigkeit $v_0$', t: m`$$\begin{aligned}E_{kin}&=E_{el}\\\tfrac12\,m\,v^2&=q\cdot U&&\big|\cdot2\\m\,v^2&=2\,q\,U&&\big|:m\\v^2&=\dfrac{2\,q\,U}{m}&&\big|\sqrt{\ }\\v&=\sqrt{\dfrac{2\,q\,U}{m}}\end{aligned}$$` },
+          { h: '2 · Bahngleichung: zwei Bewegungen', t: m`<p><b>x-Richtung</b> (gleichförmig): $s_x=v\cdot t\ \ \big|:v\ \Rightarrow\ t=\dfrac{s_x}{v}$</p><p><b>y-Richtung</b> (gleichmäßig beschleunigt): $F=m\cdot a\ \ \big|:m\ \Rightarrow\ a=\dfrac Fm=\dfrac{E\,e}{m}=\dfrac{U_A\,e}{d\,m}$</p><p><b>Zusammensetzen:</b></p>$$\begin{aligned}s_y&=\tfrac12\,a\,t^2=\tfrac12\cdot\dfrac{U_A\,e}{d\,m}\cdot\left(\dfrac{s_x}{v}\right)^2&&\big|\ v^2=\dfrac{2\,e\,U_B}{m}\\s_y&=\tfrac12\cdot\dfrac{U_A\,e}{d\,m}\cdot s_x^2\cdot\dfrac{m}{2\,e\,U_B}&&\big|\ e,\ m\ \text{kürzen}\\s_y&=\dfrac{U_A}{4\,d\,U_B}\cdot s_x^2\end{aligned}$$` },
+          { h: '3 · Kapazität aus der Entladezeit', t: m`<p>Bei $t=t_E$ ist die Spannung auf ein Drittel gefallen: $U_C(t_E)=\tfrac13U_0$.</p>$$\begin{aligned}\tfrac13\,U_0&=U_0\cdot e^{-\frac{t_E}{R\,C}}&&\big|:U_0\\\tfrac13&=e^{-\frac{t_E}{R\,C}}&&\big|\ln\\\ln\tfrac13&=-\dfrac{t_E}{R\,C}&&\big|\ \ln\tfrac13=-\ln3\\-\ln3&=-\dfrac{t_E}{R\,C}&&\big|\cdot(-1)\\\ln3&=\dfrac{t_E}{R\,C}&&\big|\cdot C\\C\cdot\ln3&=\dfrac{t_E}{R}&&\big|:\ln3\\C&=\dfrac{t_E}{R\cdot\ln3}\end{aligned}$$` },
+          { h: '4 · Halbwertszeit', t: m`<p>Gleicher Weg, nur mit der Hälfte statt einem Drittel: $U_C(t_H)=\tfrac12U_0$.</p>$$\begin{aligned}\tfrac12&=e^{-\frac{t_H}{R\,C}}&&\big|\ln\\-\ln2&=-\dfrac{t_H}{R\,C}&&\big|\cdot(-R\,C)\\t_H&=R\,C\cdot\ln2\end{aligned}$$<p>Mit $\tau=RC$: $t_H=\tau\ln2\approx0{,}69\,\tau$.</p>` },
+          { h: '5 · Plattenrand (Abi-Art) und 6 · Energie', t: m`<p><b>Plattenrand:</b> Das Elektron startet in der Mitte und trifft bei $x$ gerade den Rand: $y=\tfrac d2$. In die Bahngleichung eingesetzt:</p>$$\begin{aligned}\dfrac d2&=\dfrac{U_C}{4\,d\,U_B}\,x^2&&\big|\cdot4\,d\,U_B\\2\,d^2\,U_B&=U_C\,x^2&&\big|:2\,d^2\\U_B&=\dfrac{U_C}{2\,d^2}\,x^2\end{aligned}$$<p><b>Energie:</b> Beim Laden steigt $U=\dfrac QC$ von 0 auf $U$. Die Arbeit ist die Fläche unter der Geraden im $U$-$Q$-Diagramm, ein Dreieck: $W=\tfrac12\,Q\,U$. Mit $Q=C\,U$: $W=\tfrac12\,C\,U^2$.</p>` }
+        ]
+      },
+      fehler: [
+        m`Ergebnis hingeschrieben („nach Einsetzen folgt …“), ohne die Umformungen. Bei „Gleichung herleiten“ zählt der Weg.`,
+        m`Bei $\ln\tfrac13$ das Minuszeichen vergessen: $\ln\tfrac13=-\ln3$. Zwei Minus heben sich auf.`,
+        m`$U_0$ nicht gekürzt oder gar gesucht. Die Startspannung fällt bei der $t_E$-Herleitung heraus.`,
+        m`In der Bahngleichung $U_A$ und $U_B$ vertauscht: $U_B$ beschleunigt und steht im Nenner, $U_A$ lenkt ab und steht im Zähler.`
+      ],
+      test: [
+        { q: 'Schreibe die Herleitung von v₀ aus E_kin = E_el auf einem leeren Blatt auf. Was ist der erste, was der letzte Schritt?', a: m`Erster: $\tfrac12mv^2=eU_B$. Letzter: $v_0=\sqrt{2eU_B/m_e}$ (dazwischen $\big|\cdot2$, $\big|:m$, $\big|\sqrt{\ }$).` },
+        { q: m`Welche Bedingung setzt du bei $C=\dfrac{t_E}{R\ln3}$ in $U_C(t)=U_0e^{-t/(RC)}$ ein?`, a: m`$U_C(t_E)=\tfrac13U_0$; $U_0$ kürzt sich, dann $\ln$ und umstellen.` },
+        { q: 'Welche zwei Bewegungen überlagern sich bei der Bahngleichung, und welche Formel steht jeweils am Anfang?', a: m`$x$: gleichförmig, $s_x=v\,t$. $y$: gleichmäßig beschleunigt, $s_y=\tfrac12at^2$ mit $a=\dfrac{eU_A}{md}$.` },
+        { q: m`Wie kommt man von $\ln\tfrac12$ zu $t_H=RC\ln2$?`, a: m`$\ln\tfrac12=-\ln2$, beide Minus streichen, mit $R\,C$ multiplizieren.` }
       ]
     }
   ];
@@ -742,6 +897,82 @@ ${merke('Die eine Regel', m`$$\ln\!\left(e^{x}\right)=x\qquad\text{also}\qquad \
         { id: 'PL6c', label: 'c)', be: 2, text: m`Folgern Sie daraus $U_C(t)=U_0\,(1-e^{-t/(RC)})$.`,
           sol: m`<p>$U_C=U_0-U_R=U_0-R\,I(t)=U_0-R\cdot\dfrac{U_0}Re^{-t/(RC)}=U_0\,(1-e^{-t/(RC)})$</p>` }
       ]
+    },
+    // ---------------------------------------------------------------- PH10: Begründen mit Abhängigkeiten (eigene Aufgaben, angelehnt an Unterricht und Abi-Stil)
+    {
+      id: 'PB1', fach: F, groessen: [['d', 'wird auf ¼ verkleinert'], ['epsr', '3 (Glasplatte füllt den Raum aus)'], ['C', 'Faktor gesucht'], ['Q', 'Faktor gesucht'], ['U', 'Faktor gesucht'], ['E', 'Faktor gesucht'], ['W', 'Faktor gesucht']], teil: 'A', lesson: 'PH10', title: 'Plattenkondensator verändern: Faktoren begründen', afb: 'II', ops: 'Begründen, Bestimmen',
+      intro: m`Ein Plattenkondensator mit Luft zwischen den Platten wird so verändert, dass der Plattenabstand auf ein Viertel sinkt und der Raum zwischen den Platten mit Glas ($\varepsilon_r=3$) gefüllt wird. Die Plattenfläche bleibt gleich. Betrachten Sie zwei Fälle.`,
+      parts: [
+        { id: 'PB1a', label: 'a)', be: 4, text: m`Der Kondensator bleibt <b>an der Spannungsquelle</b>. Bestimmen Sie die Faktoren, um die sich $C$, $Q$ und $E$ ändern, und begründen Sie jeweils mit der passenden Formel.`,
+          nums: [{ label: 'Faktor C', ans: 12, tol: 0.01 }, { label: 'Faktor Q', ans: 12, tol: 0.01 }, { label: 'Faktor E', ans: 4, tol: 0.01 }],
+          hints: [m`Was bleibt gleich? Die Quelle hält $U$ fest.`, m`$C\propto\dfrac{\varepsilon_r}{d}$, dann $Q=CU$ und $E=\dfrac Ud$.`],
+          sol: m`<p>$U$ bleibt (Quelle) (1 BE). $C=\varepsilon_0\varepsilon_rA/d$: $\varepsilon_r$ ist 3-mal, $d$ ist $\tfrac14$, also $C\cdot3\cdot4=\mathbf{12}$-fach (1 BE). $Q=CU$ mit gleichem $U$: <b>12-fach</b> (1 BE). $E=U/d$: $d$ ist $\tfrac14$, also <b>4-fach</b>; das Glas ändert $E$ bei fester Spannung nicht (1 BE).</p>` },
+        { id: 'PB1b', label: 'b)', be: 4, text: m`Der Kondensator wird <b>vorher von der Quelle getrennt</b>. Bestimmen Sie die Faktoren für $C$, $U$ und $E$ und begründen Sie.`,
+          nums: [{ label: 'Faktor C', ans: 12, tol: 0.01 }, { label: 'Faktor U', ans: 0.0833, tol: 0.01 }, { label: 'Faktor E', ans: 0.3333, tol: 0.01 }],
+          hints: [m`Abgetrennt: $Q$ bleibt.`, m`$U=\dfrac QC$; $E=\dfrac Ud$ mit neuem $U$ und neuem $d$.`],
+          sol: m`<p>$Q$ bleibt, die Ladung kann nirgendwohin (1 BE). $C$ wie in a): <b>12-fach</b> (1 BE). $U=Q/C$: <b>$\tfrac1{12}$</b> (1 BE). $E=U/d$: $\dfrac{1/12}{1/4}=\tfrac13$, also <b>$\tfrac13$</b>. Kontrolle mit $E=\dfrac{\sigma}{\varepsilon_0\varepsilon_r}$: $\sigma=Q/A$ bleibt, $\varepsilon_r=3$ gibt $\tfrac13$; der Abstand spielt keine Rolle (1 BE).</p>` },
+        { id: 'PB1c', label: 'c)', be: 4, text: m`Um welchen Faktor ändert sich die gespeicherte Energie in a) und in b)? Erläutern Sie in je einem Satz, woher die Energie kommt oder wohin sie geht.`,
+          nums: [{ label: 'Faktor W in a)', ans: 12, tol: 0.01 }, { label: 'Faktor W in b)', ans: 0.0833, tol: 0.01 }],
+          hints: [m`a) $W=\tfrac12CU^2$ mit gleichem $U$. b) $W=\dfrac{Q^2}{2C}$ mit gleichem $Q$.`],
+          sol: m`<p>a) $W=\tfrac12CU^2$, $U$ gleich, $C$ 12-fach: <b>12-fach</b> (1 BE). Die Quelle liefert zusätzliche Ladung und damit Energie (1 BE). b) $W=\dfrac{Q^2}{2C}$, $Q$ gleich, $C$ 12-fach: <b>$\tfrac1{12}$</b> (1 BE). Die Energie sinkt: Die Platten und das Glas werden vom Feld hineingezogen, das Feld leistet Arbeit (z. B. Wärme oder Bewegungsenergie) (1 BE).</p>` }
+      ]
+    },
+    {
+      id: 'PB2', fach: F, groessen: [['UB', '800 V, dann 3200 V'], ['UAbl', '100 V (bleibt)'], ['l', '6,0 cm (bleibt)'], ['d', '2,0 cm (bleibt)'], ['e', '1,602·10⁻¹⁹ C'], ['me', '9,109·10⁻³¹ kg'], ['v0', 'vorher und Faktor'], ['y', 'am Plattenende, vorher und nachher']], teil: 'B', lesson: 'PH10', title: 'Röhre: Beschleunigungsspannung vervierfachen', afb: 'II', ops: 'Berechnen, Begründen',
+      intro: m`${KONST}<p>Elektronen werden mit $U_B=800\,\text{V}$ beschleunigt und durchlaufen ein Plattenpaar (Länge $l=6{,}0\,\text{cm}$, Abstand $d=2{,}0\,\text{cm}$) mit der Spannung $U_A=100\,\text{V}$. Danach wird $U_B$ auf $3200\,\text{V}$ erhöht. Alles andere bleibt.</p>`,
+      parts: [
+        { id: 'PB2a', label: 'a)', be: 3, text: m`Berechnen Sie $v_0$ für $U_B=800\,\text{V}$ und geben Sie den Faktor an, um den sich $v_0$ bei $3200\,\text{V}$ ändert.`,
+          nums: [{ label: 'v₀ in 10⁷ m/s', ans: 1.677, tol: 0.01 }, { label: 'Faktor', ans: 2, tol: 0.01 }],
+          hints: [m`$eU_B=\tfrac12m_ev_0^2$ nach $v_0$ umstellen.`],
+          sol: m`<p>$v_0=\sqrt{\dfrac{2eU_B}{m_e}}=\sqrt{\dfrac{2\cdot1{,}602\cdot10^{-19}\cdot800}{9{,}109\cdot10^{-31}}}\,\tfrac ms=1{,}68\cdot10^7\,\tfrac ms$ (2 BE). Bei vierfachem $U_B$: $\sqrt4=2$, also doppelt so schnell (1 BE).</p>` },
+        { id: 'PB2b', label: 'b)', be: 4, text: m`Berechnen Sie die Ablenkung $y$ am Plattenende vorher und nachher. Treffen die Elektronen jeweils eine Platte?`,
+          nums: [{ label: 'y vorher in mm', ans: 5.625, tol: 0.01 }, { label: 'y nachher in mm', ans: 1.406, tol: 0.01 }],
+          hints: [m`$y=\dfrac{U_A\,l^2}{4\,d\,U_B}$ (Herleitung in Lektion 7). Eine Platte wird getroffen, wenn $y>\dfrac d2$.`],
+          sol: m`<p>$y=\dfrac{U_Al^2}{4dU_B}$: vorher $\dfrac{100\cdot0{,}060^2}{4\cdot0{,}020\cdot800}\,\text{m}=5{,}6\cdot10^{-3}\,\text{m}$ (1 BE); nachher $1{,}4\,\text{mm}$ (1 BE), also ein Viertel. Der Strahl startet in der Mitte, die Platte ist $\dfrac d2=10\,\text{mm}$ entfernt: weder vorher noch nachher wird eine Platte getroffen (2 BE).</p>` },
+        { id: 'PB2c', label: 'c)', be: 3, text: m`Begründen Sie, mit welcher Plattenspannung $U_A'$ man nach der Erhöhung auf $3200\,\text{V}$ wieder dieselbe Ablenkung wie vorher erreicht.`,
+          nums: [{ label: 'U_A\' in V', ans: 400, tol: 0.01 }],
+          hints: [m`$y\propto\dfrac{U_A}{U_B}$: Das Verhältnis muss gleich bleiben.`],
+          sol: m`<p>Aus $y=\dfrac{U_Al^2}{4dU_B}$ folgt: $y$ bleibt gleich, wenn $\dfrac{U_A}{U_B}$ gleich bleibt (1 BE). $U_B$ ist 4-fach, also muss $U_A$ 4-fach sein (1 BE): $U_A'=400\,\text{V}$ (1 BE).</p>` }
+      ]
+    },
+    {
+      id: 'PB3', fach: F, groessen: [['x', '2,0 cm bis 8,0 cm (Weg im Feld)'], ['y', '1,5 mm bis 24,0 mm (Ablenkung)'], ['UB', '1000 V'], ['UAbl', '600 V'], ['d', '4,0 cm']], teil: 'B', lesson: 'PH10', title: 'Messwerte der Ablenkung auswerten', afb: 'II', ops: 'Ermitteln, Begründen',
+      intro: m`Für eine Röhre mit $U_B=1000\,\text{V}$, $U_A=600\,\text{V}$ und Plattenabstand $d=4{,}0\,\text{cm}$ wurde die Ablenkung $y$ nach der Strecke $x$ im Feld gemessen (Aufgabe eigene Zahlen, nicht aus dem Abitur).
+<table><tr><th>$x$ in cm</th><td>2,0</td><td>4,0</td><td>6,0</td><td>8,0</td></tr><tr><th>$y$ in mm</th><td>1,5</td><td>6,0</td><td>13,5</td><td>24,0</td></tr></table>`,
+      parts: [
+        { id: 'PB3a', label: 'a)', be: 3, text: m`Stellen Sie eine Vermutung zum Zusammenhang auf und prüfen Sie sie durch Quotientenbildung. Geben Sie die konstante Größe in mm/cm² an.`,
+          nums: [{ label: 'y/x² in mm/cm²', ans: 0.375, tol: 0.01 }],
+          hints: [m`Wenn $x$ verdoppelt wird, wird $y$ vervierfacht (1,5 → 6,0). Was ist dann konstant?`],
+          sol: m`<p>Vermutung: $y\sim x^2$, denn $x$ doppelt (2→4 cm) gibt $y$ vierfach (1,5→6,0 mm) (1 BE). Quotienten $\dfrac y{x^2}$: $0{,}375;\ 0{,}375;\ 0{,}375;\ 0{,}375\,\tfrac{\text{mm}}{\text{cm}^2}$ (1 BE). Konstant, also $y=0{,}375\,\tfrac{\text{mm}}{\text{cm}^2}\cdot x^2$ (1 BE).</p>` },
+        { id: 'PB3b', label: 'b)', be: 2, text: m`Berechnen Sie damit die Ablenkung bei $x=5{,}0\,\text{cm}$.`,
+          nums: [{ label: 'y in mm', ans: 9.375, tol: 0.01 }],
+          hints: [m`$y=k\cdot x^2$ mit $x$ in cm.`],
+          sol: m`<p>$y=0{,}375\,\tfrac{\text{mm}}{\text{cm}^2}\cdot(5{,}0\,\text{cm})^2=9{,}4\,\text{mm}$ (2 BE).</p>` },
+        { id: 'PB3c', label: 'c)', be: 4, text: m`Begründen Sie den quadratischen Zusammenhang theoretisch und berechnen Sie $k$ aus den Daten der Röhre in der Einheit 1/m.`,
+          nums: [{ label: 'k in 1/m', ans: 3.75, tol: 0.01 }],
+          hints: [m`$x=v_0t$ und $y=\tfrac12at^2$ verbinden, dann $v_0^2=\dfrac{2eU_B}{m_e}$ und $a=\dfrac{eU_A}{m_ed}$ einsetzen.`],
+          sol: m`<p>Waagerecht gleichförmig: $t=x/v_0$. Senkrecht gleichmäßig beschleunigt: $y=\tfrac12at^2=\tfrac12a\dfrac{x^2}{v_0^2}$, also $y\propto x^2$ (2 BE). Mit $a=\dfrac{eU_A}{m_ed}$ und $v_0^2=\dfrac{2eU_B}{m_e}$: $y=\dfrac{U_A}{4dU_B}x^2$ (1 BE), $k=\dfrac{600}{4\cdot0{,}040\cdot1000}\,\tfrac1{\text m}=3{,}75\,\tfrac1{\text m}=0{,}375\,\tfrac{\text{mm}}{\text{cm}^2}$. Das stimmt mit der Messung überein (1 BE).</p>` }
+      ]
+    },
+    // ---------------------------------------------------------------- PH11: Taschenrechner
+    {
+      id: 'PT1', fach: F, groessen: [['U0', '12 V'], ['t', '0 bis 40 s'], ['I', 'Messwerte in µA'], ['tau', 'gesucht'], ['Q', 'Q₀ gesucht'], ['C', 'gesucht'], ['R', 'gesucht']], teil: 'B', lesson: 'PH11', title: 'Entladekurve mit dem Taschenrechner auswerten', afb: 'II', ops: 'Ermitteln, Bestimmen',
+      intro: m`Ein Kondensator wurde mit $U_0=12\,\text{V}$ geladen und über einen Widerstand entladen. Gemessen wurde die Stromstärke:
+<table><tr><th>$t$ in s</th><td>0</td><td>10</td><td>20</td><td>30</td><td>40</td></tr><tr><th>$I$ in µA</th><td>120</td><td>80,4</td><td>53,9</td><td>36,1</td><td>24,2</td></tr></table>`,
+      parts: [
+        { id: 'PT1a', label: 'a)', be: 3, text: m`Führen Sie eine passende Regression durch (Art begründen) und geben Sie $I_0$ und $\tau$ an.`,
+          nums: [{ label: 'I₀ in µA', ans: 120, tol: 0.02 }, { label: 'τ in s', ans: 25, tol: 0.02 }],
+          hints: ['Bei gleichen Zeitschritten sinkt I jeweils um denselben Faktor. Welche Funktionsart?', m`ExpReg: $I=a\cdot b^t$, $\tau=-1/\ln b$.`],
+          sol: m`<p>Der Strom fällt bei gleichen Zeitschritten um denselben Faktor ($80{,}4/120\approx53{,}9/80{,}4\approx0{,}67$): Exponentialfunktion, Exponentialregression (1 BE). Ergebnis $I(t)=120\,\mu\text{A}\cdot0{,}9608^{\,t/\text{s}}$ (1 BE). $\tau=-\dfrac1{\ln0{,}9608}=25\,\text{s}$ (1 BE).</p>` },
+        { id: 'PT1b', label: 'b)', be: 3, text: m`Bestimmen Sie die Ladung $Q_0$ des Kondensators vor dem Entladen mit $\int I\,dt$.`,
+          nums: [{ label: 'Q₀ in mC', ans: 3.0, tol: 0.03 }],
+          hints: [m`$Q_0=\int_0^\infty I_0e^{-t/\tau}\,dt=I_0\cdot\tau$.`],
+          sol: m`<p>Die Ladung, die beim Entladen durch den Widerstand fließt, ist die Fläche unter der Kurve: $Q_0=\int_0^\infty I\,dt$ (1 BE) $=I_0\tau=120\,\mu\text{A}\cdot25\,\text{s}=3000\,\mu\text{C}=3{,}0\,\text{mC}$ (2 BE).</p>` },
+        { id: 'PT1c', label: 'c)', be: 4, text: m`Bestimmen Sie $C$ und $R$ und prüfen Sie das Ergebnis mit $\tau=RC$.`,
+          nums: [{ label: 'C in µF', ans: 250, tol: 0.03 }, { label: 'R in kΩ', ans: 100, tol: 0.03 }],
+          hints: [m`$C=\dfrac{Q_0}{U_0}$, $R=\dfrac{U_0}{I_0}$.`],
+          sol: m`<p>$C=\dfrac{Q_0}{U_0}=\dfrac{3{,}0\,\text{mC}}{12\,\text{V}}=250\,\mu\text{F}$ (1 BE). $R=\dfrac{U_0}{I_0}=\dfrac{12\,\text{V}}{120\,\mu\text{A}}=100\,\text{k}\Omega$ (1 BE). Kontrolle: $RC=10^5\,\Omega\cdot2{,}5\cdot10^{-4}\,\text{F}=25\,\text{s}=\tau$ (2 BE).</p>` }
+      ]
     }
   ];
 
@@ -760,6 +991,8 @@ ${merke('Die eine Regel', m`$$\ln\!\left(e^{x}\right)=x\qquad\text{also}\qquad \
 <ul><li>Glühkathode → Wehnelt → Anode (Loch) → Ablenkplatten → Schirm, Vakuum</li><li>$eU_B=\tfrac12m_ev_0^2$, $v_0=\sqrt{2eU_B/m_e}$</li><li>Querfeld: $x=v_0t$, $y=\tfrac12at^2$, $a=\dfrac{eU}{m_ed}$ ⇒ $y=\dfrac12\dfrac{e}{m_e}\dfrac Ud\dfrac{x^2}{v_0^2}=\dfrac{Ux^2}{4dU_B}$</li><li>$\tan\alpha=\dfrac{Ul}{2dU_B}$, Schirm: $Y=y(l)+L\tan\alpha$; Platte getroffen, wenn $y>\tfrac d2$</li></ul>
 <h3>Auf- und Entladen</h3>
 <ul><li>$\tau=RC$, $t_h=\tau\ln2$; nach $\tau$: 63 % / 37 %; nach $5\tau$ fertig</li><li>Laden: $U_C=U_0(1-e^{-t/\tau})$, $I=\tfrac{U_0}Re^{-t/\tau}$</li><li>Entladen: $U_C=U_0e^{-t/\tau}$, $I=-\tfrac{U_0}Re^{-t/\tau}$, $Q=Q_0e^{-t/\tau}$</li><li>Zeit: $t=\tau\ln\dfrac{U_0}{U}$; bis $U_0/3$: $C=\dfrac{t_E}{R\ln3}$</li><li>Linearisierung: $\ln(U/U_0)$ gegen $t$, Steigung $-1/\tau$</li><li>DGL: $U_0=RI+\tfrac QC\Rightarrow0=R\dot I+\tfrac IC$</li><li>Messunsicherheit: größte relative Unsicherheit übernehmen, 2 signifikante Stellen</li></ul>
+<h3>Begründen und Taschenrechner</h3>
+<ul><li>Begründung = <b>was bleibt gleich · Formel · Faktor · Satz mit „weil“</b>. Quelle: $U$ fest; abgetrennt: $Q$ fest.</li><li>$C\propto\dfrac{arepsilon_rA}d$, $v_0\propto\sqrt{U_B}$, $y\propto\dfrac{U_A}{dU_B}x^2$, $	au=RC$, $I_0=\dfrac{U_0}R$ ($Q_0=CU_0$ hängt nicht von $R$ ab)</li><li>Nicht in der Formelsammlung: $v_0=\sqrt{2eU_B/m_e}$, Bahngleichung, $C=\dfrac{t_E}{R\ln3}$ (herleiten!). In der Formelsammlung (S. 27): $U_C(t)$, $I(t)$, $Q(t)$, DGL.</li><li>Rechner: <code>ExpReg</code> ($a\cdot b^t$, $	au=-1/\ln b$), $Q=\int I\,dt=I_0	au$</li></ul>
 <p class="dim">Konstanten: $e=1{,}602\cdot10^{-19}\,\text{C}$, $m_e=9{,}109\cdot10^{-31}\,\text{kg}$, $\varepsilon_0=8{,}854\cdot10^{-12}\,\tfrac{\text{As}}{\text{Vm}}$</p>`;
 
   window.LR_LESSONS = (window.LR_LESSONS || []).concat(LESSONS);

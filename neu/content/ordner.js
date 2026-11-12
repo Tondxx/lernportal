@@ -29,9 +29,9 @@
     physik: [
       { id: 'p-energie', typ: 'ordner', titel: 'Größen, Spannung, Potential', kurz: 'Alle Größen erklärt, W = Q·U, Potentialsonde', klausuren: [K_PHYSIK], themen: ['PH0', 'PH1', 'PH2'].map(L),
         kinder: [{ id: 'p-alt', typ: 'alt', titel: 'Grundlagen aus Klausur 1', kurz: 'Elektrostatik, Coulomb, Feldstärke (altes Portal)' }] },
-      { id: 'p-kondensator', typ: 'ordner', titel: 'Kondensator', kurz: 'Kapazität, Energie, Schaltungen', klausuren: [K_PHYSIK], themen: ['PH3', 'PH4', 'PH5'].map(L) },
-      { id: 'p-roehre', typ: 'ordner', titel: 'Braunsche Röhre', kurz: 'Elektronen beschleunigen und ablenken', klausuren: [K_PHYSIK], themen: ['PH6', 'PH7'].map(L).concat([{ typ: 'thema', ref: 'ph-querfeld' }]) },
-      { id: 'p-rc', typ: 'ordner', titel: 'Auf- und Entladen', kurz: 'e-Funktion, τ = R·C, C messen', klausuren: [K_PHYSIK], themen: ['PH8', 'PH9'].map(L).concat([{ typ: 'thema', ref: 'ph-entladen' }]) },
+      { id: 'p-kondensator', typ: 'ordner', titel: 'Kondensator', kurz: 'Kapazität, Energie, Schaltungen, Begründen', klausuren: [K_PHYSIK], themen: ['PH3', 'PH4', 'PH5', 'PH10'].map(L) },
+      { id: 'p-roehre', typ: 'ordner', titel: 'Braunsche Röhre', kurz: 'Elektronen beschleunigen und ablenken, alle Herleitungen', klausuren: [K_PHYSIK], themen: ['PH6', 'PH7', 'PH12'].map(L).concat([{ typ: 'thema', ref: 'ph-querfeld' }]) },
+      { id: 'p-rc', typ: 'ordner', titel: 'Auf- und Entladen', kurz: 'e-Funktion, τ = R·C, C messen, Taschenrechner', klausuren: [K_PHYSIK], themen: ['PH8', 'PH9', 'PH11'].map(L).concat([{ typ: 'thema', ref: 'ph-entladen' }]) },
       { id: 'p-probe', typ: 'probes', titel: 'Probeklausuren', kurz: 'Gemischt aus allen Themen, mit Uhr', klausuren: [K_PHYSIK] },
       { id: 'p-spick', typ: 'seite', ref: 'spick', titel: 'Spickzettel', kurz: 'Alle Formeln auf einer Seite', klausuren: [K_PHYSIK] }
     ],

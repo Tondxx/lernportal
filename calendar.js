@@ -149,7 +149,7 @@ const TONDA_KLAUSUREN = [
     type: "eA (LK)",
     teacher: "Lh",
     room: "NW1",
-    topic: "Klausur 2 (12.1): Spannung/Potential, Kondensator, Braunsche Röhre, Auf- und Entladen",
+    topic: "Klausur 2 (12.1): Auf- und Entladen, Braunsche Röhre, Bewegung im elektrischen Feld, Gleichungen herleiten, Kondensator, Begründen mit funktionalen Abhängigkeiten, Arbeit/Energie/Leistung",
     status: "upcoming",
     color: "#818cf8"
   },

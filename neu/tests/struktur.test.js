@@ -101,6 +101,18 @@ test('Physik-Plan enthält die Kernlektionen, Probeklausur verweist auf echte Ph
   (window.LR_PROBES || []).forEach(pr => pr.tasks.forEach(id => assert.ok(tasks.has(id), `Probeklausur ${pr.id}: Aufgabe ${id} fehlt`)));
 });
 
+test('Physik-Plan deckt alle sieben Klausurthemen der Lehrkraft ab (Stand 12.11.)', () => {
+  const p = PLANS.find(x => x.id === 'plan-physik-k10');
+  const have = new Set(p.items.map(i => window.LRPlan.key(i)));
+  const themen = {
+    'Auf- und Entladen': ['PH8', 'PH9'], 'Braunsche Röhre': ['PH6'], 'Bewegung im elektrischen Feld': ['PH7'],
+    'Gleichung herleiten': ['PH12', 'PH6', 'PH7', 'PH9'], 'Kondensator': ['PH3', 'PH4', 'PH5'],
+    'Begründen mit funktionalen Abhängigkeiten': ['PH10'], 'Arbeit, Energie, Leistung': ['PH1', 'PH2'], 'Taschenrechner': ['PH11']
+  };
+  Object.entries(themen).forEach(([n, ids]) => ids.forEach(id => assert.ok(have.has('lektion:' + id), `Thema „${n}“: Lektion ${id} fehlt im Plan`)));
+  ['PR4', 'PL6', 'PB1', 'PT1'].forEach(id => assert.ok(have.has('aufgabe:' + id), `Aufgabe ${id} (Herleiten/Begründen/Rechner) fehlt im Plan`));
+});
+
 test('Informatik-Plan deckt alle Lektionen ab, nur Informatik-Aufgaben, Probeklausuren verweisen auf echte Aufgaben', () => {
   const p = PLANS.find(x => x.id === 'plan-informatik-k09');
   assert.ok(p, 'Plan plan-informatik-k09 fehlt');
