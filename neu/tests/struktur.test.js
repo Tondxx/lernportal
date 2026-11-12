@@ -95,7 +95,7 @@ test('Mathe-Plan deckt alle klausurrelevanten Lektionen und deren Aufgaben ab', 
 test('Physik-Plan enthält die Kernlektionen, Probeklausur verweist auf echte Physik-Aufgaben', () => {
   const p = PLANS.find(x => x.id === 'plan-physik-k10');
   const have = new Set(p.items.map(i => window.LRPlan.key(i)));
-  ['PH0', 'PH3', 'PH8', 'PH9', 'PH7'].forEach(id => assert.ok(have.has('lektion:' + id), `Kernlektion ${id} fehlt im Plan`));
+  ['PH0', 'PH3', 'PH8', 'PH9', 'PH6'].forEach(id => assert.ok(have.has('lektion:' + id), `Kernlektion ${id} fehlt im Plan`));
   p.items.filter(i => i.typ === 'lektion').forEach(i => assert.strictEqual(fachOf(ALL_LESSONS.find(l => l.id === i.ref)), 'physik', `${i.ref} ist keine Physik-Lektion`));
   p.items.filter(i => i.typ === 'aufgabe').forEach(i => assert.strictEqual(fachOf(ALL_TASKS.find(t => t.id === i.ref)), 'physik', `${i.ref} ist keine Physik-Aufgabe`));
   (window.LR_PROBES || []).forEach(pr => pr.tasks.forEach(id => assert.ok(tasks.has(id), `Probeklausur ${pr.id}: Aufgabe ${id} fehlt`)));
@@ -105,8 +105,8 @@ test('Physik-Plan deckt alle sieben Klausurthemen der Lehrkraft ab (Stand 12.11.
   const p = PLANS.find(x => x.id === 'plan-physik-k10');
   const have = new Set(p.items.map(i => window.LRPlan.key(i)));
   const themen = {
-    'Auf- und Entladen': ['PH8', 'PH9'], 'Braunsche Röhre': ['PH6'], 'Bewegung im elektrischen Feld': ['PH7'],
-    'Gleichung herleiten': ['PH12', 'PH6', 'PH7', 'PH9'], 'Kondensator': ['PH3', 'PH4', 'PH5'],
+    'Auf- und Entladen': ['PH8', 'PH9'], 'Braunsche Röhre': ['PH6'], 'Bewegung im elektrischen Feld': ['PH6'],
+    'Gleichung herleiten': ['PH12', 'PH6', 'PH9'], 'Kondensator': ['PH3', 'PH4', 'PH5'],
     'Begründen mit funktionalen Abhängigkeiten': ['PH10'], 'Arbeit, Energie, Leistung': ['PH1', 'PH2'], 'Taschenrechner': ['PH11']
   };
   Object.entries(themen).forEach(([n, ids]) => ids.forEach(id => assert.ok(have.has('lektion:' + id), `Thema „${n}“: Lektion ${id} fehlt im Plan`)));
