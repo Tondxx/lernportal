@@ -383,10 +383,32 @@ ${achtung('Wichtig fürs Erläutern', m`<p>In $y=\dfrac{Ux^2}{4dU_B}$ kommt $e/m
 
     // ---------------------------------------------------------------- Schaltung zum Laden und Entladen (12.11.)
     {
-      id: 'PH14', fach: F, groessen: ['U0', 'UC', 'R', 'C', 'I'], num: 14, min: 12, demo: 'p-rc', demoTitel: 'Schau zu: Umschalter umlegen',
+      id: 'PH14', fach: F, groessen: ['U0', 'I0', 'tau', 'UC', 'R', 'C', 'I'], num: 14, min: 12, demo: 'p-rc', demoTitel: 'Schau zu: Umschalter umlegen',
       title: 'Die Schaltung: Laden und Entladen aufbauen',
-      short: 'Bauteile, Umschalter, Amperemeter in Reihe, Voltmeter parallel, was zum Entladen nötig ist',
+      short: 'Was U₀, I₀ und τ bedeuten, Seite 27 lesen, Bauteile, Umschalter, Messgeräte, was zum Entladen nötig ist',
       idee: m`<p>Im Versuch „Entladung eines Kondensators“ wird ein Kondensator erst aufgeladen und dann <b>über einen Widerstand entladen</b>. In der Klausur kann stehen: „Zeichne die Schaltung“, „Beschreibe den Versuch“ oder „Erkläre, wie der Kondensator entladen wird“. Hier ist die Schaltung, Bauteil für Bauteil.</p>
+<h3>Erst die drei Buchstaben: $U_0$, $I_0$, $\tau$</h3>
+<p>Die kleine <b>0</b> heißt immer „am Anfang“ bzw. „Startwert“. $\tau$ („tau“) ist ein griechischer Buchstabe für eine <b>Zeit</b>. Mehr steckt nicht dahinter. Als Beispiel nehmen wir ein 12-V-Netzteil, $R=10\,\text{k}\Omega$ und $C=470\,\mu\text{F}$.</p>
+<table><tr><th>Zeichen</th><th>Was ist das?</th><th>Beispiel</th></tr>
+<tr><td>$U_0$</td><td><b>Spannung der Quelle</b> (Batterie, Netzteil). Beim Laden ist es die Spannung, auf die der Kondensator am Ende kommt. Beim Entladen ist es die Spannung am Kondensator im Moment des Umschaltens (er wurde ja vorher auf die Quellenspannung geladen).</td><td>$U_0=12\,\text{V}$</td></tr>
+<tr><td>$I_0$</td><td><b>Strom im allerersten Moment</b> ($t=0$). Das ist gleichzeitig der größte Strom des ganzen Vorgangs, danach wird er immer kleiner.</td><td>$I_0=\dfrac{U_0}{R}=\dfrac{12\,\text{V}}{10\,000\,\Omega}=1{,}2\,\text{mA}$</td></tr>
+<tr><td>$\tau$</td><td><b>Zeitkonstante</b> $\tau=R\cdot C$: die „Uhr“ des Vorgangs. Je größer $\tau$, desto langsamer läuft alles.</td><td>$\tau=10\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=4{,}7\,\text{s}$</td></tr></table>
+<h4>Warum ist $I_0=U_0/R$?</h4>
+<p>Im ersten Moment des Ladens ist der Kondensator leer, also $U_C=0$. Dann liegt die ganze Quellenspannung am Widerstand. Aus $R=\dfrac UI$ ${FS('S. 23')} wird, nach $I$ umgestellt ($\big|\cdot I$, dann $\big|:R$), $I_0=\dfrac{U_0}{R}$. Beim Entladen ist es genauso: Der volle Kondensator drückt $U_0$ durch den Widerstand, also wieder $I_0=\dfrac{U_0}{R}$, nur in die <b>Gegenrichtung</b>. Deshalb steht in der Formelsammlung beim Entladen $-I_0$.</p>
+<h4>Was ist $\tau$ anschaulich?</h4>
+<p>$\tau$ sagt, wie lange der „erste große Schritt“ dauert. Nach genau einer Zeitkonstante ($t=\tau$) gilt:</p>
+<ul><li><b>Entladen:</b> Nur noch $e^{-1}=0{,}37$ ist übrig. Also $U_C=0{,}37\cdot12\,\text{V}=4{,}4\,\text{V}$ und der Strom ist auf $0{,}37\cdot1{,}2\,\text{mA}=0{,}44\,\text{mA}$ gefallen.</li><li><b>Laden:</b> $1-e^{-1}=0{,}63$ ist geschafft. Also $U_C=0{,}63\cdot12\,\text{V}=7{,}6\,\text{V}$.</li><li>Nach $5\tau=23{,}5\,\text{s}$ ist praktisch alles vorbei.</li></ul>
+<p><b>Warum $R\cdot C$?</b> Großer Widerstand: wenig Strom, die Ladung kommt langsam. Großer Kondensator: Es muss mehr Ladung fließen, bis er voll ist. Beides macht es langsamer. Einheit: $1\,\Omega\cdot1\,\text{F}=\dfrac{\text{V}}{\text{A}}\cdot\dfrac{\text{A}\,\text{s}}{\text{V}}=1\,\text{s}$.</p>
+<h3>Wo steht das in der Formelsammlung?</h3>
+<table><tr><th>Was</th><th>Wo</th></tr>
+<tr><td>Schaltbild (Quelle, Umschalter, $C$, $R$, Messgeräte)</td><td><b>Steht nicht drin.</b> Du musst es zeichnen können, dafür ist diese Lektion.</td></tr>
+<tr><td>$U_C(t)$, $I(t)$, $Q(t)$ für <b>Aufladen</b> und <b>Entladen</b></td><td><b>S. 27</b>, Kasten „Aufladen und Entladen eines Kondensators über einen Ohm'schen Widerstand“ (Elektrizitätslehre und Magnetismus, Kondensator). Links oben Aufladen, darunter Entladen.</td></tr>
+<tr><td>Was $U_0$, $I_0$, $Q_0$ bedeuten</td><td>S. 27, <b>rechts neben</b> den Formeln: „$U_0$: Quellenspannung beim Aufladen bzw. Spannung am Kondensator zu Beginn des Entladevorgangs“ und „$I_0$: Stromstärke zu Beginn des Auf- bzw. Entladevorgangs“.</td></tr>
+<tr><td>Die beiden Differenzialgleichungen</td><td>S. 27, die zwei Kästen darunter (nur zum Verstehen, Lektion 9)</td></tr>
+<tr><td>$C=\dfrac QU$ und $E=\tfrac12CU^2$</td><td>S. 27, oberste Kästen</td></tr>
+<tr><td>$R=\dfrac UI$ (daraus $I_0$), $Q=\int I\,dt$</td><td>S. 23</td></tr>
+<tr><td>$I_0=\dfrac{U_0}{R}$ als fertige Formel, das Wort $\tau$</td><td><b>Steht nicht drin.</b> $I_0$ rechnest du aus $R=\dfrac UI$ (S. 23), $\tau$ ist nur die Abkürzung für $R\cdot C$.</td></tr></table>
+<p><b>Beim Lesen von S. 27 aufpassen:</b> Dort steht nirgends $\tau$, sondern $e^{-t/(R\cdot C)}$. Das ist dasselbe wie $e^{-t/\tau}$. Der Strom heißt dort $I(t)=I_0\cdot e^{-t/(R\cdot C)}$ (Laden) und $I(t)=-I_0\cdot e^{-t/(R\cdot C)}$ (Entladen). Den Wert $I_0=\dfrac{U_0}{R}$ musst du selbst einsetzen. Beim Entladen fallen $U_C$, $I$ und $Q$ alle mit demselben Faktor $e^{-t/(R\cdot C)}$ ab.</p>
 <h3>Die Bauteile</h3>
 <table><tr><th>Bauteil</th><th>Wozu?</th><th>Wie angeschlossen?</th></tr>
 <tr><td>Spannungsquelle $U_0$</td><td>liefert die Spannung zum Laden</td><td>langer Strich = Pluspol</td></tr>
@@ -442,6 +464,8 @@ ${merke('Was braucht man zum Entladen?', m`<p>Zwei Dinge: <b>(1)</b> die Quelle 
         { q: m`Wo kommen Amperemeter und Voltmeter hin, wenn $I$ und $U_C$ gemessen werden?`, a: 'Das Amperemeter in Reihe zu Kondensator und Widerstand, das Voltmeter parallel zum Kondensator.' },
         { q: 'Wie ist der Entladestrom gerichtet im Vergleich zum Ladestrom?', a: m`In die Gegenrichtung. Deshalb steht in der Formel ein Minus: $I(t)=-\dfrac{U_0}{R}e^{-t/\tau}$.` },
         { q: m`Was passiert beim Entladen, wenn $R$ verdoppelt wird?`, a: m`Die Zeitkonstante verdoppelt sich, der Anfangsstrom halbiert sich. Die abfließende Ladung $Q_0=C\,U_0$ bleibt gleich.` },
+        { q: m`Was bedeuten $U_0$, $I_0$ und $\tau$? Wie berechnest du $I_0$ und $\tau$?`, a: m`$U_0$: Quellenspannung (beim Entladen: Spannung zu Beginn). $I_0$: Strom im ersten Moment, $I_0=U_0/R$ (nicht in der Formelsammlung, aus $R=U/I$, S. 23). $\tau=R\cdot C$: Zeitkonstante, nach $\tau$ ist beim Entladen noch 37 % übrig.` },
+        { q: 'Welche Formeln zum Auf- und Entladen stehen in der Formelsammlung, und was musst du selbst ergänzen?', a: m`S. 27: $U_C(t)$, $I(t)$, $Q(t)$ für Laden und Entladen mit $e^{-t/(R\cdot C)}$. Selbst: $I_0=U_0/R$ und das Schaltbild. $\tau$ kommt dort nicht vor.` },
         { q: 'Warum entlädt man nicht ohne Widerstand?', a: 'Der Strom wäre sehr groß und kurz (Funke, Bauteile können Schaden nehmen), und man könnte den Vorgang nicht messen. Beim Blitzgerät ist das gewollt.' }
       ]
     },
@@ -458,6 +482,7 @@ ${merke('Zeitkonstante' + FSN('τ steht nicht drin, nur R·C im Exponenten (S. 2
 <h3>Die Formeln (AB 18)</h3>
 ${merke('Laden' + FS('S. 27'), m`$$U_C(t)=U_0\,\bigl(1-e^{-t/\tau}\bigr)\qquad I(t)=\frac{U_0}{R}\,e^{-t/\tau}$$`)}
 ${merke('Entladen' + FS('S. 27'), m`$$U_C(t)=U_0\,e^{-t/\tau}\qquad I(t)=-\frac{U_0}{R}\,e^{-t/\tau}$$<p>Minus: Der Strom fließt beim Entladen in die andere Richtung.</p>`)}
+<p class="dim">In der Formelsammlung (S. 27) steht der Strom als $I(t)=\pm I_0\cdot e^{-t/(R\cdot C)}$. Dabei ist $I_0=\dfrac{U_0}{R}$ der Strom im ersten Moment (mehr dazu in Lektion 14).</p>
 <p>So liest du $e^{-t/\tau}$: Das ist der <b>Anteil, der noch übrig ist</b>. Am Anfang 1 (100 %), nach $1\tau$ noch 0,37, nach $5\tau$ fast 0. Beim Laden ist $1-e^{-t/\tau}$ der Anteil, der <b>schon geschafft</b> ist.</p>
 <ul><li>Nach $1\tau$: Spannung beim Laden bei <b>63 %</b>, Strom bei <b>37 %</b>.</li><li><b>Halbwertszeit</b> $t_h=\tau\cdot\ln2\approx0{,}69\,\tau$: In dieser Zeit halbiert sich der Strom (bzw. der Rest).</li><li>Nach $5\tau$ (≈ 7 Halbwertszeiten) gilt der Vorgang als fertig (unter 1 % Rest).</li></ul>`,
       bild: m`<p>Wie eine Badewanne, die über einen dünnen Schlauch abläuft: Am Anfang drückt viel Wasser, es fließt schnell. Je leerer, desto langsamer. Der Widerstand ist der Schlauch, die Kapazität die Größe der Wanne. Beides zusammen bestimmt $\tau$.</p>`,
