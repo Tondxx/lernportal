@@ -61,6 +61,7 @@ Fächer im Portal: Mathe eA, Physik eA, Informatik eA, Politik-Wirtschaft gA, De
 - **Erst lesen, dann ändern.** Neue Aufgaben/Erklärungen im Stil der vorhandenen Fach-Module bauen (Datenstruktur und Renderer des jeweiligen Fachs wiederverwenden).
 - **Quelle zuerst:** Aufgaben aus dem echten Stoff ableiten (`data/private/iserv_files/`, `../Faecher/<Fach>/01_Material/`, `Meds.pdf` für Physik). Nichts erfinden; Unsicheres markieren.
 - **Mathe/Physik immer mit Lösungsweg**, Zahlenwerte nachrechnen. Formeln mit KaTeX.
+- **Physik: nichts auswendig lernen lassen** (Tonda, 12.11.): Taschenrechner und Formelsammlung sind in der Klausur erlaubt. Selbsttests fragen Verständnis und Anwendung ab, nicht das Hinschreiben von Formeln. **Bei jeder Formel angeben, ob sie in der Formelsammlung steht und auf welcher Seite** (Chip `FS('S. 27')`) oder dass sie hergeleitet werden muss (`FSN(...)`); Seitenzahlen in Lektion 13 (`PH13`). Elektrische Energie heißt im Kurs **E_el** (nicht W), Feldstärke E.
 - **Visuell vor Text:** Wo möglich Canvas-Simulation, SVG oder Schritt-für-Schritt-Animation statt langer Erklärtexte.
 - **Cache-Busting:** Wird eine JS/CSS-Datei geändert, den `?v=…`-Parameter in `index.html` anpassen.
 - **Testen:** Nach Änderungen Server starten und im Browser prüfen (Konsole ohne Fehler, Aufgabe löst sich, Formeln rendern).

@@ -14,6 +14,8 @@
   const F = 'physik';
   const merke = (h, t) => `<div class="mt-call"><div class="mt-call-h">${h}</div>${t}</div>`;
   const achtung = (h, t) => `<div class="mt-call warn"><div class="mt-call-h">${h}</div>${t}</div>`;
+  const FS = s => `<span class="fs-chip fs-in">Formelsammlung ${s}</span>`;
+  const FSN = s => `<span class="fs-chip fs-no">${s || 'nicht in der Formelsammlung'}</span>`;
   const KONST = m`<p class="dim" style="font-size:14px">Konstanten: $e=1{,}602\cdot10^{-19}\,\text{C}$, $m_e=9{,}109\cdot10^{-31}\,\text{kg}$, $\varepsilon_0=8{,}854\cdot10^{-12}\,\tfrac{\text{As}}{\text{Vm}}$</p>`;
 
   // ======================================================================
@@ -26,9 +28,9 @@
       title: 'Spannung = Energie pro Ladung',
       short: 'E_el = Q·U, Elektronvolt, Leistung P = U·I, Akku-Angaben',
       idee: m`<p>Ein elektrisches Feld schiebt Ladungen an. Dabei wird Energie umgewandelt. Die <b>Spannung</b> sagt, wie viel Energie <b>pro Ladung</b> zwischen zwei Punkten frei wird (oder nötig ist).</p>
-${merke('Merke', m`$$U=\frac{W}{Q}\qquad\Longleftrightarrow\qquad E_\text{el}=Q\cdot U\qquad [U]=1\,\text{V}=1\,\tfrac{\text{J}}{\text{C}}$$`)}
+${merke('Merke' + FS('S. 24, ΔE = q·U'), m`$$U=\frac{E_\text{el}}{Q}\qquad\Longleftrightarrow\qquad E_\text{el}=Q\cdot U\qquad [U]=1\,\text{V}=1\,\tfrac{\text{J}}{\text{C}}$$`)}
 <p>Für ein Elektron ($Q=e$) rechnet man gern in <b>Elektronvolt</b>: Durchläuft es 1 V, gewinnt es $1\,\text{eV}=1{,}602\cdot10^{-19}\,\text{J}$. Bei 500 V also 500 eV.</p>
-<p><b>Leistung</b> ist Energie pro Zeit: $P=\dfrac{W}{t}=U\cdot I$. Und weil $I=\dfrac{Q}{t}$, ist $E_\text{el}=U\cdot I\cdot t$.</p>`,
+<p><b>Leistung</b> ist Energie pro Zeit: $P=\dfrac{E_\text{el}}{t}=U\cdot I$. Und weil $I=\dfrac{Q}{t}$, ist $E_\text{el}=U\cdot I\cdot t$.</p>`,
       bild: m`<p>Spannung ist wie eine <b>Höhe</b>, Ladung wie die <b>Masse</b> eines Balls. Wie viel Energie frei wird, hängt von beidem ab: $E_\text{el}=Q\cdot U$ ist wie $E_\text{el}=m\cdot g\cdot h$.</p>`,
       rezept: [
         m`<b>Energie aus Spannung:</b> $E_\text{el}=Q\cdot U$. Für Elektronen: $E_\text{el}$ in eV hat denselben Zahlenwert wie $U$ in V.`,
@@ -54,7 +56,7 @@ ${merke('Merke', m`$$U=\frac{W}{Q}\qquad\Longleftrightarrow\qquad E_\text{el}=Q\
         { q: m`Welche Energie gewinnt ein Elektron beim Durchlaufen von 300 V?`, a: m`$300\,\text{eV}=300\cdot1{,}602\cdot10^{-19}\,\text{J}\approx4{,}8\cdot10^{-17}\,\text{J}$` },
         { q: m`Was bedeutet $1\,\text{V}$ in Energie und Ladung?`, a: m`$1\,\text{V}=1\,\text{J/C}$: Pro Coulomb Ladung wird 1 Joule umgesetzt.` },
         { q: 'Was gibt die Angabe „2500 mAh“ auf einem Akku an?', a: m`Die Ladung, die er liefern kann: $Q=2{,}5\,\text{A}\cdot3600\,\text{s}=9000\,\text{C}$.` },
-        { q: m`Zwei Formeln für die Leistung?`, a: m`$P=\dfrac{W}{t}$ und $P=U\cdot I$.` }
+        { q: m`Welche Formeln für die Leistung stehen in der Formelsammlung (S. 24)?`, a: m`$P=\dfrac{\Delta E}{\Delta t}$ (S. 18) und $P=U\cdot I$ (S. 24).` }
       ]
     },
     {
@@ -62,7 +64,7 @@ ${merke('Merke', m`$$U=\frac{W}{Q}\qquad\Longleftrightarrow\qquad E_\text{el}=Q\
       title: 'Potential und Äquipotentiallinien',
       short: 'φ als „Höhe“ eines Punktes, Potentialsonde, E = Δφ/Δx',
       idee: m`<p>Das <b>Potential</b> $\varphi$ ist die Energie pro Ladung <b>an einem Punkt</b>, gemessen gegenüber einem Bezugspunkt (meist die negative Platte oder die Erde, dort $\varphi=0$).</p>
-${merke('Merke', m`$$U_{AB}=\varphi_B-\varphi_A\qquad\text{homogenes Feld: }\ \varphi(x)=E\cdot x,\quad E=\frac{U}{d}=\frac{\Delta\varphi}{\Delta x}$$`)}
+${merke('Merke' + FS('S. 25'), m`$$U_{AB}=\varphi_B-\varphi_A\qquad\text{homogenes Feld: }\ \varphi(x)=E\cdot x,\quad E=\frac{U}{d}=\frac{\Delta\varphi}{\Delta x}$$`)}
 <p><b>Äquipotentiallinien</b> verbinden Punkte mit gleichem $\varphi$. Entlang einer solchen Linie wird keine Arbeit verrichtet, deshalb stehen die <b>Feldlinien immer senkrecht</b> auf ihnen.</p>
 <p>Die <b>Potentialsonde</b> misst $\varphi$ an einem Punkt. Im homogenen Feld steigt $\varphi$ linear mit dem Abstand von der negativen Platte.</p>`,
       bild: m`<p>Wie eine <b>Landkarte mit Höhenlinien</b>: $\varphi$ ist die Höhe, Äquipotentiallinien sind Höhenlinien, Feldlinien zeigen bergab (von + nach −). Wer auf einer Höhenlinie wandert, steigt weder auf noch ab.</p>`,
@@ -102,13 +104,13 @@ ${merke('Merke', m`$$U_{AB}=\varphi_B-\varphi_A\qquad\text{homogenes Feld: }\ \v
       idee: m`<p>Ein <b>Kondensator</b> besteht aus zwei Metallplatten, die sich nicht berühren. Schließt man eine Spannungsquelle an, schiebt sie Elektronen von der einen Platte auf die andere. Die eine Platte wird positiv ($+Q$), die andere genauso stark negativ ($-Q$). Zwischen den Platten entsteht ein elektrisches Feld.</p>
 <h3>1. Kapazität: Wie viel Ladung passt drauf?</h3>
 <p>Doppelte Spannung schiebt doppelt so viel Ladung auf die Platten. Ladung und Spannung sind also proportional. Der Faktor dazwischen ist die <b>Kapazität</b>:</p>
-${merke('Kapazität', m`$$C=\frac{Q}{U}$$<p>$C$ = Kapazität in F · $Q$ = Ladung auf <b>einer</b> Platte in C · $U$ = Spannung zwischen den Platten in V.</p><p>Beispiel: $C=1\,\mu\text{F}$ heißt, pro Volt kommt $1\,\mu\text{C}$ auf die Platte.</p>`)}
+${merke('Kapazität' + FS('S. 27'), m`$$C=\frac{Q}{U}$$<p>$C$ = Kapazität in F · $Q$ = Ladung auf <b>einer</b> Platte in C · $U$ = Spannung zwischen den Platten in V.</p><p>Beispiel: $C=1\,\mu\text{F}$ heißt, pro Volt kommt $1\,\mu\text{C}$ auf die Platte.</p>`)}
 <h3>2. Wovon hängt C ab? Nur vom Bau.</h3>
-${merke('Plattenkondensator', m`$$C=\varepsilon_0\cdot\varepsilon_r\cdot\frac{A}{d}$$`)}
+${merke('Plattenkondensator' + FS('S. 27'), m`$$C=\varepsilon_0\cdot\varepsilon_r\cdot\frac{A}{d}$$`)}
 <ul><li><b>Größere Fläche $A$</b>: mehr Platz für Ladung, also $C$ größer.</li><li><b>Kleinerer Abstand $d$</b>: Die Ladungen auf beiden Platten ziehen sich stärker an, es passt mehr drauf, also $C$ größer.</li><li><b>Isolator zwischen den Platten</b> ($\varepsilon_r>1$, z. B. Glas): $C$ wird $\varepsilon_r$-mal so groß.</li><li>$\varepsilon_0$ ist nur eine feste Zahl aus der Formelsammlung, damit Farad herauskommt.</li></ul>
 <h3>3. Das Feld zwischen den Platten</h3>
 <p>Die Spannung verteilt sich gleichmäßig über den Abstand. Je kürzer der Abstand bei gleicher Spannung, desto stärker das Feld:</p>
-${merke('Feldstärke', m`$$E=\frac{U}{d}\qquad\text{und}\qquad \sigma=\frac{Q}{A}=\varepsilon_0\,\varepsilon_r\,E$$<p>$\sigma$ (sigma) = wie dicht die Ladung auf der Platte sitzt. Dichter gepackte Ladung, stärkeres Feld.</p>`)}`,
+${merke('Feldstärke' + FS('S. 25'), m`$$E=\frac{U}{d}\qquad\text{und}\qquad \sigma=\frac{Q}{A}=\varepsilon_0\,\varepsilon_r\,E$$<p>$\sigma$ (sigma) = wie dicht die Ladung auf der Platte sitzt. Dichter gepackte Ladung, stärkeres Feld.</p>`)}`,
       bild: m`<p>Die wichtigste Frage in jeder Aufgabe: <b>Hängt der Kondensator noch an der Quelle?</b></p><ul><li><b>Ja:</b> Die Quelle hält die Spannung fest. $U$ bleibt, $Q$ passt sich an ($Q=C\cdot U$).</li><li><b>Nein, abgetrennt:</b> Die Ladung kann nirgendwohin. $Q$ bleibt, $U$ passt sich an ($U=Q/C$).</li></ul><p>Probier beides oben in der Simulation aus: Abstand verdoppeln, einmal an der Quelle, einmal abgetrennt.</p>`,
       rezept: [
         m`<b>Erst alle Größen in Grundeinheiten:</b> Fläche in m² (1 cm² = $10^{-4}$ m², 20 cm × 20 cm = 0,20 m · 0,20 m), Abstand in m (1 mm = $10^{-3}$ m).`,
@@ -134,7 +136,7 @@ ${merke('Feldstärke', m`$$E=\frac{U}{d}\qquad\text{und}\qquad \sigma=\frac{Q}{A
       ],
       test: [
         { q: m`Was bedeutet $C=\dfrac QU$ in Worten?`, a: 'Kapazität = wie viel Ladung pro Volt Spannung auf die Platten passt.' },
-        { q: m`Formel für die Kapazität eines Plattenkondensators? Was macht jede Größe?`, a: m`$C=\varepsilon_0\varepsilon_r\dfrac Ad$: größere Fläche $A$ und kleinerer Abstand $d$ machen $C$ größer, ein Isolator mit $\varepsilon_r$ macht $C$ $\varepsilon_r$-mal so groß.` },
+        { q: m`Suche in der Formelsammlung (S. 27) die Formel für die Kapazität eines Plattenkondensators. Was macht jede Größe?`, a: m`$C=\varepsilon_0\varepsilon_r\dfrac Ad$: größere Fläche $A$ und kleinerer Abstand $d$ machen $C$ größer, ein Isolator mit $\varepsilon_r$ macht $C$ $\varepsilon_r$-mal so groß.` },
         { q: 'Abgetrennter Kondensator, Abstand verdoppelt: Was passiert mit Q, C, U, E?', a: m`$Q$ bleibt, $C$ halbiert, $U$ verdoppelt, $E$ bleibt gleich.` },
         { q: 'An der Quelle, Glasplatte eingeschoben: Was passiert mit Q?', a: m`$C$ steigt um den Faktor $\varepsilon_r$, $U$ bleibt, also steigt $Q=C\cdot U$ um $\varepsilon_r$.` }
       ]
@@ -145,15 +147,15 @@ ${merke('Feldstärke', m`$$E=\frac{U}{d}\qquad\text{und}\qquad \sigma=\frac{Q}{A
       short: 'E_el = ½·C·U², Fläche im U-Q-Diagramm, Blitzgerät',
       idee: m`<p>Ein geladener Kondensator speichert Energie. Woher kommt sie? Beim Laden muss die Quelle jede Ladung auf die Platte schieben, und zwar <b>gegen</b> die Spannung, die schon da ist.</p>
 <ul><li>Das <b>erste</b> bisschen Ladung geht ganz leicht, denn der Kondensator ist noch leer (Spannung 0).</li><li>Das <b>letzte</b> bisschen muss gegen die volle Spannung $U$ geschoben werden.</li><li>Im Mittel zählt also nur die <b>halbe</b> Endspannung: $E_\text{el}=Q\cdot\dfrac{U}{2}$.</li></ul>
-${merke('Energie im Kondensator', m`$$E_\text{el}=\tfrac12\,Q\cdot U=\tfrac12\,C\cdot U^2$$<p>$E_	ext{el}$ = gespeicherte Energie in J · $C$ = Kapazität in F · $U$ = Spannung am Kondensator in V. Die zweite Form entsteht, wenn man $Q=C\cdot U$ einsetzt.</p>`)}
+${merke('Energie im Kondensator' + FS('S. 27, E = ½·C·U²') + FSN('Form mit Q: selbst umformen'), m`$$E_\text{el}=\tfrac12\,Q\cdot U=\tfrac12\,C\cdot U^2$$<p>$E_\text{el}$ = gespeicherte Energie in J · $C$ = Kapazität in F · $U$ = Spannung am Kondensator in V. Die zweite Form entsteht, wenn man $Q=C\cdot U$ einsetzt.</p>`)}
 <p>Im $U$-$Q$-Diagramm (oben in der Animation) ist $E_\text{el}$ die <b>Dreiecksfläche</b> unter der Geraden: Grundseite $Q$, Höhe $U$, Fläche $\tfrac12QU$.</p>
 <p>Wegen $U^2$ gilt: doppelte Spannung, <b>vierfache</b> Energie.</p>
-<p>Ein Kondensator kann seine Energie sehr schnell abgeben. Dann ist die <b>Leistung</b> $P=\dfrac{W}{t}$ riesig (Blitzgerät, Defibrillator).</p>`,
+<p>Ein Kondensator kann seine Energie sehr schnell abgeben. Dann ist die <b>Leistung</b> $P=\dfrac{E_\text{el}}{t}$ riesig (Blitzgerät, Defibrillator).</p>`,
       bild: m`<p>Wie ein Wasserturm, der von unten befüllt wird: Die ersten Liter sind leicht hochzupumpen, die letzten müssen gegen den vollen Wasserdruck. Im Mittel zählt nur die halbe Endhöhe, darum das $\tfrac12$.</p>`,
       rezept: [
         m`$C$ in F umrechnen (µF: mal $10^{-6}$), $U$ in V.`,
         m`Energie: $E_\text{el}=\tfrac12CU^2$. Erst $U^2$ ausrechnen, dann mal $C$, dann halbieren. Ergebnis in J.`,
-        m`Leistung beim Entladen: $P=\dfrac{W}{t}$, nur den genutzten Anteil nehmen (z. B. 20 % Licht: $0{,}20\cdot E_\text{el}$).`,
+        m`Leistung beim Entladen: $P=\dfrac{E_\text{el}}{t}$, nur den genutzten Anteil nehmen (z. B. 20 % Licht: $0{,}20\cdot E_\text{el}$).`,
         m`Gesucht $C$ für eine bestimmte Energie? Umstellen: $C=\dfrac{2W}{U^2}$.`
       ],
       beispiel: {
@@ -161,7 +163,7 @@ ${merke('Energie im Kondensator', m`$$E_\text{el}=\tfrac12\,Q\cdot U=\tfrac12\,C
         steps: [
           { h: 'Gegeben und gesucht', t: m`<p>$C=200\,\mu\text{F}=200\cdot10^{-6}\,\text{F}=2{,}00\cdot10^{-4}\,\text{F}$, $U=320\,\text{V}$, $t=2{,}0\,\text{ms}=0{,}0020\,\text{s}$. Gesucht: Energie $E_\text{el}$ und mittlere Leistung $P$.</p>` },
           { h: 'Energie', t: m`<p>Wir kennen $C$ und $U$, also passt $E_\text{el}=\tfrac12CU^2$:</p><p>$E_\text{el}=\tfrac12\cdot2{,}00\cdot10^{-4}\,\text{F}\cdot(320\,\text{V})^2=\tfrac12\cdot2{,}00\cdot10^{-4}\cdot102\,400\,\text{J}=10{,}24\,\text{J}$</p>` },
-          { h: 'Mittlere Leistung', t: m`<p>Leistung ist Energie pro Zeit. Die ganzen 10 J werden in 2 ms abgegeben:</p><p>$P=\dfrac{W}{t}=\dfrac{10{,}24\,\text{J}}{0{,}0020\,\text{s}}=5120\,\text{W}\approx5{,}1\,\text{kW}$</p>` },
+          { h: 'Mittlere Leistung', t: m`<p>Leistung ist Energie pro Zeit. Die ganzen 10 J werden in 2 ms abgegeben:</p><p>$P=\dfrac{E_\text{el}}{t}=\dfrac{10{,}24\,\text{J}}{0{,}0020\,\text{s}}=5120\,\text{W}\approx5{,}1\,\text{kW}$</p>` },
           { h: 'Deuten', t: 'Die Energie ist klein (etwa so viel, wie man braucht, um 1 kg einen Meter hochzuheben), aber sie kommt in 2 ms. Deshalb die riesige Leistung von über 5 kW. Genau dafür nimmt man einen Kondensator: langsam laden, schlagartig entladen.' }
         ]
       },
@@ -171,7 +173,7 @@ ${merke('Energie im Kondensator', m`$$E_\text{el}=\tfrac12\,Q\cdot U=\tfrac12\,C
         m`$U^2$ vergessen: doppelte Spannung → vierfache Energie.`
       ],
       test: [
-        { q: 'Drei Formeln für die Energie im Kondensator?', a: m`$E_\text{el}=\tfrac12QU=\tfrac12CU^2=\dfrac{Q^2}{2C}$` },
+        { q: 'Welche Formel für die Energie im Kondensator steht in der Formelsammlung (S. 27), und wie kommst du auf die anderen Formen?', a: m`In der Formelsammlung steht $E=\tfrac12CU^2$ (S. 27). Mit $Q=CU$ folgt daraus $E_\text{el}=\tfrac12QU=\dfrac{Q^2}{2C}$.` },
         { q: m`Warum steht dort $\tfrac12$?`, a: 'Beim Laden wächst die Spannung von 0 an mit. Im Mittel muss jede Ladung nur gegen die halbe Endspannung geschoben werden (Dreiecksfläche im U-Q-Diagramm).' },
         { q: 'Spannung verdreifacht. Energie?', a: 'Neunmal so groß (E_el ∼ U²).' }
       ]
@@ -181,7 +183,7 @@ ${merke('Energie im Kondensator', m`$$E_\text{el}=\tfrac12\,Q\cdot U=\tfrac12\,C
       title: 'Kondensatoren schalten',
       short: 'Parallel: C addieren. Reihe: 1/C addieren. Vergleich mit Widerständen',
       idee: m`<p><b>Parallel</b> liegt an allen Kondensatoren dieselbe Spannung, die Ladungen addieren sich: wie eine größere Plattenfläche. <b>In Reihe</b> tragen alle dieselbe Ladung (die Mittelstücke sind zusammen neutral), die Spannungen addieren sich: wie ein größerer Plattenabstand.</p>
-${merke('Merke', m`$$\text{parallel: } C=C_1+C_2\qquad\text{Reihe: }\frac1C=\frac1{C_1}+\frac1{C_2}$$`)}
+${merke('Merke' + FS('S. 27'), m`$$\text{parallel: } C=C_1+C_2\qquad\text{Reihe: }\frac1C=\frac1{C_1}+\frac1{C_2}$$`)}
 <p><b>Genau andersherum als bei Widerständen</b> (Reihe: $R=R_1+R_2$). Gemeinsame Größe in Reihe: bei Widerständen $I$, bei Kondensatoren $Q$.</p>`,
       bild: m`<p>Parallel = zwei Eimer nebeneinander, beide gleich hoch befüllt. Reihe = gleiche Ladung, die Spannung teilt sich auf; der kleinere Kondensator bekommt die <b>größere</b> Teilspannung.</p>`,
       rezept: [
@@ -218,7 +220,7 @@ ${merke('Merke', m`$$\text{parallel: } C=C_1+C_2\qquad\text{Reihe: }\frac1C=\fra
 <ol><li><b>Glühkathode:</b> Ein Draht wird geheizt. Dadurch haben seine Elektronen genug Energie, um das Metall zu verlassen (<b>glühelektrischer Effekt</b>). Kalt tritt fast nichts aus.</li><li><b>Wehnelt-Zylinder:</b> Ein Metallbecher um die Kathode, leicht negativ. Er drückt die Elektronen zur Mitte und bündelt sie.</li><li><b>Anode mit Loch:</b> Sie ist positiv gegenüber der Kathode. Die Spannung $U_B$ zwischen beiden beschleunigt die Elektronen. Durch das Loch fliegen sie weiter.</li><li><b>Danach</b> wirkt keine Kraft mehr: Die Elektronen fliegen mit konstanter Geschwindigkeit $v_0$ bis zum <b>Leuchtschirm</b>.</li><li>Alles im <b>Vakuum</b>: Luftmoleküle würden die Elektronen abbremsen und streuen.</li></ol>
 <h3>Wie schnell werden die Elektronen?</h3>
 <p>Energieerhaltung: Die elektrische Energie, die das Elektron beim Durchlaufen von $U_B$ bekommt ($E_\text{el}=e\cdot U_B$, siehe Lektion 1), wird komplett zu Bewegungsenergie ($\tfrac12mv^2$):</p>
-${merke('Energieerhaltung', m`$$e\cdot U_B=\tfrac12\,m_e\,v_0^2\qquad\Longrightarrow\qquad v_0=\sqrt{\frac{2\,e\,U_B}{m_e}}$$<p>Umstellen: mal 2, durch $m_e$, dann Wurzel ziehen.</p>`)}`,
+${merke('Energieerhaltung' + FS('Ansatz: S. 17 und S. 24') + FSN('v₀-Formel: herleiten'), m`$$e\cdot U_B=\tfrac12\,m_e\,v_0^2\qquad\Longrightarrow\qquad v_0=\sqrt{\frac{2\,e\,U_B}{m_e}}$$<p>Umstellen: mal 2, durch $m_e$, dann Wurzel ziehen.</p>`)}`,
       bild: m`<p>Wie eine Kugel, die eine Rampe hinunterrollt: Die Höhe ($U_B$) bestimmt die Endgeschwindigkeit. Wegen der Wurzel gilt: vierfache Höhe ergibt nur doppelte Geschwindigkeit ($v_0\sim\sqrt{U_B}$).</p>`,
       rezept: [
         m`Ansatz hinschreiben (gibt Punkte!): $e\,U_B=\tfrac12m_ev_0^2$.`,
@@ -258,13 +260,13 @@ ${merke('Energieerhaltung', m`$$e\cdot U_B=\tfrac12\,m_e\,v_0^2\qquad\Longrighta
       idee: m`<p>Das Elektron kommt mit der Geschwindigkeit $v_0$ (aus Lektion 6) waagerecht zwischen zwei Platten. An den Platten liegt die Ablenkspannung $U$, oben $+$, unten $-$. Das Feld zieht das Elektron zur positiven Platte. Wir bauen die Bahn in vier Schritten zusammen.</p>
 <h3>Schritt 1: Waagerecht passiert nichts Neues</h3>
 <p>Das Feld zieht nur senkrecht, also gibt es waagerecht keine Kraft. Das Elektron fliegt waagerecht gleichmäßig weiter:</p>
-${merke('waagerecht', m`$$x=v_0\cdot t$$<p>$x$ = wie weit es schon in den Platten ist, $t$ = Zeit seit dem Eintritt.</p>`)}
+${merke('waagerecht' + FS('S. 15'), m`$$x=v_0\cdot t$$<p>$x$ = wie weit es schon in den Platten ist, $t$ = Zeit seit dem Eintritt.</p>`)}
 <h3>Schritt 2: Senkrecht wirkt eine konstante Kraft</h3>
 <p>Im Plattenkondensator ist das Feld überall gleich ($E=U/d$), also auch die Kraft $F=e\cdot E=\dfrac{e\,U}{d}$. Konstante Kraft heißt konstante Beschleunigung $a=\dfrac{F}{m_e}$, und dafür gilt wie beim freien Fall:</p>
-${merke('senkrecht', m`$$a=\frac{e\,U}{m_e\,d}\qquad y=\tfrac12\,a\,t^2$$`)}
+${merke('senkrecht' + FS('y = ½at²: S. 15') + FSN('a = eU/(m·d): herleiten'), m`$$a=\frac{e\,U}{m_e\,d}\qquad y=\tfrac12\,a\,t^2$$`)}
 <h3>Schritt 3: Zusammensetzen (Bahngleichung)</h3>
 <p>Wir wollen $y$ abhängig vom Ort $x$, nicht von der Zeit. Also Schritt 1 nach der Zeit umstellen, $t=\dfrac{x}{v_0}$, und in Schritt 2 einsetzen:</p>
-${merke('Bahn im Kondensator: eine Parabel', m`$$y(x)=\frac12\cdot\frac{e\,U}{m_e\,d}\cdot\frac{x^2}{v_0^2}$$<p>Setzt man noch $v_0^2=\dfrac{2eU_B}{m_e}$ ein, kürzen sich $e$ und $m_e$ weg:</p>$$y(x)=\frac{U\,x^2}{4\,d\,U_B}$$`)}
+${merke('Bahn im Kondensator: eine Parabel' + FSN('herleiten'), m`$$y(x)=\frac12\cdot\frac{e\,U}{m_e\,d}\cdot\frac{x^2}{v_0^2}$$<p>Setzt man noch $v_0^2=\dfrac{2eU_B}{m_e}$ ein, kürzen sich $e$ und $m_e$ weg:</p>$$y(x)=\frac{U\,x^2}{4\,d\,U_B}$$`)}
 <h3>Schritt 4: Hinter den Platten geht es geradeaus</h3>
 <p>Am Plattenende ($x=l$) hört die Kraft auf. Das Elektron fliegt schräg geradeaus weiter, mit dem Winkel $\alpha$: $\tan\alpha=\dfrac{v_y}{v_0}=\dfrac{U\,l}{2\,d\,U_B}$. Auf dem Schirm im Abstand $L$ kommt es bei $Y=y(l)+L\cdot\tan\alpha$ an.</p>`,
       bild: m`<p>Genau wie ein Ball, der waagerecht vom Tisch rollt: vorwärts konstant schnell, nach unten immer schneller. Statt der Schwerkraft zieht hier die elektrische Kraft. In der Animation zeigt „Bewegung zerlegen“ beide Bewegungen einzeln.</p>
@@ -313,10 +315,10 @@ ${achtung('Wichtig fürs Erläutern', m`<p>In $y=\dfrac{Ux^2}{4dU_B}$ kommt $e/m
 <ol><li><b>Einschalten:</b> Der Kondensator ist leer, $U_C=0$. Die ganze Spannung liegt am Widerstand. Es fließt der größte Strom: $I_0=\dfrac{U_0}{R}$. (Der leere Kondensator wirkt wie ein Kurzschluss.)</li><li><b>Ladung kommt an:</b> Der Kondensator bekommt eine Spannung $U_C$. Für den Widerstand bleibt nur noch der Rest: $U_R=U_0-U_C$. Also wird der Strom kleiner.</li><li><b>Je voller, desto langsamer:</b> Kleinerer Strom heißt, es kommt langsamer Ladung nach. Der Kondensator nähert sich $U_0$ immer langsamer an.</li><li><b>Voll:</b> $U_C=U_0$, für den Widerstand bleibt nichts, kein Strom mehr. (Der volle Kondensator wirkt wie eine Unterbrechung.)</li></ol>
 <p>„Je mehr schon da ist, desto langsamer geht es weiter“: Genau so ein Verlauf ist eine <b>e-Funktion</b>.</p>
 <h3>Die Zeitkonstante τ: das Tempo</h3>
-${merke('Zeitkonstante', m`$$\tau=R\cdot C$$<p>Großer Widerstand (wenig Strom) oder große Kapazität (viel Platz): Es dauert länger. Einheit: $\Omega\cdot\text{F}=\text{s}$.</p>`)}
+${merke('Zeitkonstante' + FSN('τ steht nicht drin, nur R·C im Exponenten (S. 27)'), m`$$\tau=R\cdot C$$<p>Großer Widerstand (wenig Strom) oder große Kapazität (viel Platz): Es dauert länger. Einheit: $\Omega\cdot\text{F}=\text{s}$.</p>`)}
 <h3>Die Formeln (AB 18)</h3>
-${merke('Laden', m`$$U_C(t)=U_0\,\bigl(1-e^{-t/\tau}\bigr)\qquad I(t)=\frac{U_0}{R}\,e^{-t/\tau}$$`)}
-${merke('Entladen', m`$$U_C(t)=U_0\,e^{-t/\tau}\qquad I(t)=-\frac{U_0}{R}\,e^{-t/\tau}$$<p>Minus: Der Strom fließt beim Entladen in die andere Richtung.</p>`)}
+${merke('Laden' + FS('S. 27'), m`$$U_C(t)=U_0\,\bigl(1-e^{-t/\tau}\bigr)\qquad I(t)=\frac{U_0}{R}\,e^{-t/\tau}$$`)}
+${merke('Entladen' + FS('S. 27'), m`$$U_C(t)=U_0\,e^{-t/\tau}\qquad I(t)=-\frac{U_0}{R}\,e^{-t/\tau}$$<p>Minus: Der Strom fließt beim Entladen in die andere Richtung.</p>`)}
 <p>So liest du $e^{-t/\tau}$: Das ist der <b>Anteil, der noch übrig ist</b>. Am Anfang 1 (100 %), nach $1\tau$ noch 0,37, nach $5\tau$ fast 0. Beim Laden ist $1-e^{-t/\tau}$ der Anteil, der <b>schon geschafft</b> ist.</p>
 <ul><li>Nach $1\tau$: Spannung beim Laden bei <b>63 %</b>, Strom bei <b>37 %</b>.</li><li><b>Halbwertszeit</b> $t_h=\tau\cdot\ln2\approx0{,}69\,\tau$: In dieser Zeit halbiert sich der Strom (bzw. der Rest).</li><li>Nach $5\tau$ (≈ 7 Halbwertszeiten) gilt der Vorgang als fertig (unter 1 % Rest).</li></ul>`,
       bild: m`<p>Wie eine Badewanne, die über einen dünnen Schlauch abläuft: Am Anfang drückt viel Wasser, es fließt schnell. Je leerer, desto langsamer. Der Widerstand ist der Schlauch, die Kapazität die Größe der Wanne. Beides zusammen bestimmt $\tau$.</p>`,
@@ -531,10 +533,58 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
         m`In der Bahngleichung $U_A$ und $U_B$ vertauscht: $U_B$ beschleunigt und steht im Nenner, $U_A$ lenkt ab und steht im Zähler.`
       ],
       test: [
-        { q: 'Schreibe die Herleitung von v₀ aus E_kin = E_el auf einem leeren Blatt auf. Was ist der erste, was der letzte Schritt?', a: m`Erster: $\tfrac12mv^2=eU_B$. Letzter: $v_0=\sqrt{2eU_B/m_e}$ (dazwischen $\big|\cdot2$, $\big|:m$, $\big|\sqrt{\ }$).` },
+        { q: 'Leite v₀ aus E_kin = E_el her (Startformeln darfst du in der Formelsammlung nachlesen: S. 17, S. 24). Was ist der erste, was der letzte Schritt?', a: m`Erster: $\tfrac12mv^2=eU_B$. Letzter: $v_0=\sqrt{2eU_B/m_e}$ (dazwischen $\big|\cdot2$, $\big|:m$, $\big|\sqrt{\ }$).` },
         { q: m`Welche Bedingung setzt du bei $C=\dfrac{t_E}{R\ln3}$ in $U_C(t)=U_0e^{-t/(RC)}$ ein?`, a: m`$U_C(t_E)=\tfrac13U_0$; $U_0$ kürzt sich, dann $\ln$ und umstellen.` },
         { q: 'Welche zwei Bewegungen überlagern sich bei der Bahngleichung, und welche Formel steht jeweils am Anfang?', a: m`$x$: gleichförmig, $s_x=v\,t$. $y$: gleichmäßig beschleunigt, $s_y=\tfrac12at^2$ mit $a=\dfrac{eU_A}{md}$.` },
         { q: m`Wie kommt man von $\ln\tfrac12$ zu $t_H=RC\ln2$?`, a: m`$\ln\tfrac12=-\ln2$, beide Minus streichen, mit $R\,C$ multiplizieren.` }
+      ]
+    },
+
+    // ---------------------------------------------------------------- Formelsammlung: was steht wo? (12.11.)
+    {
+      id: 'PH13', fach: F, groessen: ['E', 'C', 'U0', 'UC', 'R', 'I0'], num: 13, min: 10,
+      title: 'Die Formelsammlung: was steht wo?',
+      short: 'Nichts auswendig: welche Formel in der Formelsammlung steht (mit Seite) und was du herleiten musst',
+      idee: m`<p><b>Du musst keine Formel auswendig lernen.</b> In der Klausur hast du die Formelsammlung (und den Taschenrechner). Wichtig ist, dass du <b>schnell die richtige Stelle findest</b>, die Formel <b>verstehst</b> (rechts daneben steht, was jede Größe bedeutet) und weißt, was <b>nicht</b> drinsteht und darum hergeleitet werden muss.</p>
+<h3>Wo steht was (Seitenzahlen deiner Formelsammlung)</h3>
+<table><tr><th>Thema</th><th>Formel</th><th>Seite</th></tr>
+<tr><td>Strom, Ladung</td><td>$I=\dfrac{\Delta Q}{\Delta t}$, $Q=\int I\,dt$, $R=\dfrac UI$</td><td>S. 23</td></tr>
+<tr><td>Leistung, Energie</td><td>$P=U\cdot I$, $\Delta E=P\cdot\Delta t$, $\Delta E=q\cdot U$; Kirchhoff</td><td>S. 24</td></tr>
+<tr><td>Feld, Potential</td><td>$E=\dfrac{F_\text{el}}q$, $E=\dfrac Ud$, $\sigma=\dfrac QA$, $\sigma=\varepsilon_0\varepsilon_rE$, $\varphi=\dfrac Eq$, $\varphi=\dfrac Ud\cdot s$, $U=\varphi_2-\varphi_1$</td><td>S. 25</td></tr>
+<tr><td>Kondensator</td><td>$C=\dfrac QU$, $C=\varepsilon_0\varepsilon_r\dfrac Ad$, $E=\tfrac12CU^2$, Auf-/Entladen ($U_C$, $I$, $Q$), beide DGL, Reihe/Parallel</td><td><b>S. 27</b></td></tr>
+<tr><td>Bewegung</td><td>$s=v\,t+s_0$; $s=\tfrac12at^2+v_0t+s_0$; $v=at+v_0$</td><td>S. 15</td></tr>
+<tr><td>Kraft</td><td>$\vec F=m\cdot\vec a$</td><td>S. 14</td></tr>
+<tr><td>Bewegungsenergie</td><td>$E=\tfrac12mv^2$</td><td>S. 17</td></tr>
+<tr><td>Arbeit, Leistung</td><td>$W=\Delta E$, $W=F\cdot s\cdot\cos\alpha$, $P=\dfrac{\Delta E}{\Delta t}$</td><td>S. 18</td></tr>
+<tr><td>Konstanten ($e$, $m_e$, $\varepsilon_0$)</td><td>Tabelle „Tabellierte Werte“</td><td>S. 46 (Foto fehlt, nachsehen)</td></tr></table>
+<h3>Was nicht drinsteht (das musst du herleiten oder wissen)</h3>
+<ul><li>$v_0=\sqrt{\dfrac{2eU_B}{m_e}}$, $a=\dfrac{eU}{m_ed}$, die Bahngleichung $y=\dfrac{Ux^2}{4dU_B}$</li><li>$C=\dfrac{t_E}{R\ln3}$, $t_H=RC\ln2$ (das Wort $\tau$ kommt in der Formelsammlung nicht vor, nur $R\cdot C$ im Exponenten)</li><li>$E_\text{el}=\dfrac{Q^2}{2C}=\tfrac12QU$ (aus $E_\text{el}=\tfrac12CU^2$ und $Q=CU$)</li><li>„An der Quelle bleibt $U$, abgetrennt bleibt $Q$“ und alle Begründungen</li></ul>
+${achtung('Zwei E in der Formelsammlung', m`<p>In der Formelsammlung heißt sowohl die <b>Energie</b> (S. 27: $E=\tfrac12CU^2$, S. 25: $\varphi=E/q$) als auch die <b>Feldstärke</b> (S. 25: $E=U/d$) „$E$“. Im Unterricht heißt die elektrische Energie $E_\text{el}$. Immer rechts nachlesen, was gemeint ist.</p>`)}`,
+      bild: m`<p>Die Formelsammlung ist wie ein <b>Wörterbuch</b>: Du lernst es nicht auswendig, du musst nur wissen, <b>unter welchem Stichwort</b> du suchst (Kondensator, Elektrisches Feld, Leistung) und die Einträge <b>lesen</b> können.</p>`,
+      rezept: [
+        m`<b>Stichwort finden:</b> Was ist gesucht (Kapazität, Feldstärke, Spannung nach der Zeit)? Dazu den Abschnitt im Inhaltsverzeichnis suchen: Elektrizitätslehre S. 23, Mechanik S. 14.`,
+        m`<b>Formel lesen:</b> Links die Formel, <b>rechts</b> die Erklärung jeder Größe. Prüfen, ob die Größe das ist, was du meinst (Energie oder Feldstärke?).`,
+        m`<b>Passt die Situation?</b> (Aufladen oder Entladen, homogenes Feld oder Punktladung, Plattenkondensator oder allgemein.)`,
+        m`<b>Steht sie nicht drin?</b> Dann aus Formeln der Formelsammlung herleiten (siehe Lektion 12).`
+      ],
+      beispiel: {
+        q: m`Ein Kondensator wird über einen Widerstand entladen. Berechne die Spannung nach $8\,\text{s}$, wenn $U_0=24\,\text{V}$, $R=10\,\text{k}\Omega$ und $C=470\,\mu\text{F}$ gegeben sind. Wo suchst du die Formel?`,
+        steps: [
+          { h: 'Stichwort und Seite', t: m`Es geht um einen Kondensator, der entladen wird: <b>Elektrizitätslehre und Magnetismus, Kondensator, „Aufladen und Entladen“, S. 27</b>.` },
+          { h: 'Richtige Zeile', t: m`Unter „Entladen eines Kondensators“ steht $U_C(t)=U_0\cdot e^{-t/(R\cdot C)}$. Rechts steht: $U_C$ Spannung am Kondensator, $U_0$ Spannung zu Beginn des Entladevorgangs, $t$ Zeit, $R$, $C$.` },
+          { h: 'Einsetzen', t: m`$R\cdot C=10\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=4{,}7\,\text{s}$, also $U_C(8\,\text{s})=24\,\text{V}\cdot e^{-8/4{,}7}=24\,\text{V}\cdot0{,}182\approx4{,}4\,\text{V}$.` },
+          { h: 'Was brauchte ich nicht zu wissen?', t: m`Die Formel selbst. Ich musste nur wissen, <b>dass</b> ich unter „Kondensator, Entladen“ suchen muss und dass $R\cdot C$ im Exponenten steht.` }
+        ]
+      },
+      fehler: [
+        m`Formel „aus dem Kopf“ aufgeschrieben und dabei Vorzeichen oder $R\cdot C$ vertauscht. Besser: nachschlagen und rechts die Größen prüfen.`,
+        m`$E$ aus S. 27 (Energie) mit $E=U/d$ (Feldstärke, S. 25) verwechselt.`,
+        m`Gedacht, $v_0=\sqrt{2eU/m}$ stehe in der Formelsammlung. Dort steht nur der Ansatz: Bewegungsenergie (S. 17) gleich $\Delta E=qU$ (S. 24).`
+      ],
+      test: [
+        { q: 'Du suchst die Formel für die Spannung am Kondensator beim Aufladen. Unter welchem Stichwort und auf welcher Seite findest du sie?', a: 'Kondensator, „Aufladen und Entladen“, S. 27 (Elektrizitätslehre und Magnetismus).' },
+        { q: 'Welche drei Dinge stehen NICHT in der Formelsammlung und müssen hergeleitet werden?', a: m`$v_0=\sqrt{2eU_B/m_e}$, die Bahngleichung im Querfeld und $C=\dfrac{t_E}{R\ln3}$.` },
+        { q: 'Wofür steht „E“ in der Formelsammlung?', a: m`Für die Energie (S. 27: $E=\tfrac12CU^2$) und für die Feldstärke (S. 25: $E=U/d$). Im Unterricht heißt die Energie $E_\text{el}$.` }
       ]
     }
   ];
@@ -983,18 +1033,18 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
     { id: 'PK1', fach: F, titel: 'Probeklausur Physik: Kondensator, Röhre, Entladen', tasks: ['PE1', 'PL2', 'PP1', 'PC2', 'PW1', 'PR3', 'PL4'], minuten: 90 }
   ];
 
-  const SPICK = m`<h3>Spannung, Energie, Potential</h3>
-<p class="dim">Schreibweise wie im Unterricht: elektrische <b>Energie $E_	ext{el}$</b> (nicht $W$), Feldstärke $E$.</p>
-<ul><li>$U=\dfrac{E_\text{el}}Q$, $E_\text{el}=QU$; $1\,\text{eV}=1{,}602\cdot10^{-19}\,\text{J}$</li><li>$P=\dfrac{E_\text{el}}t=UI$, $Q=It$ ($1\,\text{mAh}=3{,}6\,\text{C}$)</li><li>$U_{AB}=\varphi_B-\varphi_A$; homogen: $\varphi=Ex$, $E=\dfrac Ud=\dfrac{\Delta\varphi}{\Delta x}$; Feldlinien ⟂ Äquipotentiallinien</li></ul>
+  const SPICK = m`<p class="dim">Du musst <b>keine Formel auswendig lernen</b>: Die Formelsammlung ist in der Klausur erlaubt. Hinter jeder Formel steht, ob sie dort drinsteht (und auf welcher Seite) oder ob du sie selbst herleiten musst. Schreibweise wie im Unterricht: elektrische <b>Energie $E_\text{el}$</b> (nicht $W$), Feldstärke $E$. In der Formelsammlung heißen beide $E$, achte auf die Erklärung rechts daneben.</p>
+<h3>Spannung, Energie, Potential</h3>
+<ul><li>$U=\dfrac{E_\text{el}}Q$, $E_\text{el}=QU$ ${FS('S. 24 (ΔE = q·U)')}</li><li>$1\,\text{eV}=1{,}602\cdot10^{-19}\,\text{J}$ ${FSN('Umrechnung: e · 1 V')}</li><li>$P=UI$, $E_\text{el}=P\cdot t$ ${FS('S. 24')}; $I=\dfrac{\Delta Q}{\Delta t}$ ${FS('S. 23')}; $1\,\text{mAh}=3{,}6\,\text{C}$ ${FSN('rechnen: 0,001 A · 3600 s')}</li><li>$U_{AB}=\varphi_B-\varphi_A$, $E=\dfrac Ud$, homogen $\varphi=E\cdot x$ ${FS('S. 25')}; Feldlinien ⟂ Äquipotentiallinien (Wissen)</li></ul>
 <h3>Kondensator</h3>
-<ul><li>$C=\dfrac QU$, $C=\varepsilon_0\varepsilon_r\dfrac Ad$, $\sigma=\dfrac QA=\varepsilon_0\varepsilon_rE$</li><li><b>An der Quelle:</b> U fest. <b>Abgetrennt:</b> Q fest (E bleibt beim Auseinanderziehen).</li><li>$E_\text{el}=\tfrac12QU=\tfrac12CU^2$</li><li>parallel $C=C_1+C_2$ (gleiche U), Reihe $\tfrac1C=\tfrac1{C_1}+\tfrac1{C_2}$ (gleiche Q)</li></ul>
+<ul><li>$C=\dfrac QU$, $C=\varepsilon_0\varepsilon_r\dfrac Ad$ ${FS('S. 27')}; $\sigma=\dfrac QA=\varepsilon_0\varepsilon_rE$ ${FS('S. 25')}</li><li><b>An der Quelle:</b> $U$ fest. <b>Abgetrennt:</b> $Q$ fest ($E$ bleibt beim Auseinanderziehen). ${FSN('Denkregel, steht nirgends')}</li><li>$E_\text{el}=\tfrac12CU^2$ ${FS('S. 27')}; $E_\text{el}=\tfrac12QU=\dfrac{Q^2}{2C}$ ${FSN('mit Q = C·U selbst umformen')}</li><li>parallel $C=C_1+C_2$, Reihe $\tfrac1C=\tfrac1{C_1}+\tfrac1{C_2}$ ${FS('S. 27')}</li></ul>
 <h3>Braunsche Röhre</h3>
-<ul><li>Glühkathode → Wehnelt → Anode (Loch) → Ablenkplatten → Schirm, Vakuum</li><li>$eU_B=\tfrac12m_ev_0^2$, $v_0=\sqrt{2eU_B/m_e}$</li><li>Querfeld: $x=v_0t$, $y=\tfrac12at^2$, $a=\dfrac{eU}{m_ed}$ ⇒ $y=\dfrac12\dfrac{e}{m_e}\dfrac Ud\dfrac{x^2}{v_0^2}=\dfrac{Ux^2}{4dU_B}$</li><li>$\tan\alpha=\dfrac{Ul}{2dU_B}$, Schirm: $Y=y(l)+L\tan\alpha$; Platte getroffen, wenn $y>\tfrac d2$</li></ul>
+<ul><li>Glühkathode → Wehnelt → Anode (Loch) → Ablenkplatten → Schirm, Vakuum (Wissen)</li><li>Ansatz $eU_B=\tfrac12m_ev_0^2$: $E_\text{kin}=\tfrac12mv^2$ ${FS('S. 17')}, $\Delta E=qU$ ${FS('S. 24')}; $v_0=\sqrt{2eU_B/m_e}$ ${FSN('herleiten')}</li><li>$x=v_0t$, $y=\tfrac12at^2$ ${FS('S. 15')}; $a=\dfrac{eU}{m_ed}$ ${FSN('herleiten: F = m·a S. 14, E = U/d S. 25')}</li><li>Bahngleichung $y=\dfrac{Ux^2}{4dU_B}$ ${FSN('herleiten')}; $\tan\alpha=\dfrac{Ul}{2dU_B}$, $Y=y(l)+L\tan\alpha$ ${FSN('herleiten')}; Platte getroffen, wenn $y>\tfrac d2$</li></ul>
 <h3>Auf- und Entladen</h3>
-<ul><li>$\tau=RC$, $t_h=\tau\ln2$; nach $\tau$: 63 % / 37 %; nach $5\tau$ fertig</li><li>Laden: $U_C=U_0(1-e^{-t/\tau})$, $I=\tfrac{U_0}Re^{-t/\tau}$</li><li>Entladen: $U_C=U_0e^{-t/\tau}$, $I=-\tfrac{U_0}Re^{-t/\tau}$, $Q=Q_0e^{-t/\tau}$</li><li>Zeit: $t=\tau\ln\dfrac{U_0}{U}$; bis $U_0/3$: $C=\dfrac{t_E}{R\ln3}$</li><li>Linearisierung: $\ln(U/U_0)$ gegen $t$, Steigung $-1/\tau$</li><li>DGL: $U_0=RI+\tfrac QC\Rightarrow0=R\dot I+\tfrac IC$</li><li>Messunsicherheit: größte relative Unsicherheit übernehmen, 2 signifikante Stellen</li></ul>
+<ul><li>Laden und Entladen: $U_C(t)$, $I(t)$, $Q(t)$ mit $e^{-t/(R\cdot C)}$ ${FS('S. 27')}</li><li>$\tau=RC$ ${FSN('im Exponenten R·C, das Wort τ steht nicht drin')}; $t_h=\tau\ln2$ ${FSN('herleiten')}; nach $\tau$: 63 % / 37 %, nach $5\tau$ fertig</li><li>$t=\tau\ln\dfrac{U_0}{U}$ und bis $U_0/3$: $C=\dfrac{t_E}{R\ln3}$ ${FSN('herleiten, Startformel S. 27')}</li><li>Differenzialgleichungen ${FS('S. 27')}; Maschenregel $U_0=RI+\tfrac QC$ mit $\sum U=0$ ${FS('S. 24')}</li><li>Linearisierung: $\ln(U/U_0)$ gegen $t$, Steigung $-1/\tau$ (Wissen)</li><li>Messunsicherheit: größte relative Unsicherheit übernehmen, 2 signifikante Stellen (IServ-Blatt „Runden und Messunsicherheit“)</li></ul>
 <h3>Begründen und Taschenrechner</h3>
-<ul><li>Begründung = <b>was bleibt gleich · Formel · Faktor · Satz mit „weil“</b>. Quelle: $U$ fest; abgetrennt: $Q$ fest.</li><li>$C\propto\dfrac{arepsilon_rA}d$, $v_0\propto\sqrt{U_B}$, $y\propto\dfrac{U_A}{dU_B}x^2$, $	au=RC$, $I_0=\dfrac{U_0}R$ ($Q_0=CU_0$ hängt nicht von $R$ ab)</li><li>Nicht in der Formelsammlung: $v_0=\sqrt{2eU_B/m_e}$, Bahngleichung, $C=\dfrac{t_E}{R\ln3}$ (herleiten!). In der Formelsammlung (S. 27): $U_C(t)$, $I(t)$, $Q(t)$, DGL.</li><li>Rechner: <code>ExpReg</code> ($a\cdot b^t$, $	au=-1/\ln b$), $Q=\int I\,dt=I_0	au$</li></ul>
-<p class="dim">Konstanten: $e=1{,}602\cdot10^{-19}\,\text{C}$, $m_e=9{,}109\cdot10^{-31}\,\text{kg}$, $\varepsilon_0=8{,}854\cdot10^{-12}\,\tfrac{\text{As}}{\text{Vm}}$</p>`;
+<ul><li>Begründung = <b>was bleibt gleich · Formel · Faktor · Satz mit „weil“</b>; die Formeln dafür stehen oben (mit Seite).</li><li>$C\propto\dfrac{\varepsilon_rA}d$, $v_0\propto\sqrt{U_B}$, $y\propto\dfrac{U_A}{dU_B}x^2$, $\tau\propto R\cdot C$, $I_0=\dfrac{U_0}R$ ($Q_0=CU_0$ hängt nicht von $R$ ab)</li><li>Rechner: <code>ExpReg</code> ($a\cdot b^t$, $\tau=-1/\ln b$), $Q=\int I\,dt=I_0\tau$ ${FS('S. 23')}</li></ul>
+<p class="dim">Konstanten ($e$, $m_e$, $\varepsilon_0$): Tabelle „Tabellierte Werte“ am Ende der Formelsammlung (S. 46, Foto fehlt, bitte nachsehen). Werte im Portal: $e=1{,}602\cdot10^{-19}\,\text{C}$, $m_e=9{,}109\cdot10^{-31}\,\text{kg}$, $\varepsilon_0=8{,}854\cdot10^{-12}\,\tfrac{\text{As}}{\text{Vm}}$</p>`;
 
   window.LR_LESSONS = (window.LR_LESSONS || []).concat(LESSONS);
   window.LR_TASKS = (window.LR_TASKS || []).concat(TASKS);

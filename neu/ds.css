@@ -1667,3 +1667,11 @@ kbd { display: inline-grid; place-items: center; min-width: 22px; height: 22px; 
 .prose table.gr-table td { vertical-align: top; }
 .prose table.gr-table td.gr-sym { width: 70px; font-size: 1.15em; }
 @media (max-width: 520px) { .gr-row { grid-template-columns: 48px minmax(0, 1fr); gap: 8px; } .gr-box { padding: 2px 12px 8px; } }
+
+/* Hinweis „steht in der Formelsammlung“ (Physik, 12.11.) */
+.fs-chip { display: inline-block; margin-left: 8px; padding: 2px 9px; border-radius: 999px; font: 600 12px/1.3 var(--font-ui); letter-spacing: 0; text-transform: none; vertical-align: middle; white-space: normal; }
+.fs-chip.fs-in { background: rgba(47, 213, 154, 0.16); color: var(--ok, #2fd59a); border: 1px solid rgba(47, 213, 154, 0.35); }
+.fs-chip.fs-no { background: rgba(255, 197, 61, 0.14); color: var(--warn, #ffc53d); border: 1px solid rgba(255, 197, 61, 0.35); }
+:root[data-theme="light"] .fs-chip.fs-in { color: #0b7a55; }
+:root[data-theme="light"] .fs-chip.fs-no { color: #8a5a00; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .fs-chip.fs-in { color: #0b7a55; } :root:not([data-theme="dark"]) .fs-chip.fs-no { color: #8a5a00; } }
