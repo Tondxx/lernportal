@@ -1187,6 +1187,123 @@ ${achtung('Zwei E in der Formelsammlung', m`<p>In der Formelsammlung heißt sowo
           hints: [m`$C=\dfrac{Q_0}{U_0}$, $R=\dfrac{U_0}{I_0}$.`],
           sol: m`<p>$C=\dfrac{Q_0}{U_0}=\dfrac{3{,}0\,\text{mC}}{12\,\text{V}}=250\,\mu\text{F}$ (1 BE). $R=\dfrac{U_0}{I_0}=\dfrac{12\,\text{V}}{120\,\mu\text{A}}=100\,\text{k}\Omega$ (1 BE). Kontrolle: $RC=10^5\,\Omega\cdot2{,}5\cdot10^{-4}\,\text{F}=25\,\text{s}=\tau$ (2 BE).</p>` }
       ]
+    },
+    // ---------------------------------------------------------------- Probeklausur 2 (nur die Themen der Klausur 2, 12.11.)
+    {
+      id: 'PQ1', fach: F, groessen: ['UB', 'UAbl'], teil: 'A', lesson: 'PH6', title: 'Braunsche Röhre: Aufbau und Verschaltung', afb: 'I', ops: 'Nennen, Beschreiben, Begründen',
+      intro: m`Eine Braunsche Röhre (Elektronenstrahlröhre) wird mit drei Spannungen betrieben: der Heizspannung, der Beschleunigungsspannung $U_B$ und der Ablenkspannung $U_A$.<br><span class="dim">Eigene Aufgabe im Stil der Klausur, Stoff: Themenliste der Lehrkraft.</span>`,
+      parts: [
+        { id: 'PQ1a', label: 'a)', be: 3, text: 'Nennen Sie, wo die drei Spannungen angeschlossen sind und wozu sie dienen.',
+          hints: ['Drei Stromkreise: Glühwendel, Kathode gegen Anode, Ablenkplatten.'],
+          sol: m`<ul><li><b>Heizspannung $U_H$</b> (z. B. $6{,}3\,\text{V}$): an der Glühwendel. Sie heizt die Kathode, aus der heißen Kathode treten Elektronen aus (1 BE).</li><li><b>Beschleunigungsspannung $U_B$</b>: zwischen Kathode (Minuspol) und Anode (Pluspol). Sie beschleunigt die Elektronen (1 BE).</li><li><b>Ablenkspannung $U_A$</b>: an den beiden Ablenkplatten. Sie erzeugt ein elektrisches Querfeld, das den Strahl zur Seite lenkt (1 BE).</li></ul><p>Der Wehnelt-Zylinder liegt negativ gegen die Kathode und bündelt den Strahl.</p>` },
+        { id: 'PQ1b', label: 'b)', be: 3, text: 'Beschreiben Sie den Weg eines Elektrons von der Kathode bis zum Schirm.',
+          sol: m`<p>Die heiße Kathode sendet Elektronen aus (1 BE). Der Wehnelt-Zylinder bündelt sie zu einem Strahl, die Spannung $U_B$ beschleunigt sie zur Anode, durch deren Loch sie hindurchfliegen (1 BE). Danach fliegen sie geradlinig mit konstanter Geschwindigkeit zwischen den Ablenkplatten hindurch, werden dort quer zur Flugrichtung abgelenkt und treffen auf den Leuchtschirm, der an der Auftreffstelle aufleuchtet (1 BE).</p>` },
+        { id: 'PQ1c', label: 'c)', be: 2, text: 'Die obere Ablenkplatte ist negativ, die untere positiv geladen. In welche Richtung wird der Strahl abgelenkt? Begründen Sie.',
+          sol: m`<p>Nach <b>unten</b> (1 BE). Elektronen sind negativ geladen und werden zur positiven Platte hingezogen, von der negativen abgestoßen (1 BE).</p>` },
+        { id: 'PQ1d', label: 'd)', be: 2, text: 'Warum muss in der Röhre ein Vakuum herrschen?',
+          sol: m`<p>Sonst stoßen die Elektronen mit Luftmolekülen zusammen: Sie würden gestreut und abgebremst, es gäbe keinen scharfen Strahl (1 BE). Außerdem würde die glühende Kathode in Luft verbrennen (1 BE).</p>` }
+      ]
+    },
+    {
+      id: 'PQ2', fach: F, groessen: [['UB', '1,8 kV = 1800 V'], ['e', '1,602·10⁻¹⁹ C'], ['me', '9,109·10⁻³¹ kg'], ['v0', 'gesucht']], teil: 'B', lesson: 'PH6', title: 'Beschleunigung der Elektronen: v₀ herleiten und berechnen', afb: 'II', ops: 'Herleiten, Berechnen, Begründen',
+      intro: m`Die Elektronen einer Braunschen Röhre treten praktisch in Ruhe aus der Kathode aus und werden durch die Beschleunigungsspannung $U_B=1{,}8\,\text{kV}$ beschleunigt.`,
+      parts: [
+        { id: 'PQ2a', label: 'a)', be: 4, text: m`Leiten Sie die Gleichung $v_0=\sqrt{\dfrac{2\,e\,U_B}{m_e}}$ für die Geschwindigkeit nach dem Durchlaufen der Spannung her.`,
+          hints: [m`Energieerhaltung: Die elektrische Energie $\Delta E=e\,U_B$ steckt danach in der Bewegungsenergie $\tfrac12m_ev_0^2$ (Formelsammlung S. 24 und S. 17).`],
+          sol: m`<p><b>Ansatz:</b> Start in Ruhe, also ist die Bewegungsenergie am Ende gleich der zugeführten Energie: $e\cdot U_B=\tfrac12m_e\,v_0^2$ (2 BE, davon 1 BE für die Begründung „Start in Ruhe“).</p><p>$e\cdot U_B=\tfrac12m_e\,v_0^2\qquad\big|\cdot2$</p><p>$2\,e\,U_B=m_e\,v_0^2\qquad\big|:m_e$</p><p>$v_0^2=\dfrac{2\,e\,U_B}{m_e}\qquad\big|\sqrt{\ }$</p><p>$v_0=\sqrt{\dfrac{2\,e\,U_B}{m_e}}$ (2 BE für die Umformung)</p>` },
+        { id: 'PQ2b', label: 'b)', be: 2, text: 'Berechnen Sie die Geschwindigkeit der Elektronen.',
+          nums: [{ label: 'v₀ in 10⁷ m/s', ans: 2.516, tol: 0.01 }],
+          sol: m`<p>$v_0=\sqrt{\dfrac{2\cdot1{,}602\cdot10^{-19}\,\text{C}\cdot1800\,\text{V}}{9{,}109\cdot10^{-31}\,\text{kg}}}=2{,}52\cdot10^{7}\,\tfrac{\text m}{\text s}$, das sind etwa $8{,}4\,\%$ der Lichtgeschwindigkeit.</p>` },
+        { id: 'PQ2c', label: 'c)', be: 2, text: 'Wie groß ist die Bewegungsenergie eines Elektrons nach der Beschleunigung, in Joule und in Elektronvolt?',
+          nums: [{ label: 'E_kin in 10⁻¹⁶ J', ans: 2.884, tol: 0.01 }, { label: 'E_kin in eV', ans: 1800, tol: 0.01 }],
+          sol: m`<p>$E_\text{kin}=e\cdot U_B=1{,}602\cdot10^{-19}\,\text{C}\cdot1800\,\text{V}=2{,}88\cdot10^{-16}\,\text{J}$. In Elektronvolt gilt: $1\,\text{eV}=e\cdot1\,\text{V}$, also $E_\text{kin}=1800\,\text{eV}$ (je 1 BE).</p>` },
+        { id: 'PQ2d', label: 'd)', be: 2, text: 'Die Beschleunigungsspannung wird vervierfacht. Wie ändert sich die Geschwindigkeit? Begründen Sie mit der Formel.',
+          sol: m`<p>Sie verdoppelt sich. Aus $v_0=\sqrt{\dfrac{2eU_B}{m_e}}$ folgt $v_0\propto\sqrt{U_B}$ (1 BE). Vierfache Spannung: Faktor $\sqrt4=2$, also $v_0=5{,}03\cdot10^{7}\,\tfrac{\text m}{\text s}$ (1 BE). Die Spannung steigt auf das Vierfache, die Energie auch, aber die Geschwindigkeit nur auf das Doppelte.</p>` }
+      ]
+    },
+    {
+      id: 'PQ3', fach: F, groessen: [['U', '600 V'], ['d', '4,0 cm = 0,040 m'], ['e', '1,602·10⁻¹⁹ C'], ['me', '9,109·10⁻³¹ kg'], ['E', 'gesucht'], ['F', 'gesucht'], ['a', 'gesucht'], ['v0', 'Endgeschwindigkeit, gesucht'], ['t', 'Flugzeit, gesucht']], teil: 'B', lesson: 'PH6', title: 'Elektron im Plattenkondensator: Kraft, Beschleunigung, Endgeschwindigkeit', afb: 'II', ops: 'Berechnen, Vergleichen, Begründen',
+      intro: m`Ein Elektron startet in Ruhe an der negativen Platte eines Plattenkondensators ($d=4{,}0\,\text{cm}$, $U=600\,\text{V}$, homogenes Feld, Vakuum) und fliegt längs der Feldlinien zur positiven Platte. Die Gewichtskraft darf vernachlässigt werden.`,
+      parts: [
+        { id: 'PQ3a', label: 'a)', be: 3, text: 'Berechnen Sie die Feldstärke zwischen den Platten und die Kraft auf das Elektron.',
+          nums: [{ label: 'E in kV/m', ans: 15, tol: 0.01 }, { label: 'F in 10⁻¹⁵ N', ans: 2.403, tol: 0.01 }],
+          hints: [m`$E=\dfrac Ud$ (Formelsammlung S. 25), $F=e\cdot E$.`],
+          sol: m`<p>$E=\dfrac Ud=\dfrac{600\,\text V}{0{,}040\,\text m}=1{,}5\cdot10^{4}\,\tfrac{\text V}{\text m}$ (1 BE)</p><p>$F=e\cdot E=1{,}602\cdot10^{-19}\,\text C\cdot1{,}5\cdot10^{4}\,\tfrac{\text V}{\text m}=2{,}40\cdot10^{-15}\,\text N$ (2 BE)</p>` },
+        { id: 'PQ3b', label: 'b)', be: 2, text: 'Berechnen Sie die Beschleunigung des Elektrons.',
+          nums: [{ label: 'a in 10¹⁵ m/s²', ans: 2.638, tol: 0.01 }],
+          sol: m`<p>$F=m_e\cdot a$ (Formelsammlung S. 14), also $a=\dfrac{F}{m_e}=\dfrac{2{,}403\cdot10^{-15}\,\text N}{9{,}109\cdot10^{-31}\,\text{kg}}=2{,}64\cdot10^{15}\,\tfrac{\text m}{\text s^2}$.</p>` },
+        { id: 'PQ3c', label: 'c)', be: 3, text: 'Bestimmen Sie die Geschwindigkeit am Ende der Strecke $d$ mit den Bewegungsgleichungen und prüfen Sie das Ergebnis mit der Energie.',
+          nums: [{ label: 'v in 10⁷ m/s', ans: 1.453, tol: 0.01 }],
+          hints: [m`Gleichmäßig beschleunigt aus der Ruhe: $d=\tfrac12at^2$ und $v=a\cdot t$ (S. 15). Aus der ersten Gleichung $t$, dann in die zweite.`],
+          sol: m`<p>$d=\tfrac12at^2\ \Rightarrow\ t=\sqrt{\dfrac{2d}{a}}$, und $v=a\,t=\sqrt{2\,a\,d}=\sqrt{2\cdot2{,}638\cdot10^{15}\,\tfrac{\text m}{\text s^2}\cdot0{,}040\,\text m}=1{,}45\cdot10^{7}\,\tfrac{\text m}{\text s}$ (2 BE).</p><p><b>Kontrolle mit der Energie:</b> $v=\sqrt{\dfrac{2eU}{m_e}}=\sqrt{\dfrac{2\cdot1{,}602\cdot10^{-19}\cdot600}{9{,}109\cdot10^{-31}}}\,\tfrac{\text m}{\text s}=1{,}45\cdot10^{7}\,\tfrac{\text m}{\text s}$. Beide Wege stimmen überein (1 BE).</p>` },
+        { id: 'PQ3d', label: 'd)', be: 2, text: 'Berechnen Sie die Zeit, die das Elektron für die Strecke $d$ braucht.',
+          nums: [{ label: 't in ns', ans: 5.507, tol: 0.01 }],
+          sol: m`<p>$t=\dfrac va=\dfrac{1{,}453\cdot10^{7}\,\text m/\text s}{2{,}638\cdot10^{15}\,\text m/\text s^2}=5{,}5\cdot10^{-9}\,\text s=5{,}5\,\text{ns}$.</p>` },
+        { id: 'PQ3e', label: 'e)', be: 2, text: 'Der Plattenabstand wird bei gleicher Spannung verdoppelt. Wie ändern sich Beschleunigung, Endgeschwindigkeit und Flugzeit? Begründen Sie.',
+          sol: m`<p>$E=\dfrac Ud$ halbiert sich, damit auch $F=eE$ und $a$: Die Beschleunigung halbiert sich (1 BE). Die Endgeschwindigkeit bleibt gleich, denn $v=\sqrt{2eU/m_e}$ hängt nur von der durchlaufenen Spannung ab. Weil die Beschleunigung nur halb so groß ist, aber die gleiche Geschwindigkeit erreicht werden soll, dauert es doppelt so lang: $t=v/a$ verdoppelt sich (1 BE).</p>` }
+      ]
+    },
+    {
+      id: 'PQ4', fach: F, groessen: [['A', '20 cm · 20 cm = 0,040 m²'], ['d', '1,5 mm = 0,0015 m'], ['U', '500 V'], ['C', 'gesucht'], ['Q', 'gesucht'], ['E', 'Feldstärke, gesucht'], ['W', 'gespeicherte Energie, gesucht']], teil: 'B', lesson: 'PH3', title: 'Plattenkondensator: berechnen, Dielektrikum, Anwendung', afb: 'II', ops: 'Berechnen, Begründen, Nennen',
+      intro: m`Ein Plattenkondensator hat quadratische Platten mit $20\,\text{cm}$ Kantenlänge im Abstand $d=1{,}5\,\text{mm}$ (Luft, $\varepsilon_r\approx1$). Er wird an $U=500\,\text{V}$ angeschlossen und aufgeladen.`,
+      parts: [
+        { id: 'PQ4a', label: 'a)', be: 2, text: 'Berechnen Sie die Kapazität.',
+          nums: [{ label: 'C in pF', ans: 236.1, tol: 0.01 }],
+          hints: [m`$C=\varepsilon_0\varepsilon_r\dfrac Ad$ (Formelsammlung S. 27). $A=0{,}20\,\text m\cdot0{,}20\,\text m$.`],
+          sol: m`<p>$C=\varepsilon_0\varepsilon_r\dfrac Ad=8{,}854\cdot10^{-12}\,\tfrac{\text{As}}{\text{Vm}}\cdot1\cdot\dfrac{0{,}040\,\text m^2}{0{,}0015\,\text m}=2{,}36\cdot10^{-10}\,\text F=236\,\text{pF}$</p>` },
+        { id: 'PQ4b', label: 'b)', be: 3, text: 'Berechnen Sie die Ladung auf einer Platte und die Feldstärke zwischen den Platten.',
+          nums: [{ label: 'Q in nC', ans: 118.05, tol: 0.01 }, { label: 'E in kV/m', ans: 333.3, tol: 0.01 }],
+          sol: m`<p>$Q=C\cdot U=2{,}361\cdot10^{-10}\,\text F\cdot500\,\text V=1{,}18\cdot10^{-7}\,\text C=118\,\text{nC}$ (S. 27, 1 BE)</p><p>$E=\dfrac Ud=\dfrac{500\,\text V}{0{,}0015\,\text m}=3{,}3\cdot10^{5}\,\tfrac{\text V}{\text m}$ (S. 25, 2 BE)</p>` },
+        { id: 'PQ4c', label: 'c)', be: 2, text: 'Wie viel elektrische Energie ist im Kondensator gespeichert?',
+          nums: [{ label: 'E_el in µJ', ans: 29.51, tol: 0.01 }],
+          sol: m`<p>$E_\text{el}=\tfrac12CU^2=\tfrac12\cdot2{,}361\cdot10^{-10}\,\text F\cdot(500\,\text V)^2=2{,}95\cdot10^{-5}\,\text J=29{,}5\,\mu\text J$ (Formelsammlung S. 27).</p>` },
+        { id: 'PQ4d', label: 'd)', be: 4, text: m`Der Kondensator wird von der Quelle getrennt. Danach füllt man den Zwischenraum vollständig mit Glas ($\varepsilon_r=4$). Bestimmen Sie die neue Spannung und die neue Energie und erklären Sie, warum die Energie sinkt.`,
+          nums: [{ label: 'U in V', ans: 125, tol: 0.01 }, { label: 'E_el in µJ', ans: 7.378, tol: 0.01 }],
+          hints: ['Getrennt: Was bleibt gleich? Wie ändert sich C mit εᵣ?'],
+          sol: m`<p><b>Was bleibt?</b> Abgetrennt kann keine Ladung weg: $Q=1{,}18\cdot10^{-7}\,\text C$ bleibt (1 BE).</p><p><b>C:</b> $C\propto\varepsilon_r$, also vierfach. Dann $U=\dfrac QC$ wird ein Viertel: $U=125\,\text V$ (1 BE).</p><p><b>Energie:</b> $E_\text{el}=\dfrac{Q^2}{2C}$, bei gleichem $Q$ und vierfachem $C$ ein Viertel: $7{,}4\,\mu\text J$ (1 BE).</p><p><b>Erklärung:</b> Das Feld zieht das Dielektrikum in den Kondensator hinein und verrichtet dabei Arbeit. Die fehlende Energie hat das Glas als Bewegungsenergie bzw. in der Polarisation aufgenommen (1 BE).</p>` },
+        { id: 'PQ4e', label: 'e)', be: 1, text: 'Nennen Sie eine Anwendung des Kondensators und die Eigenschaft, die dabei genutzt wird.',
+          sol: m`<p>Zum Beispiel Blitzgerät: Der Kondensator speichert Energie und gibt sie in sehr kurzer Zeit mit hoher Leistung wieder ab. Auch möglich: Energiespeicher in Netzteilen zum Glätten der Spannung, Touchscreen (Kapazitätsänderung).</p>` }
+      ]
+    },
+    {
+      id: 'PQ5', fach: F, groessen: [['C', '2200 µF = 2,2·10⁻³ F'], ['R', '4,7 kΩ = 4700 Ω'], ['U0', '15 V'], ['tau', 'gesucht'], ['I0', 'gesucht'], ['th', 'gesucht'], ['UC', 'nach 20 s beim Entladen, gesucht'], ['t', 'gesucht']], teil: 'B', lesson: 'PH8', title: 'Laden und Entladen: Schaltung, Zeitkonstante, Zeit gesucht', afb: 'II', ops: 'Beschreiben, Herleiten, Berechnen, Begründen',
+      intro: m`Ein Kondensator ($C=2200\,\mu\text F$) wird über einen Widerstand $R=4{,}7\,\text{k}\Omega$ an eine Quelle mit $U_0=15\,\text V$ angeschlossen und aufgeladen. Danach wird er über denselben Widerstand entladen.`,
+      parts: [
+        { id: 'PQ5a', label: 'a)', be: 3, text: 'Beschreiben Sie die Schaltung mit den Messgeräten für Strom und Spannung und sagen Sie, was man zum Entladen tun muss.',
+          sol: m`<p>Quelle, Umschalter, Widerstand und Kondensator in Reihe. Das Amperemeter liegt in Reihe im Zweig mit $C$ und $R$, das Voltmeter parallel zum Kondensator (2 BE).</p><p>Zum Entladen den Umschalter umlegen: Die Quelle wird abgetrennt, und die beiden Platten werden über den Widerstand leitend verbunden. Der Strom fließt dann in die Gegenrichtung (1 BE).</p>` },
+        { id: 'PQ5b', label: 'b)', be: 3, text: 'Berechnen Sie die Zeitkonstante, den Anfangsstrom beim Laden und die Halbwertszeit.',
+          nums: [{ label: 'τ in s', ans: 10.34, tol: 0.01 }, { label: 'I₀ in mA', ans: 3.191, tol: 0.01 }, { label: 't_h in s', ans: 7.167, tol: 0.01 }],
+          hints: [m`$\tau=R\cdot C$; $I_0=\dfrac{U_0}{R}$ (kein Eintrag in der Formelsammlung, aus $R=U/I$); $t_h=\tau\cdot\ln2$.`],
+          sol: m`<p>$\tau=R\cdot C=4700\,\Omega\cdot2{,}2\cdot10^{-3}\,\text F=10{,}34\,\text s$ (1 BE)</p><p>$I_0=\dfrac{U_0}{R}=\dfrac{15\,\text V}{4700\,\Omega}=3{,}19\cdot10^{-3}\,\text A=3{,}19\,\text{mA}$: Am Anfang ist der Kondensator leer, die ganze Spannung liegt am Widerstand (1 BE).</p><p>$t_h=\tau\cdot\ln2=10{,}34\,\text s\cdot0{,}693=7{,}17\,\text s$ (1 BE)</p>` },
+        { id: 'PQ5c', label: 'c)', be: 3, text: 'Der Kondensator ist voll geladen und wird nun entladen. Berechnen Sie die Spannung am Kondensator und den Betrag der Stromstärke $20\,\text s$ nach Beginn des Entladens.',
+          nums: [{ label: 'U_C in V', ans: 2.168, tol: 0.01 }, { label: '|I| in mA', ans: 0.4613, tol: 0.01 }],
+          hints: [m`Entladen: $U_C=U_0\,e^{-t/(RC)}$ und $I=-I_0\,e^{-t/(RC)}$ (Formelsammlung S. 27). Erst den Exponenten $-t/\tau$ ausrechnen.`],
+          sol: m`<p>Exponent: $-\dfrac t\tau=-\dfrac{20\,\text s}{10{,}34\,\text s}=-1{,}934$, und $e^{-1{,}934}=0{,}1445$ (1 BE).</p><p>$U_C=15\,\text V\cdot0{,}1445=2{,}17\,\text V$ (1 BE)</p><p>$I=-3{,}19\,\text{mA}\cdot0{,}1445=-0{,}461\,\text{mA}$, der Betrag ist $0{,}46\,\text{mA}$. Das Minus heißt: Gegenrichtung zum Ladestrom (1 BE).</p>` },
+        { id: 'PQ5d', label: 'd)', be: 4, text: m`Leiten Sie aus dem Entladegesetz die Gleichung $t=\tau\cdot\ln\dfrac{U_0}{U_C}$ her und berechnen Sie damit, nach welcher Zeit die Spannung auf $1{,}0\,\text V$ gefallen ist.`,
+          nums: [{ label: 't in s', ans: 28.0, tol: 0.01 }],
+          hints: [m`$U_C=U_0e^{-t/\tau}$. Durch $U_0$ teilen, dann $\ln$ auf beiden Seiten.`],
+          sol: m`<p>$U_C=U_0\,e^{-t/\tau}\qquad\big|:U_0$</p><p>$\dfrac{U_C}{U_0}=e^{-t/\tau}\qquad\big|\ln$</p><p>$\ln\dfrac{U_C}{U_0}=-\dfrac t\tau\qquad\big|\cdot(-\tau)$</p><p>$t=-\tau\ln\dfrac{U_C}{U_0}=\tau\ln\dfrac{U_0}{U_C}$ (3 BE, weil $-\ln\dfrac ab=\ln\dfrac ba$)</p><p>Zahlen: $t=10{,}34\,\text s\cdot\ln\dfrac{15\,\text V}{1{,}0\,\text V}=10{,}34\,\text s\cdot2{,}708=28{,}0\,\text s$ (1 BE)</p>` },
+        { id: 'PQ5e', label: 'e)', be: 2, text: 'Der Widerstand wird verdoppelt. Wie ändern sich Anfangsstrom, Zeitkonstante und die insgesamt beim Entladen abfließende Ladung? Begründen Sie.',
+          sol: m`<p>$I_0=\dfrac{U_0}{R}$ halbiert sich, $\tau=R\cdot C$ verdoppelt sich: Der Strom ist kleiner, dafür dauert alles doppelt so lange (1 BE). Die Ladung $Q_0=C\cdot U_0$ hängt nicht von $R$ ab und bleibt gleich: Es fließt dieselbe Ladung, nur langsamer (1 BE).</p>` }
+      ]
+    },
+    {
+      id: 'PQ6', fach: F, groessen: [['C', '100 µF'], ['U', '4,0 kV = 4000 V'], ['W', 'gesucht'], ['Q', 'gesucht'], ['t', '8,0 ms = 0,0080 s Entladedauer'], ['P', 'gesucht'], ['I', 'gesucht']], teil: 'B', lesson: 'PH1', title: 'Defibrillator: Energie, Leistung, Stromstärke', afb: 'II', ops: 'Berechnen, Begründen',
+      intro: m`Ein Defibrillator speichert Energie in einem Kondensator mit $C=100\,\mu\text F$, der auf $U=4{,}0\,\text{kV}$ geladen wird. Bei einem Stromstoß entlädt er sich in $8{,}0\,\text{ms}$ über den Patienten.`,
+      parts: [
+        { id: 'PQ6a', label: 'a)', be: 2, text: 'Berechnen Sie die im Kondensator gespeicherte Energie.',
+          nums: [{ label: 'E_el in J', ans: 800, tol: 0.01 }],
+          sol: m`<p>$E_\text{el}=\tfrac12CU^2=\tfrac12\cdot100\cdot10^{-6}\,\text F\cdot(4000\,\text V)^2=800\,\text J$ (Formelsammlung S. 27).</p>` },
+        { id: 'PQ6b', label: 'b)', be: 3, text: 'Berechnen Sie die mittlere Leistung und die mittlere Stromstärke während des Stromstoßes.',
+          nums: [{ label: 'P in kW', ans: 100, tol: 0.01 }, { label: 'I in A', ans: 50, tol: 0.01 }],
+          hints: [m`$P=\dfrac{\Delta E}{\Delta t}$ (S. 18). Für den Strom die Ladung $Q=C\cdot U$ und $I=\dfrac{\Delta Q}{\Delta t}$ (S. 23).`],
+          sol: m`<p>$P=\dfrac{E_\text{el}}{t}=\dfrac{800\,\text J}{0{,}0080\,\text s}=1{,}0\cdot10^{5}\,\text W=100\,\text{kW}$ (1 BE)</p><p>$Q=C\cdot U=100\cdot10^{-6}\,\text F\cdot4000\,\text V=0{,}40\,\text C$ (1 BE), $I=\dfrac Qt=\dfrac{0{,}40\,\text C}{0{,}0080\,\text s}=50\,\text A$ (1 BE)</p>` },
+        { id: 'PQ6c', label: 'c)', be: 2, text: 'Der Kondensator wird mit einer Ladeleistung von $5{,}0\,\text W$ aufgeladen (Verluste vernachlässigt). Wie lange dauert das?',
+          nums: [{ label: 't in s', ans: 160, tol: 0.01 }],
+          sol: m`<p>$E_\text{el}=P\cdot t\ \Rightarrow\ t=\dfrac{E_\text{el}}{P}=\dfrac{800\,\text J}{5{,}0\,\text W}=160\,\text s$ (Formelsammlung S. 24: $\Delta E=P\cdot\Delta t$).</p>` },
+        { id: 'PQ6d', label: 'd)', be: 2, text: 'Die Energie ist beim Laden und beim Entladen gleich. Warum ist die Leistung beim Entladen trotzdem viel größer?',
+          sol: m`<p>$P=\dfrac{E_\text{el}}{t}$: Bei gleicher Energie ist die Leistung umgekehrt proportional zur Zeit (1 BE). Das Entladen dauert $8{,}0\,\text{ms}$ statt $160\,\text s$, also $20\,000$-mal kürzer, daher ist die Leistung $20\,000$-mal größer (1 BE).</p>` }
+      ]
     }
   ];
 
@@ -1194,7 +1311,8 @@ ${achtung('Zwei E in der Formelsammlung', m`<p>In der Formelsammlung heißt sowo
   // PROBEKLAUSUR (fest) und SPICKZETTEL
   // ======================================================================
   const PROBES = [
-    { id: 'PK1', fach: F, titel: 'Probeklausur Physik: Kondensator, Röhre, Entladen', tasks: ['PE1', 'PL2', 'PP1', 'PC2', 'PW1', 'PR3', 'PL4'], minuten: 90 }
+    { id: 'PK2', fach: F, titel: 'Probeklausur Klausur 2: nur die Themen der Lehrkraft', tasks: ['PQ1', 'PQ2', 'PQ3', 'PQ4', 'PQ5', 'PQ6'], minuten: 90 },
+    { id: 'PK1', fach: F, titel: 'Zusatz-Probeklausur (enthält auch die Ablenkung, die nicht verlangt wird)', tasks: ['PE1', 'PL2', 'PP1', 'PC2', 'PW1', 'PR3', 'PL4'], minuten: 90 }
   ];
 
   const SPICK = m`<p class="dim">Du musst <b>keine Formel auswendig lernen</b>: Die Formelsammlung ist in der Klausur erlaubt. Hinter jeder Formel steht, ob sie dort drinsteht (und auf welcher Seite) oder ob du sie selbst herleiten musst. Schreibweise wie im Unterricht: elektrische <b>Energie $E_\text{el}$</b> (nicht $W$), Feldstärke $E$. In der Formelsammlung heißen beide $E$, achte auf die Erklärung rechts daneben.</p>

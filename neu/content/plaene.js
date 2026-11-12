@@ -66,6 +66,8 @@
         // Block 6 · Begründen mit funktionalen Abhängigkeiten, Taschenrechner
         L('PH10'), A('PB1'),
         L('PH11'), A('PT1'),
+        // Block 6b · Probeklausur nur mit den Klausurthemen (Uhr laufen lassen, danach Fehler ansehen)
+        { typ: 'probe', ref: 'PK2' },
         // Block 7 · Zusatz, nur bei Zeit: mehrere Kondensatoren (steht nicht auf der Themenliste)
         L('PH5'), A('PS1')
       ]

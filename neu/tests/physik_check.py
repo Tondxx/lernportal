@@ -267,3 +267,37 @@ chk('PH14 tau', 10e3 * 470e-6, 4.7)
 chk('PH14 I0 mA', 12 / 10e3 * 1e3, 1.2)
 chk('PH14 Q0 mC', 470e-6 * 12 * 1e3, 5.64)
 print('Nachtrag 12.11. (2) geprüft.')
+
+# Nachtrag 12.11. (3): Probeklausur 2 (PQ1-PQ6)
+_e0 = 8.854e-12
+chk('PQ2 v0 1e7', math.sqrt(2 * e * 1800 / me) / 1e7, 2.516, 0.002)
+chk('PQ2 Ekin 1e-16 J', e * 1800 / 1e-16, 2.884, 0.002)
+_E = 600 / 0.04
+_F = e * _E
+_a3 = _F / me
+_v3 = math.sqrt(2 * _a3 * 0.04)
+chk('PQ3 E kV/m', _E / 1e3, 15, 0.001)
+chk('PQ3 F 1e-15', _F / 1e-15, 2.403, 0.002)
+chk('PQ3 a 1e15', _a3 / 1e15, 2.638, 0.002)
+chk('PQ3 v 1e7', _v3 / 1e7, 1.453, 0.002)
+chk('PQ3 v Energie 1e7', math.sqrt(2 * e * 600 / me) / 1e7, 1.453, 0.002)
+chk('PQ3 t ns', _v3 / _a3 * 1e9, 5.507, 0.002)
+_C4 = _e0 * 0.04 / 0.0015
+chk('PQ4 C pF', _C4 * 1e12, 236.1, 0.002)
+chk('PQ4 Q nC', _C4 * 500 * 1e9, 118.05, 0.002)
+chk('PQ4 E kV/m', 500 / 0.0015 / 1e3, 333.3, 0.002)
+chk('PQ4 Eel uJ', 0.5 * _C4 * 500 ** 2 * 1e6, 29.51, 0.002)
+chk('PQ4 U mit Glas', 500 / 4, 125)
+chk('PQ4 Eel mit Glas uJ', 0.5 * _C4 * 500 ** 2 * 1e6 / 4, 7.378, 0.002)
+_tau5 = 4700 * 2200e-6
+chk('PQ5 tau', _tau5, 10.34, 0.001)
+chk('PQ5 I0 mA', 15 / 4700 * 1e3, 3.191, 0.002)
+chk('PQ5 th', _tau5 * math.log(2), 7.167, 0.002)
+chk('PQ5 UC 20 s', 15 * math.exp(-20 / _tau5), 2.168, 0.002)
+chk('PQ5 I 20 s mA', 15 / 4700 * 1e3 * math.exp(-20 / _tau5), 0.4613, 0.002)
+chk('PQ5 t bis 1 V', _tau5 * math.log(15), 28.0, 0.002)
+chk('PQ6 Eel', 0.5 * 100e-6 * 4000 ** 2, 800)
+chk('PQ6 P kW', 800 / 0.008 / 1e3, 100)
+chk('PQ6 I', 100e-6 * 4000 / 0.008, 50)
+chk('PQ6 t Laden', 800 / 5.0, 160)
+print('Nachtrag 12.11. (3) geprüft.')
