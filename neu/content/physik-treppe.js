@@ -155,11 +155,11 @@
               antwort: 'Nach etwa 3,1 s leuchtet die Bereitschaftslampe.' },
             { id: 'phe-s4b', label: 'b)', operator: 'Berechnen Sie / Beurteilen Sie', afb: 'III', be: 5,
               frage: 'Berechnen Sie die gespeicherte Energie bei voller Ladung und bei 95 % der Spannung. Beurteilen Sie, ob es sinnvoll ist, die Lampe schon bei 95 % und nicht erst bei 100 % leuchten zu lassen.',
-              tipps: [m`$W=\tfrac12CU^2$ für beide Spannungen.`, 'Wann wären 100 % theoretisch erreicht?'],
-              checkpoints: [{ id: 'w', label: 'W voll in J', wert: 37.03, tol: 0.2 }, { id: 'w95', label: 'W bei 95 % in J', wert: 33.42, tol: 0.2 }],
+              tipps: [m`$E_\text{el}=\tfrac12CU^2$ für beide Spannungen.`, 'Wann wären 100 % theoretisch erreicht?'],
+              checkpoints: [{ id: 'w', label: 'E_el voll in J', wert: 37.03, tol: 0.2 }, { id: 'w95', label: 'E_el bei 95 % in J', wert: 33.42, tol: 0.2 }],
               schritte: [
-                { name: 'Energie voll', punkte: 1, rechnung: m`$$W=\tfrac12\cdot680\cdot10^{-6}\,\text{F}\cdot(330\,\text{V})^2=37{,}0\,\text{J}$$` },
-                { name: 'Energie bei 95 %', punkte: 1, rechnung: m`$$W_{95}=\tfrac12C\,(0{,}95\,U_0)^2=0{,}95^2\,W=0{,}9025\cdot37{,}0\,\text{J}=33{,}4\,\text{J}$$` },
+                { name: 'Energie voll', punkte: 1, rechnung: m`$$E_\text{el}=\tfrac12\cdot680\cdot10^{-6}\,\text{F}\cdot(330\,\text{V})^2=37{,}0\,\text{J}$$` },
+                { name: 'Energie bei 95 %', punkte: 1, rechnung: m`$$E_{\text{el},95}=\tfrac12C\,(0{,}95\,U_0)^2=0{,}95^2\,E_\text{el}=0{,}9025\cdot37{,}0\,\text{J}=33{,}4\,\text{J}$$` },
                 { name: 'Beurteilung', punkte: 3, antwort: true, rechnung: m`Bei 95 % der Spannung sind schon gut 90 % der Energie gespeichert, der Blitz ist kaum schwächer. 100 % werden bei exponentiellem Laden theoretisch nie erreicht, praktisch erst nach etwa $5\tau\approx5\,\text{s}$. Die Lampe bei 95 % ist also sinnvoll: deutlich kürzere Wartezeit (3,1 s statt ≈ 5 s) bei fast voller Blitzenergie.` }
               ],
               antwort: '37 J bzw. 33 J (90 %); sinnvoll, weil kaum Energieverlust und kürzere Wartezeit.' }

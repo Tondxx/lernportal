@@ -51,7 +51,7 @@
   const D = {};
 
   // ======================================================================
-  // P1 · Elektron (oder Proton) wird im Feld beschleunigt: W = Q·U
+  // P1 · Elektron (oder Proton) wird im Feld beschleunigt: E_el = Q·U
   // ======================================================================
   D['p-energie'] = function (host) {
     const W = 640, H = 290, xa = 110, xb = 410, yT = 40, yB = 250;
@@ -71,7 +71,7 @@
       ${seg('teil', [['e', 'Elektron'], ['p', 'Proton']], 'e')}
       <div class="pd-ctls">${slider('pdU', 'U =', 'V', 10, 1000, 10, 500)}</div>
       <div class="pd-btns"><button class="btn primary small" type="button" data-go>Loslassen</button></div>
-      <div class="read"><span>W = Q·U = <b id="rW"></b> eV</span><span>= <b id="rJ"></b> J</span><span>v = <b id="rV"></b> m/s</span></div>
+      <div class="read"><span>E_el = Q·U = <b id="rW"></b> eV</span><span>= <b id="rJ"></b> J</span><span>v = <b id="rV"></b> m/s</span></div>
       <p class="pd-msg" id="msg"></p>`;
     let kind = 'e', s = 0, t = 0, run = false;
     const T = 2.2;
@@ -271,7 +271,7 @@
       <g id="strips"></g><path id="tri" class="pd-area"/><line id="line" class="pd-curve"/><circle id="pt" r="7" class="pd-dot"/></svg>
       <div class="pd-ctls">${slider('pdC', 'C =', 'µF', 50, 500, 10, 300)}${slider('pdU4', 'U₀ =', 'V', 50, 400, 10, 300)}</div>
       <div class="pd-btns"><button class="btn primary small" type="button" data-go>Laden (Ladung für Ladung)</button></div>
-      <div class="read"><span>Q = <b id="rQ"></b> C</span><span>U = <b id="rU"></b> V</span><span>bisher gespeichert W = <b id="rW"></b> J</span></div>
+      <div class="read"><span>Q = <b id="rQ"></b> C</span><span>U = <b id="rU"></b> V</span><span>bisher gespeichert E_el = <b id="rW"></b> J</span></div>
       <p class="pd-msg" id="msg"></p>`;
     let s = 1, run = false, t = 0;
     const N = 12, T = 3.2;
@@ -298,7 +298,7 @@
       $('#rQ', host).innerHTML = num(q); $('#rU', host).innerHTML = num(u);
       $('#rW', host).innerHTML = num(0.5 * C * u * u);
       $('#msg', host).innerHTML = s >= 1
-        ? `Fertig geladen: <b>W = ½·Q·U = ½·C·U² = ${num(0.5 * C * U0 * U0)} J</b>. Die Fläche ist ein Dreieck, weil die Spannung beim Laden von 0 an mitwächst. Doppelte Spannung ergibt vierfache Energie.`
+        ? `Fertig geladen: <b>E_el = ½·Q·U = ½·C·U² = ${num(0.5 * C * U0 * U0)} J</b>. Die Fläche ist ein Dreieck, weil die Spannung beim Laden von 0 an mitwächst. Doppelte Spannung ergibt vierfache Energie.`
         : `Jedes neue Ladungspaket muss gegen die Spannung geschoben werden, die schon da ist. Die Säulen sind die Arbeit pro Paket. Bisher: Summe der Säulen ≈ ${num(Wst)} J.`;
     }
     ['pdC', 'pdU4'].forEach(id => $('#' + id, host).addEventListener('input', () => { s = 1; run = false; draw(); }));

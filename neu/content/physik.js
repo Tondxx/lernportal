@@ -24,29 +24,29 @@
     {
       id: 'PH1', fach: F, groessen: ['Q','U','W','eV','I','P','t'], num: 1, min: 12, demo: 'p-energie', demoTitel: 'Schau zuerst: Ein Teilchen fällt durchs Feld',
       title: 'Spannung = Energie pro Ladung',
-      short: 'W = Q·U, Elektronvolt, Leistung P = U·I, Akku-Angaben',
+      short: 'E_el = Q·U, Elektronvolt, Leistung P = U·I, Akku-Angaben',
       idee: m`<p>Ein elektrisches Feld schiebt Ladungen an. Dabei wird Energie umgewandelt. Die <b>Spannung</b> sagt, wie viel Energie <b>pro Ladung</b> zwischen zwei Punkten frei wird (oder nötig ist).</p>
-${merke('Merke', m`$$U=\frac{W}{Q}\qquad\Longleftrightarrow\qquad W=Q\cdot U\qquad [U]=1\,\text{V}=1\,\tfrac{\text{J}}{\text{C}}$$`)}
+${merke('Merke', m`$$U=\frac{W}{Q}\qquad\Longleftrightarrow\qquad E_\text{el}=Q\cdot U\qquad [U]=1\,\text{V}=1\,\tfrac{\text{J}}{\text{C}}$$`)}
 <p>Für ein Elektron ($Q=e$) rechnet man gern in <b>Elektronvolt</b>: Durchläuft es 1 V, gewinnt es $1\,\text{eV}=1{,}602\cdot10^{-19}\,\text{J}$. Bei 500 V also 500 eV.</p>
-<p><b>Leistung</b> ist Energie pro Zeit: $P=\dfrac{W}{t}=U\cdot I$. Und weil $I=\dfrac{Q}{t}$, ist $W=U\cdot I\cdot t$.</p>`,
-      bild: m`<p>Spannung ist wie eine <b>Höhe</b>, Ladung wie die <b>Masse</b> eines Balls. Wie viel Energie frei wird, hängt von beidem ab: $W=Q\cdot U$ ist wie $W=m\cdot g\cdot h$.</p>`,
+<p><b>Leistung</b> ist Energie pro Zeit: $P=\dfrac{W}{t}=U\cdot I$. Und weil $I=\dfrac{Q}{t}$, ist $E_\text{el}=U\cdot I\cdot t$.</p>`,
+      bild: m`<p>Spannung ist wie eine <b>Höhe</b>, Ladung wie die <b>Masse</b> eines Balls. Wie viel Energie frei wird, hängt von beidem ab: $E_\text{el}=Q\cdot U$ ist wie $E_\text{el}=m\cdot g\cdot h$.</p>`,
       rezept: [
-        m`<b>Energie aus Spannung:</b> $W=Q\cdot U$. Für Elektronen: $W$ in eV hat denselben Zahlenwert wie $U$ in V.`,
+        m`<b>Energie aus Spannung:</b> $E_\text{el}=Q\cdot U$. Für Elektronen: $E_\text{el}$ in eV hat denselben Zahlenwert wie $U$ in V.`,
         m`<b>eV ↔ J:</b> mal bzw. geteilt durch $1{,}602\cdot10^{-19}$.`,
-        m`<b>Leistung:</b> $P=U\cdot I$, Energie $W=P\cdot t$ (Zeit in s, dann kommt J heraus).`,
-        m`<b>Akku-Angabe „mAh“ ist eine Ladung:</b> $Q=I\cdot t$, $1\,\text{mAh}=0{,}001\,\text{A}\cdot3600\,\text{s}=3{,}6\,\text{C}$. Energie erst mit $W=Q\cdot U$.`
+        m`<b>Leistung:</b> $P=U\cdot I$, Energie $E_\text{el}=P\cdot t$ (Zeit in s, dann kommt J heraus).`,
+        m`<b>Akku-Angabe „mAh“ ist eine Ladung:</b> $Q=I\cdot t$, $1\,\text{mAh}=0{,}001\,\text{A}\cdot3600\,\text{s}=3{,}6\,\text{C}$. Energie erst mit $E_\text{el}=Q\cdot U$.`
       ],
       beispiel: {
         q: m`Ein Akku trägt die Aufschrift <b>1,2 V / 2000 mAh</b>. Wie lange kann man damit eine Lampe (1,2 V / 0,40 A) betreiben, und wie viel Energie ist gespeichert?`,
         steps: [
           { h: 'mAh als Ladung lesen', t: m`$Q=2000\,\text{mA}\cdot1\,\text{h}=2{,}0\,\text{A}\cdot3600\,\text{s}=7200\,\text{C}$` },
-          { h: 'Gespeicherte Energie', t: m`$W=Q\cdot U=7200\,\text{C}\cdot1{,}2\,\text{V}=8640\,\text{J}\approx8{,}6\,\text{kJ}$` },
+          { h: 'Gespeicherte Energie', t: m`$E_\text{el}=Q\cdot U=7200\,\text{C}\cdot1{,}2\,\text{V}=8640\,\text{J}\approx8{,}6\,\text{kJ}$` },
           { h: 'Betriebsdauer', t: m`$t=\dfrac{Q}{I}=\dfrac{7200\,\text{C}}{0{,}40\,\text{A}}=18\,000\,\text{s}=5{,}0\,\text{h}$` },
           { h: 'Antwortsatz', t: 'Die Lampe leuchtet etwa 5 Stunden, der Akku speichert rund 8,6 kJ.' }
         ]
       },
       fehler: [
-        m`„2000 mAh ist die Energie.“ Nein: mAh ist <b>Ladung</b>. Energie gibt es erst mit der Spannung: $W=Q\cdot U$.`,
+        m`„2000 mAh ist die Energie.“ Nein: mAh ist <b>Ladung</b>. Energie gibt es erst mit der Spannung: $E_\text{el}=Q\cdot U$.`,
         m`eV und J verwechseln: $1\,\text{eV}$ ist winzig ($1{,}6\cdot10^{-19}\,\text{J}$). Im Endergebnis immer die Einheit dazuschreiben.`,
         m`Spannung „an einem Punkt“: Spannung gibt es immer <b>zwischen zwei</b> Punkten. Für einen Punkt sagt man Potential (Lektion 2).`
       ],
@@ -87,7 +87,7 @@ ${merke('Merke', m`$$U_{AB}=\varphi_B-\varphi_A\qquad\text{homogenes Feld: }\ \v
         m`Feldlinien parallel zu Äquipotentiallinien gezeichnet. Sie stehen immer <b>senkrecht</b> darauf.`
       ],
       test: [
-        { q: 'Warum wird entlang einer Äquipotentiallinie keine Arbeit verrichtet?', a: m`Weil $\Delta\varphi=0$, also $W=Q\cdot\Delta\varphi=0$. Die Kraft steht senkrecht zur Bewegung.` },
+        { q: 'Warum wird entlang einer Äquipotentiallinie keine Arbeit verrichtet?', a: m`Weil $\Delta\varphi=0$, also $E_\text{el}=Q\cdot\Delta\varphi=0$. Die Kraft steht senkrecht zur Bewegung.` },
         { q: m`$\varphi_A=4\,\text{V}$, $\varphi_B=10\,\text{V}$. Wie groß ist $U_{AB}$?`, a: m`$U_{AB}=\varphi_B-\varphi_A=6\,\text{V}$` },
         { q: m`Wie sieht das $\varphi$-$x$-Diagramm im homogenen Feld aus?`, a: m`Eine Gerade durch den Ursprung, Steigung $=E$.` },
         { q: 'Wie misst man E im Randfeld näherungsweise?', a: m`Zwei nahe Punkte senkrecht zu den Äquipotentiallinien, $E\approx\Delta\varphi/\Delta s$.` }
@@ -142,38 +142,38 @@ ${merke('Feldstärke', m`$$E=\frac{U}{d}\qquad\text{und}\qquad \sigma=\frac{Q}{A
     {
       id: 'PH4', fach: F, groessen: ['W', 'C', 'U', 'Q', 'P', 't'], num: 4, min: 12, demo: 'p-energiec', demoTitel: 'Schau zu: Laden, Paket für Paket',
       title: 'Energie im Kondensator',
-      short: 'W = ½·C·U², Fläche im U-Q-Diagramm, Blitzgerät',
+      short: 'E_el = ½·C·U², Fläche im U-Q-Diagramm, Blitzgerät',
       idee: m`<p>Ein geladener Kondensator speichert Energie. Woher kommt sie? Beim Laden muss die Quelle jede Ladung auf die Platte schieben, und zwar <b>gegen</b> die Spannung, die schon da ist.</p>
-<ul><li>Das <b>erste</b> bisschen Ladung geht ganz leicht, denn der Kondensator ist noch leer (Spannung 0).</li><li>Das <b>letzte</b> bisschen muss gegen die volle Spannung $U$ geschoben werden.</li><li>Im Mittel zählt also nur die <b>halbe</b> Endspannung: $W=Q\cdot\dfrac{U}{2}$.</li></ul>
-${merke('Energie im Kondensator', m`$$W=\tfrac12\,Q\cdot U=\tfrac12\,C\cdot U^2$$<p>$W$ = gespeicherte Energie in J · $C$ = Kapazität in F · $U$ = Spannung am Kondensator in V. Die zweite Form entsteht, wenn man $Q=C\cdot U$ einsetzt.</p>`)}
-<p>Im $U$-$Q$-Diagramm (oben in der Animation) ist $W$ die <b>Dreiecksfläche</b> unter der Geraden: Grundseite $Q$, Höhe $U$, Fläche $\tfrac12QU$.</p>
+<ul><li>Das <b>erste</b> bisschen Ladung geht ganz leicht, denn der Kondensator ist noch leer (Spannung 0).</li><li>Das <b>letzte</b> bisschen muss gegen die volle Spannung $U$ geschoben werden.</li><li>Im Mittel zählt also nur die <b>halbe</b> Endspannung: $E_\text{el}=Q\cdot\dfrac{U}{2}$.</li></ul>
+${merke('Energie im Kondensator', m`$$E_\text{el}=\tfrac12\,Q\cdot U=\tfrac12\,C\cdot U^2$$<p>$E_	ext{el}$ = gespeicherte Energie in J · $C$ = Kapazität in F · $U$ = Spannung am Kondensator in V. Die zweite Form entsteht, wenn man $Q=C\cdot U$ einsetzt.</p>`)}
+<p>Im $U$-$Q$-Diagramm (oben in der Animation) ist $E_\text{el}$ die <b>Dreiecksfläche</b> unter der Geraden: Grundseite $Q$, Höhe $U$, Fläche $\tfrac12QU$.</p>
 <p>Wegen $U^2$ gilt: doppelte Spannung, <b>vierfache</b> Energie.</p>
 <p>Ein Kondensator kann seine Energie sehr schnell abgeben. Dann ist die <b>Leistung</b> $P=\dfrac{W}{t}$ riesig (Blitzgerät, Defibrillator).</p>`,
       bild: m`<p>Wie ein Wasserturm, der von unten befüllt wird: Die ersten Liter sind leicht hochzupumpen, die letzten müssen gegen den vollen Wasserdruck. Im Mittel zählt nur die halbe Endhöhe, darum das $\tfrac12$.</p>`,
       rezept: [
         m`$C$ in F umrechnen (µF: mal $10^{-6}$), $U$ in V.`,
-        m`Energie: $W=\tfrac12CU^2$. Erst $U^2$ ausrechnen, dann mal $C$, dann halbieren. Ergebnis in J.`,
-        m`Leistung beim Entladen: $P=\dfrac{W}{t}$, nur den genutzten Anteil nehmen (z. B. 20 % Licht: $0{,}20\cdot W$).`,
+        m`Energie: $E_\text{el}=\tfrac12CU^2$. Erst $U^2$ ausrechnen, dann mal $C$, dann halbieren. Ergebnis in J.`,
+        m`Leistung beim Entladen: $P=\dfrac{W}{t}$, nur den genutzten Anteil nehmen (z. B. 20 % Licht: $0{,}20\cdot E_\text{el}$).`,
         m`Gesucht $C$ für eine bestimmte Energie? Umstellen: $C=\dfrac{2W}{U^2}$.`
       ],
       beispiel: {
         q: m`Ein Blitzgerät-Kondensator ($200\,\mu\text{F}$) wird auf $320\,\text{V}$ geladen und entlädt sich in $2{,}0\,\text{ms}$. Wie viel Energie ist gespeichert, und welche Leistung gibt er im Mittel ab?`,
         steps: [
-          { h: 'Gegeben und gesucht', t: m`<p>$C=200\,\mu\text{F}=200\cdot10^{-6}\,\text{F}=2{,}00\cdot10^{-4}\,\text{F}$, $U=320\,\text{V}$, $t=2{,}0\,\text{ms}=0{,}0020\,\text{s}$. Gesucht: Energie $W$ und mittlere Leistung $P$.</p>` },
-          { h: 'Energie', t: m`<p>Wir kennen $C$ und $U$, also passt $W=\tfrac12CU^2$:</p><p>$W=\tfrac12\cdot2{,}00\cdot10^{-4}\,\text{F}\cdot(320\,\text{V})^2=\tfrac12\cdot2{,}00\cdot10^{-4}\cdot102\,400\,\text{J}=10{,}24\,\text{J}$</p>` },
+          { h: 'Gegeben und gesucht', t: m`<p>$C=200\,\mu\text{F}=200\cdot10^{-6}\,\text{F}=2{,}00\cdot10^{-4}\,\text{F}$, $U=320\,\text{V}$, $t=2{,}0\,\text{ms}=0{,}0020\,\text{s}$. Gesucht: Energie $E_\text{el}$ und mittlere Leistung $P$.</p>` },
+          { h: 'Energie', t: m`<p>Wir kennen $C$ und $U$, also passt $E_\text{el}=\tfrac12CU^2$:</p><p>$E_\text{el}=\tfrac12\cdot2{,}00\cdot10^{-4}\,\text{F}\cdot(320\,\text{V})^2=\tfrac12\cdot2{,}00\cdot10^{-4}\cdot102\,400\,\text{J}=10{,}24\,\text{J}$</p>` },
           { h: 'Mittlere Leistung', t: m`<p>Leistung ist Energie pro Zeit. Die ganzen 10 J werden in 2 ms abgegeben:</p><p>$P=\dfrac{W}{t}=\dfrac{10{,}24\,\text{J}}{0{,}0020\,\text{s}}=5120\,\text{W}\approx5{,}1\,\text{kW}$</p>` },
           { h: 'Deuten', t: 'Die Energie ist klein (etwa so viel, wie man braucht, um 1 kg einen Meter hochzuheben), aber sie kommt in 2 ms. Deshalb die riesige Leistung von über 5 kW. Genau dafür nimmt man einen Kondensator: langsam laden, schlagartig entladen.' }
         ]
       },
       fehler: [
-        m`$W=Q\cdot U$ statt $\tfrac12QU$ benutzt. Das $\tfrac12$ kommt daher, dass die Spannung beim Laden erst von 0 an wächst.`,
+        m`$E_\text{el}=Q\cdot U$ statt $\tfrac12QU$ benutzt. Das $\tfrac12$ kommt daher, dass die Spannung beim Laden erst von 0 an wächst.`,
         m`µF nicht umgerechnet: $200\,\mu\text{F}=2{,}00\cdot10^{-4}\,\text{F}$.`,
         m`$U^2$ vergessen: doppelte Spannung → vierfache Energie.`
       ],
       test: [
-        { q: 'Drei Formeln für die Energie im Kondensator?', a: m`$W=\tfrac12QU=\tfrac12CU^2=\dfrac{Q^2}{2C}$` },
+        { q: 'Drei Formeln für die Energie im Kondensator?', a: m`$E_\text{el}=\tfrac12QU=\tfrac12CU^2=\dfrac{Q^2}{2C}$` },
         { q: m`Warum steht dort $\tfrac12$?`, a: 'Beim Laden wächst die Spannung von 0 an mit. Im Mittel muss jede Ladung nur gegen die halbe Endspannung geschoben werden (Dreiecksfläche im U-Q-Diagramm).' },
-        { q: 'Spannung verdreifacht. Energie?', a: 'Neunmal so groß (W ∼ U²).' }
+        { q: 'Spannung verdreifacht. Energie?', a: 'Neunmal so groß (E_el ∼ U²).' }
       ]
     },
     {
@@ -217,7 +217,7 @@ ${merke('Merke', m`$$\text{parallel: } C=C_1+C_2\qquad\text{Reihe: }\frac1C=\fra
       idee: m`<p>Die Braunsche Röhre macht aus einem Draht einen gebündelten, schnellen Elektronenstrahl. Von links nach rechts:</p>
 <ol><li><b>Glühkathode:</b> Ein Draht wird geheizt. Dadurch haben seine Elektronen genug Energie, um das Metall zu verlassen (<b>glühelektrischer Effekt</b>). Kalt tritt fast nichts aus.</li><li><b>Wehnelt-Zylinder:</b> Ein Metallbecher um die Kathode, leicht negativ. Er drückt die Elektronen zur Mitte und bündelt sie.</li><li><b>Anode mit Loch:</b> Sie ist positiv gegenüber der Kathode. Die Spannung $U_B$ zwischen beiden beschleunigt die Elektronen. Durch das Loch fliegen sie weiter.</li><li><b>Danach</b> wirkt keine Kraft mehr: Die Elektronen fliegen mit konstanter Geschwindigkeit $v_0$ bis zum <b>Leuchtschirm</b>.</li><li>Alles im <b>Vakuum</b>: Luftmoleküle würden die Elektronen abbremsen und streuen.</li></ol>
 <h3>Wie schnell werden die Elektronen?</h3>
-<p>Energieerhaltung: Die elektrische Energie, die das Elektron beim Durchlaufen von $U_B$ bekommt ($W=e\cdot U_B$, siehe Lektion 1), wird komplett zu Bewegungsenergie ($\tfrac12mv^2$):</p>
+<p>Energieerhaltung: Die elektrische Energie, die das Elektron beim Durchlaufen von $U_B$ bekommt ($E_\text{el}=e\cdot U_B$, siehe Lektion 1), wird komplett zu Bewegungsenergie ($\tfrac12mv^2$):</p>
 ${merke('Energieerhaltung', m`$$e\cdot U_B=\tfrac12\,m_e\,v_0^2\qquad\Longrightarrow\qquad v_0=\sqrt{\frac{2\,e\,U_B}{m_e}}$$<p>Umstellen: mal 2, durch $m_e$, dann Wurzel ziehen.</p>`)}`,
       bild: m`<p>Wie eine Kugel, die eine Rampe hinunterrollt: Die Höhe ($U_B$) bestimmt die Endgeschwindigkeit. Wegen der Wurzel gilt: vierfache Höhe ergibt nur doppelte Geschwindigkeit ($v_0\sim\sqrt{U_B}$).</p>`,
       rezept: [
@@ -407,7 +407,7 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
 <tr><td>Kapazität</td><td>$C=\varepsilon_0\varepsilon_r\dfrac Ad$</td><td>$\propto A$, $\propto\varepsilon_r$, $\propto\dfrac1d$</td></tr>
 <tr><td>Feldstärke (an der Quelle)</td><td>$E=\dfrac Ud$</td><td>$\propto U$, $\propto\dfrac1d$</td></tr>
 <tr><td>Feldstärke (abgetrennt)</td><td>$E=\dfrac{\sigma}{\varepsilon_0\varepsilon_r}$, $\sigma=\dfrac QA$</td><td>unabhängig von $d$, $\propto\dfrac1{\varepsilon_r}$</td></tr>
-<tr><td>Energie</td><td>$W=\tfrac12CU^2=\dfrac{Q^2}{2C}$</td><td>an der Quelle $\propto C$ und $\propto U^2$; abgetrennt $\propto\dfrac1C$</td></tr>
+<tr><td>Energie</td><td>$E_\text{el}=\tfrac12CU^2=\dfrac{Q^2}{2C}$</td><td>an der Quelle $\propto C$ und $\propto U^2$; abgetrennt $\propto\dfrac1C$</td></tr>
 <tr><td>Geschwindigkeit nach Beschleunigung</td><td>$v_0=\sqrt{\dfrac{2eU_B}{m_e}}$</td><td>$\propto\sqrt{U_B}$, <b>nicht</b> von $U_A$ abhängig</td></tr>
 <tr><td>Ablenkung im Querfeld</td><td>$y=\dfrac{U_A\,x^2}{4\,d\,U_B}$</td><td>$\propto U_A$, $\propto x^2$, $\propto\dfrac1d$, $\propto\dfrac1{U_B}$</td></tr>
 <tr><td>Zeitkonstante</td><td>$\tau=R\cdot C$</td><td>$\propto R$, $\propto C$ (und $t_h=\tau\ln2$ mit)</td></tr>
@@ -429,7 +429,7 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
           { h: 'Satz', t: m`Je größer die Beschleunigungsspannung, desto schneller die Elektronen, desto kürzer bleiben sie im Querfeld, desto weniger werden sie abgelenkt. Die Ablenkung ist antiproportional zu $U_B$: $y=\dfrac{U_Ax^2}{4dU_B}$.` }
         ]
       },
-      extraAfter: m`<p><b>Gleiche Frage, andere Aufgabe (aus dem Unterricht):</b> Ein abgetrennter Plattenkondensator, der Plattenabstand wird halbiert.</p><table><tr><th></th><th>Faktor</th><th>Begründung</th></tr><tr><td>$Q$</td><td>1</td><td>abgetrennt, die Ladung kann nirgendwohin</td></tr><tr><td>$C$</td><td>2</td><td>$C\propto\frac1d$</td></tr><tr><td>$U$</td><td>$\frac12$</td><td>$U=\frac QC$</td></tr><tr><td>$E$</td><td>1</td><td>$E=\frac Ud$, beide halbiert (oder $E=\frac{\sigma}{\varepsilon_0}$, $\sigma$ gleich)</td></tr><tr><td>$W$</td><td>$\frac12$</td><td>$W=\frac{Q^2}{2C}$</td></tr></table>`,
+      extraAfter: m`<p><b>Gleiche Frage, andere Aufgabe (aus dem Unterricht):</b> Ein abgetrennter Plattenkondensator, der Plattenabstand wird halbiert.</p><table><tr><th></th><th>Faktor</th><th>Begründung</th></tr><tr><td>$Q$</td><td>1</td><td>abgetrennt, die Ladung kann nirgendwohin</td></tr><tr><td>$C$</td><td>2</td><td>$C\propto\frac1d$</td></tr><tr><td>$U$</td><td>$\frac12$</td><td>$U=\frac QC$</td></tr><tr><td>$E$</td><td>1</td><td>$E=\frac Ud$, beide halbiert (oder $E=\frac{\sigma}{\varepsilon_0}$, $\sigma$ gleich)</td></tr><tr><td>$E_\text{el}$</td><td>$\frac12$</td><td>$E_\text{el}=\frac{Q^2}{2C}$</td></tr></table>`,
       fehler: [
         m`Nur „je … desto …“ hingeschrieben, ohne Formel und ohne zu sagen, was gleich bleibt. Das ist keine Begründung.`,
         m`Quelle und abgetrennt verwechselt. Frage zuerst: Hängt der Kondensator noch an der Spannungsquelle?`,
@@ -505,7 +505,7 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
 <tr><td>3 Kapazität aus der Entladezeit</td><td>$U_C=U_0e^{-t/(RC)}$ (Formelsammlung S. 27)</td><td>$C=\dfrac{t_E}{R\cdot\ln3}$</td></tr>
 <tr><td>4 Halbwertszeit</td><td>$U_C=U_0e^{-t/(RC)}$</td><td>$t_H=R\,C\cdot\ln2$</td></tr>
 <tr><td>5 Plattenrand (Abi-Art)</td><td>Bahngleichung mit $y=\tfrac d2$</td><td>$U_B=\dfrac{U_C}{2\,d^2}\,x^2$</td></tr>
-<tr><td>6 Energie des Kondensators</td><td>$U=\dfrac QC$, Fläche im $U$-$Q$-Diagramm</td><td>$W=\tfrac12\,C\,U^2$</td></tr></table>
+<tr><td>6 Energie des Kondensators</td><td>$U=\dfrac QC$, Fläche im $U$-$Q$-Diagramm</td><td>$E_\text{el}=\tfrac12\,C\,U^2$</td></tr></table>
 <p>Die Formel für die Differenzialgleichung beim Laden ($U_0=R\,I+\tfrac QC$, abgeleitet $0=R\dot I+\tfrac IC$) übst du in Aufgabe PL6.</p>`,
       bild: m`<p>Eine Herleitung ist wie ein Weg von A nach B über lauter kleine Schritte. Bewertet wird nicht das Ergebnis (das steht in der Aufgabe), sondern <b>der Weg</b>: Startformel, jede Umformung sichtbar, am Ende das Ziel.</p>`,
       rezept: [
@@ -521,7 +521,7 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
           { h: '2 · Bahngleichung: zwei Bewegungen', t: m`<p><b>x-Richtung</b> (gleichförmig): $s_x=v\cdot t\ \ \big|:v\ \Rightarrow\ t=\dfrac{s_x}{v}$</p><p><b>y-Richtung</b> (gleichmäßig beschleunigt): $F=m\cdot a\ \ \big|:m\ \Rightarrow\ a=\dfrac Fm=\dfrac{E\,e}{m}=\dfrac{U_A\,e}{d\,m}$</p><p><b>Zusammensetzen:</b></p>$$\begin{aligned}s_y&=\tfrac12\,a\,t^2=\tfrac12\cdot\dfrac{U_A\,e}{d\,m}\cdot\left(\dfrac{s_x}{v}\right)^2&&\big|\ v^2=\dfrac{2\,e\,U_B}{m}\\s_y&=\tfrac12\cdot\dfrac{U_A\,e}{d\,m}\cdot s_x^2\cdot\dfrac{m}{2\,e\,U_B}&&\big|\ e,\ m\ \text{kürzen}\\s_y&=\dfrac{U_A}{4\,d\,U_B}\cdot s_x^2\end{aligned}$$` },
           { h: '3 · Kapazität aus der Entladezeit', t: m`<p>Bei $t=t_E$ ist die Spannung auf ein Drittel gefallen: $U_C(t_E)=\tfrac13U_0$.</p>$$\begin{aligned}\tfrac13\,U_0&=U_0\cdot e^{-\frac{t_E}{R\,C}}&&\big|:U_0\\\tfrac13&=e^{-\frac{t_E}{R\,C}}&&\big|\ln\\\ln\tfrac13&=-\dfrac{t_E}{R\,C}&&\big|\ \ln\tfrac13=-\ln3\\-\ln3&=-\dfrac{t_E}{R\,C}&&\big|\cdot(-1)\\\ln3&=\dfrac{t_E}{R\,C}&&\big|\cdot C\\C\cdot\ln3&=\dfrac{t_E}{R}&&\big|:\ln3\\C&=\dfrac{t_E}{R\cdot\ln3}\end{aligned}$$` },
           { h: '4 · Halbwertszeit', t: m`<p>Gleicher Weg, nur mit der Hälfte statt einem Drittel: $U_C(t_H)=\tfrac12U_0$.</p>$$\begin{aligned}\tfrac12&=e^{-\frac{t_H}{R\,C}}&&\big|\ln\\-\ln2&=-\dfrac{t_H}{R\,C}&&\big|\cdot(-R\,C)\\t_H&=R\,C\cdot\ln2\end{aligned}$$<p>Mit $\tau=RC$: $t_H=\tau\ln2\approx0{,}69\,\tau$.</p>` },
-          { h: '5 · Plattenrand (Abi-Art) und 6 · Energie', t: m`<p><b>Plattenrand:</b> Das Elektron startet in der Mitte und trifft bei $x$ gerade den Rand: $y=\tfrac d2$. In die Bahngleichung eingesetzt:</p>$$\begin{aligned}\dfrac d2&=\dfrac{U_C}{4\,d\,U_B}\,x^2&&\big|\cdot4\,d\,U_B\\2\,d^2\,U_B&=U_C\,x^2&&\big|:2\,d^2\\U_B&=\dfrac{U_C}{2\,d^2}\,x^2\end{aligned}$$<p><b>Energie:</b> Beim Laden steigt $U=\dfrac QC$ von 0 auf $U$. Die Arbeit ist die Fläche unter der Geraden im $U$-$Q$-Diagramm, ein Dreieck: $W=\tfrac12\,Q\,U$. Mit $Q=C\,U$: $W=\tfrac12\,C\,U^2$.</p>` }
+          { h: '5 · Plattenrand (Abi-Art) und 6 · Energie', t: m`<p><b>Plattenrand:</b> Das Elektron startet in der Mitte und trifft bei $x$ gerade den Rand: $y=\tfrac d2$. In die Bahngleichung eingesetzt:</p>$$\begin{aligned}\dfrac d2&=\dfrac{U_C}{4\,d\,U_B}\,x^2&&\big|\cdot4\,d\,U_B\\2\,d^2\,U_B&=U_C\,x^2&&\big|:2\,d^2\\U_B&=\dfrac{U_C}{2\,d^2}\,x^2\end{aligned}$$<p><b>Energie:</b> Beim Laden steigt $U=\dfrac QC$ von 0 auf $U$. Die Arbeit ist die Fläche unter der Geraden im $U$-$Q$-Diagramm, ein Dreieck: $E_\text{el}=\tfrac12\,Q\,U$. Mit $Q=C\,U$: $E_\text{el}=\tfrac12\,C\,U^2$.</p>` }
         ]
       },
       fehler: [
@@ -549,13 +549,13 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
       intro: KONST,
       parts: [
         { id: 'PE1a', label: 'a)', be: 2, text: m`Ein Elektron durchläuft die Spannung $U=2{,}5\,\text{kV}$. Berechnen Sie die aufgenommene Energie in eV und in J.`,
-          nums: [{ label: 'W in eV', ans: 2500, tol: 0.01 }, { label: 'W in 10⁻¹⁶ J', ans: 4.005, tol: 0.01 }],
-          hints: [m`$W=e\cdot U$. In eV: Zahlenwert wie $U$ in V.`],
-          sol: m`<p>$W=e\cdot U=2500\,\text{eV}=2500\cdot1{,}602\cdot10^{-19}\,\text{J}=4{,}0\cdot10^{-16}\,\text{J}$</p><ul><li>Ansatz $W=eU$ (1 BE)</li><li>beide Werte (1 BE)</li></ul>` },
+          nums: [{ label: 'E_el in eV', ans: 2500, tol: 0.01 }, { label: 'E_el in 10⁻¹⁶ J', ans: 4.005, tol: 0.01 }],
+          hints: [m`$E_\text{el}=e\cdot U$. In eV: Zahlenwert wie $U$ in V.`],
+          sol: m`<p>$E_\text{el}=e\cdot U=2500\,\text{eV}=2500\cdot1{,}602\cdot10^{-19}\,\text{J}=4{,}0\cdot10^{-16}\,\text{J}$</p><ul><li>Ansatz $E_\text{el}=eU$ (1 BE)</li><li>beide Werte (1 BE)</li></ul>` },
         { id: 'PE1b', label: 'b)', be: 2, text: m`Welche Spannung muss ein Elektron durchlaufen, damit es die Energie $8{,}0\cdot10^{-17}\,\text{J}$ erhält?`,
           nums: [{ label: 'U in V', ans: 499.4, tol: 0.01 }],
-          hints: [m`$U=\dfrac We$`],
-          sol: m`<p>$U=\dfrac We=\dfrac{8{,}0\cdot10^{-17}\,\text{J}}{1{,}602\cdot10^{-19}\,\text{C}}\approx5{,}0\cdot10^{2}\,\text{V}$</p><ul><li>Umstellen (1 BE), Ergebnis mit Einheit (1 BE)</li></ul>` }
+          hints: [m`$U=\dfrac{E_\text{el}}e$`],
+          sol: m`<p>$U=\dfrac{E_\text{el}}e=\dfrac{8{,}0\cdot10^{-17}\,\text{J}}{1{,}602\cdot10^{-19}\,\text{C}}\approx5{,}0\cdot10^{2}\,\text{V}$</p><ul><li>Umstellen (1 BE), Ergebnis mit Einheit (1 BE)</li></ul>` }
       ]
     },
     {
@@ -567,13 +567,13 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
           hints: ['mAh = Milliampere mal Stunde. Welche Größe ist „Stromstärke mal Zeit“?'],
           sol: m`<p>Die Angabe ist eine <b>Ladung</b>: Die Powerbank kann z. B. 5 A eine Stunde lang liefern. $Q=I\cdot t=5{,}0\,\text{A}\cdot3600\,\text{s}=18\,000\,\text{C}$.</p><ul><li>Ladung erkannt (1 BE)</li><li>Umrechnung (1 BE)</li></ul>` },
         { id: 'PE2b', label: 'b)', be: 2, text: 'Berechnen Sie die gespeicherte Energie in J und in Wh.',
-          nums: [{ label: 'W in kJ', ans: 66.6, tol: 0.01 }, { label: 'W in Wh', ans: 18.5, tol: 0.01 }],
-          hints: [m`$W=Q\cdot U$; $1\,\text{Wh}=3600\,\text{J}$`],
-          sol: m`<p>$W=Q\cdot U=18\,000\,\text{C}\cdot3{,}7\,\text{V}=66\,600\,\text{J}\approx67\,\text{kJ}=18{,}5\,\text{Wh}$</p><ul><li>Ansatz (1 BE), beide Werte (1 BE)</li></ul>` },
+          nums: [{ label: 'E_el in kJ', ans: 66.6, tol: 0.01 }, { label: 'E_el in Wh', ans: 18.5, tol: 0.01 }],
+          hints: [m`$E_\text{el}=Q\cdot U$; $1\,\text{Wh}=3600\,\text{J}$`],
+          sol: m`<p>$E_\text{el}=Q\cdot U=18\,000\,\text{C}\cdot3{,}7\,\text{V}=66\,600\,\text{J}\approx67\,\text{kJ}=18{,}5\,\text{Wh}$</p><ul><li>Ansatz (1 BE), beide Werte (1 BE)</li></ul>` },
         { id: 'PE2c', label: 'c)', be: 2, text: 'Berechnen Sie, wie lange die LED-Leuchte mit einer vollen Ladung betrieben werden kann.',
           nums: [{ label: 't in h', ans: 15.42, tol: 0.01 }],
-          hints: [m`$t=\dfrac WP$ oder erst $I=\dfrac PU$, dann $t=\dfrac QI$.`],
-          sol: m`<p>$t=\dfrac WP=\dfrac{66\,600\,\text{J}}{1{,}2\,\text{W}}=55\,500\,\text{s}\approx15\,\text{h}$ (genauer 15,4 h). Alternativ: $I=P/U=0{,}32\,\text{A}$, $t=Q/I$.</p><ul><li>Ansatz (1 BE), Ergebnis (1 BE)</li></ul>` }
+          hints: [m`$t=\dfrac{E_\text{el}}P$ oder erst $I=\dfrac PU$, dann $t=\dfrac QI$.`],
+          sol: m`<p>$t=\dfrac{E_\text{el}}P=\dfrac{66\,600\,\text{J}}{1{,}2\,\text{W}}=55\,500\,\text{s}\approx15\,\text{h}$ (genauer 15,4 h). Alternativ: $I=P/U=0{,}32\,\text{A}$, $t=Q/I$.</p><ul><li>Ansatz (1 BE), Ergebnis (1 BE)</li></ul>` }
       ]
     },
     {
@@ -592,7 +592,7 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
     },
     // ---------------------------------------------------------------- PH2
     {
-      id: 'PP1', fach: F, groessen: [['d','8,0 cm = 0,080 m'],['x','Abstand von der negativen Platte: A bei 1,5 cm, B bei 6,0 cm'],['phi','4,5 V in A, 18,0 V in B, 0 an der negativen Platte'],['E','gesucht'],['U0','Spannung am Kondensator, gesucht'],['W','Arbeit von A nach B, gesucht']], teil: 'B', lesson: 'PH2', title: 'Messung mit der Potentialsonde', afb: 'II', ops: 'Bestimmen, Zeichnen, Erläutern',
+      id: 'PP1', fach: F, groessen: [['d','8,0 cm = 0,080 m'],['x','Abstand von der negativen Platte: A bei 1,5 cm, B bei 6,0 cm'],['phi','4,5 V in A, 18,0 V in B, 0 an der negativen Platte'],['E','gesucht'],['U0','Spannung am Kondensator, gesucht'],['W','Energieänderung (Arbeit) von A nach B, gesucht']], teil: 'B', lesson: 'PH2', title: 'Messung mit der Potentialsonde', afb: 'II', ops: 'Bestimmen, Zeichnen, Erläutern',
       intro: m`Ein Plattenkondensator hat den Plattenabstand $d=8{,}0\,\text{cm}$. Die negative Platte hat das Potential $\varphi=0$. Mit einer Potentialsonde wird im homogenen Bereich gemessen: Punkt A ($x_A=1{,}5\,\text{cm}$ von der negativen Platte): $\varphi_A=4{,}5\,\text{V}$; Punkt B ($x_B=6{,}0\,\text{cm}$): $\varphi_B=18{,}0\,\text{V}$.`,
       parts: [
         { id: 'PP1a', label: 'a)', be: 3, text: 'Bestimmen Sie den Betrag der elektrischen Feldstärke.',
@@ -605,9 +605,9 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
         { id: 'PP1c', label: 'c)', be: 2, text: m`Zeichnen Sie das $x$-$\varphi$-Diagramm für $0\le x\le d$ und erläutern Sie, warum alle Quotienten $\varphi/x$ gleich sind.`,
           sol: m`<p>Ursprungsgerade von $(0\,|\,0)$ bis $(8\,\text{cm}\,|\,24\,\text{V})$. Im homogenen Feld ist $E$ überall gleich, also wächst $\varphi=E\cdot x$ proportional zu $x$; der Quotient $\varphi/x$ ist die konstante Steigung $E$.</p>` },
         { id: 'PP1d', label: 'd)', be: 3, text: m`Eine Ladung $q=+2{,}0\,\text{nC}$ wird von A nach B gebracht. Berechnen Sie die dafür nötige Arbeit.`,
-          nums: [{ label: 'W in 10⁻⁸ J', ans: 2.7, tol: 0.01 }],
-          hints: [m`$W=q\cdot U_{AB}$ mit $U_{AB}=\varphi_B-\varphi_A$`],
-          sol: m`<p>$W=q\,(\varphi_B-\varphi_A)=2{,}0\cdot10^{-9}\,\text{C}\cdot13{,}5\,\text{V}=2{,}7\cdot10^{-8}\,\text{J}$. Positiv: Die positive Ladung wird gegen die Feldkraft zur positiven Platte gebracht.</p>` },
+          nums: [{ label: 'E_el in 10⁻⁸ J', ans: 2.7, tol: 0.01 }],
+          hints: [m`$E_\text{el}=q\cdot U_{AB}$ mit $U_{AB}=\varphi_B-\varphi_A$`],
+          sol: m`<p>$E_\text{el}=q\,(\varphi_B-\varphi_A)=2{,}0\cdot10^{-9}\,\text{C}\cdot13{,}5\,\text{V}=2{,}7\cdot10^{-8}\,\text{J}$. Positiv: Die positive Ladung wird gegen die Feldkraft zur positiven Platte gebracht.</p>` },
         { id: 'PP1e', label: 'e)', be: 3, text: 'Erläutern Sie, wie man mit der Sonde die Feldstärke in einem Punkt des inhomogenen Randfeldes näherungsweise bestimmen kann.',
           sol: m`<p>In einer kleinen Umgebung ist das Feld näherungsweise homogen. Man misst das Potential an zwei nahe beieinander liegenden Punkten auf einer Linie <b>senkrecht zu den Äquipotentiallinien</b> (also entlang einer Feldlinie) und deren Abstand $\Delta s$: $E\approx\dfrac{\Delta\varphi}{\Delta s}$.</p><ul><li>lokal homogen (1 BE), senkrecht zu Äquipotentiallinien (1 BE), Formel (1 BE)</li></ul>` }
       ]
@@ -617,7 +617,7 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
       intro: 'Beantworten Sie ohne Rechnung, in ganzen Sätzen.',
       parts: [
         { id: 'PP2a', label: 'a)', be: 2, text: 'Begründen Sie, dass beim Verschieben einer Ladung entlang einer Äquipotentiallinie keine Arbeit verrichtet wird.',
-          sol: m`<p>Auf der Linie ist $\varphi$ überall gleich, also $\Delta\varphi=0$ und $W=q\cdot\Delta\varphi=0$.</p>` },
+          sol: m`<p>Auf der Linie ist $\varphi$ überall gleich, also $\Delta\varphi=0$ und $E_\text{el}=q\cdot\Delta\varphi=0$.</p>` },
         { id: 'PP2b', label: 'b)', be: 2, text: 'Begründen Sie, dass Feldlinien senkrecht auf Äquipotentiallinien stehen.',
           sol: m`<p>Hätte die Feldkraft eine Komponente entlang der Äquipotentiallinie, würde beim Verschieben entlang der Linie Arbeit verrichtet. Das widerspricht a). Also wirkt die Kraft (und damit die Feldlinie) senkrecht zur Linie.</p>` },
         { id: 'PP2c', label: 'c)', be: 2, text: 'Erläutern Sie den Unterschied zwischen Potential und Spannung.',
@@ -677,9 +677,9 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
       teil: 'B', lesson: 'PH4', title: 'Blitzgerät', afb: 'II', ops: 'Berechnen, Begründen',
       intro: m`Der Kondensator eines Blitzgeräts ($C=330\,\mu\text{F}$) wird aus zwei Batterien (zusammen 3 V) über eine Elektronik auf $U=300\,\text{V}$ geladen.`,
       parts: [
-        { id: 'PW1a', label: 'a)', be: 2, text: 'Berechnen Sie die gespeicherte Energie.', nums: [{ label: 'W in J', ans: 14.85, tol: 0.01 }],
+        { id: 'PW1a', label: 'a)', be: 2, text: 'Berechnen Sie die gespeicherte Energie.', nums: [{ label: 'E_el in J', ans: 14.85, tol: 0.01 }],
           hints: [m`$C$ und $U$ sind bekannt: Welche Energieformel passt?`],
-          sol: m`<p><b>Gedanke:</b> $C$ und $U$ sind gegeben, also $W=\tfrac12CU^2$.</p><p><b>Einsetzen:</b> $W=\tfrac12\cdot330\cdot10^{-6}\,\text{F}\cdot(300\,\text{V})^2=\tfrac12\cdot330\cdot10^{-6}\cdot90\,000\,\text{J}=14{,}85\,\text{J}\approx15\,\text{J}$</p>` },
+          sol: m`<p><b>Gedanke:</b> $C$ und $U$ sind gegeben, also $E_\text{el}=\tfrac12CU^2$.</p><p><b>Einsetzen:</b> $E_\text{el}=\tfrac12\cdot330\cdot10^{-6}\,\text{F}\cdot(300\,\text{V})^2=\tfrac12\cdot330\cdot10^{-6}\cdot90\,000\,\text{J}=14{,}85\,\text{J}\approx15\,\text{J}$</p>` },
         { id: 'PW1b', label: 'b)', be: 3, text: m`Der Blitz dauert $1{,}5\,\text{ms}$, 20 % der Energie werden zu Licht. Berechnen Sie die mittlere Lichtleistung.`,
           nums: [{ label: 'P in W', ans: 1980, tol: 0.01 }],
           sol: m`<p><b>Gedanke:</b> Leistung = Energie pro Zeit, aber nur der Lichtanteil zählt.</p><p><b>Lichtenergie:</b> $0{,}20\cdot14{,}85\,\text{J}=2{,}97\,\text{J}$</p><p><b>Leistung:</b> $P=\dfrac{2{,}97\,\text{J}}{0{,}0015\,\text{s}}\approx2{,}0\cdot10^3\,\text{W}=2{,}0\,\text{kW}$</p>` },
@@ -698,7 +698,7 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
         { id: 'PW2c', label: 'c)', be: 2, text: m`Die Entladung dauert etwa $5\,\text{ms}$. Schätzen Sie die mittlere Stromstärke ab.`, nums: [{ label: 'I in A', ans: 40, tol: 0.01 }],
           sol: m`<p>$\bar I=\dfrac Qt=\dfrac{0{,}20\,\text{C}}{0{,}005\,\text{s}}=40\,\text{A}$ (grobe Abschätzung, der echte Strom fällt exponentiell).</p>` },
         { id: 'PW2d', label: 'd)', be: 2, text: 'Begründen Sie, wie sich die Energie ändert, wenn man die Ladespannung verdoppelt.',
-          sol: m`<p>$W=\tfrac12CU^2$: Bei gleichem $C$ und doppeltem $U$ wird die Energie <b>vervierfacht</b>.</p>` }
+          sol: m`<p>$E_\text{el}=\tfrac12CU^2$: Bei gleichem $C$ und doppeltem $U$ wird die Energie <b>vervierfacht</b>.</p>` }
       ]
     },
     {
@@ -912,9 +912,9 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
           hints: [m`Abgetrennt: $Q$ bleibt.`, m`$U=\dfrac QC$; $E=\dfrac Ud$ mit neuem $U$ und neuem $d$.`],
           sol: m`<p>$Q$ bleibt, die Ladung kann nirgendwohin (1 BE). $C$ wie in a): <b>12-fach</b> (1 BE). $U=Q/C$: <b>$\tfrac1{12}$</b> (1 BE). $E=U/d$: $\dfrac{1/12}{1/4}=\tfrac13$, also <b>$\tfrac13$</b>. Kontrolle mit $E=\dfrac{\sigma}{\varepsilon_0\varepsilon_r}$: $\sigma=Q/A$ bleibt, $\varepsilon_r=3$ gibt $\tfrac13$; der Abstand spielt keine Rolle (1 BE).</p>` },
         { id: 'PB1c', label: 'c)', be: 4, text: m`Um welchen Faktor ändert sich die gespeicherte Energie in a) und in b)? Erläutern Sie in je einem Satz, woher die Energie kommt oder wohin sie geht.`,
-          nums: [{ label: 'Faktor W in a)', ans: 12, tol: 0.01 }, { label: 'Faktor W in b)', ans: 0.0833, tol: 0.01 }],
-          hints: [m`a) $W=\tfrac12CU^2$ mit gleichem $U$. b) $W=\dfrac{Q^2}{2C}$ mit gleichem $Q$.`],
-          sol: m`<p>a) $W=\tfrac12CU^2$, $U$ gleich, $C$ 12-fach: <b>12-fach</b> (1 BE). Die Quelle liefert zusätzliche Ladung und damit Energie (1 BE). b) $W=\dfrac{Q^2}{2C}$, $Q$ gleich, $C$ 12-fach: <b>$\tfrac1{12}$</b> (1 BE). Die Energie sinkt: Die Platten und das Glas werden vom Feld hineingezogen, das Feld leistet Arbeit (z. B. Wärme oder Bewegungsenergie) (1 BE).</p>` }
+          nums: [{ label: 'Faktor E_el in a)', ans: 12, tol: 0.01 }, { label: 'Faktor E_el in b)', ans: 0.0833, tol: 0.01 }],
+          hints: [m`a) $E_\text{el}=\tfrac12CU^2$ mit gleichem $U$. b) $E_\text{el}=\dfrac{Q^2}{2C}$ mit gleichem $Q$.`],
+          sol: m`<p>a) $E_\text{el}=\tfrac12CU^2$, $U$ gleich, $C$ 12-fach: <b>12-fach</b> (1 BE). Die Quelle liefert zusätzliche Ladung und damit Energie (1 BE). b) $E_\text{el}=\dfrac{Q^2}{2C}$, $Q$ gleich, $C$ 12-fach: <b>$\tfrac1{12}$</b> (1 BE). Die Energie sinkt: Die Platten und das Glas werden vom Feld hineingezogen, das Feld leistet Arbeit (z. B. Wärme oder Bewegungsenergie) (1 BE).</p>` }
       ]
     },
     {
@@ -984,9 +984,10 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
   ];
 
   const SPICK = m`<h3>Spannung, Energie, Potential</h3>
-<ul><li>$U=\dfrac WQ$, $W=QU$; $1\,\text{eV}=1{,}602\cdot10^{-19}\,\text{J}$</li><li>$P=\dfrac Wt=UI$, $Q=It$ ($1\,\text{mAh}=3{,}6\,\text{C}$)</li><li>$U_{AB}=\varphi_B-\varphi_A$; homogen: $\varphi=Ex$, $E=\dfrac Ud=\dfrac{\Delta\varphi}{\Delta x}$; Feldlinien ⟂ Äquipotentiallinien</li></ul>
+<p class="dim">Schreibweise wie im Unterricht: elektrische <b>Energie $E_	ext{el}$</b> (nicht $W$), Feldstärke $E$.</p>
+<ul><li>$U=\dfrac{E_\text{el}}Q$, $E_\text{el}=QU$; $1\,\text{eV}=1{,}602\cdot10^{-19}\,\text{J}$</li><li>$P=\dfrac{E_\text{el}}t=UI$, $Q=It$ ($1\,\text{mAh}=3{,}6\,\text{C}$)</li><li>$U_{AB}=\varphi_B-\varphi_A$; homogen: $\varphi=Ex$, $E=\dfrac Ud=\dfrac{\Delta\varphi}{\Delta x}$; Feldlinien ⟂ Äquipotentiallinien</li></ul>
 <h3>Kondensator</h3>
-<ul><li>$C=\dfrac QU$, $C=\varepsilon_0\varepsilon_r\dfrac Ad$, $\sigma=\dfrac QA=\varepsilon_0\varepsilon_rE$</li><li><b>An der Quelle:</b> U fest. <b>Abgetrennt:</b> Q fest (E bleibt beim Auseinanderziehen).</li><li>$W=\tfrac12QU=\tfrac12CU^2$</li><li>parallel $C=C_1+C_2$ (gleiche U), Reihe $\tfrac1C=\tfrac1{C_1}+\tfrac1{C_2}$ (gleiche Q)</li></ul>
+<ul><li>$C=\dfrac QU$, $C=\varepsilon_0\varepsilon_r\dfrac Ad$, $\sigma=\dfrac QA=\varepsilon_0\varepsilon_rE$</li><li><b>An der Quelle:</b> U fest. <b>Abgetrennt:</b> Q fest (E bleibt beim Auseinanderziehen).</li><li>$E_\text{el}=\tfrac12QU=\tfrac12CU^2$</li><li>parallel $C=C_1+C_2$ (gleiche U), Reihe $\tfrac1C=\tfrac1{C_1}+\tfrac1{C_2}$ (gleiche Q)</li></ul>
 <h3>Braunsche Röhre</h3>
 <ul><li>Glühkathode → Wehnelt → Anode (Loch) → Ablenkplatten → Schirm, Vakuum</li><li>$eU_B=\tfrac12m_ev_0^2$, $v_0=\sqrt{2eU_B/m_e}$</li><li>Querfeld: $x=v_0t$, $y=\tfrac12at^2$, $a=\dfrac{eU}{m_ed}$ ⇒ $y=\dfrac12\dfrac{e}{m_e}\dfrac Ud\dfrac{x^2}{v_0^2}=\dfrac{Ux^2}{4dU_B}$</li><li>$\tan\alpha=\dfrac{Ul}{2dU_B}$, Schirm: $Y=y(l)+L\tan\alpha$; Platte getroffen, wenn $y>\tfrac d2$</li></ul>
 <h3>Auf- und Entladen</h3>
