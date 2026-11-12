@@ -383,22 +383,22 @@ ${achtung('Wichtig fürs Erläutern', m`<p>In $y=\dfrac{Ux^2}{4dU_B}$ kommt $e/m
 
     // ---------------------------------------------------------------- Schaltung zum Laden und Entladen (12.11.)
     {
-      id: 'PH14', fach: F, groessen: ['U0', 'I0', 'tau', 'UC', 'R', 'C', 'I'], num: 14, min: 12, demo: 'p-rc', demoTitel: 'Schau zu: Umschalter umlegen',
+      id: 'PH14', fach: F, groessen: ['U0', 'I0', 'RC', 'UC', 'R', 'C', 'I'], num: 14, min: 12, demo: 'p-rc', demoTitel: 'Schau zu: Umschalter umlegen',
       title: 'Die Schaltung: Laden und Entladen aufbauen',
-      short: 'Was U₀, I₀ und τ bedeuten, Seite 27 lesen, Bauteile, Umschalter, Messgeräte, was zum Entladen nötig ist',
+      short: 'Was U₀ und I₀ bedeuten, Seite 27 lesen, Bauteile, Umschalter, Messgeräte, was zum Entladen nötig ist',
       idee: m`<p>Im Versuch „Entladung eines Kondensators“ wird ein Kondensator erst aufgeladen und dann <b>über einen Widerstand entladen</b>. In der Klausur kann stehen: „Zeichne die Schaltung“, „Beschreibe den Versuch“ oder „Erkläre, wie der Kondensator entladen wird“. Hier ist die Schaltung, Bauteil für Bauteil.</p>
-<h3>Erst die drei Buchstaben: $U_0$, $I_0$, $\tau$</h3>
-<p>Die kleine <b>0</b> heißt immer „am Anfang“ bzw. „Startwert“. $\tau$ („tau“) ist ein griechischer Buchstabe für eine <b>Zeit</b>. Mehr steckt nicht dahinter. Als Beispiel nehmen wir ein 12-V-Netzteil, $R=10\,\text{k}\Omega$ und $C=470\,\mu\text{F}$.</p>
+<h3>Erst die zwei Buchstaben: $U_0$ und $I_0$</h3>
+<p>Die kleine <b>0</b> heißt immer „am Anfang“ bzw. „Startwert“. Als Beispiel nehmen wir ein 12-V-Netzteil, $R=10\,\text{k}\Omega$ und $C=470\,\mu\text{F}$.</p>
 <table><tr><th>Zeichen</th><th>Was ist das?</th><th>Beispiel</th></tr>
 <tr><td>$U_0$</td><td><b>Spannung der Quelle</b> (Batterie, Netzteil). Beim Laden ist es die Spannung, auf die der Kondensator am Ende kommt. Beim Entladen ist es die Spannung am Kondensator im Moment des Umschaltens (er wurde ja vorher auf die Quellenspannung geladen).</td><td>$U_0=12\,\text{V}$</td></tr>
 <tr><td>$I_0$</td><td><b>Strom im allerersten Moment</b> ($t=0$). Das ist gleichzeitig der größte Strom des ganzen Vorgangs, danach wird er immer kleiner.</td><td>$I_0=\dfrac{U_0}{R}=\dfrac{12\,\text{V}}{10\,000\,\Omega}=1{,}2\,\text{mA}$</td></tr>
-<tr><td>$\tau$</td><td><b>Zeitkonstante</b> $\tau=R\cdot C$: die „Uhr“ des Vorgangs. Je größer $\tau$, desto langsamer läuft alles.</td><td>$\tau=10\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=4{,}7\,\text{s}$</td></tr></table>
+<tr><td>$R\cdot C$</td><td><b>Produkt aus Widerstand und Kapazität.</b> Es steht in der Formel im Exponenten (S. 27) und hat die Einheit einer Zeit. Je größer, desto langsamer läuft alles.</td><td>$10\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=4{,}7\,\text{s}$</td></tr></table>
 <h4>Warum ist $I_0=U_0/R$?</h4>
-<p>Im ersten Moment des Ladens ist der Kondensator leer, also $U_C=0$. Dann liegt die ganze Quellenspannung am Widerstand. Aus $R=\dfrac UI$ ${FS('S. 23')} wird, nach $I$ umgestellt ($\big|\cdot I$, dann $\big|:R$), $I_0=\dfrac{U_0}{R}$. Beim Entladen ist es genauso: Der volle Kondensator drückt $U_0$ durch den Widerstand, also wieder $I_0=\dfrac{U_0}{R}$, nur in die <b>Gegenrichtung</b>. Deshalb steht in der Formelsammlung beim Entladen $-I_0$.</p>
-<h4>Was ist $\tau$ anschaulich?</h4>
-<p>$\tau$ sagt, wie lange der „erste große Schritt“ dauert. Nach genau einer Zeitkonstante ($t=\tau$) gilt:</p>
-<ul><li><b>Entladen:</b> Nur noch $e^{-1}=0{,}37$ ist übrig. Also $U_C=0{,}37\cdot12\,\text{V}=4{,}4\,\text{V}$ und der Strom ist auf $0{,}37\cdot1{,}2\,\text{mA}=0{,}44\,\text{mA}$ gefallen.</li><li><b>Laden:</b> $1-e^{-1}=0{,}63$ ist geschafft. Also $U_C=0{,}63\cdot12\,\text{V}=7{,}6\,\text{V}$.</li><li>Nach $5\tau=23{,}5\,\text{s}$ ist praktisch alles vorbei.</li></ul>
-<p><b>Warum $R\cdot C$?</b> Großer Widerstand: wenig Strom, die Ladung kommt langsam. Großer Kondensator: Es muss mehr Ladung fließen, bis er voll ist. Beides macht es langsamer. Einheit: $1\,\Omega\cdot1\,\text{F}=\dfrac{\text{V}}{\text{A}}\cdot\dfrac{\text{A}\,\text{s}}{\text{V}}=1\,\text{s}$.</p>
+<p>Im ersten Moment des Ladens ist der Kondensator leer, also $U_C=0$. Dann liegt die ganze Quellenspannung am Widerstand (Maschenregel $U_0=U_R+U_C$ ${FS('S. 24')}, mehr in Lektion 8). Aus $R=\dfrac UI$ ${FS('S. 23')} wird, nach $I$ umgestellt ($\big|\cdot I$, dann $\big|:R$), $I_0=\dfrac{U_0}{R}$. Beim Entladen ist es genauso: Der volle Kondensator drückt $U_0$ durch den Widerstand, also wieder $I_0=\dfrac{U_0}{R}$, nur in die <b>Gegenrichtung</b>. Deshalb steht in der Formelsammlung beim Entladen $-I_0$.</p>
+<h4>Wie schnell läuft der Vorgang?</h4>
+<p>Das sagt das Produkt $R\cdot C$ aus dem Exponenten. Setzt du genau $t=R\cdot C$ in die Formel ein, steht dort $e^{-1}=0{,}37$. Also:</p>
+<ul><li><b>Entladen:</b> Nach $t=R\cdot C=4{,}7\,\text{s}$ ist noch $0{,}37$ übrig: $U_C=0{,}37\cdot12\,\text{V}=4{,}4\,\text{V}$, der Strom ist auf $0{,}37\cdot1{,}2\,\text{mA}=0{,}44\,\text{mA}$ gefallen.</li><li><b>Laden:</b> $1-e^{-1}=0{,}63$ ist geschafft: $U_C=0{,}63\cdot12\,\text{V}=7{,}6\,\text{V}$.</li><li>Nach dem Fünffachen, also nach $23{,}5\,\text{s}$, ist praktisch alles vorbei.</li></ul>
+<p><b>Warum steht $R\cdot C$ im Exponenten?</b> Großer Widerstand: wenig Strom, die Ladung kommt langsam. Großer Kondensator: Es muss mehr Ladung fließen, bis er voll ist. Beides macht es langsamer. Einheit: $1\,\Omega\cdot1\,\text{F}=\dfrac{\text{V}}{\text{A}}\cdot\dfrac{\text{A}\,\text{s}}{\text{V}}=1\,\text{s}$. Wie du daraus eine Zeit oder eine Spannung ausrechnest, steht in Lektion 8 und 9.</p>
 <h3>Wo steht das in der Formelsammlung?</h3>
 <table><tr><th>Was</th><th>Wo</th></tr>
 <tr><td>Schaltbild (Quelle, Umschalter, $C$, $R$, Messgeräte)</td><td><b>Steht nicht drin.</b> Du musst es zeichnen können, dafür ist diese Lektion.</td></tr>
@@ -407,14 +407,14 @@ ${achtung('Wichtig fürs Erläutern', m`<p>In $y=\dfrac{Ux^2}{4dU_B}$ kommt $e/m
 <tr><td>Die beiden Differenzialgleichungen</td><td>S. 27, die zwei Kästen darunter (nur zum Verstehen, Lektion 9)</td></tr>
 <tr><td>$C=\dfrac QU$ und $E=\tfrac12CU^2$</td><td>S. 27, oberste Kästen</td></tr>
 <tr><td>$R=\dfrac UI$ (daraus $I_0$), $Q=\int I\,dt$</td><td>S. 23</td></tr>
-<tr><td>$I_0=\dfrac{U_0}{R}$ als fertige Formel, das Wort $\tau$</td><td><b>Steht nicht drin.</b> $I_0$ rechnest du aus $R=\dfrac UI$ (S. 23), $\tau$ ist nur die Abkürzung für $R\cdot C$.</td></tr></table>
-<p><b>Beim Lesen von S. 27 aufpassen:</b> Dort steht nirgends $\tau$, sondern $e^{-t/(R\cdot C)}$. Das ist dasselbe wie $e^{-t/\tau}$. Der Strom heißt dort $I(t)=I_0\cdot e^{-t/(R\cdot C)}$ (Laden) und $I(t)=-I_0\cdot e^{-t/(R\cdot C)}$ (Entladen). Den Wert $I_0=\dfrac{U_0}{R}$ musst du selbst einsetzen. Beim Entladen fallen $U_C$, $I$ und $Q$ alle mit demselben Faktor $e^{-t/(R\cdot C)}$ ab.</p>
+<tr><td>$I_0=\dfrac{U_0}{R}$ als fertige Formel</td><td><b>Steht nicht drin.</b> $I_0$ rechnest du aus $R=\dfrac UI$ (S. 23) selbst aus. Das Produkt $R\cdot C$ steht in der Formel im Exponenten.</td></tr></table>
+<p><b>Beim Lesen von S. 27 aufpassen:</b> Der Strom heißt dort $I(t)=I_0\cdot e^{-t/(R\cdot C)}$ (Laden) und $I(t)=-I_0\cdot e^{-t/(R\cdot C)}$ (Entladen). Den Wert $I_0=\dfrac{U_0}{R}$ musst du selbst einsetzen. Beim Entladen fallen $U_C$, $I$ und $Q$ alle mit demselben Faktor $e^{-t/(R\cdot C)}$ ab.</p>
 <h3>Die Bauteile</h3>
 <table><tr><th>Bauteil</th><th>Wozu?</th><th>Wie angeschlossen?</th></tr>
 <tr><td>Spannungsquelle $U_0$</td><td>liefert die Spannung zum Laden</td><td>langer Strich = Pluspol</td></tr>
 <tr><td>Umschalter</td><td>legt den Kondensator entweder an die Quelle (Laden) oder an einen Draht <b>ohne</b> Quelle (Entladen)</td><td>oben in der Schaltung</td></tr>
 <tr><td>Kondensator $C$</td><td>speichert die Ladung</td><td>im Zweig mit dem Widerstand</td></tr>
-<tr><td>Widerstand $R$</td><td>begrenzt den Strom und bestimmt das Tempo ($\tau=R\cdot C$)</td><td>in <b>Reihe</b> zum Kondensator</td></tr>
+<tr><td>Widerstand $R$</td><td>begrenzt den Strom und bestimmt das Tempo ($R\cdot C$)</td><td>in <b>Reihe</b> zum Kondensator</td></tr>
 <tr><td>Amperemeter A</td><td>misst die Stromstärke $I$</td><td>immer in <b>Reihe</b> (der Strom muss hindurch)</td></tr>
 <tr><td>Voltmeter V</td><td>misst die Kondensatorspannung $U_C$</td><td>immer <b>parallel</b> zum Kondensator (zieht fast keinen Strom)</td></tr></table>
 <h3>Die zwei Stellungen des Umschalters</h3>
@@ -431,7 +431,7 @@ ${merke('Was braucht man zum Entladen?', m`<p>Zwei Dinge: <b>(1)</b> die Quelle 
 <tr><td>Stromstärke $I$</td><td>startet bei $\dfrac{U_0}{R}$, geht gegen 0</td><td>startet bei $-\dfrac{U_0}{R}$ (Gegenrichtung), geht gegen 0</td></tr>
 <tr><td>Energie</td><td>Quelle liefert $QU_0$: eine Hälfte steckt danach als $E_\text{el}=\tfrac12CU_0^2$ im Kondensator, die andere wird im Widerstand zu Wärme</td><td>die gespeicherte $E_\text{el}$ wird im Widerstand zu Wärme (in der Blitzröhre zu Licht)</td></tr></table>
 <h3>Warum ein Widerstand?</h3>
-<ul><li><b>Großer Widerstand:</b> Es fließt wenig Strom, der Vorgang dauert lange und man kann ihn ablesen (im Versuch: Strom alle 5 s).</li><li><b>Kein Widerstand (nur Draht):</b> Der Strom wäre riesig und kurz, es gibt einen Funken. Das nutzt man beim Blitzgerät absichtlich: Der Kondensator entlädt sich in etwa einer Tausendstel Sekunde über die Blitzröhre.</li><li>Der Widerstand ändert nur das <b>Tempo</b> ($\tau=R\cdot C$), nicht die Ladung: Es fließt immer die ganze Ladung $Q_0=C\cdot U_0$ ab.</li><li>Steht der Umschalter dazwischen (offen), bleibt die Ladung auf dem Kondensator (idealisiert).</li></ul>
+<ul><li><b>Großer Widerstand:</b> Es fließt wenig Strom, der Vorgang dauert lange und man kann ihn ablesen (im Versuch: Strom alle 5 s).</li><li><b>Kein Widerstand (nur Draht):</b> Der Strom wäre riesig und kurz, es gibt einen Funken. Das nutzt man beim Blitzgerät absichtlich: Der Kondensator entlädt sich in etwa einer Tausendstel Sekunde über die Blitzröhre.</li><li>Der Widerstand ändert nur das <b>Tempo</b> ($R\cdot C$), nicht die Ladung: Es fließt immer die ganze Ladung $Q_0=C\cdot U_0$ ab.</li><li>Steht der Umschalter dazwischen (offen), bleibt die Ladung auf dem Kondensator (idealisiert).</li></ul>
 <h3>Messen im Versuch</h3>
 <p>Aufladen, Umschalter umlegen, alle 5 s die Stromstärke ablesen. Die <b>Fläche unter der $I(t)$-Kurve</b> ist die Ladung $Q=\int I\,dt$ ${FS('S. 23')}, also die Ladung, die der Kondensator gespeichert hatte (mehr dazu in Lektion 9).</p>
 <p class="dim">Mehrere Kondensatoren gleichzeitig (Parallel- und Reihenschaltung, Lektion 5) stehen nicht auf der Themenliste. Im Unterricht kamen sie nur am Rande vor (Superkondensatoren in Reihe für höhere Spannungen, Blitzgerät mit zwei Kondensatoren).</p>`,
@@ -446,10 +446,10 @@ ${merke('Was braucht man zum Entladen?', m`<p>Zwei Dinge: <b>(1)</b> die Quelle 
         q: m`Beschreibe, wie $C=470\,\mu\text{F}$ mit $U_0=12\,\text{V}$ über $R=10\,\text{k}\Omega$ geladen und danach entladen wird und wie du $U_C$ und $I$ misst. Welche Werte erwartest du?`,
         steps: [
           { h: 'Aufbau', t: m`<p>Quelle ($12\,\text{V}$), Umschalter, Kondensator, Widerstand und Amperemeter in einem Zweig hintereinander. Das Voltmeter liegt parallel zum Kondensator.</p>` },
-          { h: 'Laden: Stellung 1', t: m`<p>Die Quelle liegt im Kreis. Anfangsstrom $I_0=\dfrac{U_0}{R}=\dfrac{12\,\text{V}}{10\,000\,\Omega}=1{,}2\,\text{mA}$. Zeitkonstante $\tau=R\cdot C=10\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=4{,}7\,\text{s}$, voll nach etwa $5\tau=23{,}5\,\text{s}$.</p>` },
-          { h: 'Entladen: Stellung 2', t: m`<p>Umschalter umlegen: Die Quelle ist abgetrennt, der Kondensator entlädt sich über $R$. $U_C$ startet bei $12\,\text{V}$ und fällt auf 0, der Strom startet bei $-1{,}2\,\text{mA}$ (Gegenrichtung) und geht gegen 0, wieder in etwa $5\tau$.</p>` },
+          { h: 'Laden: Stellung 1', t: m`<p>Die Quelle liegt im Kreis. Anfangsstrom $I_0=\dfrac{U_0}{R}=\dfrac{12\,\text{V}}{10\,000\,\Omega}=1{,}2\,\text{mA}$. Das Produkt im Exponenten: $R\cdot C=10\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=4{,}7\,\text{s}$. Nach etwa $5\cdot4{,}7\,\text{s}=23{,}5\,\text{s}$ ist der Kondensator voll.</p>` },
+          { h: 'Entladen: Stellung 2', t: m`<p>Umschalter umlegen: Die Quelle ist abgetrennt, der Kondensator entlädt sich über $R$. $U_C$ startet bei $12\,\text{V}$ und fällt auf 0, der Strom startet bei $-1{,}2\,\text{mA}$ (Gegenrichtung) und geht gegen 0, wieder in etwa $23{,}5\,\text{s}$.</p>` },
           { h: 'Gespeicherte Ladung', t: m`<p>$Q_0=C\cdot U_0=470\cdot10^{-6}\,\text{F}\cdot12\,\text{V}=5{,}64\cdot10^{-3}\,\text{C}=5{,}64\,\text{mC}$. Das ist auch die Fläche unter der $I(t)$-Kurve beim Entladen.</p>` },
-          { h: 'Was ändert sich mit größerem R?', t: m`<p>Mit $R=20\,\text{k}\Omega$: $\tau=9{,}4\,\text{s}$ und $I_0=0{,}6\,\text{mA}$. Es dauert doppelt so lang, aber $Q_0$ bleibt $5{,}64\,\text{mC}$.</p>` }
+          { h: 'Was ändert sich mit größerem R?', t: m`<p>Mit $R=20\,\text{k}\Omega$: $R\cdot C=9{,}4\,\text{s}$ und $I_0=0{,}6\,\text{mA}$. Es dauert doppelt so lang, aber $Q_0$ bleibt $5{,}64\,\text{mC}$.</p>` }
         ]
       },
       fehler: [
@@ -462,106 +462,115 @@ ${merke('Was braucht man zum Entladen?', m`<p>Zwei Dinge: <b>(1)</b> die Quelle 
       test: [
         { q: 'Was muss man tun, damit der geladene Kondensator entladen wird?', a: 'Die Quelle abtrennen und die beiden Platten leitend verbinden (am besten über einen Widerstand), also einen geschlossenen Stromkreis ohne Quelle herstellen.' },
         { q: m`Wo kommen Amperemeter und Voltmeter hin, wenn $I$ und $U_C$ gemessen werden?`, a: 'Das Amperemeter in Reihe zu Kondensator und Widerstand, das Voltmeter parallel zum Kondensator.' },
-        { q: 'Wie ist der Entladestrom gerichtet im Vergleich zum Ladestrom?', a: m`In die Gegenrichtung. Deshalb steht in der Formel ein Minus: $I(t)=-\dfrac{U_0}{R}e^{-t/\tau}$.` },
-        { q: m`Was passiert beim Entladen, wenn $R$ verdoppelt wird?`, a: m`Die Zeitkonstante verdoppelt sich, der Anfangsstrom halbiert sich. Die abfließende Ladung $Q_0=C\,U_0$ bleibt gleich.` },
-        { q: m`Was bedeuten $U_0$, $I_0$ und $\tau$? Wie berechnest du $I_0$ und $\tau$?`, a: m`$U_0$: Quellenspannung (beim Entladen: Spannung zu Beginn). $I_0$: Strom im ersten Moment, $I_0=U_0/R$ (nicht in der Formelsammlung, aus $R=U/I$, S. 23). $\tau=R\cdot C$: Zeitkonstante, nach $\tau$ ist beim Entladen noch 37 % übrig.` },
-        { q: 'Welche Formeln zum Auf- und Entladen stehen in der Formelsammlung, und was musst du selbst ergänzen?', a: m`S. 27: $U_C(t)$, $I(t)$, $Q(t)$ für Laden und Entladen mit $e^{-t/(R\cdot C)}$. Selbst: $I_0=U_0/R$ und das Schaltbild. $\tau$ kommt dort nicht vor.` },
+        { q: 'Wie ist der Entladestrom gerichtet im Vergleich zum Ladestrom?', a: m`In die Gegenrichtung. Deshalb steht in der Formel ein Minus: $I(t)=-\dfrac{U_0}{R}e^{-t/(R\cdot C)}$.` },
+        { q: m`Was passiert beim Entladen, wenn $R$ verdoppelt wird?`, a: m`Das Produkt $R\cdot C$ im Exponenten verdoppelt sich, alles läuft doppelt so langsam, der Anfangsstrom halbiert sich. Die abfließende Ladung $Q_0=C\,U_0$ bleibt gleich.` },
+        { q: m`Was bedeuten $U_0$ und $I_0$? Wie berechnest du $I_0$?`, a: m`$U_0$: Quellenspannung (beim Entladen: Spannung zu Beginn). $I_0$: Strom im ersten Moment, $I_0=U_0/R$ (nicht in der Formelsammlung, aus $R=U/I$, S. 23).` },
+        { q: 'Welche Formeln zum Auf- und Entladen stehen in der Formelsammlung, und was musst du selbst ergänzen?', a: m`S. 27: $U_C(t)$, $I(t)$, $Q(t)$ für Laden und Entladen mit $e^{-t/(R\cdot C)}$. Selbst: $I_0=U_0/R$ und das Schaltbild.` },
         { q: 'Warum entlädt man nicht ohne Widerstand?', a: 'Der Strom wäre sehr groß und kurz (Funke, Bauteile können Schaden nehmen), und man könnte den Vorgang nicht messen. Beim Blitzgerät ist das gewollt.' }
       ]
     },
     // ---------------------------------------------------------------- Ordner: Auf- und Entladen
     {
-      id: 'PH8', fach: F, groessen: ['U0', 'UC', 'UR', 'R', 'C', 'I', 'I0', 'tau', 'th', 'euler'], num: 8, min: 18, demo: 'p-rc', demoTitel: 'Schau zuerst: Laden und Entladen live',
+      id: 'PH8', fach: F, groessen: ['U0', 'UC', 'UR', 'R', 'C', 'I', 'I0', 'RC', 'th', 'euler'], num: 8, min: 18, demo: 'p-rc', demoTitel: 'Schau zuerst: Laden und Entladen live',
       title: 'Auf- und Entladen: die Kurven',
-      short: 'τ = R·C, 63 % / 37 %, Halbwertszeit, nach 5 τ fertig',
+      short: 'Maschenregel, Formeln von S. 27, Spannung zu einer Zeit, Zeit zu einer Spannung mit solve, Halbwertszeit',
       idee: m`<p>Ein Kondensator wird über einen Widerstand $R$ an eine Quelle mit der Spannung $U_0$ gelegt. Was passiert Schritt für Schritt?</p>
 <ol><li><b>Einschalten:</b> Der Kondensator ist leer, $U_C=0$. Die ganze Spannung liegt am Widerstand. Es fließt der größte Strom: $I_0=\dfrac{U_0}{R}$. (Der leere Kondensator wirkt wie ein Kurzschluss.)</li><li><b>Ladung kommt an:</b> Der Kondensator bekommt eine Spannung $U_C$. Für den Widerstand bleibt nur noch der Rest: $U_R=U_0-U_C$. Also wird der Strom kleiner.</li><li><b>Je voller, desto langsamer:</b> Kleinerer Strom heißt, es kommt langsamer Ladung nach. Der Kondensator nähert sich $U_0$ immer langsamer an.</li><li><b>Voll:</b> $U_C=U_0$, für den Widerstand bleibt nichts, kein Strom mehr. (Der volle Kondensator wirkt wie eine Unterbrechung.)</li></ol>
 <p>„Je mehr schon da ist, desto langsamer geht es weiter“: Genau so ein Verlauf ist eine <b>e-Funktion</b>.</p>
-<h3>Die Zeitkonstante τ: das Tempo</h3>
-${merke('Zeitkonstante' + FSN('τ steht nicht drin, nur R·C im Exponenten (S. 27)'), m`$$\tau=R\cdot C$$<p>Großer Widerstand (wenig Strom) oder große Kapazität (viel Platz): Es dauert länger. Einheit: $\Omega\cdot\text{F}=\text{s}$.</p>`)}
+<h3>Die Maschenregel (S. 24): das ist der Grund hinter den Kurven</h3>
+${merke('Maschenregel' + FS('S. 24'), m`$$\sum U_i=0$$<p>Läufst du einmal im Kreis herum (eine <b>Masche</b>), ergeben alle Spannungen zusammen null. Anders gesagt: <b>Was die Quelle hineinsteckt, wird von den Bauteilen verbraucht.</b></p>`)}
+<table><tr><th></th><th>Maschenregel</th><th>Was daraus folgt</th></tr>
+<tr><td><b>Laden</b> (Quelle im Kreis)</td><td>$U_0=U_R+U_C$</td><td>Die Quellenspannung <b>teilt sich auf</b>. Am Anfang ist $U_C=0$, also $U_R=U_0$ und $I_0=\dfrac{U_0}{R}$. Am Ende ist $U_C=U_0$, also $U_R=0$ und kein Strom mehr.</td></tr>
+<tr><td><b>Entladen</b> (keine Quelle)</td><td>$U_C+U_R=0$, also $U_R=-U_C$</td><td>Der Kondensator wirkt wie die Quelle. Am Anfang liegt <b>die ganze Spannung $U_0$ am Widerstand</b> (dem Betrag nach), sie sinkt mit $U_C$. Das Minus kommt von der Umlaufrichtung.</td></tr>
+<tr><td><b>Strom</b></td><td>$I=\dfrac{U_R}{R}$</td><td>Aus der Maschenregel folgt $U_R$, daraus mit $R=\dfrac UI$ (S. 23) der Strom. Beim Laden: $I=\dfrac{U_0-U_C}{R}$.</td></tr>
+<tr><td><b>Differenzialgleichung</b></td><td>$U_0=R\,I+\dfrac QC$</td><td>Das ist die Maschenregel mit $U_R=R\,I$ und $U_C=\dfrac QC$. Ableiten ($\dot Q=I$) führt auf die Gleichung von S. 27 (Aufgabe PL6).</td></tr></table>
+<p><b>So wendest du sie an:</b></p>
+<ol><li>Eine Masche und eine Umlaufrichtung wählen (hier: Quelle bzw. Kondensator, Widerstand, zurück).</li><li>Jede Spannung hinschreiben: Quelle $U_0$, Widerstand $U_R=R\cdot I$, Kondensator $U_C=\dfrac QC$.</li><li>„Quelle = Verbraucher“ (oder Summe gleich 0) ansetzen und nach dem Gesuchten umstellen.</li></ol>
+${achtung('Laden und Entladen nicht verwechseln', m`<p>Beim <b>Laden</b> teilen sich $U_R$ und $U_C$ die Spannung $U_0$ (<b>Summe</b>). Beim <b>Entladen</b> gibt es keine Quelle: Dort sind $U_R$ und $U_C$ dem Betrag nach <b>gleich</b>, und am Anfang liegt $U_0$ am Widerstand.</p>`)}
 <h3>Die Formeln (AB 18)</h3>
-${merke('Laden' + FS('S. 27'), m`$$U_C(t)=U_0\,\bigl(1-e^{-t/\tau}\bigr)\qquad I(t)=\frac{U_0}{R}\,e^{-t/\tau}$$`)}
-${merke('Entladen' + FS('S. 27'), m`$$U_C(t)=U_0\,e^{-t/\tau}\qquad I(t)=-\frac{U_0}{R}\,e^{-t/\tau}$$<p>Minus: Der Strom fließt beim Entladen in die andere Richtung.</p>`)}
+${merke('Laden' + FS('S. 27'), m`$$U_C(t)=U_0\,\bigl(1-e^{-t/(R\cdot C)}\bigr)\qquad I(t)=\frac{U_0}{R}\,e^{-t/(R\cdot C)}$$`)}
+${merke('Entladen' + FS('S. 27'), m`$$U_C(t)=U_0\,e^{-t/(R\cdot C)}\qquad I(t)=-\frac{U_0}{R}\,e^{-t/(R\cdot C)}$$<p>Minus: Der Strom fließt beim Entladen in die andere Richtung.</p>`)}
 <p class="dim">In der Formelsammlung (S. 27) steht der Strom als $I(t)=\pm I_0\cdot e^{-t/(R\cdot C)}$. Dabei ist $I_0=\dfrac{U_0}{R}$ der Strom im ersten Moment (mehr dazu in Lektion 14).</p>
-<p>So liest du $e^{-t/\tau}$: Das ist der <b>Anteil, der noch übrig ist</b>. Am Anfang 1 (100 %), nach $1\tau$ noch 0,37, nach $5\tau$ fast 0. Beim Laden ist $1-e^{-t/\tau}$ der Anteil, der <b>schon geschafft</b> ist.</p>
-<ul><li>Nach $1\tau$: Spannung beim Laden bei <b>63 %</b>, Strom bei <b>37 %</b>.</li><li><b>Halbwertszeit</b> $t_h=\tau\cdot\ln2\approx0{,}69\,\tau$: In dieser Zeit halbiert sich der Strom (bzw. der Rest).</li><li>Nach $5\tau$ (≈ 7 Halbwertszeiten) gilt der Vorgang als fertig (unter 1 % Rest).</li></ul>`,
-      bild: m`<p>Wie eine Badewanne, die über einen dünnen Schlauch abläuft: Am Anfang drückt viel Wasser, es fließt schnell. Je leerer, desto langsamer. Der Widerstand ist der Schlauch, die Kapazität die Größe der Wanne. Beides zusammen bestimmt $\tau$.</p>`,
+<p>So liest du $e^{-t/(R\cdot C)}$: Das ist der <b>Anteil, der noch übrig ist</b>. Bei $t=0$ ist der Exponent 0 und $e^0=1$ (100 %). Je größer $t$, desto kleiner wird $e^{-t/(R\cdot C)}$, bis fast 0. Beim Laden ist $1-e^{-t/(R\cdot C)}$ der Anteil, der <b>schon geschafft</b> ist.</p>
+<ul><li><b>Wie schnell?</b> Im Exponenten steht $R\cdot C$ (Einheit s). Je größer $R$ oder $C$, desto langsamer.</li><li><b>Spannung zu einer Zeit:</b> $t$ einsetzen und mit dem Rechner ausrechnen.</li><li><b>Zeit zu einer Spannung:</b> Gleichung mit den Zahlen aufschreiben und mit <code>solve(…, t)</code> nach $t$ lösen (Lektion 9).</li><li><b>Halbwertszeit</b> $t_h=R\cdot C\cdot\ln2$: In dieser Zeit halbiert sich der Strom (bzw. der Rest). Herleitung in Lektion 12.</li></ul>`,
+      bild: m`<p>Wie eine Badewanne, die über einen dünnen Schlauch abläuft: Am Anfang drückt viel Wasser, es fließt schnell. Je leerer, desto langsamer. Der Widerstand ist der Schlauch, die Kapazität die Größe der Wanne. Beides zusammen bestimmt, wie schnell es geht.</p>`,
       rezept: [
-        m`$\tau=R\cdot C$ berechnen. kΩ und µF erst umrechnen ($10\,\text{k}\Omega=10\,000\,\Omega$, $470\,\mu\text{F}=0{,}000470\,\text{F}$).`,
-        m`Laden oder Entladen? Die passende Formel aufschreiben. Faustregel: Steigt die Größe, steht $(1-e^{-t/\tau})$ da; fällt sie, nur $e^{-t/\tau}$.`,
-        m`Zeit einsetzen: erst $-t/\tau$ ausrechnen, dann $e^{\ldots}$ mit der Taste $e^x$.`,
-        m`Zeit gesucht? Nach $e^{-t/\tau}$ auflösen und logarithmieren (Lektion 9).`
+        m`<b>Werte in Ω, F und V:</b> kΩ und µF erst umrechnen ($10\,\text{k}\Omega=10\,000\,\Omega$, $470\,\mu\text{F}=0{,}000470\,\text{F}$).`,
+        m`Laden oder Entladen? Die passende Formel aufschreiben. Faustregel: Steigt die Größe, steht $(1-e^{-t/(R\cdot C)})$ da; fällt sie, nur $e^{-t/(R\cdot C)}$.`,
+        m`<b>Spannung zu einer Zeit:</b> $t$, $R$, $C$ einsetzen und mit dem Rechner ausrechnen (erst den Exponenten, dann $e^x$).`,
+        m`<b>Zeit zu einer Spannung:</b> Gleichung mit den Zahlen aufschreiben, im Rechner <code>solve(Gleichung, t)</code> (Lektion 9).`
       ],
       beispiel: {
-        q: m`$C=470\,\mu\text{F}$ wird über $R=10\,\text{k}\Omega$ an $U_0=12\,\text{V}$ geladen (anfangs leer). Berechne $\tau$, $t_h$, $I_0$ sowie $U_C$ und $I$ nach $5{,}0\,\text{s}$.`,
+        q: m`$C=470\,\mu\text{F}$ wird über $R=10\,\text{k}\Omega$ an $U_0=12\,\text{V}$ geladen (anfangs leer). Berechne $I_0$, $U_C$ und $I$ nach $5{,}0\,\text{s}$ sowie die Zeit, nach der $U_C=10\,\text{V}$ erreicht ist.`,
         steps: [
-          { h: 'Gegeben und gesucht', t: m`<p>$C=470\cdot10^{-6}\,\text{F}$, $R=10\,000\,\Omega$, $U_0=12\,\text{V}$, Laden. Gesucht: $\tau$, $t_h$, $I_0$, $U_C(5\,\text{s})$, $I(5\,\text{s})$.</p>` },
-          { h: 'Tempo: Zeitkonstante und Halbwertszeit', t: m`<p>$\tau=R\cdot C=10\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=4{,}7\,\text{s}$</p><p>$t_h=\tau\cdot\ln2=4{,}7\,\text{s}\cdot0{,}693=3{,}26\,\text{s}$: Alle 3,26 s halbiert sich der Strom.</p>` },
+          { h: 'Gegeben und gesucht', t: m`<p>$C=470\cdot10^{-6}\,\text{F}$, $R=10\,000\,\Omega$, $U_0=12\,\text{V}$, Laden. Gesucht: $I_0$, $U_C(5\,\text{s})$, $I(5\,\text{s})$ und $t$ für $U_C=10\,\text{V}$.</p>` },
+          { h: 'Das Produkt im Exponenten', t: m`<p>$R\cdot C=10\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=4{,}7\,\text{s}$. Diese Zahl steht in der Formel unter dem Bruchstrich.</p>` },
           { h: 'Anfangsstrom', t: m`<p>Im ersten Moment ist der Kondensator leer, die ganzen 12 V liegen am Widerstand:</p><p>$I_0=\dfrac{U_0}{R}=\dfrac{12\,\text{V}}{10\,000\,\Omega}=0{,}0012\,\text{A}=1{,}2\,\text{mA}$</p>` },
-          { h: 'Spannung nach 5 s', t: m`<p>Laden, also $U_C=U_0(1-e^{-t/\tau})$. Erst der Anteil, der noch fehlt: $e^{-5{,}0/4{,}7}=e^{-1{,}064}=0{,}345$. Geschafft sind also $1-0{,}345=0{,}655$, gut 65 %:</p><p>$U_C=12\,\text{V}\cdot0{,}655=7{,}86\,\text{V}$</p>` },
-          { h: 'Strom nach 5 s', t: m`<p>Der Strom ist auf denselben Anteil $0{,}345$ gefallen: $I=1{,}2\,\text{mA}\cdot0{,}345=0{,}41\,\text{mA}$.</p><p>Kontrolle mit der Maschenregel: Am Widerstand liegen $12-7{,}86=4{,}14\,\text{V}$, und $\dfrac{4{,}14\,\text{V}}{10\,000\,\Omega}=0{,}41\,\text{mA}$. Passt.</p>` }
+          { h: 'Spannung nach 5 s', t: m`<p>Laden, also $U_C=U_0\,\bigl(1-e^{-t/(R\cdot C)}\bigr)$ ${FS('S. 27')}. Einsetzen:</p><p>$U_C=12\,\text{V}\cdot\bigl(1-e^{-5{,}0/4{,}7}\bigr)=12\,\text{V}\cdot(1-0{,}345)=7{,}86\,\text{V}$</p>` },
+          { h: 'Strom nach 5 s', t: m`<p>Der Strom ist auf denselben Anteil $0{,}345$ gefallen: $I=1{,}2\,\text{mA}\cdot0{,}345=0{,}41\,\text{mA}$.</p><p>Kontrolle mit der Maschenregel: Am Widerstand liegen $12-7{,}86=4{,}14\,\text{V}$, und $\dfrac{4{,}14\,\text{V}}{10\,000\,\Omega}=0{,}41\,\text{mA}$. Passt.</p>` },
+          { h: 'Zeit bis 10 V (mit dem Rechner)', t: m`<p>Gleichung mit den Zahlen: $10=12\cdot\bigl(1-e^{-t/4{,}7}\bigr)$.</p><p>Im Rechner: <code>solve(10=12*(1-e^(-t/4.7)),t)</code> ergibt $t=8{,}42\,\text{s}$.</p><p>Von Hand: $e^{-t/4{,}7}=1-\tfrac{10}{12}=\tfrac16\ \big|\ln\ \Rightarrow\ -\tfrac{t}{4{,}7}=-1{,}79\ \Rightarrow\ t=8{,}4\,\text{s}$.</p>` }
         ]
       },
       fehler: [
-        m`Lade- und Entladeformel vertauscht. Laden: $U_C$ steigt, also $(1-e^{-t/\tau})$. Entladen: $U_C$ fällt, also $e^{-t/\tau}$.`,
+        m`Lade- und Entladeformel vertauscht. Laden: $U_C$ steigt, also $(1-e^{-t/(R\cdot C)})$. Entladen: $U_C$ fällt, also $e^{-t/(R\cdot C)}$.`,
         'kΩ und µF nicht umgerechnet: 10 kΩ · 470 µF = 10 000 Ω · 0,00047 F = 4,7 s.',
-        m`Halbwertszeit mit $\tau$ verwechselt: $t_h=\tau\cdot\ln2$, nicht $\tau$.`,
-        m`Das $e$ in $e^{-t/\tau}$ für die Elementarladung gehalten. Hier ist es die Zahl 2,718.`
+        m`Maschenregel beim Entladen falsch benutzt: Beim Laden teilen sich $U_R$ und $U_C$ die Spannung $U_0$ (Summe), beim Entladen gibt es keine Quelle, dort ist $|U_R|=U_C$.`,
+        m`Das $e$ in $e^{-t/(R\cdot C)}$ für die Elementarladung gehalten. Hier ist es die Zahl 2,718.`
       ],
       test: [
         { q: 'Warum ist der Ladestrom am Anfang am größten?', a: m`Der Kondensator ist leer ($U_C=0$), die ganze Spannung liegt am Widerstand: $I_0=U_0/R$. Mit wachsender $U_C$ bleibt für $R$ weniger.` },
-        { q: m`Wie viel Prozent der Endspannung sind nach $1\,\tau$ erreicht?`, a: '63 % (Strom: noch 37 %).' },
-        { q: m`Was bedeutet $e^{-t/\tau}$ in Worten?`, a: 'Der Anteil, der noch übrig ist (Strom beim Laden, Spannung beim Entladen): am Anfang 1, nach τ 0,37.' },
-        { q: m`Zusammenhang Halbwertszeit und Zeitkonstante?`, a: m`$t_h=\tau\cdot\ln2\approx0{,}69\,\tau$` },
-        { q: 'Nach wie vielen τ gilt der Ladevorgang als beendet?', a: 'Nach 5 τ (unter 1 % Rest).' }
+        { q: m`Wie lautet die Maschenregel beim Laden und beim Entladen?`, a: m`Laden: $U_0=U_R+U_C$. Entladen (ohne Quelle): $U_C+U_R=0$, also $|U_R|=U_C$.` },
+        { q: m`Was bedeutet $e^{-t/(R\cdot C)}$ in Worten?`, a: 'Der Anteil, der noch übrig ist (Strom beim Laden, Spannung beim Entladen): am Anfang 1, danach immer weniger.' },
+        { q: m`Wie bekommst du die Zeit bis zu einer bestimmten Spannung?`, a: m`Gleichung mit den Zahlen aufschreiben und im Rechner <code>solve(…, t)</code> eingeben (oder von Hand $e^{\ldots}$ isolieren und $\ln$ nehmen).` },
+        { q: 'Wovon hängt es ab, wie schnell der Kondensator lädt?', a: m`Vom Produkt $R\cdot C$ im Exponenten: größerer Widerstand oder größere Kapazität machen es langsamer.` }
       ]
     },
     {
-      id: 'PH9', fach: F, groessen: ['tE', 'tau', 'R', 'C', 'U0', 'UC', 'dQ', 'euler'], num: 9, min: 20, demo: 'p-messung', demoTitel: 'Probier es aus: C aus der Kurve bestimmen',
+      id: 'PH9', fach: F, groessen: ['tE', 'RC', 'R', 'C', 'U0', 'UC', 'dQ', 'euler'], num: 9, min: 20, demo: 'p-messung', demoTitel: 'Probier es aus: C aus der Kurve bestimmen',
       title: 'Rechnen mit der e-Funktion und C messen',
       short: 'Nach t auflösen (ln), C = t_E/(R·ln 3) herleiten, Linearisierung, Messunsicherheit',
-      idee: m`<h3>1. Der Logarithmus holt die Zeit herunter</h3>
-<p>Die Zeit $t$ steckt im Exponenten von $e^{-t/\tau}$. Um sie herauszuholen, braucht man den <b>natürlichen Logarithmus</b> $\ln$. Er ist die Umkehrung von $e^x$:</p>
-${merke('Die eine Regel', m`$$\ln\!\left(e^{x}\right)=x\qquad\text{also}\qquad \ln\!\left(e^{-t/\tau}\right)=-\frac{t}{\tau}$$`)}
-<p>Vorgehen: Erst die e-Funktion <b>allein auf eine Seite</b> bringen, dann auf beiden Seiten $\ln$ nehmen. Weil $e^{-t/\tau}$ zwischen 0 und 1 liegt, ist sein Logarithmus negativ. Das Minus hebt sich mit dem Minus vor $t/\tau$ weg, $t$ wird positiv.</p>
+      idee: m`<h3>1. Zeit gesucht: so wird es im Unterricht gerechnet</h3>
+<p>Die Zeit $t$ steckt im Exponenten von $e^{-t/(R\cdot C)}$. Im Unterricht nimmt man dafür den Rechner: <b>Gleichung mit den Zahlen aufschreiben, dann <code>solve(Gleichung, t)</code>.</b></p>
+${merke('Zeit gesucht: drei Schritte', m`<ol><li>Formel von S. 27 mit den Zahlen aufschreiben, nur $t$ bleibt offen, z. B. $2{,}0=12\cdot e^{-t/(10000\cdot470\cdot10^{-6})}$.</li><li>Im Rechner: <code>solve(2.0=12*e^(-t/(10000*470*10^(-6))),t)</code> ergibt $t=8{,}42$.</li><li>Ergebnis mit Einheit hinschreiben ($t=8{,}4\,\text{s}$) und prüfen: positiv, passende Größenordnung.</li></ol>`)}
+<p><b>Von Hand</b> (nötig bei „Gleichung herleiten“): Erst die e-Funktion <b>allein auf eine Seite</b> bringen, dann auf beiden Seiten den natürlichen Logarithmus nehmen. Er ist die Umkehrung von $e^x$: $\ln\!\left(e^{x}\right)=x$. Weil $e^{-t/(R\cdot C)}$ zwischen 0 und 1 liegt, ist sein Logarithmus negativ. Das Minus hebt sich mit dem Minus vor $t/(R\cdot C)$ weg, $t$ wird positiv.</p>
 <h3>2. Kapazität messen: die Herleitung von C = t_E / (R·ln 3)</h3>
-<p>Wie in der Abi-Aufgabe „Kornfeuchte“: Man entlädt über einen bekannten Widerstand $R$ und stoppt die Zeit $t_E$, bis die Spannung auf ein Drittel gefallen ist. Daraus folgt $C$, Schritt für Schritt im Beispiel unten.</p>
+<p>Wie in der Abi-Aufgabe „Kornfeuchte“: Man entlädt über einen bekannten Widerstand $R$ und stoppt die Zeit $t_E$, bis die Spannung auf ein Drittel gefallen ist. Daraus folgt $C$, Schritt für Schritt im Beispiel unten. Der Rechner kann das auch mit Buchstaben (<code>solve(1/3=e^(-te/(r*c)),c)</code>), aber bei „Herleiten“ zählt dein aufgeschriebener Weg.</p>
 <h3>3. Linearisierung: ist es wirklich eine e-Funktion?</h3>
-<p>Trägt man nicht $U$, sondern $\ln(U/U_0)$ gegen $t$ auf, wird aus der Kurve eine <b>Gerade</b> mit der Steigung $-\dfrac1\tau$. Denn $\ln(U/U_0)=\ln(e^{-t/\tau})=-\dfrac1\tau\cdot t$. Liegen Messpunkte so auf einer Geraden, ist es eine e-Funktion, und aus der Steigung (Regression) folgt $\tau$.</p>`,
+<p>Trägt man nicht $U$, sondern $\ln(U/U_0)$ gegen $t$ auf, wird aus der Kurve eine <b>Gerade</b> mit der Steigung $-\dfrac1{R\cdot C}$. Denn $\ln(U/U_0)=\ln(e^{-t/(R\cdot C)})=-\dfrac1{R\cdot C}\cdot t$. Liegen Messpunkte so auf einer Geraden, ist es eine e-Funktion, und aus der Steigung (Regression) folgt $R\cdot C$.</p>`,
       bild: m`<p><b>Messunsicherheit (Regel aus „Runden und Messunsicherheit“):</b> Die relative Unsicherheit des Ergebnisses ist so groß wie die <b>größte</b> relative Unsicherheit der Eingangsgrößen. Beispiel: Widerstand ±5 %, Zeit ±2 %: Ergebnis ±5 %. Unsicherheiten mit zwei signifikanten Stellen angeben.</p>`,
       rezept: [
         m`Passende Formel aufschreiben (Laden oder Entladen) und die bekannten Werte einsetzen.`,
-        m`$e^{-t/\tau}$ isolieren: durch $U_0$ teilen (beim Laden vorher $1-\ldots$ umstellen).`,
-        m`Beide Seiten logarithmieren: $-\dfrac t\tau=\ln(\ldots)$, dann nach $t$, $R$ oder $C$ auflösen.`,
-        m`Kontrolle: Zeit positiv? Größenordnung passt zu $\tau$ (0,7 τ für die Hälfte, 1,1 τ für ein Drittel, 2,3 τ für 10 %)?`
+        m`Gleichung mit den Zahlen aufschreiben (nur $t$ unbekannt) und im Rechner mit <code>solve(…, t)</code> lösen.`,
+        m`Von Hand: $e^{-t/(R\cdot C)}$ isolieren (durch $U_0$ teilen, beim Laden vorher $1-\ldots$ umstellen), beide Seiten logarithmieren: $-\dfrac{t}{R\cdot C}=\ln(\ldots)$, dann nach $t$, $R$ oder $C$ auflösen.`,
+        m`Kontrolle: Zeit positiv? Größenordnung passt zu $R\cdot C$ (etwa 0,7 mal $R\cdot C$ für die Hälfte, 1,1 mal für ein Drittel, 2,3 mal für 10 %)?`
       ],
       beispiel: {
         q: m`Herleitung wie im Abi: Ein Kondensator wird über $R$ entladen. $t_E$ ist die Zeit, bis die Spannung von $U_0$ auf $\tfrac13U_0$ gefallen ist. Zeige $C=\dfrac{t_E}{R\cdot\ln3}$ und berechne $C$ für $R=47\,\text{k}\Omega$, $t_E=50{,}0\,\text{s}$.`,
         steps: [
-          { h: 'Entladegesetz aufschreiben', t: m`<p>Beim Entladen gilt $U_C(t)=U_0\cdot e^{-t/(RC)}$ (mit $\tau=RC$ ausgeschrieben, weil wir $C$ suchen).</p>` },
+          { h: 'Entladegesetz aufschreiben', t: m`<p>Beim Entladen gilt $U_C(t)=U_0\cdot e^{-t/(RC)}$ (mit $R\cdot C$ ausgeschrieben, weil wir $C$ suchen).</p>` },
           { h: 'Messbedingung einsetzen', t: m`<p>Zur Zeit $t=t_E$ ist noch ein Drittel übrig: $\tfrac13U_0=U_0\cdot e^{-t_E/(RC)}$.</p><p>Durch $U_0$ teilen. Die Startspannung fällt heraus, man muss sie also gar nicht kennen: $\tfrac13=e^{-t_E/(RC)}$.</p>` },
           { h: 'Logarithmieren', t: m`<p>$\ln$ auf beiden Seiten: $\ln\tfrac13=-\dfrac{t_E}{RC}$.</p><p>Weil $\ln\tfrac13=-\ln3$, kann man beide Minus streichen: $\ln3=\dfrac{t_E}{RC}$.</p>` },
           { h: 'Nach C umstellen', t: m`<p>Mal $C$, dann durch $\ln3$: $\;C=\dfrac{t_E}{R\cdot\ln3}$. Fertig hergeleitet.</p>` },
-          { h: 'Zahlen einsetzen', t: m`<p>$C=\dfrac{50{,}0\,\text{s}}{47\,000\,\Omega\cdot1{,}0986}=9{,}68\cdot10^{-4}\,\text{F}\approx0{,}97\,\text{mF}$</p><p>Plausibel? $\tau=RC\approx45\,\text{s}$, und für ein Drittel braucht man $\ln3\approx1{,}1$ Zeitkonstanten, also etwa 50 s. Passt.</p>` }
+          { h: 'Zahlen einsetzen', t: m`<p>$C=\dfrac{50{,}0\,\text{s}}{47\,000\,\Omega\cdot1{,}0986}=9{,}68\cdot10^{-4}\,\text{F}\approx0{,}97\,\text{mF}$</p><p>Plausibel? $R\cdot C\approx45\,\text{s}$, und für ein Drittel braucht man $\ln3\approx1{,}1$ mal $R\cdot C$, also etwa 50 s. Passt.</p>` }
         ]
       },
-      extraAfter: m`<p><b>Noch ein Rechenbeispiel: Zeit gesucht.</b> Ein Kondensator ($\tau=4{,}7\,\text{s}$) wird von 12 V aus entladen. Wann liegen nur noch 2,0 V an?</p><p>$2{,}0=12\cdot e^{-t/4{,}7}\ \Rightarrow\ e^{-t/4{,}7}=\tfrac{2{,}0}{12}=\tfrac16\ \Rightarrow\ -\tfrac{t}{4{,}7}=\ln\tfrac16=-1{,}79\ \Rightarrow\ t=4{,}7\,\text{s}\cdot1{,}79=8{,}4\,\text{s}$</p><p><b>Abgeflossene Ladung</b> nach der Zeit $t$: Anfangsladung minus Rest, $\Delta Q=Q_0-Q_0e^{-t/\tau}=Q_0\,(1-e^{-t/\tau})$ mit $Q_0=C\cdot U_0$.</p>`,
+      extraAfter: m`<p><b>Noch ein Rechenbeispiel: Zeit gesucht.</b> Ein Kondensator ($R=10\,\text{k}\Omega$, $C=470\,\mu\text{F}$) wird von 12 V aus entladen. Wann liegen nur noch 2,0 V an?</p><p><b>Rechner:</b> Gleichung $2{,}0=12\cdot e^{-t/(10000\cdot470\cdot10^{-6})}$, Eingabe <code>solve(2.0=12*e^(-t/(10000*470*10^(-6))),t)</code>, Ergebnis $t=8{,}42\,\text{s}$.</p><p><b>Von Hand:</b> $2{,}0=12\cdot e^{-t/4{,}7}\ \Rightarrow\ e^{-t/4{,}7}=\tfrac{2{,}0}{12}=\tfrac16\ \Rightarrow\ -\tfrac{t}{4{,}7}=\ln\tfrac16=-1{,}79\ \Rightarrow\ t=4{,}7\,\text{s}\cdot1{,}79=8{,}4\,\text{s}$</p><p><b>Abgeflossene Ladung</b> nach der Zeit $t$: Anfangsladung minus Rest, $\Delta Q=Q_0-Q_0e^{-t/(R\cdot C)}=Q_0\,(1-e^{-t/(R\cdot C)})$ mit $Q_0=C\cdot U_0$.</p>`,
       fehler: [
-        m`$\ln$ auf eine Summe angewendet: $\ln(U_0(1-e^{-t/\tau}))$ geht nicht direkt. Erst $1-e^{-t/\tau}$ ausrechnen und $e^{-t/\tau}$ isolieren.`,
+        m`$\ln$ auf eine Summe angewendet: $\ln(U_0(1-e^{-t/(R\cdot C)}))$ geht nicht direkt. Erst $1-e^{-t/(R\cdot C)}$ ausrechnen und $e^{-t/(R\cdot C)}$ isolieren.`,
         m`Vorzeichen: $\ln$ von Zahlen kleiner 1 ist negativ, $t$ muss am Ende positiv sein.`,
         'Bei der Messunsicherheit die Unsicherheiten addiert. Nach der Regel aus dem Unterricht zählt die größte relative Unsicherheit.'
       ],
       test: [
         { q: m`Herleitung von $C=\dfrac{t_E}{R\ln3}$ in vier Schritten?`, a: m`1. $U=U_0e^{-t/(RC)}$ · 2. $\tfrac13U_0$ bei $t_E$ einsetzen, durch $U_0$ teilen · 3. logarithmieren: $\ln\tfrac13=-\tfrac{t_E}{RC}$ · 4. nach $C$ umstellen.` },
-        { q: m`Wie löst man $0{,}2=e^{-t/\tau}$ nach $t$?`, a: m`$\ln$ nehmen: $-\tfrac t\tau=\ln0{,}2$, also $t=-\tau\ln0{,}2=1{,}61\,\tau$.` },
-        { q: m`Was trägt man auf, um eine Gerade zu bekommen? Steigung?`, a: m`$\ln(U/U_0)$ gegen $t$, Steigung $-1/\tau$.` },
+        { q: m`Wie löst man $0{,}2=e^{-t/(R\cdot C)}$ nach $t$?`, a: m`Im Rechner <code>solve(0.2=e^(-t/(R*C)),t)</code> mit den Zahlen für $R$ und $C$. Von Hand: $\ln$ nehmen, $-\tfrac{t}{R\cdot C}=\ln0{,}2$, also $t=-R\cdot C\cdot\ln0{,}2=1{,}61\cdot R\cdot C$.` },
+        { q: m`Was trägt man auf, um eine Gerade zu bekommen? Steigung?`, a: m`$\ln(U/U_0)$ gegen $t$, Steigung $-1/(R\cdot C)$.` },
         { q: 'Widerstand ±5 %, gemessene Zeit ±1,7 %. Unsicherheit von C?', a: '±5 % (größte relative Unsicherheit).' }
       ]
     },
 
     // ---------------------------------------------------------------- Klausurthema „Begründen mit funktionalen Abhängigkeiten“ (12.11.)
     {
-      id: 'PH10', fach: F, groessen: ['C', 'Q', 'U', 'E', 'd', 'A', 'epsr', 'v0', 'UB', 'y', 'tau', 'R'], num: 10, min: 15,
+      id: 'PH10', fach: F, groessen: ['C', 'Q', 'U', 'E', 'd', 'A', 'epsr', 'v0', 'UB', 'y', 'RC', 'R'], num: 10, min: 15,
       title: 'Begründen mit funktionalen Abhängigkeiten',
       short: 'Je-desto richtig begründen: was bleibt gleich, welche Formel, welcher Faktor',
       idee: m`<p>Auf der Themenliste der Lehrkraft steht „<b>Begründen mit funktionalen Abhängigkeiten</b>“. In der Klausur heißt das: „Begründen Sie, wie sich … ändert, wenn …“. Das ist keine Rechenaufgabe. Du zeigst, dass du siehst, <b>welche Formel</b> die Größen verbindet und <b>was dabei gleich bleibt</b>. Der Taschenrechner hilft dir hier nicht, das Denken schon.</p>
@@ -576,7 +585,7 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
 <tr><td>Energie</td><td>$E_\text{el}=\tfrac12CU^2=\dfrac{Q^2}{2C}$</td><td>an der Quelle $\propto C$ und $\propto U^2$; abgetrennt $\propto\dfrac1C$</td></tr>
 <tr><td>Geschwindigkeit nach Beschleunigung</td><td>$v_0=\sqrt{\dfrac{2eU_B}{m_e}}$</td><td>$\propto\sqrt{U_B}$, <b>nicht</b> von $U_A$ abhängig</td></tr>
 <tr><td>Ablenkung im Querfeld</td><td>$y=\dfrac{U_A\,x^2}{4\,d\,U_B}$</td><td>$\propto U_A$, $\propto x^2$, $\propto\dfrac1d$, $\propto\dfrac1{U_B}$</td></tr>
-<tr><td>Zeitkonstante</td><td>$\tau=R\cdot C$</td><td>$\propto R$, $\propto C$ (und $t_h=\tau\ln2$ mit)</td></tr>
+<tr><td>Zeit im Exponenten</td><td>$e^{-t/(R\cdot C)}$</td><td>größeres $R$ oder $C$: langsamer ($t_h=R\cdot C\cdot\ln2$ wächst mit)</td></tr>
 <tr><td>Anfangsstrom</td><td>$I_0=\dfrac{U_0}{R}$</td><td>$\propto U_0$, $\propto\dfrac1R$; hängt nicht von $C$ ab</td></tr></table>`,
       bild: m`<p>Eine gute Begründung ist eine <b>Kette</b>: Ursache → Formel → Folge. Zum Beispiel: „$d$ wird halbiert → $C=\varepsilon_0\varepsilon_rA/d$ → $C$ verdoppelt sich“. Ein Satz ohne Formel („je kleiner der Abstand, desto größer …“) ist nur eine Behauptung und bringt wenig Punkte.</p>`,
       rezept: [
@@ -600,19 +609,19 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
         m`Nur „je … desto …“ hingeschrieben, ohne Formel und ohne zu sagen, was gleich bleibt. Das ist keine Begründung.`,
         m`Quelle und abgetrennt verwechselt. Frage zuerst: Hängt der Kondensator noch an der Spannungsquelle?`,
         m`$v_0\propto U_B$ gesagt. Richtig: $v_0\propto\sqrt{U_B}$ (aus $\tfrac12mv^2=eU$), und $y\propto\dfrac1{U_B}$ (nicht $\sqrt{\ }$).`,
-        m`Gedacht, ein größerer Widerstand ändere die gespeicherte Ladung. Nein: $Q_0=C\cdot U_0$. $R$ ändert nur, <b>wie lange</b> es dauert ($\tau=RC$) und wie groß $I_0=U_0/R$ ist.`
+        m`Gedacht, ein größerer Widerstand ändere die gespeicherte Ladung. Nein: $Q_0=C\cdot U_0$. $R$ ändert nur, <b>wie lange</b> es dauert ($R\cdot C$) und wie groß $I_0=U_0/R$ ist.`
       ],
       test: [
         { q: m`$U_B$ wird vervierfacht. Um welchen Faktor ändert sich $v_0$?`, a: m`Um den Faktor 2, weil $v_0\propto\sqrt{U_B}$.` },
         { q: m`Plattenkondensator an der Quelle, Abstand verdoppelt: Faktoren für $C$, $Q$, $E$?`, a: m`$C\to\frac12$, $Q=CU\to\frac12$, $E=\frac Ud\to\frac12$.` },
         { q: m`Vier Bausteine einer Begründung?`, a: m`Was bleibt gleich, welche Formel, welcher Faktor, Satz mit „weil“.` },
-        { q: m`$R$ wird verdoppelt, $C$ und $U_0$ bleiben. Was passiert mit $I_0$, $\tau$, $Q_0$?`, a: m`$I_0$ halbiert, $\tau$ verdoppelt, $Q_0=CU_0$ bleibt gleich.` }
+        { q: m`$R$ wird verdoppelt, $C$ und $U_0$ bleiben. Was passiert mit $I_0$, $R\cdot C$, $Q_0$?`, a: m`$I_0$ halbiert, $R\cdot C$ verdoppelt, $Q_0=CU_0$ bleibt gleich.` }
       ]
     },
 
     // ---------------------------------------------------------------- Taschenrechner (12.11.)
     {
-      id: 'PH11', fach: F, groessen: ['tau', 'R', 'C', 'I0', 'Q', 't'], num: 11, min: 12,
+      id: 'PH11', fach: F, groessen: ['RC', 'R', 'C', 'I0', 'Q', 't'], num: 11, min: 12,
       title: 'Der Taschenrechner in der Physik-Klausur',
       short: 'Was der Rechner übernimmt (Regression, Integral, ln) und was du selbst aufschreiben musst',
       idee: m`<p>In der Klausur sind <b>Taschenrechner und Formelsammlung</b> erlaubt. Damit sind das Einsetzen und das Rechnen mit $\ln$ und $e^x$ nicht mehr das Problem. Die Punkte gibt es für das, was der Rechner nicht kann.</p>
@@ -622,7 +631,7 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
 <tr><td>Regression ansetzen: <b>welche</b> Art? Ergebnis deuten</td><td>Regression rechnen ($a$, $b$, $R^2$)</td></tr>
 <tr><td>Ergebnis mit Einheit, Größenordnung prüfen</td><td>Integral $\int I\,dt$ numerisch</td></tr></table>
 <h3>Befehle (TI-Nspire CAS)</h3>
-<ul><li><b>Zehnerpotenz:</b> Taste für Zehnerpotenzen (ᴇ), z. B. <code>1.602ᴇ-19</code>. Nicht „· 10 ^ (−19)“ tippen, das gibt Klammerfehler.</li><li><b>Umstellen:</b> <code>solve(U=R*I, I)</code>; <b>numerisch:</b> <code>nSolve(e^(-t/25)=1/3, t)</code></li><li><b>Regression</b> (Tabellenkalkulation, zwei Spalten, Menü Statistik): <code>LinReg</code> ($mx+b$), <code>QuadReg</code> ($ax^2+bx+c$), <code>ExpReg</code> ($a\cdot b^x$), <code>PowerReg</code> ($a\cdot x^b$)</li><li><b>Integral:</b> Vorlage $\int$ oder <code>nInt(f(t), t, 0, 60)</code>, bis unendlich mit $\infty$</li></ul>
+<ul><li><b>Zehnerpotenz:</b> Taste für Zehnerpotenzen (ᴇ), z. B. <code>1.602ᴇ-19</code>. Nicht „· 10 ^ (−19)“ tippen, das gibt Klammerfehler.</li><li><b>Umstellen:</b> <code>solve(U=R*I, I)</code></li><li><b>Zeit aus der e-Funktion (so wie im Unterricht):</b> Gleichung mit Zahlen, dann <code>solve(2.0=12*e^(-t/(10000*470*10^(-6))),t)</code> ergibt $t=8{,}42$. <b>Numerisch:</b> <code>nSolve(e^(-t/25)=1/3, t)</code></li><li><b>Regression</b> (Tabellenkalkulation, zwei Spalten, Menü Statistik): <code>LinReg</code> ($mx+b$), <code>QuadReg</code> ($ax^2+bx+c$), <code>ExpReg</code> ($a\cdot b^x$), <code>PowerReg</code> ($a\cdot x^b$)</li><li><b>Integral:</b> Vorlage $\int$ oder <code>nInt(f(t), t, 0, 60)</code>, bis unendlich mit $\infty$</li></ul>
 <p class="dim" style="font-size:14px"><b>UNSICHER:</b> Die Menüwege am Gerät sind hier nicht geprüft, nur die Befehlsnamen. Probiere das an deinem Rechner einmal aus, bevor es ernst wird.</p>
 <h3>Auswertung von Messwerten so aufschreiben, wie es im Unterricht vereinbart ist</h3>
 <ol><li><b>Vermutung:</b> „Wenn sich $x$ verdoppelt, vervierfacht sich $y$ ungefähr. Vermutung: $y\sim x^2$.“</li><li><b>Regression</b> mit passender Art durchführen, Gleichung mit den Zahlen angeben.</li><li><b>$R^2$ auswerten:</b> „Das Bestimmtheitsmaß liegt sehr dicht an 1, der Zusammenhang ist bestätigt.“</li><li><b>Funktionsgleichung</b> mit Einheiten angeben, danach ein Beispiel rechnen.</li></ol>
@@ -631,18 +640,18 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
       rezept: [
         m`<b>Messreihe in zwei Spalten</b> (Zeit, Strom) eingeben. Einheiten merken (µA, s).`,
         m`<b>Regression:</b> <code>ExpReg</code> für Entladung. Ergebnis $I(t)=a\cdot b^t$ ablesen. $a$ ist der Anfangsstrom $I_0$.`,
-        m`<b>Zeitkonstante:</b> $b^t=e^{t\ln b}$, also $\tau=-\dfrac1{\ln b}$.`,
-        m`<b>Ladung:</b> $Q=\displaystyle\int_0^\infty a\,e^{-t/\tau}\,dt=a\cdot\tau$. Oder direkt $\int$ am Rechner, dann bis zur Messzeit.`,
-        m`<b>Weiter:</b> $C=\dfrac{Q_0}{U_0}$, $R=\dfrac{U_0}{I_0}$. Kontrolle: $\tau=RC$.`
+        m`<b>$R\cdot C$ aus $b$:</b> $b^t=e^{t\ln b}$ ist dasselbe wie $e^{-t/(R\cdot C)}$, also $R\cdot C=-\dfrac1{\ln b}$.`,
+        m`<b>Ladung:</b> $Q=\displaystyle\int_0^\infty a\,e^{-t/(R\cdot C)}\,dt=a\cdot R\cdot C$. Oder direkt $\int$ am Rechner, dann bis zur Messzeit.`,
+        m`<b>Weiter:</b> $C=\dfrac{Q_0}{U_0}$, $R=\dfrac{U_0}{I_0}$. Kontrolle: $R\cdot C$.`
       ],
       beispiel: {
-        q: m`Ein Kondensator wird über einen Widerstand entladen, die Quellenspannung war $U_0=12\,\text{V}$. Gemessen: $t=0;10;20;30;40\,\text{s}$ und $I=120;\ 80{,}4;\ 53{,}9;\ 36{,}1;\ 24{,}2\,\mu\text{A}$. Bestimme $\tau$, die Ladung $Q_0$, $C$ und $R$.`,
+        q: m`Ein Kondensator wird über einen Widerstand entladen, die Quellenspannung war $U_0=12\,\text{V}$. Gemessen: $t=0;10;20;30;40\,\text{s}$ und $I=120;\ 80{,}4;\ 53{,}9;\ 36{,}1;\ 24{,}2\,\mu\text{A}$. Bestimme $R\cdot C$, die Ladung $Q_0$, $C$ und $R$.`,
         steps: [
           { h: 'Regression', t: m`<code>ExpReg</code> auf $(t, I)$ liefert etwa $I(t)=120\,\mu\text{A}\cdot0{,}9608^{\,t/\text{s}}$. Also $I_0=120\,\mu\text{A}$.` },
-          { h: 'Zeitkonstante', t: m`$\tau=-\dfrac1{\ln0{,}9608}=\dfrac1{0{,}04}=25\,\text{s}$` },
-          { h: 'Ladung als Fläche', t: m`$Q_0=\int_0^\infty I\,dt=I_0\cdot\tau=120\,\mu\text{A}\cdot25\,\text{s}=3000\,\mu\text{C}=3{,}0\,\text{mC}$` },
+          { h: '$R\cdot C$ aus $b$', t: m`$R\cdot C=-\dfrac1{\ln0{,}9608}=\dfrac1{0{,}04}=25\,\text{s}$` },
+          { h: 'Ladung als Fläche', t: m`$Q_0=\int_0^\infty I\,dt=I_0\cdot R\cdot C=120\,\mu\text{A}\cdot25\,\text{s}=3000\,\mu\text{C}=3{,}0\,\text{mC}$` },
           { h: 'Kapazität', t: m`$C=\dfrac{Q_0}{U_0}=\dfrac{3{,}0\cdot10^{-3}\,\text{C}}{12\,\text{V}}=2{,}5\cdot10^{-4}\,\text{F}=250\,\mu\text{F}$` },
-          { h: 'Widerstand und Kontrolle', t: m`$R=\dfrac{U_0}{I_0}=\dfrac{12\,\text{V}}{120\,\mu\text{A}}=100\,\text{k}\Omega$. Kontrolle: $RC=10^5\,\Omega\cdot2{,}5\cdot10^{-4}\,\text{F}=25\,\text{s}=\tau$. Stimmt.` }
+          { h: 'Widerstand und Kontrolle', t: m`$R=\dfrac{U_0}{I_0}=\dfrac{12\,\text{V}}{120\,\mu\text{A}}=100\,\text{k}\Omega$. Kontrolle: $RC=10^5\,\Omega\cdot2{,}5\cdot10^{-4}\,\text{F}=25\,\text{s}$. Das passt zum Wert aus $b$. Stimmt.` }
         ]
       },
       fehler: [
@@ -652,8 +661,8 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
         m`Gleichung nur im Rechner umgestellt und nicht hingeschrieben. Bei „Gleichung herleiten“ zählt der aufgeschriebene Weg.`
       ],
       test: [
-        { q: m`Was bedeutet $b$ bei $\text{ExpReg}$ $y=a\cdot b^x$?`, a: m`Der Faktor pro Schritt von $x$; $\tau=-\dfrac1{\ln b}$ bei Zeit in s.` },
-        { q: m`Wie erhält man aus der Stromkurve die Ladung?`, a: m`$Q=\int I\,dt$ (Fläche unter der Kurve); bei $I_0e^{-t/\tau}$ bis $\infty$: $Q=I_0\tau$.` },
+        { q: m`Was bedeutet $b$ bei $\text{ExpReg}$ $y=a\cdot b^x$?`, a: m`Der Faktor pro Schritt von $x$; $R\cdot C=-\dfrac1{\ln b}$ bei Zeit in s.` },
+        { q: m`Wie erhält man aus der Stromkurve die Ladung?`, a: m`$Q=\int I\,dt$ (Fläche unter der Kurve); bei $I_0e^{-t/(R\cdot C)}$ bis $\infty$: $Q=I_0\cdot R\cdot C$.` },
         { q: m`Woran erkennt man $y\sim x^2$ ohne Regression?`, a: m`$y/x^2$ ist für alle Messwerte (fast) gleich.` },
         { q: 'Welche zwei Formeln sind nicht in der Formelsammlung?', a: m`$v_0=\sqrt{2eU_B/m_e}$ und die Bahngleichung $y=\dfrac{U_Ax^2}{4dU_B}$ (sie müssen hergeleitet werden).` }
       ]
@@ -686,7 +695,7 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
           { h: '1 · Geschwindigkeit $v_0$', t: m`$$\begin{aligned}E_{kin}&=E_{el}\\\tfrac12\,m\,v^2&=q\cdot U&&\big|\cdot2\\m\,v^2&=2\,q\,U&&\big|:m\\v^2&=\dfrac{2\,q\,U}{m}&&\big|\sqrt{\ }\\v&=\sqrt{\dfrac{2\,q\,U}{m}}\end{aligned}$$` },
           { h: '2 · Bahngleichung: zwei Bewegungen', t: m`<p><b>x-Richtung</b> (gleichförmig): $s_x=v\cdot t\ \ \big|:v\ \Rightarrow\ t=\dfrac{s_x}{v}$</p><p><b>y-Richtung</b> (gleichmäßig beschleunigt): $F=m\cdot a\ \ \big|:m\ \Rightarrow\ a=\dfrac Fm=\dfrac{E\,e}{m}=\dfrac{U_A\,e}{d\,m}$</p><p><b>Zusammensetzen:</b></p>$$\begin{aligned}s_y&=\tfrac12\,a\,t^2=\tfrac12\cdot\dfrac{U_A\,e}{d\,m}\cdot\left(\dfrac{s_x}{v}\right)^2&&\big|\ v^2=\dfrac{2\,e\,U_B}{m}\\s_y&=\tfrac12\cdot\dfrac{U_A\,e}{d\,m}\cdot s_x^2\cdot\dfrac{m}{2\,e\,U_B}&&\big|\ e,\ m\ \text{kürzen}\\s_y&=\dfrac{U_A}{4\,d\,U_B}\cdot s_x^2\end{aligned}$$` },
           { h: '3 · Kapazität aus der Entladezeit', t: m`<p>Bei $t=t_E$ ist die Spannung auf ein Drittel gefallen: $U_C(t_E)=\tfrac13U_0$.</p>$$\begin{aligned}\tfrac13\,U_0&=U_0\cdot e^{-\frac{t_E}{R\,C}}&&\big|:U_0\\\tfrac13&=e^{-\frac{t_E}{R\,C}}&&\big|\ln\\\ln\tfrac13&=-\dfrac{t_E}{R\,C}&&\big|\ \ln\tfrac13=-\ln3\\-\ln3&=-\dfrac{t_E}{R\,C}&&\big|\cdot(-1)\\\ln3&=\dfrac{t_E}{R\,C}&&\big|\cdot C\\C\cdot\ln3&=\dfrac{t_E}{R}&&\big|:\ln3\\C&=\dfrac{t_E}{R\cdot\ln3}\end{aligned}$$` },
-          { h: '4 · Halbwertszeit', t: m`<p>Gleicher Weg, nur mit der Hälfte statt einem Drittel: $U_C(t_H)=\tfrac12U_0$.</p>$$\begin{aligned}\tfrac12&=e^{-\frac{t_H}{R\,C}}&&\big|\ln\\-\ln2&=-\dfrac{t_H}{R\,C}&&\big|\cdot(-R\,C)\\t_H&=R\,C\cdot\ln2\end{aligned}$$<p>Mit $\tau=RC$: $t_H=\tau\ln2\approx0{,}69\,\tau$.</p>` },
+          { h: '4 · Halbwertszeit', t: m`<p>Gleicher Weg, nur mit der Hälfte statt einem Drittel: $U_C(t_H)=\tfrac12U_0$.</p>$$\begin{aligned}\tfrac12&=e^{-\frac{t_H}{R\,C}}&&\big|\ln\\-\ln2&=-\dfrac{t_H}{R\,C}&&\big|\cdot(-R\,C)\\t_H&=R\,C\cdot\ln2\end{aligned}$$<p>Zahlenwert: $\ln2\approx0{,}69$, also $t_H\approx0{,}69\cdot R\cdot C$.</p>` },
           { h: '5 · Plattenrand (Abi-Art) und 6 · Energie', t: m`<p><b>Plattenrand:</b> Das Elektron startet in der Mitte und trifft bei $x$ gerade den Rand: $y=\tfrac d2$. In die Bahngleichung eingesetzt:</p>$$\begin{aligned}\dfrac d2&=\dfrac{U_C}{4\,d\,U_B}\,x^2&&\big|\cdot4\,d\,U_B\\2\,d^2\,U_B&=U_C\,x^2&&\big|:2\,d^2\\U_B&=\dfrac{U_C}{2\,d^2}\,x^2\end{aligned}$$<p><b>Energie:</b> Beim Laden steigt $U=\dfrac QC$ von 0 auf $U$. Die Arbeit ist die Fläche unter der Geraden im $U$-$Q$-Diagramm, ein Dreieck: $E_\text{el}=\tfrac12\,Q\,U$. Mit $Q=C\,U$: $E_\text{el}=\tfrac12\,C\,U^2$.</p>` }
         ]
       },
@@ -722,7 +731,7 @@ ${merke('Wenn $x$ um den Faktor $k$ größer wird …', m`<table><tr><th>Formel<
 <tr><td>Arbeit, Leistung</td><td>$W=\Delta E$, $W=F\cdot s\cdot\cos\alpha$, $P=\dfrac{\Delta E}{\Delta t}$</td><td>S. 18</td></tr>
 <tr><td>Konstanten ($e$, $m_e$, $\varepsilon_0$)</td><td>Tabelle „Tabellierte Werte“</td><td>S. 46 (Foto fehlt, nachsehen)</td></tr></table>
 <h3>Was nicht drinsteht (das musst du herleiten oder wissen)</h3>
-<ul><li>$v_0=\sqrt{\dfrac{2eU_B}{m_e}}$, $a=\dfrac{eU}{m_ed}$, die Bahngleichung $y=\dfrac{Ux^2}{4dU_B}$</li><li>$C=\dfrac{t_E}{R\ln3}$, $t_H=RC\ln2$ (das Wort $\tau$ kommt in der Formelsammlung nicht vor, nur $R\cdot C$ im Exponenten)</li><li>$E_\text{el}=\dfrac{Q^2}{2C}=\tfrac12QU$ (aus $E_\text{el}=\tfrac12CU^2$ und $Q=CU$)</li><li>„An der Quelle bleibt $U$, abgetrennt bleibt $Q$“ und alle Begründungen</li></ul>
+<ul><li>$v_0=\sqrt{\dfrac{2eU_B}{m_e}}$, $a=\dfrac{eU}{m_ed}$, die Bahngleichung $y=\dfrac{Ux^2}{4dU_B}$</li><li>$C=\dfrac{t_E}{R\ln3}$, $t_H=RC\ln2$ (in der Formelsammlung steht nur $R\cdot C$ im Exponenten)</li><li>$E_\text{el}=\dfrac{Q^2}{2C}=\tfrac12QU$ (aus $E_\text{el}=\tfrac12CU^2$ und $Q=CU$)</li><li>„An der Quelle bleibt $U$, abgetrennt bleibt $Q$“ und alle Begründungen</li></ul>
 ${achtung('Zwei E in der Formelsammlung', m`<p>In der Formelsammlung heißt sowohl die <b>Energie</b> (S. 27: $E=\tfrac12CU^2$, S. 25: $\varphi=E/q$) als auch die <b>Feldstärke</b> (S. 25: $E=U/d$) „$E$“. Im Unterricht heißt die elektrische Energie $E_\text{el}$. Immer rechts nachlesen, was gemeint ist.</p>`)}`,
       bild: m`<p>Die Formelsammlung ist wie ein <b>Wörterbuch</b>: Du lernst es nicht auswendig, du musst nur wissen, <b>unter welchem Stichwort</b> du suchst (Kondensator, Elektrisches Feld, Leistung) und die Einträge <b>lesen</b> können.</p>`,
       rezept: [
@@ -1020,33 +1029,33 @@ ${achtung('Zwei E in der Formelsammlung', m`<p>In der Formelsammlung heißt sowo
     },
     // ---------------------------------------------------------------- PH8
     {
-      id: 'PL1', fach: F, groessen: [['C', '470 µF = 470·10⁻⁶ F'], ['R', '22 kΩ = 22 000 Ω'], ['U0', '9,0 V (Quelle)'], ['tau', 'gesucht'], ['I0', 'gesucht'], ['UC', 'nach 10 s, gesucht'], ['th', 'gesucht'], ['t', 'bis 99 %, gesucht']],
+      id: 'PL1', fach: F, groessen: [['C', '470 µF = 470·10⁻⁶ F'], ['R', '22 kΩ = 22 000 Ω'], ['U0', '9,0 V (Quelle)'], ['RC', 'gesucht'], ['I0', 'gesucht'], ['UC', 'nach 10 s, gesucht'], ['th', 'gesucht'], ['t', 'bis 99 %, gesucht']],
       teil: 'B', lesson: 'PH8', title: 'Ladekurve berechnen', afb: 'II', ops: 'Berechnen',
       intro: m`Ein Kondensator ($C=470\,\mu\text{F}$) wird über $R=22\,\text{k}\Omega$ an einer Quelle mit $U_0=9{,}0\,\text{V}$ geladen. Zu Beginn ist er leer.`,
       parts: [
-        { id: 'PL1a', label: 'a)', be: 2, text: m`Berechnen Sie die Zeitkonstante und den Anfangsstrom.`, nums: [{ label: 'τ in s', ans: 10.34, tol: 0.01 }, { label: 'I₀ in µA', ans: 409.1, tol: 0.01 }],
-          sol: m`<p><b>Zeitkonstante</b> (das Tempo): $\tau=R\cdot C=22\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=10{,}3\,\text{s}$</p><p><b>Anfangsstrom:</b> Im ersten Moment ist der Kondensator leer, die ganzen 9 V liegen am Widerstand: $I_0=\dfrac{U_0}R=\dfrac{9{,}0\,\text{V}}{22\,000\,\Omega}=4{,}1\cdot10^{-4}\,\text{A}=409\,\mu\text{A}$</p>` },
+        { id: 'PL1a', label: 'a)', be: 2, text: m`Berechnen Sie das Produkt $R\cdot C$ aus dem Exponenten und den Anfangsstrom.`, nums: [{ label: 'R·C in s', ans: 10.34, tol: 0.01 }, { label: 'I₀ in µA', ans: 409.1, tol: 0.01 }],
+          sol: m`<p><b>Produkt im Exponenten:</b> $R\cdot C=22\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=10{,}3\,\text{s}$</p><p><b>Anfangsstrom:</b> Im ersten Moment ist der Kondensator leer, die ganzen 9 V liegen am Widerstand: $I_0=\dfrac{U_0}R=\dfrac{9{,}0\,\text{V}}{22\,000\,\Omega}=4{,}1\cdot10^{-4}\,\text{A}=409\,\mu\text{A}$</p>` },
         { id: 'PL1b', label: 'b)', be: 2, text: m`Berechnen Sie die Kondensatorspannung nach $10\,\text{s}$.`, nums: [{ label: 'U_C in V', ans: 5.578, tol: 0.01 }],
           hints: ['Laden: Die Spannung steigt. Welche der beiden Formeln steigt?'],
-          sol: m`<p><b>Formel:</b> Laden, also $U_C=U_0\,(1-e^{-t/\tau})$.</p><p><b>Anteil, der noch fehlt:</b> $e^{-10/10{,}34}=e^{-0{,}967}=0{,}380$. Geschafft sind $1-0{,}380=0{,}620$, also 62 %.</p><p><b>Ergebnis:</b> $U_C=9{,}0\,\text{V}\cdot0{,}620=5{,}6\,\text{V}$ (passt: knapp unter $1\tau$, knapp unter 63 %).</p>` },
+          sol: m`<p><b>Formel:</b> Laden, also $U_C=U_0\,(1-e^{-t/(R\cdot C)})$.</p><p><b>Anteil, der noch fehlt:</b> $e^{-10/10{,}34}=e^{-0{,}967}=0{,}380$. Geschafft sind $1-0{,}380=0{,}620$, also 62 %.</p><p><b>Ergebnis:</b> $U_C=9{,}0\,\text{V}\cdot0{,}620=5{,}6\,\text{V}$ (passt: $10\,\text{s}$ ist knapp unter $R\cdot C=10{,}3\,\text{s}$, also knapp unter 63 %).</p>` },
         { id: 'PL1c', label: 'c)', be: 2, text: 'Berechnen Sie die Halbwertszeit des Ladestroms.', nums: [{ label: 't_h in s', ans: 7.167, tol: 0.01 }],
-          sol: m`<p><b>Gedanke:</b> Nach der Halbwertszeit ist nur noch die Hälfte des Stroms übrig: $e^{-t_h/\tau}=\tfrac12$, also $t_h=\tau\ln2$.</p><p>$t_h=10{,}34\,\text{s}\cdot0{,}693=7{,}2\,\text{s}$</p>` },
+          sol: m`<p><b>Gedanke:</b> Nach der Halbwertszeit ist nur noch die Hälfte des Stroms übrig: $e^{-t_h/(R\cdot C)}=\tfrac12$, also $t_h=R\cdot C\cdot\ln2$.</p><p>$t_h=10{,}34\,\text{s}\cdot0{,}693=7{,}2\,\text{s}$</p><p><b>Rechner:</b> <code>solve(0.5=e^(-t/10.34),t)</code> ergibt $t=7{,}17$.</p>` },
         { id: 'PL1d', label: 'd)', be: 2, text: 'Berechnen Sie, nach welcher Zeit 99 % der Endspannung erreicht sind.', nums: [{ label: 't in s', ans: 47.62, tol: 0.01 }],
-          hints: [m`$0{,}99=1-e^{-t/\tau}\Rightarrow e^{-t/\tau}=0{,}01$`],
-          sol: m`<p><b>Ansatz:</b> $0{,}99\,U_0=U_0\,(1-e^{-t/\tau})$. Durch $U_0$ teilen und umstellen: $e^{-t/\tau}=0{,}01$ (es fehlt nur noch 1 %).</p><p><b>Logarithmieren:</b> $-\dfrac t\tau=\ln0{,}01=-4{,}61$, also $t=4{,}61\cdot10{,}34\,\text{s}=47{,}6\,\text{s}$.</p><p>Das sind etwa $4{,}6\,\tau$, passt zur Regel „nach 5 τ fertig“.</p>` }
+          hints: [m`$0{,}99=1-e^{-t/(R\cdot C)}\Rightarrow e^{-t/(R\cdot C)}=0{,}01$`],
+          sol: m`<p><b>Ansatz:</b> $0{,}99\,U_0=U_0\,(1-e^{-t/(R\cdot C)})$. Durch $U_0$ teilen und umstellen: $e^{-t/(R\cdot C)}=0{,}01$ (es fehlt nur noch 1 %).</p><p><b>Logarithmieren:</b> $-\dfrac{t}{R\cdot C}=\ln0{,}01=-4{,}61$, also $t=4{,}61\cdot10{,}34\,\text{s}=47{,}6\,\text{s}$.</p><p><b>Rechner:</b> <code>solve(0.99=1-e^(-t/10.34),t)</code> ergibt $t=47{,}6$.</p>` }
       ]
     },
     {
-      id: 'PL2', fach: F, groessen: ['tau','th','I0','euler'], teil: 'A', lesson: 'PH8', title: 'Lade- und Entladekurven deuten', afb: 'II', ops: 'Begründen, Angeben',
+      id: 'PL2', fach: F, groessen: ['RC','th','I0','euler'], teil: 'A', lesson: 'PH8', title: 'Lade- und Entladekurven deuten', afb: 'II', ops: 'Begründen, Angeben',
       intro: 'Ein Kondensator wird über einen Widerstand geladen und später wieder entladen.',
       parts: [
         { id: 'PL2a', label: 'a)', be: 2, text: 'Begründen Sie, warum der Ladestrom am Anfang am größten ist und am Ende null wird.',
           sol: m`<p>Maschenregel: $U_R=U_0-U_C$. Am Anfang ist $U_C=0$, die ganze Spannung liegt am Widerstand: $I_0=U_0/R$ (Kondensator wie Kurzschluss). Mit wachsender Ladung steigt $U_C$, $U_R$ und damit $I$ sinken. Bei $U_C=U_0$ ist $I=0$ (Kondensator wie Unterbrechung).</p>` },
-        { id: 'PL2b', label: 'b)', be: 2, text: m`Geben Sie an, wie viel Prozent der Endspannung nach $2\tau$ erreicht sind.`, nums: [{ label: 'Prozent', ans: 86.47, tol: 0.005 }],
-          sol: m`<p>$1-e^{-2}=0{,}865$, also etwa 86 %.</p>` },
+        { id: 'PL2b', label: 'b)', be: 2, text: m`Der Kondensator wird geladen. Geben Sie an, wie viel Prozent der Endspannung erreicht sind, wenn die Zeit doppelt so groß ist wie $R\cdot C$ (also $t=2\cdot R\cdot C$).`, nums: [{ label: 'Prozent', ans: 86.47, tol: 0.005 }],
+          sol: m`<p>Der Exponent ist $-\dfrac{t}{R\cdot C}=-2$, also $1-e^{-2}=0{,}865$, etwa 86 %.</p>` },
         { id: 'PL2c', label: 'c)', be: 2, text: 'Geben Sie an, nach wie vielen Halbwertszeiten der Strom erstmals unter 1 % seines Anfangswertes liegt, und begründen Sie.',
           nums: [{ label: 'Anzahl', ans: 7, tol: 0 }],
-          sol: m`<p>Nach $n$ Halbwertszeiten: $(\tfrac12)^n$. $(\tfrac12)^6=1{,}6\,\%$, $(\tfrac12)^7=0{,}78\,\%$. Also nach 7 Halbwertszeiten (passt zu „5 τ ≈ 7 t_h“).</p>` }
+          sol: m`<p>Nach $n$ Halbwertszeiten: $(\tfrac12)^n$. $(\tfrac12)^6=1{,}6\,\%$, $(\tfrac12)^7=0{,}78\,\%$. Also nach 7 Halbwertszeiten.</p>` }
       ]
     },
     // ---------------------------------------------------------------- PH9
@@ -1055,16 +1064,16 @@ ${achtung('Zwei E in der Formelsammlung', m`<p>In der Formelsammlung heißt sowo
       intro: m`Ein Kondensator ($C=100\,\mu\text{F}$) wurde auf $U_0=50\,\text{V}$ geladen und wird über $R=2{,}0\,\text{M}\Omega$ entladen.`,
       parts: [
         { id: 'PL3a', label: 'a)', be: 3, text: m`Berechnen Sie die Ladung, die in den ersten $30\,\text{s}$ abfließt.`, nums: [{ label: 'ΔQ in µC', ans: 696.4, tol: 0.01 }],
-          hints: [m`$Q(t)=Q_0e^{-t/\tau}$, abgeflossen: $Q_0-Q(t)$`],
-          sol: m`<p>$\tau=RC=200\,\text{s}$, $Q_0=CU_0=5{,}0\cdot10^{-3}\,\text{C}$. $\Delta Q=Q_0(1-e^{-30/200})=5{,}0\cdot10^{-3}\,\text{C}\cdot0{,}139=7{,}0\cdot10^{-4}\,\text{C}$</p>` },
+          hints: [m`$Q(t)=Q_0e^{-t/(R\cdot C)}$, abgeflossen: $Q_0-Q(t)$`],
+          sol: m`<p>$R\cdot C=200\,\text{s}$, $Q_0=CU_0=5{,}0\cdot10^{-3}\,\text{C}$. $\Delta Q=Q_0(1-e^{-30/200})=5{,}0\cdot10^{-3}\,\text{C}\cdot0{,}139=7{,}0\cdot10^{-4}\,\text{C}$</p>` },
         { id: 'PL3b', label: 'b)', be: 2, text: 'Berechnen Sie, nach welcher Zeit sich die Spannung halbiert hat.', nums: [{ label: 't_h in s', ans: 138.6, tol: 0.01 }],
-          sol: m`<p>$\tfrac12=e^{-t/\tau}\Rightarrow t_h=\tau\ln2=200\,\text{s}\cdot0{,}693=139\,\text{s}$</p>` },
+          sol: m`<p>$\tfrac12=e^{-t/(R\cdot C)}\Rightarrow t_h=R\cdot C\cdot\ln2=200\,\text{s}\cdot0{,}693=139\,\text{s}$</p>` },
         { id: 'PL3c', label: 'c)', be: 3, text: m`Die Halbwertszeit soll $60\,\text{s}$ betragen. Bestimmen Sie den nötigen Widerstand bei gleichem $C$ bzw. die nötige Kapazität bei gleichem $R$.`,
           nums: [{ label: 'R in kΩ', ans: 865.6, tol: 0.01 }, { label: 'C in µF', ans: 43.28, tol: 0.01 }],
           sol: m`<p>$R=\dfrac{t_h}{C\ln2}=\dfrac{60}{100\cdot10^{-6}\cdot0{,}693}\,\Omega\approx8{,}7\cdot10^5\,\Omega$; $\ C=\dfrac{t_h}{R\ln2}=\dfrac{60}{2{,}0\cdot10^6\cdot0{,}693}\,\text{F}\approx43\,\mu\text{F}$</p>` },
         { id: 'PL3d', label: 'd)', be: 3, text: 'Der leere Kondensator wird über denselben Widerstand wieder an 50 V geladen. Berechnen Sie den Anfangsstrom und die Zeit, bis der Strom auf 1 % gefallen ist.',
           nums: [{ label: 'I₀ in µA', ans: 25, tol: 0.01 }, { label: 't in s', ans: 921, tol: 0.01 }],
-          sol: m`<p>$I_0=\dfrac{U_0}R=\dfrac{50\,\text{V}}{2{,}0\cdot10^6\,\Omega}=25\,\mu\text{A}$; $\ 0{,}01=e^{-t/\tau}\Rightarrow t=\tau\ln100=200\,\text{s}\cdot4{,}61=921\,\text{s}\approx15\,\text{min}$</p>` }
+          sol: m`<p>$I_0=\dfrac{U_0}R=\dfrac{50\,\text{V}}{2{,}0\cdot10^6\,\Omega}=25\,\mu\text{A}$; $\ 0{,}01=e^{-t/(R\cdot C)}\Rightarrow t=R\cdot C\cdot\ln100=200\,\text{s}\cdot4{,}61=921\,\text{s}\approx15\,\text{min}$</p><p><b>Rechner:</b> <code>solve(0.01=e^(-t/200),t)</code> ergibt $t=921$.</p>` }
       ]
     },
     {
@@ -1087,17 +1096,17 @@ ${achtung('Zwei E in der Formelsammlung', m`<p>In der Formelsammlung heißt sowo
       ]
     },
     {
-      id: 'PL5', fach: F, groessen: [['R','50 kΩ'],['t','0 bis 50 s'],['UC','Messwerte in der Tabelle'],['tau','gesucht'],['C','gesucht']], teil: 'B', lesson: 'PH9', title: 'Entladung auswerten: Linearisierung', afb: 'II', ops: 'Zeigen, Bestimmen',
+      id: 'PL5', fach: F, groessen: [['R','50 kΩ'],['t','0 bis 50 s'],['UC','Messwerte in der Tabelle'],['RC','gesucht'],['C','gesucht']], teil: 'B', lesson: 'PH9', title: 'Entladung auswerten: Linearisierung', afb: 'II', ops: 'Zeigen, Bestimmen',
       intro: m`Ein Kondensator wird über $R=50\,\text{k}\Omega$ entladen. Messreihe:<table class="mt-table" style="margin-top:10px"><tr><th>t in s</th><td>0</td><td>10</td><td>20</td><td>30</td><td>40</td><td>50</td></tr><tr><th>U in V</th><td>12,0</td><td>8,1</td><td>5,4</td><td>3,6</td><td>2,4</td><td>1,6</td></tr></table>`,
       parts: [
         { id: 'PL5a', label: 'a)', be: 2, text: 'Zeigen Sie mit Quotienten aufeinanderfolgender Messwerte, dass eine exponentielle Abnahme vorliegt.',
           sol: m`<p>$\dfrac{8{,}1}{12{,}0}=0{,}675$, $\dfrac{5{,}4}{8{,}1}=0{,}667$, $\dfrac{3{,}6}{5{,}4}=0{,}667$, $\dfrac{2{,}4}{3{,}6}=0{,}667$, $\dfrac{1{,}6}{2{,}4}=0{,}667$: In gleichen Zeitabständen fällt $U$ immer auf (fast) denselben Bruchteil. Das ist das Kennzeichen einer Exponentialfunktion.</p>` },
-        { id: 'PL5b', label: 'b)', be: 4, text: m`Tragen Sie $\ln(U/\text{V})$ gegen $t$ auf, bestimmen Sie die Steigung (Regression) und daraus $\tau$.`,
-          nums: [{ label: 'τ in s', ans: 24.77, tol: 0.03 }],
-          hints: [m`$\ln U=\ln U_0-\dfrac t\tau$: Gerade mit Steigung $-1/\tau$.`, 'CAS: LinReg mit t-Liste und ln(U)-Liste.'],
-          sol: m`<p>$\ln(U/\text{V})$: 2,485; 2,092; 1,686; 1,281; 0,875; 0,470. Die Punkte liegen auf einer Geraden. Lineare Regression: Steigung $m\approx-0{,}0404\,\tfrac1{\text{s}}$. Wegen $\ln U=\ln U_0-\tfrac t\tau$ gilt $\tau=-\tfrac1m\approx24{,}8\,\text{s}$.</p><ul><li>Werte und Diagramm (2 BE), Regression dokumentiert (1 BE), τ (1 BE)</li></ul>` },
+        { id: 'PL5b', label: 'b)', be: 4, text: m`Tragen Sie $\ln(U/\text{V})$ gegen $t$ auf, bestimmen Sie die Steigung (Regression) und daraus $R\cdot C$.`,
+          nums: [{ label: 'R·C in s', ans: 24.77, tol: 0.03 }],
+          hints: [m`$\ln U=\ln U_0-\dfrac{t}{R\cdot C}$: Gerade mit Steigung $-1/(R\cdot C)$.`, 'CAS: LinReg mit t-Liste und ln(U)-Liste.'],
+          sol: m`<p>$\ln(U/\text{V})$: 2,485; 2,092; 1,686; 1,281; 0,875; 0,470. Die Punkte liegen auf einer Geraden. Lineare Regression: Steigung $m\approx-0{,}0404\,\tfrac1{\text{s}}$. Wegen $\ln U=\ln U_0-\tfrac{t}{R\cdot C}$ gilt $R\cdot C=-\tfrac1m\approx24{,}8\,\text{s}$.</p><ul><li>Werte und Diagramm (2 BE), Regression dokumentiert (1 BE), $R\cdot C$ (1 BE)</li></ul>` },
         { id: 'PL5c', label: 'c)', be: 2, text: 'Berechnen Sie die Kapazität des Kondensators.', nums: [{ label: 'C in µF', ans: 495.4, tol: 0.03 }],
-          sol: m`<p>$C=\dfrac\tau R=\dfrac{24{,}8\,\text{s}}{50\,000\,\Omega}\approx5{,}0\cdot10^{-4}\,\text{F}=0{,}50\,\text{mF}$</p>` }
+          sol: m`<p>Aus $R\cdot C=24{,}8\,\text{s}$ folgt $C=\dfrac{24{,}8\,\text{s}}{R}=\dfrac{24{,}8\,\text{s}}{50\,000\,\Omega}\approx5{,}0\cdot10^{-4}\,\text{F}=0{,}50\,\text{mF}$</p>` }
       ]
     },
     {
@@ -1170,22 +1179,22 @@ ${achtung('Zwei E in der Formelsammlung', m`<p>In der Formelsammlung heißt sowo
     },
     // ---------------------------------------------------------------- PH11: Taschenrechner
     {
-      id: 'PT1', fach: F, groessen: [['U0', '12 V'], ['t', '0 bis 40 s'], ['I', 'Messwerte in µA'], ['tau', 'gesucht'], ['Q', 'Q₀ gesucht'], ['C', 'gesucht'], ['R', 'gesucht']], teil: 'B', lesson: 'PH11', title: 'Entladekurve mit dem Taschenrechner auswerten', afb: 'II', ops: 'Ermitteln, Bestimmen',
+      id: 'PT1', fach: F, groessen: [['U0', '12 V'], ['t', '0 bis 40 s'], ['I', 'Messwerte in µA'], ['RC', 'gesucht'], ['Q', 'Q₀ gesucht'], ['C', 'gesucht'], ['R', 'gesucht']], teil: 'B', lesson: 'PH11', title: 'Entladekurve mit dem Taschenrechner auswerten', afb: 'II', ops: 'Ermitteln, Bestimmen',
       intro: m`Ein Kondensator wurde mit $U_0=12\,\text{V}$ geladen und über einen Widerstand entladen. Gemessen wurde die Stromstärke:
 <table><tr><th>$t$ in s</th><td>0</td><td>10</td><td>20</td><td>30</td><td>40</td></tr><tr><th>$I$ in µA</th><td>120</td><td>80,4</td><td>53,9</td><td>36,1</td><td>24,2</td></tr></table>`,
       parts: [
-        { id: 'PT1a', label: 'a)', be: 3, text: m`Führen Sie eine passende Regression durch (Art begründen) und geben Sie $I_0$ und $\tau$ an.`,
-          nums: [{ label: 'I₀ in µA', ans: 120, tol: 0.02 }, { label: 'τ in s', ans: 25, tol: 0.02 }],
-          hints: ['Bei gleichen Zeitschritten sinkt I jeweils um denselben Faktor. Welche Funktionsart?', m`ExpReg: $I=a\cdot b^t$, $\tau=-1/\ln b$.`],
-          sol: m`<p>Der Strom fällt bei gleichen Zeitschritten um denselben Faktor ($80{,}4/120\approx53{,}9/80{,}4\approx0{,}67$): Exponentialfunktion, Exponentialregression (1 BE). Ergebnis $I(t)=120\,\mu\text{A}\cdot0{,}9608^{\,t/\text{s}}$ (1 BE). $\tau=-\dfrac1{\ln0{,}9608}=25\,\text{s}$ (1 BE).</p>` },
+        { id: 'PT1a', label: 'a)', be: 3, text: m`Führen Sie eine passende Regression durch (Art begründen) und geben Sie $I_0$ und $R\cdot C$ an.`,
+          nums: [{ label: 'I₀ in µA', ans: 120, tol: 0.02 }, { label: 'R·C in s', ans: 25, tol: 0.02 }],
+          hints: ['Bei gleichen Zeitschritten sinkt I jeweils um denselben Faktor. Welche Funktionsart?', m`ExpReg: $I=a\cdot b^t$, $R\cdot C=-1/\ln b$.`],
+          sol: m`<p>Der Strom fällt bei gleichen Zeitschritten um denselben Faktor ($80{,}4/120\approx53{,}9/80{,}4\approx0{,}67$): Exponentialfunktion, Exponentialregression (1 BE). Ergebnis $I(t)=120\,\mu\text{A}\cdot0{,}9608^{\,t/\text{s}}$ (1 BE). $R\cdot C=-\dfrac1{\ln0{,}9608}=25\,\text{s}$ (1 BE).</p>` },
         { id: 'PT1b', label: 'b)', be: 3, text: m`Bestimmen Sie die Ladung $Q_0$ des Kondensators vor dem Entladen mit $\int I\,dt$.`,
           nums: [{ label: 'Q₀ in mC', ans: 3.0, tol: 0.03 }],
-          hints: [m`$Q_0=\int_0^\infty I_0e^{-t/\tau}\,dt=I_0\cdot\tau$.`],
-          sol: m`<p>Die Ladung, die beim Entladen durch den Widerstand fließt, ist die Fläche unter der Kurve: $Q_0=\int_0^\infty I\,dt$ (1 BE) $=I_0\tau=120\,\mu\text{A}\cdot25\,\text{s}=3000\,\mu\text{C}=3{,}0\,\text{mC}$ (2 BE).</p>` },
-        { id: 'PT1c', label: 'c)', be: 4, text: m`Bestimmen Sie $C$ und $R$ und prüfen Sie das Ergebnis mit $\tau=RC$.`,
+          hints: [m`$Q_0=\int_0^\infty I_0e^{-t/(R\cdot C)}\,dt=I_0\cdot R\cdot C$.`],
+          sol: m`<p>Die Ladung, die beim Entladen durch den Widerstand fließt, ist die Fläche unter der Kurve: $Q_0=\int_0^\infty I\,dt$ (1 BE) $=I_0\cdot R\cdot C=120\,\mu\text{A}\cdot25\,\text{s}=3000\,\mu\text{C}=3{,}0\,\text{mC}$ (2 BE).</p>` },
+        { id: 'PT1c', label: 'c)', be: 4, text: m`Bestimmen Sie $C$ und $R$ und prüfen Sie, ob $R\cdot C$ zu Teil a) passt.`,
           nums: [{ label: 'C in µF', ans: 250, tol: 0.03 }, { label: 'R in kΩ', ans: 100, tol: 0.03 }],
           hints: [m`$C=\dfrac{Q_0}{U_0}$, $R=\dfrac{U_0}{I_0}$.`],
-          sol: m`<p>$C=\dfrac{Q_0}{U_0}=\dfrac{3{,}0\,\text{mC}}{12\,\text{V}}=250\,\mu\text{F}$ (1 BE). $R=\dfrac{U_0}{I_0}=\dfrac{12\,\text{V}}{120\,\mu\text{A}}=100\,\text{k}\Omega$ (1 BE). Kontrolle: $RC=10^5\,\Omega\cdot2{,}5\cdot10^{-4}\,\text{F}=25\,\text{s}=\tau$ (2 BE).</p>` }
+          sol: m`<p>$C=\dfrac{Q_0}{U_0}=\dfrac{3{,}0\,\text{mC}}{12\,\text{V}}=250\,\mu\text{F}$ (1 BE). $R=\dfrac{U_0}{I_0}=\dfrac{12\,\text{V}}{120\,\mu\text{A}}=100\,\text{k}\Omega$ (1 BE). Kontrolle: $RC=10^5\,\Omega\cdot2{,}5\cdot10^{-4}\,\text{F}=25\,\text{s}$, das passt zum Wert aus a) (2 BE).</p>` }
       ]
     },
     // ---------------------------------------------------------------- Probeklausur 2 (nur die Themen der Klausur 2, 12.11.)
@@ -1266,25 +1275,25 @@ ${achtung('Zwei E in der Formelsammlung', m`<p>In der Formelsammlung heißt sowo
       ]
     },
     {
-      id: 'PQ5', fach: F, groessen: [['C', '2200 µF = 2,2·10⁻³ F'], ['R', '4,7 kΩ = 4700 Ω'], ['U0', '15 V'], ['tau', 'gesucht'], ['I0', 'gesucht'], ['th', 'gesucht'], ['UC', 'nach 20 s beim Entladen, gesucht'], ['t', 'gesucht']], teil: 'B', lesson: 'PH8', title: 'Laden und Entladen: Schaltung, Zeitkonstante, Zeit gesucht', afb: 'II', ops: 'Beschreiben, Herleiten, Berechnen, Begründen',
+      id: 'PQ5', fach: F, groessen: [['C', '2200 µF = 2,2·10⁻³ F'], ['R', '4,7 kΩ = 4700 Ω'], ['U0', '15 V'], ['RC', 'gesucht'], ['I0', 'gesucht'], ['th', 'gesucht'], ['UC', 'nach 20 s beim Entladen, gesucht'], ['t', 'gesucht']], teil: 'B', lesson: 'PH8', title: 'Laden und Entladen: Schaltung, Produkt R·C, Zeit gesucht', afb: 'II', ops: 'Beschreiben, Herleiten, Berechnen, Begründen',
       intro: m`Ein Kondensator ($C=2200\,\mu\text F$) wird über einen Widerstand $R=4{,}7\,\text{k}\Omega$ an eine Quelle mit $U_0=15\,\text V$ angeschlossen und aufgeladen. Danach wird er über denselben Widerstand entladen.`,
       parts: [
         { id: 'PQ5a', label: 'a)', be: 3, text: 'Beschreiben Sie die Schaltung mit den Messgeräten für Strom und Spannung und sagen Sie, was man zum Entladen tun muss.',
           sol: m`<p>Quelle, Umschalter, Widerstand und Kondensator in Reihe. Das Amperemeter liegt in Reihe im Zweig mit $C$ und $R$, das Voltmeter parallel zum Kondensator (2 BE).</p><p>Zum Entladen den Umschalter umlegen: Die Quelle wird abgetrennt, und die beiden Platten werden über den Widerstand leitend verbunden. Der Strom fließt dann in die Gegenrichtung (1 BE).</p>` },
-        { id: 'PQ5b', label: 'b)', be: 3, text: 'Berechnen Sie die Zeitkonstante, den Anfangsstrom beim Laden und die Halbwertszeit.',
-          nums: [{ label: 'τ in s', ans: 10.34, tol: 0.01 }, { label: 'I₀ in mA', ans: 3.191, tol: 0.01 }, { label: 't_h in s', ans: 7.167, tol: 0.01 }],
-          hints: [m`$\tau=R\cdot C$; $I_0=\dfrac{U_0}{R}$ (kein Eintrag in der Formelsammlung, aus $R=U/I$); $t_h=\tau\cdot\ln2$.`],
-          sol: m`<p>$\tau=R\cdot C=4700\,\Omega\cdot2{,}2\cdot10^{-3}\,\text F=10{,}34\,\text s$ (1 BE)</p><p>$I_0=\dfrac{U_0}{R}=\dfrac{15\,\text V}{4700\,\Omega}=3{,}19\cdot10^{-3}\,\text A=3{,}19\,\text{mA}$: Am Anfang ist der Kondensator leer, die ganze Spannung liegt am Widerstand (1 BE).</p><p>$t_h=\tau\cdot\ln2=10{,}34\,\text s\cdot0{,}693=7{,}17\,\text s$ (1 BE)</p>` },
+        { id: 'PQ5b', label: 'b)', be: 3, text: m`Berechnen Sie das Produkt $R\cdot C$, den Anfangsstrom beim Laden und die Halbwertszeit.`,
+          nums: [{ label: 'R·C in s', ans: 10.34, tol: 0.01 }, { label: 'I₀ in mA', ans: 3.191, tol: 0.01 }, { label: 't_h in s', ans: 7.167, tol: 0.01 }],
+          hints: [m`$R\cdot C$; $I_0=\dfrac{U_0}{R}$ (kein Eintrag in der Formelsammlung, aus $R=U/I$); $t_h=R\cdot C\cdot\ln2$.`],
+          sol: m`<p>$R\cdot C=4700\,\Omega\cdot2{,}2\cdot10^{-3}\,\text F=10{,}34\,\text s$ (1 BE)</p><p>$I_0=\dfrac{U_0}{R}=\dfrac{15\,\text V}{4700\,\Omega}=3{,}19\cdot10^{-3}\,\text A=3{,}19\,\text{mA}$: Am Anfang ist der Kondensator leer, die ganze Spannung liegt am Widerstand (1 BE).</p><p>$t_h=R\cdot C\cdot\ln2=10{,}34\,\text s\cdot0{,}693=7{,}17\,\text s$ (1 BE)</p>` },
         { id: 'PQ5c', label: 'c)', be: 3, text: 'Der Kondensator ist voll geladen und wird nun entladen. Berechnen Sie die Spannung am Kondensator und den Betrag der Stromstärke $20\,\text s$ nach Beginn des Entladens.',
           nums: [{ label: 'U_C in V', ans: 2.168, tol: 0.01 }, { label: '|I| in mA', ans: 0.4613, tol: 0.01 }],
-          hints: [m`Entladen: $U_C=U_0\,e^{-t/(RC)}$ und $I=-I_0\,e^{-t/(RC)}$ (Formelsammlung S. 27). Erst den Exponenten $-t/\tau$ ausrechnen.`],
-          sol: m`<p>Exponent: $-\dfrac t\tau=-\dfrac{20\,\text s}{10{,}34\,\text s}=-1{,}934$, und $e^{-1{,}934}=0{,}1445$ (1 BE).</p><p>$U_C=15\,\text V\cdot0{,}1445=2{,}17\,\text V$ (1 BE)</p><p>$I=-3{,}19\,\text{mA}\cdot0{,}1445=-0{,}461\,\text{mA}$, der Betrag ist $0{,}46\,\text{mA}$. Das Minus heißt: Gegenrichtung zum Ladestrom (1 BE).</p>` },
-        { id: 'PQ5d', label: 'd)', be: 4, text: m`Leiten Sie aus dem Entladegesetz die Gleichung $t=\tau\cdot\ln\dfrac{U_0}{U_C}$ her und berechnen Sie damit, nach welcher Zeit die Spannung auf $1{,}0\,\text V$ gefallen ist.`,
+          hints: [m`Entladen: $U_C=U_0\,e^{-t/(RC)}$ und $I=-I_0\,e^{-t/(RC)}$ (Formelsammlung S. 27). Erst den Exponenten $-t/(R\cdot C)$ ausrechnen.`],
+          sol: m`<p>Exponent: $-\dfrac{t}{R\cdot C}=-\dfrac{20\,\text s}{10{,}34\,\text s}=-1{,}934$, und $e^{-1{,}934}=0{,}1445$ (1 BE).</p><p>$U_C=15\,\text V\cdot0{,}1445=2{,}17\,\text V$ (1 BE)</p><p>$I=-3{,}19\,\text{mA}\cdot0{,}1445=-0{,}461\,\text{mA}$, der Betrag ist $0{,}46\,\text{mA}$. Das Minus heißt: Gegenrichtung zum Ladestrom (1 BE).</p>` },
+        { id: 'PQ5d', label: 'd)', be: 4, text: m`Leiten Sie aus dem Entladegesetz die Gleichung $t=R\cdot C\cdot\ln\dfrac{U_0}{U_C}$ her und berechnen Sie damit, nach welcher Zeit die Spannung auf $1{,}0\,\text V$ gefallen ist.`,
           nums: [{ label: 't in s', ans: 28.0, tol: 0.01 }],
-          hints: [m`$U_C=U_0e^{-t/\tau}$. Durch $U_0$ teilen, dann $\ln$ auf beiden Seiten.`],
-          sol: m`<p>$U_C=U_0\,e^{-t/\tau}\qquad\big|:U_0$</p><p>$\dfrac{U_C}{U_0}=e^{-t/\tau}\qquad\big|\ln$</p><p>$\ln\dfrac{U_C}{U_0}=-\dfrac t\tau\qquad\big|\cdot(-\tau)$</p><p>$t=-\tau\ln\dfrac{U_C}{U_0}=\tau\ln\dfrac{U_0}{U_C}$ (3 BE, weil $-\ln\dfrac ab=\ln\dfrac ba$)</p><p>Zahlen: $t=10{,}34\,\text s\cdot\ln\dfrac{15\,\text V}{1{,}0\,\text V}=10{,}34\,\text s\cdot2{,}708=28{,}0\,\text s$ (1 BE)</p>` },
-        { id: 'PQ5e', label: 'e)', be: 2, text: 'Der Widerstand wird verdoppelt. Wie ändern sich Anfangsstrom, Zeitkonstante und die insgesamt beim Entladen abfließende Ladung? Begründen Sie.',
-          sol: m`<p>$I_0=\dfrac{U_0}{R}$ halbiert sich, $\tau=R\cdot C$ verdoppelt sich: Der Strom ist kleiner, dafür dauert alles doppelt so lange (1 BE). Die Ladung $Q_0=C\cdot U_0$ hängt nicht von $R$ ab und bleibt gleich: Es fließt dieselbe Ladung, nur langsamer (1 BE).</p>` }
+          hints: [m`$U_C=U_0e^{-t/(R\cdot C)}$. Durch $U_0$ teilen, dann $\ln$ auf beiden Seiten.`],
+          sol: m`<p>$U_C=U_0\,e^{-t/(R\cdot C)}\qquad\big|:U_0$</p><p>$\dfrac{U_C}{U_0}=e^{-t/(R\cdot C)}\qquad\big|\ln$</p><p>$\ln\dfrac{U_C}{U_0}=-\dfrac{t}{R\cdot C}\qquad\big|\cdot(-R\cdot C)$</p><p>$t=-R\cdot C\cdot\ln\dfrac{U_C}{U_0}=R\cdot C\cdot\ln\dfrac{U_0}{U_C}$ (3 BE, weil $-\ln\dfrac ab=\ln\dfrac ba$)</p><p>Zahlen: $t=10{,}34\,\text s\cdot\ln\dfrac{15\,\text V}{1{,}0\,\text V}=10{,}34\,\text s\cdot2{,}708=28{,}0\,\text s$ (1 BE)</p><p><b>Rechner:</b> <code>solve(1.0=15*e^(-t/(4700*2.2*10^(-3))),t)</code> ergibt $t=28{,}0$.</p>` },
+        { id: 'PQ5e', label: 'e)', be: 2, text: 'Der Widerstand wird verdoppelt. Wie ändern sich Anfangsstrom, das Produkt R·C und die insgesamt beim Entladen abfließende Ladung? Begründen Sie.',
+          sol: m`<p>$I_0=\dfrac{U_0}{R}$ halbiert sich, $R\cdot C$ verdoppelt sich: Der Strom ist kleiner, dafür dauert alles doppelt so lange (1 BE). Die Ladung $Q_0=C\cdot U_0$ hängt nicht von $R$ ab und bleibt gleich: Es fließt dieselbe Ladung, nur langsamer (1 BE).</p>` }
       ]
     },
     {
@@ -1323,9 +1332,9 @@ ${achtung('Zwei E in der Formelsammlung', m`<p>In der Formelsammlung heißt sowo
 <h3>Braunsche Röhre</h3>
 <ul><li>Glühkathode → Wehnelt → Anode (Loch) → Ablenkplatten → Schirm, Vakuum (Wissen)</li><li>Ansatz $eU_B=\tfrac12m_ev_0^2$: $E_\text{kin}=\tfrac12mv^2$ ${FS('S. 17')}, $\Delta E=qU$ ${FS('S. 24')}; $v_0=\sqrt{2eU_B/m_e}$ ${FSN('herleiten')}</li><li>$x=v_0t$, $y=\tfrac12at^2$ ${FS('S. 15')}; $a=\dfrac{eU}{m_ed}$ ${FSN('herleiten: F = m·a S. 14, E = U/d S. 25')}</li><li>Bahngleichung $y=\dfrac{Ux^2}{4dU_B}$ ${FSN('herleiten')}; $\tan\alpha=\dfrac{Ul}{2dU_B}$, $Y=y(l)+L\tan\alpha$ ${FSN('herleiten')}; Platte getroffen, wenn $y>\tfrac d2$</li></ul>
 <h3>Auf- und Entladen</h3>
-<ul><li>Laden und Entladen: $U_C(t)$, $I(t)$, $Q(t)$ mit $e^{-t/(R\cdot C)}$ ${FS('S. 27')}</li><li>$\tau=RC$ ${FSN('im Exponenten R·C, das Wort τ steht nicht drin')}; $t_h=\tau\ln2$ ${FSN('herleiten')}; nach $\tau$: 63 % / 37 %, nach $5\tau$ fertig</li><li>$t=\tau\ln\dfrac{U_0}{U}$ und bis $U_0/3$: $C=\dfrac{t_E}{R\ln3}$ ${FSN('herleiten, Startformel S. 27')}</li><li>Differenzialgleichungen ${FS('S. 27')}; Maschenregel $U_0=RI+\tfrac QC$ mit $\sum U=0$ ${FS('S. 24')}</li><li>Linearisierung: $\ln(U/U_0)$ gegen $t$, Steigung $-1/\tau$ (Wissen)</li><li>Messunsicherheit: größte relative Unsicherheit übernehmen, 2 signifikante Stellen (IServ-Blatt „Runden und Messunsicherheit“)</li></ul>
+<ul><li>Laden und Entladen: $U_C(t)$, $I(t)$, $Q(t)$ mit $e^{-t/(R\cdot C)}$ ${FS('S. 27')}</li><li><b>Zeit gesucht:</b> Formel von S. 27 mit Zahlen aufschreiben, im Rechner <code>solve(…, t)</code>; von Hand $e^{\ldots}$ isolieren und $\ln$ nehmen</li><li>$t_h=R\cdot C\cdot\ln2$ ${FSN('herleiten')}; bis $U_0/3$: $C=\dfrac{t_E}{R\ln3}$ ${FSN('herleiten, Startformel S. 27')}</li><li><b>Maschenregel</b> $\sum U_i=0$ ${FS('S. 24')}: Laden $U_0=U_R+U_C$; Entladen $U_C+U_R=0$ (also $|U_R|=U_C$); Differenzialgleichung $U_0=RI+\tfrac QC$ ${FS('S. 27')}</li><li>Linearisierung: $\ln(U/U_0)$ gegen $t$, Steigung $-1/(R\cdot C)$ (Wissen)</li><li>Messunsicherheit: größte relative Unsicherheit übernehmen, 2 signifikante Stellen (IServ-Blatt „Runden und Messunsicherheit“)</li></ul>
 <h3>Begründen und Taschenrechner</h3>
-<ul><li>Begründung = <b>was bleibt gleich · Formel · Faktor · Satz mit „weil“</b>; die Formeln dafür stehen oben (mit Seite).</li><li>$C\propto\dfrac{\varepsilon_rA}d$, $v_0\propto\sqrt{U_B}$, $y\propto\dfrac{U_A}{dU_B}x^2$, $\tau\propto R\cdot C$, $I_0=\dfrac{U_0}R$ ($Q_0=CU_0$ hängt nicht von $R$ ab)</li><li>Rechner: <code>ExpReg</code> ($a\cdot b^t$, $\tau=-1/\ln b$), $Q=\int I\,dt=I_0\tau$ ${FS('S. 23')}</li></ul>
+<ul><li>Begründung = <b>was bleibt gleich · Formel · Faktor · Satz mit „weil“</b>; die Formeln dafür stehen oben (mit Seite).</li><li>$C\propto\dfrac{\varepsilon_rA}d$, $v_0\propto\sqrt{U_B}$, $y\propto\dfrac{U_A}{dU_B}x^2$, Zeit im Exponenten $R\cdot C\propto R$ und $\propto C$, $I_0=\dfrac{U_0}R$ ($Q_0=CU_0$ hängt nicht von $R$ ab)</li><li>Rechner: <code>ExpReg</code> ($a\cdot b^t$, $R\cdot C=-1/\ln b$), $Q=\int I\,dt=I_0\cdot R\cdot C$ ${FS('S. 23')}</li></ul>
 <p class="dim">Konstanten ($e$, $m_e$, $\varepsilon_0$): Tabelle „Tabellierte Werte“ am Ende der Formelsammlung (S. 46, Foto fehlt, bitte nachsehen). Werte im Portal: $e=1{,}602\cdot10^{-19}\,\text{C}$, $m_e=9{,}109\cdot10^{-31}\,\text{kg}$, $\varepsilon_0=8{,}854\cdot10^{-12}\,\tfrac{\text{As}}{\text{Vm}}$</p>`;
 
   window.LR_LESSONS = (window.LR_LESSONS || []).concat(LESSONS);

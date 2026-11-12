@@ -15,45 +15,45 @@
   const entladen = {
     id: 'ph-entladen', fach: 'physik',
     titel: 'Laden und Entladen rechnen',
-    kurz: 'τ = R·C, Spannung zu einem Zeitpunkt, Zeit bis zu einer Spannung (ln), Kapazität bestimmen.',
+    kurz: 'Spannung zu einem Zeitpunkt, Zeit bis zu einer Spannung (solve und ln), Maschenregel, Kapazität bestimmen.',
     quelle: SRC + ' 2025 (Blitzgeräte) und 2026 (Kornfeuchte)',
-    kann: [m`$\tau=RC$ berechnen und deuten`, m`$U_C(t)$ beim Laden und Entladen ausrechnen`, m`Mit $\ln$ die Zeit bis zu einer bestimmten Spannung bestimmen`],
+    kann: [m`Das Produkt $R\cdot C$ im Exponenten berechnen`, m`$U_C(t)$ beim Laden und Entladen ausrechnen`, m`Die Zeit bis zu einer bestimmten Spannung mit solve (oder $\ln$) bestimmen`],
     check: [
-      { frage: m`$R=10\,\text{k}\Omega$, $C=100\,\mu\text{F}$. Wie groß ist $\tau$?`, optionen: ['1 s', '0,1 s', '1000 s'], richtig: 0 },
-      { frage: 'Welche Formel beschreibt die Kondensatorspannung beim Entladen?', optionen: [m`$U_0\,e^{-t/\tau}$`, m`$U_0\,(1-e^{-t/\tau})$`, m`$U_0\,e^{t/\tau}$`], richtig: 0 },
-      { frage: m`$e^{-t/\tau}=0{,}2$. Wie berechnet man $t$?`, optionen: [m`$t=-\tau\ln0{,}2$`, m`$t=\tau\cdot0{,}2$`, m`$t=\ln(0{,}2\,\tau)$`], richtig: 0 }
+      { frage: m`$R=10\,\text{k}\Omega$, $C=100\,\mu\text{F}$. Wie groß ist $R\cdot C$?`, optionen: ['1 s', '0,1 s', '1000 s'], richtig: 0 },
+      { frage: 'Welche Formel beschreibt die Kondensatorspannung beim Entladen?', optionen: [m`$U_0\,e^{-t/(R\cdot C)}$`, m`$U_0\,(1-e^{-t/(R\cdot C)})$`, m`$U_0\,e^{t/(R\cdot C)}$`], richtig: 0 },
+      { frage: m`$e^{-t/(R\cdot C)}=0{,}2$. Wie berechnet man $t$?`, optionen: [m`$t=-R\cdot C\cdot\ln0{,}2$`, m`$t=R\cdot C\cdot0{,}2$`, m`$t=\ln(0{,}2\cdot R\cdot C)$`], richtig: 0 }
     ],
     extras: {
       blurting: {
         minuten: 5,
         aufforderung: m`Schreib alles auf, was du über das <b>Laden und Entladen eines Kondensators</b> weißt: Formeln, Kurven, besondere Zeiten, Begründungen.`,
         kernpunkte: [
-          m`Zeitkonstante $\tau=R\cdot C$ (Einheit s)`,
-          m`Laden: $U_C=U_0(1-e^{-t/\tau})$, $I=\tfrac{U_0}{R}e^{-t/\tau}$`,
-          m`Entladen: $U_C=U_0e^{-t/\tau}$, $I=-\tfrac{U_0}{R}e^{-t/\tau}$ (Strom in Gegenrichtung)`,
-          'Nach 1 τ: Spannung 63 % (Laden) bzw. Strom 37 %',
-          m`Halbwertszeit $t_h=\tau\ln2$`,
-          'Nach 5 τ (≈ 7 Halbwertszeiten) praktisch fertig (unter 1 %)',
+          m`Im Exponenten steht $R\cdot C$ (Einheit s); Maschenregel $\sum U=0$ (Laden: $U_0=U_R+U_C$)`,
+          m`Laden: $U_C=U_0(1-e^{-t/(R\cdot C)})$, $I=\tfrac{U_0}{R}e^{-t/(R\cdot C)}$`,
+          m`Entladen: $U_C=U_0e^{-t/(R\cdot C)}$, $I=-\tfrac{U_0}{R}e^{-t/(R\cdot C)}$ (Strom in Gegenrichtung)`,
+          'Anfang: Beim Laden liegt U₀ am Widerstand (U_C = 0), beim Entladen liegt U₀ am Kondensator und (dem Betrag nach) am Widerstand',
+          m`Halbwertszeit $t_h=R\cdot C\cdot\ln2$`,
+          'Nach etwa dem Fünffachen von R·C praktisch fertig (unter 1 %)',
           'Einschaltmoment: leerer Kondensator wirkt wie Kurzschluss, I₀ = U₀/R; voll: wie Unterbrechung',
-          m`Zeit gesucht: $e^{-t/\tau}$ isolieren und logarithmieren`,
+          m`Zeit gesucht: Gleichung mit Zahlen aufschreiben und im Rechner solve(…, t); von Hand $e^{\ldots}$ isolieren und logarithmieren`,
           m`Bis $U_0/3$: $C=\dfrac{t_E}{R\ln3}$`,
           m`Herleitung: Maschenregel $U_0=RI+Q/C$, ableiten: $0=R\dot I+I/C$`
         ],
-        spick: m`<ol><li>$\tau=RC$, $t_h=\tau\ln2$</li><li>Laden $U_0(1-e^{-t/\tau})$, Entladen $U_0e^{-t/\tau}$, Strom $\pm\tfrac{U_0}Re^{-t/\tau}$</li><li>63 % / 37 % nach $\tau$, fertig nach $5\tau$</li><li>Zeit: $t=\tau\ln\tfrac{U_0}{U}$; $C=\tfrac{t_E}{R\ln3}$</li></ol>`
+        spick: m`<ol><li>Im Exponenten $R\cdot C$; $t_h=R\cdot C\cdot\ln2$</li><li>Laden $U_0(1-e^{-t/(R\cdot C)})$, Entladen $U_0e^{-t/(R\cdot C)}$, Strom $\pm\tfrac{U_0}Re^{-t/(R\cdot C)}$</li><li>Maschenregel: Laden $U_0=U_R+U_C$, Entladen $|U_R|=U_C$</li><li>Zeit: solve(Gleichung, t) oder $t=R\cdot C\cdot\ln\tfrac{U_0}{U}$; $C=\tfrac{t_E}{R\ln3}$</li></ol>`
       },
       fehler: [
         {
           id: 'phe-fx1', titel: 'Fehler beim Logarithmieren',
           frage: m`Ein Kondensator ($R=47\,\text{k}\Omega$, $C=220\,\mu\text{F}$) wird von $10\,\text{V}$ aus entladen. Nach welcher Zeit liegen noch $2{,}0\,\text{V}$ an? Tippe auf die <b>erste</b> falsche Zeile.`,
           schritte: [
-            { name: 'Zeitkonstante', rechnung: m`$$\tau=RC=47\,000\,\Omega\cdot220\cdot10^{-6}\,\text{F}=10{,}34\,\text{s}$$`, ok: 'Stimmt: kΩ und µF richtig umgerechnet.' },
-            { name: 'Ansatz', rechnung: m`$$2{,}0\,\text{V}=10\,\text{V}\cdot e^{-t/\tau}\ \Rightarrow\ e^{-t/\tau}=0{,}2$$`, ok: 'Stimmt: Entladeformel, e-Funktion isoliert.' },
-            { name: 'Logarithmieren', rechnung: m`$$-\frac{t}{\tau}=\ln0{,}2=1{,}609$$` },
+            { name: 'Produkt R·C', rechnung: m`$$R\cdot C=47\,000\,\Omega\cdot220\cdot10^{-6}\,\text{F}=10{,}34\,\text{s}$$`, ok: 'Stimmt: kΩ und µF richtig umgerechnet.' },
+            { name: 'Ansatz', rechnung: m`$$2{,}0\,\text{V}=10\,\text{V}\cdot e^{-t/(R\cdot C)}\ \Rightarrow\ e^{-t/(R\cdot C)}=0{,}2$$`, ok: 'Stimmt: Entladeformel, e-Funktion isoliert.' },
+            { name: 'Logarithmieren', rechnung: m`$$-\frac{t}{R\cdot C}=\ln0{,}2=1{,}609$$` },
             { name: 'Auflösen', rechnung: m`$$t=-1{,}609\cdot10{,}34\,\text{s}=-16{,}6\,\text{s}$$`, ok: 'Rechnet richtig mit dem Wert davor weiter. Dass die Zeit negativ wird, zeigt: Der Fehler steckt weiter oben.' }
           ],
           fehler: 2,
           was: m`$\ln0{,}2$ ist <b>negativ</b> ($-1{,}609$), weil $0{,}2<1$.`,
-          richtig: m`$$-\frac t\tau=-1{,}609\ \Rightarrow\ \res{t=16{,}6\,\text{s}}$$`,
+          richtig: m`$$-\frac{t}{R\cdot C}=-1{,}609\ \Rightarrow\ \res{t=16{,}6\,\text{s}}$$`,
           typ: 'Rechenfehler',
           folge: 'Mit dem richtigen Vorzeichen kommt eine positive Zeit heraus: 16,6 s. Eine negative Zeit ist immer ein Warnsignal.',
           tipp: m`Probe: $e^{-16{,}6/10{,}34}=e^{-1{,}61}\approx0{,}2$.`
@@ -63,31 +63,31 @@
     stufen: [
       { typ: 'sehen', demo: { name: 'p-rc', R: 10, C: 470 },
         text: 'Drück auf „Laden“ und schau beide Kurven an. Danach „Entladen“. Verändere R und C: Was passiert mit dem Tempo?',
-        frage: { frage: 'Du verdoppelst R. Was passiert mit dem Ladevorgang?', optionen: ['Er dauert doppelt so lange, weil τ = R·C doppelt so groß ist.', 'Er geht doppelt so schnell.', 'Die Endspannung verdoppelt sich.'], richtig: 0, erklaerung: 'Größerer Widerstand heißt kleinerer Strom, der Kondensator füllt sich langsamer. Die Endspannung bleibt U₀.' } },
+        frage: { frage: 'Du verdoppelst R. Was passiert mit dem Ladevorgang?', optionen: ['Er dauert doppelt so lange, weil R·C im Exponenten doppelt so groß ist.', 'Er geht doppelt so schnell.', 'Die Endspannung verdoppelt sich.'], richtig: 0, erklaerung: 'Größerer Widerstand heißt kleinerer Strom, der Kondensator füllt sich langsamer. Die Endspannung bleibt U₀.' } },
       {
         typ: 'beispiel',
         task: {
           id: 'phe-s1', teil: 'B', titel: 'Vorgerechnetes Beispiel: Entladen',
           parts: [{
             id: 'phe-s1a', label: '', operator: 'Berechnen Sie', afb: 'II', be: 6,
-            frage: m`Ein Kondensator ($C=220\,\mu\text{F}$) ist auf $U_0=10\,\text{V}$ geladen und wird über $R=47\,\text{k}\Omega$ entladen. Berechnen Sie $\tau$, die Spannung nach $5{,}0\,\text{s}$ und die Zeit, bis nur noch $2{,}0\,\text{V}$ anliegen.`,
-            checkpoints: [{ id: 'tau', label: 'τ in s', wert: 10.34, tol: 0.1 }, { id: 't2', label: 't bis 2 V in s', wert: 16.64, tol: 0.2 }],
+            frage: m`Ein Kondensator ($C=220\,\mu\text{F}$) ist auf $U_0=10\,\text{V}$ geladen und wird über $R=47\,\text{k}\Omega$ entladen. Berechnen Sie $R\cdot C$, die Spannung nach $5{,}0\,\text{s}$ und die Zeit, bis nur noch $2{,}0\,\text{V}$ anliegen.`,
+            checkpoints: [{ id: 'tau', label: 'R·C in s', wert: 10.34, tol: 0.1 }, { id: 't2', label: 't bis 2 V in s', wert: 16.64, tol: 0.2 }],
             schritte: [
-              { name: 'Zeitkonstante', punkte: 1,
-                vorher: { frage: 'Womit fängst du an?', optionen: [m`$\tau=R\cdot C$ ausrechnen`, m`$U_0/R$ ausrechnen`, 'Halbwertszeit schätzen'], richtig: 0 },
-                rechnung: m`$$\tau=RC=47\,000\,\Omega\cdot220\cdot10^{-6}\,\text{F}=\res{10{,}34\,\text{s}}$$`,
-                warum: 'τ steckt in jeder Formel, darum zuerst. Einheiten in Ω und F.' },
+              { name: 'Produkt R·C', punkte: 1,
+                vorher: { frage: 'Womit fängst du an?', optionen: [m`$R\cdot C$ ausrechnen`, m`$U_0/R$ ausrechnen`, 'Halbwertszeit schätzen'], richtig: 0 },
+                rechnung: m`$$R\cdot C=47\,000\,\Omega\cdot220\cdot10^{-6}\,\text{F}=\res{10{,}34\,\text{s}}$$`,
+                warum: 'R·C steht im Exponenten jeder Formel, darum zuerst. Einheiten in Ω und F.' },
               { name: 'Spannung nach 5 s', punkte: 2,
-                vorher: { frage: 'Welche Formel gilt hier?', optionen: [m`$U_0\,e^{-t/\tau}$`, m`$U_0(1-e^{-t/\tau})$`, m`$\tfrac{U_0}R\,e^{-t/\tau}$`], richtig: 0 },
+                vorher: { frage: 'Welche Formel gilt hier?', optionen: [m`$U_0\,e^{-t/(R\cdot C)}$`, m`$U_0(1-e^{-t/(R\cdot C)})$`, m`$\tfrac{U_0}R\,e^{-t/(R\cdot C)}$`], richtig: 0 },
                 rechnung: m`$$U_C(5\,\text{s})=10\,\text{V}\cdot e^{-5{,}0/10{,}34}=10\,\text{V}\cdot0{,}617=\res{6{,}17\,\text{V}}$$`,
                 warum: 'Entladen: Die Spannung fällt von U₀ aus exponentiell.' },
               { name: 'Zeit bis 2 V', punkte: 2,
-                vorher: { frage: m`Wie kommst du an $t$ heran?`, optionen: [m`$e^{-t/\tau}$ isolieren, dann $\ln$`, 'Ausprobieren mit Zahlen', m`Durch $e$ teilen`], richtig: 0 },
-                rechnung: m`$$\begin{aligned}2{,}0&=10\cdot e^{-t/\tau}\\ e^{-t/\tau}&=0{,}2\\ -\tfrac{t}{\tau}&=\ln0{,}2=-1{,}609\\ t&=1{,}609\cdot10{,}34\,\text{s}=\res{16{,}6\,\text{s}}\end{aligned}$$`,
-                cas: { eingabe: 'solve(2=10*e^(-t/10.34),t)', ausgabe: 't=16.64' },
-                warum: 'Der Logarithmus holt den Exponenten herunter.' },
+                vorher: { frage: m`Wie kommst du an $t$ heran?`, optionen: ['Gleichung mit Zahlen aufschreiben und mit solve (oder Isolieren und ln) nach t lösen', 'Ausprobieren mit Zahlen', m`Durch $e$ teilen`], richtig: 0 },
+                rechnung: m`$$\begin{aligned}2{,}0&=10\cdot e^{-t/(R\cdot C)}\\ e^{-t/(R\cdot C)}&=0{,}2\\ -\tfrac{t}{R\cdot C}&=\ln0{,}2=-1{,}609\\ t&=1{,}609\cdot10{,}34\,\text{s}=\res{16{,}6\,\text{s}}\end{aligned}$$`,
+                cas: { eingabe: 'solve(2=10*e^(-t/(47000*220*10^(-6))),t)', ausgabe: 't=16.64' },
+                warum: 'Der Rechner (solve) oder der Logarithmus holt t aus dem Exponenten.' },
               { name: 'Antwortsatz', punkte: 1, antwort: true,
-                rechnung: m`Die Zeitkonstante beträgt $10{,}3\,\text{s}$, nach $5\,\text{s}$ liegen noch $6{,}2\,\text{V}$ an, auf $2{,}0\,\text{V}$ ist die Spannung nach etwa $17\,\text{s}$ gefallen.` }
+                rechnung: m`Das Produkt $R\cdot C$ beträgt $10{,}3\,\text{s}$, nach $5\,\text{s}$ liegen noch $6{,}2\,\text{V}$ an, auf $2{,}0\,\text{V}$ ist die Spannung nach etwa $17\,\text{s}$ gefallen.` }
             ]
           }]
         }
@@ -98,18 +98,18 @@
           id: 'phe-s2', teil: 'B', titel: 'Beispiel mit Lücken',
           parts: [{
             id: 'phe-s2a', label: '', operator: 'Berechnen Sie', afb: 'II', be: 6,
-            frage: m`$C=47\,\mu\text{F}$, $R=100\,\text{k}\Omega$, Entladen von $U_0=6{,}0\,\text{V}$ aus. Berechnen Sie $\tau$, $U_C(3{,}0\,\text{s})$ und die Zeit bis $1{,}0\,\text{V}$.`,
+            frage: m`$C=47\,\mu\text{F}$, $R=100\,\text{k}\Omega$, Entladen von $U_0=6{,}0\,\text{V}$ aus. Berechnen Sie $R\cdot C$, $U_C(3{,}0\,\text{s})$ und die Zeit bis $1{,}0\,\text{V}$.`,
             checkpoints: [{ id: 'u3', label: 'U(3 s) in V', wert: 3.169, tol: 0.03 }],
             schritte: [
-              { name: 'Zeitkonstante', punkte: 1, rechnung: m`$$\tau=100\,000\,\Omega\cdot47\cdot10^{-6}\,\text{F}=\res{4{,}7\,\text{s}}$$` },
+              { name: 'Produkt R·C', punkte: 1, rechnung: m`$$R\cdot C=100\,000\,\Omega\cdot47\cdot10^{-6}\,\text{F}=\res{4{,}7\,\text{s}}$$` },
               { name: 'Spannung nach 3 s', punkte: 2,
                 rechnung: m`$$U_C=6{,}0\,\text{V}\cdot e^{-3{,}0/4{,}7}=\res{3{,}17\,\text{V}}$$`,
                 luecke: { rechnung: m`$$U_C=6{,}0\,\text{V}\cdot e^{-3{,}0/4{,}7}=\;?$$`, felder: [{ id: 'u3', label: 'U(3 s) in V', wert: 3.169, tol: 0.03 }], tipp: m`$e^{-0{,}638}\approx0{,}528$` } },
               { name: 'Zeit bis 1 V', punkte: 2,
                 rechnung: m`$$e^{-t/4{,}7}=\tfrac16\ \Rightarrow\ t=4{,}7\,\text{s}\cdot\ln6=\res{8{,}42\,\text{s}}$$`,
                 luecke: { rechnung: m`$$e^{-t/4{,}7}=\tfrac16\ \Rightarrow\ t=4{,}7\,\text{s}\cdot\ln6=\;?$$`, felder: [{ id: 't1', label: 't in s', wert: 8.421, tol: 0.05 }], tipp: m`$\ln6\approx1{,}792$` },
-                cas: { eingabe: 'solve(1=6*e^(-t/4.7),t)', ausgabe: 't=8.421' } },
-              { name: 'Antwortsatz', punkte: 1, antwort: true, rechnung: m`$\tau=4{,}7\,\text{s}$, nach $3\,\text{s}$ noch $3{,}2\,\text{V}$, nach $8{,}4\,\text{s}$ nur noch $1{,}0\,\text{V}$.` }
+                cas: { eingabe: 'solve(1=6*e^(-t/(100000*47*10^(-6))),t)', ausgabe: 't=8.421' } },
+              { name: 'Antwortsatz', punkte: 1, antwort: true, rechnung: m`$R\cdot C=4{,}7\,\text{s}$, nach $3\,\text{s}$ noch $3{,}2\,\text{V}$, nach $8{,}4\,\text{s}$ nur noch $1{,}0\,\text{V}$.` }
             ]
           }]
         }
@@ -120,18 +120,18 @@
           id: 'phe-s3', teil: 'B', titel: 'Mit Gerüst auf Papier',
           parts: [{
             id: 'phe-s3a', label: '', operator: 'Berechnen Sie', afb: 'II', be: 7,
-            frage: m`Ein Kondensator ($C=680\,\mu\text{F}$, $U_0=24\,\text{V}$) wird über $R=15\,\text{k}\Omega$ entladen. Berechnen Sie $\tau$, Spannung und Stromstärke nach $8{,}0\,\text{s}$ sowie die Zeit, bis die Spannung auf 10 % gefallen ist.`,
+            frage: m`Ein Kondensator ($C=680\,\mu\text{F}$, $U_0=24\,\text{V}$) wird über $R=15\,\text{k}\Omega$ entladen. Berechnen Sie $R\cdot C$, Spannung und Stromstärke nach $8{,}0\,\text{s}$ sowie die Zeit, bis die Spannung auf 10 % gefallen ist.`,
             checkpoints: [
-              { id: 'tau', label: 'τ in s', wert: 10.2, tol: 0.05, schritt: 0 },
+              { id: 'tau', label: 'R·C in s', wert: 10.2, tol: 0.05, schritt: 0 },
               { id: 'u8', label: 'U(8 s) in V', wert: 10.95, tol: 0.1, schritt: 1 },
               { id: 'i8', label: '|I(8 s)| in mA', wert: 0.7303, tol: 0.01, schritt: 2 },
               { id: 't10', label: 't bis 10 % in s', wert: 23.49, tol: 0.2, schritt: 3 }
             ],
             schritte: [
-              { name: 'Zeitkonstante', punkte: 1, hinweis: 'kΩ und µF in Ω und F umrechnen.', rechnung: m`$$\tau=15\,000\,\Omega\cdot680\cdot10^{-6}\,\text{F}=\res{10{,}2\,\text{s}}$$` },
+              { name: 'Produkt R·C', punkte: 1, hinweis: 'kΩ und µF in Ω und F umrechnen.', rechnung: m`$$R\cdot C=15\,000\,\Omega\cdot680\cdot10^{-6}\,\text{F}=\res{10{,}2\,\text{s}}$$` },
               { name: 'Spannung nach 8 s', punkte: 2, hinweis: 'Entladeformel für die Spannung.', rechnung: m`$$U_C=24\,\text{V}\cdot e^{-8{,}0/10{,}2}=\res{10{,}95\,\text{V}}$$` },
-              { name: 'Stromstärke nach 8 s', punkte: 2, hinweis: m`$|I|=\dfrac{U_C}{R}$ oder $\dfrac{U_0}{R}e^{-t/\tau}$`, rechnung: m`$$|I|=\frac{24\,\text{V}}{15\,000\,\Omega}\cdot e^{-8{,}0/10{,}2}=\res{0{,}73\,\text{mA}}$$ (Richtung entgegen dem Ladestrom)` },
-              { name: 'Zeit bis 10 %', punkte: 2, hinweis: m`$e^{-t/\tau}=0{,}1$`, rechnung: m`$$t=\tau\ln10=10{,}2\,\text{s}\cdot2{,}303=\res{23{,}5\,\text{s}}$$`, antwort: true }
+              { name: 'Stromstärke nach 8 s', punkte: 2, hinweis: m`$|I|=\dfrac{U_C}{R}$ oder $\dfrac{U_0}{R}e^{-t/(R\cdot C)}$`, rechnung: m`$$|I|=\frac{24\,\text{V}}{15\,000\,\Omega}\cdot e^{-8{,}0/10{,}2}=\res{0{,}73\,\text{mA}}$$ (Richtung entgegen dem Ladestrom)` },
+              { name: 'Zeit bis 10 %', punkte: 2, hinweis: m`$e^{-t/(R\cdot C)}=0{,}1$`, rechnung: m`$$t=R\cdot C\cdot\ln10=10{,}2\,\text{s}\cdot2{,}303=\res{23{,}5\,\text{s}}$$`, cas: { eingabe: 'solve(0.1=e^(-t/(15000*680*10^(-6))),t)', ausgabe: 't=23.486' }, antwort: true }
             ]
           }]
         }
@@ -145,12 +145,12 @@
           parts: [
             { id: 'phe-s4a', label: 'a)', operator: 'Berechnen Sie', afb: 'II', be: 4,
               frage: 'Berechnen Sie die Zeit vom Einschalten bis zum Aufleuchten der Bereitschaftslampe.',
-              tipps: [m`Ladeformel: $0{,}95\,U_0=U_0(1-e^{-t/\tau})$`, m`$e^{-t/\tau}=0{,}05$`],
-              checkpoints: [{ id: 'tau', label: 'τ in s', wert: 1.02, tol: 0.01 }, { id: 't95', label: 't in s', wert: 3.056, tol: 0.03 }],
+              tipps: [m`Ladeformel: $0{,}95\,U_0=U_0(1-e^{-t/(R\cdot C)})$`, m`$e^{-t/(R\cdot C)}=0{,}05$`],
+              checkpoints: [{ id: 'tau', label: 'R·C in s', wert: 1.02, tol: 0.01 }, { id: 't95', label: 't in s', wert: 3.056, tol: 0.03 }],
               schritte: [
-                { name: 'Zeitkonstante', punkte: 1, rechnung: m`$$\tau=RC=1500\,\Omega\cdot680\cdot10^{-6}\,\text{F}=1{,}02\,\text{s}$$` },
-                { name: 'Ansatz Laden', punkte: 1, rechnung: m`$$0{,}95\,U_0=U_0\,(1-e^{-t/\tau})\ \Rightarrow\ e^{-t/\tau}=0{,}05$$` },
-                { name: 'Logarithmieren', punkte: 2, rechnung: m`$$t=\tau\ln20=1{,}02\,\text{s}\cdot3{,}00=\res{3{,}1\,\text{s}}$$`, cas: { eingabe: 'solve(0.95=1-e^(-t/1.02),t)', ausgabe: 't=3.0557' } }
+                { name: 'Produkt R·C', punkte: 1, rechnung: m`$$R\cdot C=1500\,\Omega\cdot680\cdot10^{-6}\,\text{F}=1{,}02\,\text{s}$$` },
+                { name: 'Ansatz Laden', punkte: 1, rechnung: m`$$0{,}95\,U_0=U_0\,(1-e^{-t/(R\cdot C)})\ \Rightarrow\ e^{-t/(R\cdot C)}=0{,}05$$` },
+                { name: 'Logarithmieren', punkte: 2, rechnung: m`$$t=R\cdot C\cdot\ln20=1{,}02\,\text{s}\cdot3{,}00=\res{3{,}1\,\text{s}}$$`, cas: { eingabe: 'solve(0.95=1-e^(-t/(1500*680*10^(-6))),t)', ausgabe: 't=3.0557' } }
               ],
               antwort: 'Nach etwa 3,1 s leuchtet die Bereitschaftslampe.' },
             { id: 'phe-s4b', label: 'b)', operator: 'Berechnen Sie / Beurteilen Sie', afb: 'III', be: 5,
@@ -160,7 +160,7 @@
               schritte: [
                 { name: 'Energie voll', punkte: 1, rechnung: m`$$E_\text{el}=\tfrac12\cdot680\cdot10^{-6}\,\text{F}\cdot(330\,\text{V})^2=37{,}0\,\text{J}$$` },
                 { name: 'Energie bei 95 %', punkte: 1, rechnung: m`$$E_{\text{el},95}=\tfrac12C\,(0{,}95\,U_0)^2=0{,}95^2\,E_\text{el}=0{,}9025\cdot37{,}0\,\text{J}=33{,}4\,\text{J}$$` },
-                { name: 'Beurteilung', punkte: 3, antwort: true, rechnung: m`Bei 95 % der Spannung sind schon gut 90 % der Energie gespeichert, der Blitz ist kaum schwächer. 100 % werden bei exponentiellem Laden theoretisch nie erreicht, praktisch erst nach etwa $5\tau\approx5\,\text{s}$. Die Lampe bei 95 % ist also sinnvoll: deutlich kürzere Wartezeit (3,1 s statt ≈ 5 s) bei fast voller Blitzenergie.` }
+                { name: 'Beurteilung', punkte: 3, antwort: true, rechnung: m`Bei 95 % der Spannung sind schon gut 90 % der Energie gespeichert, der Blitz ist kaum schwächer. 100 % werden bei exponentiellem Laden theoretisch nie erreicht, praktisch erst nach etwa $5\cdot R\cdot C\approx5\,\text{s}$. Die Lampe bei 95 % ist also sinnvoll: deutlich kürzere Wartezeit (3,1 s statt ≈ 5 s) bei fast voller Blitzenergie.` }
               ],
               antwort: '37 J bzw. 33 J (90 %); sinnvoll, weil kaum Energieverlust und kürzere Wartezeit.' }
           ]

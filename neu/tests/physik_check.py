@@ -301,3 +301,13 @@ chk('PQ6 P kW', 800 / 0.008 / 1e3, 100)
 chk('PQ6 I', 100e-6 * 4000 / 0.008, 50)
 chk('PQ6 t Laden', 800 / 5.0, 160)
 print('Nachtrag 12.11. (3) geprüft.')
+
+# ---------------- 13.11.: Aufgaben ohne tau, mit solve(..., t) wie im Unterricht
+chk('PH8-Bsp Zeit bis 10 V (solve)', -4.7 * ln(1 - 10 / 12), 8.421)
+chk('PH9 Zeit bis 2 V (solve)', -(10e3 * 470e-6) * ln(2 / 12), 8.421)
+chk('PL1c solve 0,5', -10.34 * ln(0.5), 7.17, 0.002)
+chk('PL1d solve 0,99', -10.34 * ln(1 - 0.99), 47.62, 0.002)
+chk('PL3d solve 0,01', -200 * ln(0.01), 921.0, 0.002)
+chk('PQ5d solve 1 V', -(4700 * 2.2e-3) * ln(1.0 / 15), 28.0, 0.002)
+chk('Treppe s3 solve 10 %', -(15000 * 680e-6) * ln(0.1), 23.486, 0.002)
+print('Nachtrag 13.11. (solve) geprueft.')

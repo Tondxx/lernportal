@@ -4,7 +4,7 @@
    Jede Größe einmal erklärt: Symbol, Name, Einheit, was sie bedeutet, wie man sie sich vorstellt.
    Benutzt von:
      · Lektionen:  groessen: ['C', 'Q', …]          → Seite „Größen“ am Anfang der Lektion
-     · Aufgaben:   groessen: [['C', '470 µF'], ['tau', 'gesucht'], …] → Kasten „Gegeben / Gesucht“
+     · Aufgaben:   groessen: [['C', '470 µF'], ['RC', 'gesucht'], …] → Kasten „Gegeben / Gesucht“
      · Lektion PH0 „Die Größen verstehen“ (ganze Liste + Karteikarten), wird hier erzeugt.
    window.LR_GROESSEN[fach][key] = { sym, name, einheit, was, bild? }
    ========================================================================== */
@@ -43,10 +43,10 @@
     R: { sym: m`$R$`, name: 'Widerstand', einheit: 'Ω (Ohm) = V/A', was: m`Wie stark ein Bauteil den Strom bremst: $R=\dfrac{U}{I}$. Beim RC-Glied: großer Widerstand, langsames Laden.` },
     // ---------------------------------------------------------------- Zeit beim Laden/Entladen
     t: { sym: m`$t$`, name: 'Zeit', einheit: 's', was: 'Die Zeit seit dem Umlegen des Schalters (Laden oder Entladen). Bei der Röhre: Flugzeit zwischen den Platten.' },
-    tau: { sym: m`$\tau$`, name: 'Zeitkonstante („tau“)', einheit: 's (denn Ω · F = s)', was: m`$\tau=R\cdot C$. Das „Tempo“ des Kondensators: Nach $1\tau$ ist er zu 63 % geladen bzw. auf 37 % entladen, nach $5\tau$ praktisch fertig.` },
-    th: { sym: m`$t_h$`, name: 'Halbwertszeit', einheit: 's', was: m`Zeit, in der sich der Strom bzw. die Restspannung halbiert: $t_h=\tau\cdot\ln2\approx0{,}69\,\tau$.` },
-    tE: { sym: m`$t_E$`, name: 'Entladezeit (bis ein Drittel)', einheit: 's', was: m`In der Abi-Aufgabe (Kornfeuchte): die Zeit, bis die Spannung von $U_0$ auf $\tfrac13U_0$ gefallen ist. Es gilt $t_E=\tau\ln3$.` },
-    euler: { sym: m`$e^{-t/\tau}$`, name: 'e-Funktion (Eulersche Zahl e ≈ 2,718)', einheit: 'Zahl zwischen 0 und 1', was: m`<b>Achtung:</b> Hier ist $e$ die Zahl 2,718…, nicht die Elementarladung. $e^{-t/\tau}$ sagt, welcher <b>Anteil</b> noch übrig ist: bei $t=0$ alles (1), nach $1\tau$ noch 0,37, nach $5\tau$ fast nichts.` },
+    RC: { sym: m`$R\cdot C$`, name: 'Produkt Widerstand mal Kapazität', einheit: 's (denn Ω · F = s)', was: m`Steht in der e-Funktion im Exponenten ($e^{-t/(R\cdot C)}$, Formelsammlung S. 27). Je größer $R\cdot C$, desto langsamer laden und entladen. Es ist die Zahl unter dem Bruchstrich im Exponenten, kein neues Formelzeichen.` },
+    th: { sym: m`$t_h$`, name: 'Halbwertszeit', einheit: 's', was: m`Zeit, in der sich der Strom bzw. die Restspannung halbiert: $t_h=R\cdot C\cdot\ln2\approx0{,}69\cdot R\cdot C$.` },
+    tE: { sym: m`$t_E$`, name: 'Entladezeit (bis ein Drittel)', einheit: 's', was: m`In der Abi-Aufgabe (Kornfeuchte): die Zeit, bis die Spannung von $U_0$ auf $\tfrac13U_0$ gefallen ist. Es gilt $t_E=R\cdot C\cdot\ln3$.` },
+    euler: { sym: m`$e^{-t/(R\cdot C)}$`, name: 'e-Funktion (Eulersche Zahl e ≈ 2,718)', einheit: 'Zahl zwischen 0 und 1', was: m`<b>Achtung:</b> Hier ist $e$ die Zahl 2,718…, nicht die Elementarladung. $e^{-t/(R\cdot C)}$ sagt, welcher <b>Anteil</b> noch übrig ist: bei $t=0$ alles (1), später immer weniger, bis fast nichts übrig ist.` },
     // ---------------------------------------------------------------- Braunsche Röhre
     v0: { sym: m`$v_0$`, name: 'Eintrittsgeschwindigkeit', einheit: 'm/s', was: m`Geschwindigkeit der Elektronen nach der Beschleunigung, also beim Eintritt in die Ablenkplatten: $v_0=\sqrt{\dfrac{2eU_B}{m_e}}$. Sie bleibt waagerecht konstant.` },
     vy: { sym: m`$v_y$`, name: 'Quergeschwindigkeit', einheit: 'm/s', was: m`Geschwindigkeit senkrecht zu den Platten, die das Feld dazugibt: $v_y=a\cdot t$. Am Anfang 0.` },
@@ -64,14 +64,14 @@
     ['Spannung, Energie, Leistung', ['U', 'U0', 'UC', 'UR', 'phi', 'W', 'eV', 'P']],
     ['Feld', ['E', 'F']],
     ['Kondensator', ['C', 'A', 'd', 'eps0', 'epsr', 'sigma', 'R']],
-    ['Laden und Entladen', ['t', 'tau', 'th', 'tE', 'euler']],
+    ['Laden und Entladen', ['t', 'RC', 'th', 'tE', 'euler']],
     ['Braunsche Röhre', ['UB', 'UAbl', 'me', 'v0', 'vy', 'a', 'l', 'L', 'y', 'alpha', 'Y']]
   ];
   const row = k => { const g = G[k]; return `<tr><td class="gr-sym">${g.sym}</td><td><b>${g.name}</b><br><span class="dim">${g.einheit}</span></td><td>${g.was}</td></tr>`; };
   const idee = `<p>In jeder Aufgabe tauchen Buchstaben auf. Wer bei jedem Buchstaben sofort weiß, <b>was er bedeutet und in welcher Einheit er gemessen wird</b>, versteht die Formeln fast von allein. Hier steht jede Größe einmal in Ruhe erklärt.</p>
 <div class="mt-call"><div class="mt-call-h">So benutzt du die Liste</div><p>Lies eine Gruppe, deck die Erklärung ab und sag laut, was die Größe bedeutet. In jeder Lektion und Aufgabe findest du oben einen Kasten mit genau den Größen, die dort vorkommen.</p></div>
 ${GRUPPEN.map(([h, ks]) => `<h3>${h}</h3><table class="gr-table"><tbody>${ks.map(row).join('')}</tbody></table>`).join('')}`;
-  const KARTEN = ['Q', 'I', 'U', 'phi', 'E', 'W', 'C', 'epsr', 'R', 'tau', 'th', 'euler', 'UB', 'v0', 'y'];
+  const KARTEN = ['Q', 'I', 'U', 'phi', 'E', 'W', 'C', 'epsr', 'R', 'RC', 'th', 'euler', 'UB', 'v0', 'y'];
   const PH0 = {
     id: 'PH0', fach: 'physik', num: 0, min: 10,
     title: 'Die Größen verstehen',
@@ -81,7 +81,7 @@ ${GRUPPEN.map(([h, ks]) => `<h3>${h}</h3><table class="gr-table"><tbody>${ks.map
       m`<b>Einheiten verraten die Bedeutung:</b> V = J/C (Energie pro Ladung), A = C/s (Ladung pro Zeit), F = C/V (Ladung pro Volt), V/m (Spannung pro Strecke).`,
       m`<b>Vorsilben umrechnen:</b> k = $10^3$, M = $10^6$, m = $10^{-3}$, µ = $10^{-6}$, n = $10^{-9}$, p = $10^{-12}$. cm = $10^{-2}$ m, mm = $10^{-3}$ m, cm² = $10^{-4}$ m².`,
       m`<b>Indizes lesen:</b> $U_0$ = Anfang/Quelle, $U_C$ = am Kondensator, $U_R$ = am Widerstand, $U_B$ = Beschleunigung.`,
-      m`<b>Zwei verschiedene $e$:</b> In $eU_B$ ist $e$ die Elementarladung, in $e^{-t/\tau}$ die Zahl 2,718.`
+      m`<b>Zwei verschiedene $e$:</b> In $eU_B$ ist $e$ die Elementarladung, in $e^{-t/(R\cdot C)}$ die Zahl 2,718.`
     ],
     test: KARTEN.map(k => ({ q: `Was bedeutet ${G[k].sym} und in welcher Einheit misst man es?`, a: `<b>${G[k].name}</b> (${G[k].einheit}). ${G[k].was}` })),
     groessen: null

@@ -522,7 +522,7 @@
       <text x="${gx1}" y="${gyB + 14}" text-anchor="end">t</text><text x="${gx1}" y="${gyM + 14}" text-anchor="end">t</text></svg>
       <div class="pd-btns"><button class="btn primary small" type="button" data-m="laden">Laden</button><button class="btn small" type="button" data-m="entladen">Entladen</button><button class="btn small" type="button" data-m="reset">Zurück auf 0</button></div>
       <div class="pd-ctls">${slider('pdR', 'R =', 'kΩ', 1, 20, 1, def.R || 10)}${slider('pdCc', 'C =', 'µF', 100, 1000, 10, def.C || 470)}</div>
-      <div class="read"><span>τ = R·C = <b id="rT"></b> s</span><span>t = <b id="rt"></b> s</span><span>U<sub>C</sub> = <b id="rU"></b> V</span><span>I = <b id="rI"></b> mA</span></div>
+      <div class="read"><span>R·C = <b id="rT"></b> s</span><span>t = <b id="rt"></b> s</span><span>U<sub>C</sub> = <b id="rU"></b> V</span><span>I = <b id="rI"></b> mA</span></div>
       <p class="pd-msg" id="msg"></p>`;
     let mode = 'idle', t = 0, Ustart = 0, Uc = 0, pts = [], els = [];
     for (let i = 0; i < 26; i++) els.push(i / 26);
@@ -540,7 +540,7 @@
     function marks() {
       const T = tau(), tmax = 5 * T, gx = tt => gx0 + tt / tmax * (gx1 - gx0);
       let m = '';
-      for (let k = 1; k <= 5; k++) m += `<line x1="${gx(k * T)}" x2="${gx(k * T)}" y1="${gyT}" y2="${gyB2}" class="pd-grid"/><text x="${gx(k * T)}" y="${gyB2 + 16}" text-anchor="middle">${k}τ</text>`;
+      for (let k = 1; k <= 5; k++) m += `<line x1="${gx(k * T)}" x2="${gx(k * T)}" y1="${gyT}" y2="${gyB2}" class="pd-grid"/><text x="${gx(k * T)}" y="${gyB2 + 16}" text-anchor="middle">${(k * T).toFixed(1).replace('.', ',')} s</text>`;
       const th = T * Math.LN2;
       m += `<line x1="${gx(th)}" x2="${gx(th)}" y1="${gyT}" y2="${gyB}" class="pd-grid strong"/><text x="${gx(th) - 4}" y="${gyT - 6}" text-anchor="middle" class="pd-lbl">t<tspan baseline-shift="sub" font-size="10">h</tspan></text>`;
       const yU = f => gyB - f * (gyB - gyT);
@@ -565,8 +565,8 @@
       $('#bypass', host).style.opacity = lad ? 0.3 : 1;
       const f = t / T;
       $('#msg', host).innerHTML = mode === 'idle' ? 'Drück auf „Laden“. Am Anfang ist der Kondensator leer.'
-        : mode === 'laden' ? (f < 0.15 ? 'Einschaltmoment: Der leere Kondensator wirkt wie ein <b>Kurzschluss</b>, der Strom ist maximal: I₀ = U₀/R.' : f < 1.1 ? 'Je voller der Kondensator, desto größer seine Gegenspannung, desto kleiner der Strom. Nach <b>1 τ</b>: 63 % der Spannung, 37 % des Stroms.' : f < 4.9 ? 'Jede Halbwertszeit t<sub>h</sub> = τ·ln 2 halbiert den Abstand zum Endwert.' : 'Nach etwa <b>5 τ</b> ist der Kondensator voll und wirkt wie eine <b>Unterbrechung</b>: kein Strom mehr.')
-          : (f < 0.15 ? 'Entladen: Der Strom fließt jetzt <b>andersherum</b> (negativ) und startet bei −U₀/R.' : f < 4.9 ? 'Spannung und Strom fallen mit derselben e-Funktion: U = U₀·e<sup>−t/τ</sup>.' : 'Nach etwa 5 τ ist der Kondensator praktisch leer (unter 1 %).');
+        : mode === 'laden' ? (f < 0.15 ? 'Einschaltmoment: Der leere Kondensator wirkt wie ein <b>Kurzschluss</b>, der Strom ist maximal: I₀ = U₀/R.' : f < 1.1 ? 'Je voller der Kondensator, desto größer seine Gegenspannung, desto kleiner der Strom. Die Spannung nähert sich immer langsamer dem Endwert (Maschenregel: U₀ = U<sub>R</sub> + U<sub>C</sub>).' : f < 4.9 ? 'Nach jeder Halbwertszeit t<sub>h</sub> = R·C·ln 2 ist der Abstand zum Endwert nur noch halb so groß.' : 'Nach etwa dem <b>Fünffachen von R·C</b> ist der Kondensator voll und wirkt wie eine <b>Unterbrechung</b>: kein Strom mehr.')
+          : (f < 0.15 ? 'Entladen: Der Strom fließt jetzt <b>andersherum</b> (negativ) und startet bei −U₀/R.' : f < 4.9 ? 'Spannung und Strom fallen mit derselben e-Funktion: U = U₀·e<sup>−t/(R·C)</sup>.' : 'Nach etwa dem Fünffachen von R·C ist der Kondensator praktisch leer (unter 1 %).');
       // Elektronen: Geschwindigkeit ~ |I|
       return I / I0;
     }
@@ -574,7 +574,7 @@
     function step(dt) {
       const T = tau();
       if (mode === 'laden' || mode === 'entladen') {
-        const simDt = dt * T / 1.4; // 1 τ dauert 1,4 s
+        const simDt = dt * T / 1.4; // R·C dauert 1,4 s
         t += simDt;
         Uc = mode === 'laden' ? U0 + (Ustart - U0) * Math.exp(-t / T) : Ustart * Math.exp(-t / T);
         const I0 = U0 / (val(host, 'pdR') * 1e3), I = mode === 'laden' ? (U0 - Uc) / (val(host, 'pdR') * 1e3) : -Uc / (val(host, 'pdR') * 1e3);
@@ -610,7 +610,7 @@
       <div class="pd-ctls">${slider('pdTm', 'Cursor bei t =', 's', 0, 100, 0.1, 10)}</div>
       <div class="read"><span>U = <b id="rU"></b> V</span><span>U/U₀ = <b id="rR"></b> %</span><span>ln(U/U₀) = <b id="rL"></b></span></div>
       <div class="pd-try"><label for="pdGuess">Unbekannter Kondensator, R = 47 kΩ, U₀ = 9 V. Dein C in µF:</label><div class="pd-try-row"><input id="pdGuess" inputmode="decimal" autocomplete="off" placeholder="z. B. 300"><button class="btn small primary" type="button" data-chk>Prüfen</button><button class="btn small" type="button" data-new>Neuer Kondensator</button></div></div>
-      <p class="pd-msg" id="msg">Schiebe den Cursor, bis U = U₀/3 = 3 V ist. Dann gilt t<sub>E</sub> = τ·ln 3, also C = t<sub>E</sub> / (R·ln 3).</p>`;
+      <p class="pd-msg" id="msg">Schiebe den Cursor, bis U = U₀/3 = 3 V ist. Dann gilt t<sub>E</sub> = R·C·ln 3, also C = t<sub>E</sub> / (R·ln 3).</p>`;
     let tmax;
     function axes() {
       const T = R * C; tmax = Math.ceil(2.4 * T / 10) * 10;
@@ -627,7 +627,7 @@
       } else {
         const sy = v => yT + (-v) / 2.5 * (yB - yT);
         for (let v = 0; v >= -2.5; v -= 0.5) a += `<line x1="${x0}" x2="${x1}" y1="${sy(v)}" y2="${sy(v)}" class="pd-grid"/><text x="${x0 - 8}" y="${sy(v) + 4}" text-anchor="end">${fix(v, 1)}</text>`;
-        a += `<text x="${x0 + 6}" y="${yT - 8}">ln(U/U₀)</text><text x="${x1}" y="${sy(-2.3)}" text-anchor="end" class="pd-lbl">Gerade mit Steigung −1/τ</text>`;
+        a += `<text x="${x0 + 6}" y="${yT - 8}">ln(U/U₀)</text><text x="${x1}" y="${sy(-2.3)}" text-anchor="end" class="pd-lbl">Gerade mit Steigung −1/(R·C)</text>`;
       }
       $('#ax', host).innerHTML = a;
       let d = '';
@@ -655,7 +655,7 @@
       const true_ = C * 1e6;
       const ok = isFinite(g) && Math.abs(g - true_) / true_ <= 0.05;
       $('#msg', host).innerHTML = !isFinite(g) ? 'Gib eine Zahl in µF ein.' : ok
-        ? `Richtig: C = ${true_} µF (τ = R·C = ${fix(R * C, 1)} s). Abweichung ${fix(Math.abs(g - true_) / true_ * 100, 1)} %, das ist im Rahmen der Ablesegenauigkeit.`
+        ? `Richtig: C = ${true_} µF (R·C = ${fix(R * C, 1)} s). Abweichung ${fix(Math.abs(g - true_) / true_ * 100, 1)} %, das ist im Rahmen der Ablesegenauigkeit.`
         : `Noch nicht (mehr als 5 % daneben). Tipp: t<sub>E</sub> bei U = 3 V ablesen, dann C = t<sub>E</sub> / (47 000 Ω · ln 3). Ergebnis in F, mal 10⁶ ergibt µF.`;
     });
     $('[data-new]', host).addEventListener('click', () => { let c; do { c = CS[Math.floor(Math.random() * CS.length)] * 1e-6; } while (c === C); C = c; $('#pdGuess', host).value = ''; $('#msg', host).innerHTML = 'Neuer Kondensator. Wieder bei U₀/3 ablesen.'; axes(); });
