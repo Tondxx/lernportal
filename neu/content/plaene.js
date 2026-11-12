@@ -42,7 +42,7 @@
       fach: 'physik',
       klausur: 'k-10', // Physik Klausur 2 (12.1), 13.11.2026
       titel: 'Physik Endspurt: alle sieben Klausurthemen, garantierte zuerst',
-      hinweis: 'Nach der Themenliste der Lehrkraft (12.11.) geordnet, alle sieben Themen sind drin. Zuerst Lektion 13 „Die Formelsammlung: was steht wo?“ (nichts auswendig lernen, Seitenzahlen stehen überall dabei). Garantiert dran (Sternchen): Kondensator und Gleichung herleiten, darum Block 1 und 2. Dazu: Braunsche Röhre und Bewegung im elektrischen Feld (Block 2), Auf- und Entladen (Block 3), alle Herleitungen auf einmal (Block 4), Arbeit/Energie/Leistung (Block 5), Begründen mit funktionalen Abhängigkeiten und Taschenrechner (Block 6). Wenn die Zeit knapp wird: von oben nach unten abarbeiten, Block 6 und 5 zuerst kürzen. Nicht im Plan, aber in den Ordnern: Lektion 1/2/5-Wiederholungen, die Lerntreppen, weitere Aufgaben und die Probeklausur.',
+      hinweis: 'Nach der Themenliste der Lehrkraft (12.11.) geordnet, alle sieben Themen sind drin. Zuerst Lektion 13 „Die Formelsammlung: was steht wo?“ (nichts auswendig lernen, Seitenzahlen stehen überall dabei). Garantiert dran (Sternchen): Kondensator und Gleichung herleiten, darum Block 1 und 2. Dazu: Braunsche Röhre und Bewegung im elektrischen Feld (Block 2), Auf- und Entladen mit der Schaltung (Block 3), alle Herleitungen auf einmal (Block 4), Arbeit/Energie/Leistung (Block 5), Begründen mit funktionalen Abhängigkeiten und Taschenrechner (Block 6). Ganz am Ende (Block 7, nur bei Zeit): mehrere Kondensatoren parallel/in Reihe, das steht nicht auf der Themenliste. Wenn die Zeit knapp wird: von oben nach unten abarbeiten, Block 6 und 5 zuerst kürzen. Nicht im Plan, aber in den Ordnern: Lektion 1/2/5-Wiederholungen, die Lerntreppen, weitere Aufgaben und die Probeklausur.',
       stand: '2026-11-12',
       items: [
         // Block 0 · Formelsammlung: was steht wo (10 Min.)
@@ -50,11 +50,11 @@
         // Block 1 · Kondensator (garantiert): Aufbau, Berechnung, Anwendung, Schaltungen
         L('PH3'), A('PC2'),
         L('PH4'), A('PW1'),
-        L('PH5'), A('PS1'),
         // Block 2 · Gleichung herleiten (garantiert), Braunsche Röhre, Bewegung im elektrischen Feld
         L('PH6'), A('PR2'),
         L('PH7'), A('PR4'), A('PR3'),
-        // Block 3 · Auf- und Entladen: Kurven, C aus t_E, Differenzialgleichung
+        // Block 3 · Auf- und Entladen: Schaltung, Kurven, C aus t_E, Differenzialgleichung
+        L('PH14'),
         L('PH8'), A('PL1'), A('PL3'),
         L('PH9'), A('PL6'), A('PL4'),
         // Block 4 · Gleichung herleiten (garantiert): alle Herleitungen auf einmal
@@ -65,7 +65,9 @@
         L('PH2'),
         // Block 6 · Begründen mit funktionalen Abhängigkeiten, Taschenrechner
         L('PH10'), A('PB1'), A('PB2'),
-        L('PH11'), A('PT1')
+        L('PH11'), A('PT1'),
+        // Block 7 · Zusatz, nur bei Zeit: mehrere Kondensatoren (steht nicht auf der Themenliste)
+        L('PH5'), A('PS1')
       ]
     },
     {

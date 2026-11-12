@@ -16,6 +16,33 @@
   const achtung = (h, t) => `<div class="mt-call warn"><div class="mt-call-h">${h}</div>${t}</div>`;
   const FS = s => `<span class="fs-chip fs-in">Formelsammlung ${s}</span>`;
   const FSN = s => `<span class="fs-chip fs-no">${s || 'nicht in der Formelsammlung'}</span>`;
+  // Statisches Schaltbild Laden/Entladen mit hervorgehobenem Strompfad (Lektion 14)
+  const SCHALTBILD = modus => {
+    const lad = modus === 'laden';
+    const tri = (x, y, d) => {
+      const p = { r: [[x - 5, y - 5], [x + 5, y], [x - 5, y + 5]], l: [[x + 5, y - 5], [x - 5, y], [x + 5, y + 5]], d: [[x - 5, y - 5], [x + 5, y - 5], [x, y + 5]], u: [[x - 5, y + 5], [x + 5, y + 5], [x, y - 5]] }[d];
+      return `<polygon points="${p.map(q => q.join(',')).join(' ')}" style="fill:var(--info)"/>`;
+    };
+    const pfad = lad ? 'M40 100 V30 H110 L180 52 V80 M180 92 V210 H40 V112' : 'M180 80 V52 L250 30 V210 H180 V92';
+    const pfeile = lad ? tri(75, 30, 'r') + tri(180, 195, 'd') + tri(110, 210, 'l') : tri(250, 120, 'd') + tri(215, 210, 'l') + tri(180, 192, 'u');
+    const txt = 'style="fill:var(--text)" font-size="12"';
+    return `<svg viewBox="0 0 330 240" style="width:100%;max-width:340px;height:auto;display:block" role="img" aria-label="${lad ? 'Schaltung beim Laden: Umschalter in Stellung 1, Strom von der Quelle über Kondensator, Widerstand und Amperemeter zurück' : 'Schaltung beim Entladen: Umschalter in Stellung 2, Quelle abgetrennt, Strom vom Kondensator über Draht, Amperemeter und Widerstand zurück zum Kondensator'}">
+<path d="M40 30 V100 M40 112 V210 H250 V30 M40 30 H110 M180 52 V80 M180 92 V108 M180 142 V151 M180 173 V210 M180 70 H130 V75 M130 97 V102 H180" class="pd-wire"/>
+<path d="${pfad}" style="fill:none;stroke:var(--info);stroke-width:4.5;stroke-linecap:round;stroke-linejoin:round"/>
+<line x1="28" x2="52" y1="100" y2="100" class="pd-bat"/><line x1="34" x2="46" y1="112" y2="112" class="pd-bat thick"/>
+<line x1="166" x2="194" y1="80" y2="80" class="pd-capl"/><line x1="166" x2="194" y1="92" y2="92" class="pd-capl"/>
+<rect x="170" y="108" width="20" height="34" rx="3" class="pd-res"/>
+<circle cx="180" cy="162" r="11" class="pd-res"/><circle cx="130" cy="86" r="11" class="pd-res"/>
+<circle cx="110" cy="30" r="4" class="pd-node"/><circle cx="250" cy="30" r="4" class="pd-node"/><circle cx="180" cy="52" r="4" class="pd-node"/><circle cx="180" cy="70" r="3" class="pd-node"/><circle cx="180" cy="102" r="3" class="pd-node"/>
+${pfeile}
+<text x="180" y="166" text-anchor="middle" ${txt}>A</text><text x="130" y="90" text-anchor="middle" ${txt}>V</text>
+<text x="202" y="90" ${txt}>C</text><text x="202" y="129" ${txt}>R</text>
+<text x="56" y="110" ${txt}>U₀</text><text x="22" y="98" text-anchor="end" ${txt}>+</text>
+<text x="110" y="16" text-anchor="middle" ${txt} ${lad ? 'font-weight="700"' : 'opacity=".55"'}>Stellung 1: Laden</text>
+<text x="250" y="16" text-anchor="middle" ${txt} ${lad ? 'opacity=".55"' : 'font-weight="700"'}>Stellung 2: Entladen</text>
+<text x="165" y="232" text-anchor="middle" style="fill:var(--info)" font-size="12">${lad ? 'Quelle im Stromkreis' : 'Quelle abgetrennt'}</text>
+</svg>`;
+  };
   const KONST = m`<p class="dim" style="font-size:14px">Konstanten: $e=1{,}602\cdot10^{-19}\,\text{C}$, $m_e=9{,}109\cdot10^{-31}\,\text{kg}$, $\varepsilon_0=8{,}854\cdot10^{-12}\,\tfrac{\text{As}}{\text{Vm}}$</p>`;
 
   // ======================================================================
@@ -306,6 +333,70 @@ ${achtung('Wichtig fürs Erläutern', m`<p>In $y=\dfrac{Ux^2}{4dU_B}$ kommt $e/m
       ]
     },
 
+    // ---------------------------------------------------------------- Schaltung zum Laden und Entladen (12.11.)
+    {
+      id: 'PH14', fach: F, groessen: ['U0', 'UC', 'R', 'C', 'I'], num: 14, min: 12, demo: 'p-rc', demoTitel: 'Schau zu: Umschalter umlegen',
+      title: 'Die Schaltung: Laden und Entladen aufbauen',
+      short: 'Bauteile, Umschalter, Amperemeter in Reihe, Voltmeter parallel, was zum Entladen nötig ist',
+      idee: m`<p>Im Versuch „Entladung eines Kondensators“ wird ein Kondensator erst aufgeladen und dann <b>über einen Widerstand entladen</b>. In der Klausur kann stehen: „Zeichne die Schaltung“, „Beschreibe den Versuch“ oder „Erkläre, wie der Kondensator entladen wird“. Hier ist die Schaltung, Bauteil für Bauteil.</p>
+<h3>Die Bauteile</h3>
+<table><tr><th>Bauteil</th><th>Wozu?</th><th>Wie angeschlossen?</th></tr>
+<tr><td>Spannungsquelle $U_0$</td><td>liefert die Spannung zum Laden</td><td>langer Strich = Pluspol</td></tr>
+<tr><td>Umschalter</td><td>legt den Kondensator entweder an die Quelle (Laden) oder an einen Draht <b>ohne</b> Quelle (Entladen)</td><td>oben in der Schaltung</td></tr>
+<tr><td>Kondensator $C$</td><td>speichert die Ladung</td><td>im Zweig mit dem Widerstand</td></tr>
+<tr><td>Widerstand $R$</td><td>begrenzt den Strom und bestimmt das Tempo ($\tau=R\cdot C$)</td><td>in <b>Reihe</b> zum Kondensator</td></tr>
+<tr><td>Amperemeter A</td><td>misst die Stromstärke $I$</td><td>immer in <b>Reihe</b> (der Strom muss hindurch)</td></tr>
+<tr><td>Voltmeter V</td><td>misst die Kondensatorspannung $U_C$</td><td>immer <b>parallel</b> zum Kondensator (zieht fast keinen Strom)</td></tr></table>
+<h3>Die zwei Stellungen des Umschalters</h3>
+<div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;margin:12px 0">
+<figure style="margin:0;flex:1 1 260px">${SCHALTBILD('laden')}<figcaption class="dim" style="font-size:14px">Stellung 1: Der blaue Weg ist der Strom (technische Stromrichtung, von Plus nach Minus).</figcaption></figure>
+<figure style="margin:0;flex:1 1 260px">${SCHALTBILD('entladen')}<figcaption class="dim" style="font-size:14px">Stellung 2: Die Quelle ist abgetrennt. Der Strom fließt durch Widerstand und Amperemeter in die <b>Gegenrichtung</b>.</figcaption></figure>
+</div>
+<p><b>Laden (Stellung 1):</b> Pluspol → Umschalter → obere Kondensatorplatte, von der unteren Platte → Widerstand → Amperemeter → Minuspol. Auf der oberen Platte sammelt sich positive, auf der unteren negative Ladung. Zwischen den Platten fließt kein Strom (dort ist Isolator), die Ladung wird nur „verschoben“.</p>
+<p><b>Entladen (Stellung 2):</b> Der Umschalter trennt die Quelle ab und schließt stattdessen einen Draht. Jetzt ist der geladene Kondensator selbst die „Quelle“: Von der positiven (oberen) Platte → Umschalter → Draht → Amperemeter → Widerstand → untere Platte. Die Ladungen gleichen sich über den Widerstand aus, bis keine Spannung mehr da ist.</p>
+${merke('Was braucht man zum Entladen?', m`<p>Zwei Dinge: <b>(1)</b> die Quelle abtrennen und <b>(2)</b> die beiden Platten <b>leitend verbinden</b>, also einen <b>geschlossenen Stromkreis ohne Quelle</b> herstellen. Der Widerstand $R$ in diesem Kreis sorgt dafür, dass der Strom nicht zu groß wird und man den Vorgang messen kann.</p>`)}
+<table><tr><th></th><th>Laden</th><th>Entladen</th></tr>
+<tr><td>Quelle im Stromkreis?</td><td>ja</td><td>nein</td></tr>
+<tr><td>Spannung $U_C$</td><td>steigt von $0$ auf $U_0$</td><td>fällt von $U_0$ auf $0$</td></tr>
+<tr><td>Stromstärke $I$</td><td>startet bei $\dfrac{U_0}{R}$, geht gegen 0</td><td>startet bei $-\dfrac{U_0}{R}$ (Gegenrichtung), geht gegen 0</td></tr>
+<tr><td>Energie</td><td>Quelle liefert $QU_0$: eine Hälfte steckt danach als $E_\text{el}=\tfrac12CU_0^2$ im Kondensator, die andere wird im Widerstand zu Wärme</td><td>die gespeicherte $E_\text{el}$ wird im Widerstand zu Wärme (in der Blitzröhre zu Licht)</td></tr></table>
+<h3>Warum ein Widerstand?</h3>
+<ul><li><b>Großer Widerstand:</b> Es fließt wenig Strom, der Vorgang dauert lange und man kann ihn ablesen (im Versuch: Strom alle 5 s).</li><li><b>Kein Widerstand (nur Draht):</b> Der Strom wäre riesig und kurz, es gibt einen Funken. Das nutzt man beim Blitzgerät absichtlich: Der Kondensator entlädt sich in etwa einer Tausendstel Sekunde über die Blitzröhre.</li><li>Der Widerstand ändert nur das <b>Tempo</b> ($\tau=R\cdot C$), nicht die Ladung: Es fließt immer die ganze Ladung $Q_0=C\cdot U_0$ ab.</li><li>Steht der Umschalter dazwischen (offen), bleibt die Ladung auf dem Kondensator (idealisiert).</li></ul>
+<h3>Messen im Versuch</h3>
+<p>Aufladen, Umschalter umlegen, alle 5 s die Stromstärke ablesen. Die <b>Fläche unter der $I(t)$-Kurve</b> ist die Ladung $Q=\int I\,dt$ ${FS('S. 23')}, also die Ladung, die der Kondensator gespeichert hatte (mehr dazu in Lektion 9).</p>
+<p class="dim">Mehrere Kondensatoren gleichzeitig (Parallel- und Reihenschaltung, Lektion 5) stehen nicht auf der Themenliste. Im Unterricht kamen sie nur am Rande vor (Superkondensatoren in Reihe für höhere Spannungen, Blitzgerät mit zwei Kondensatoren).</p>`,
+      bild: m`<p>Ein Wassertank ($C$), der über einen Schlauch ($R$) gefüllt wird: Die Pumpe ist die Quelle. Der Umschalter ist der Hahn: In Stellung 1 verbindet er den Tank mit der Pumpe, in Stellung 2 mit dem Abfluss. Ohne Abfluss (offener Kreis) bleibt das Wasser im Tank. Ein dünner Schlauch (großes $R$) macht es nur langsamer, die Wassermenge im Tank bleibt gleich.</p>`,
+      rezept: [
+        m`<b>Kreis zeichnen:</b> Quelle, Umschalter, Kondensator und Widerstand so, dass in Stellung 1 die Quelle im Kreis liegt.`,
+        m`<b>Stellung 2:</b> Der Umschalter führt auf einen Draht, der den Kreis um Kondensator und Widerstand <b>ohne Quelle</b> schließt.`,
+        m`<b>Messgeräte:</b> Amperemeter in Reihe (in den Zweig mit $C$ und $R$), Voltmeter parallel zum Kondensator.`,
+        m`<b>Strompfad:</b> für beide Stellungen einzeichnen. Beim Entladen zeigt der Pfeil durch den Widerstand in die Gegenrichtung.`
+      ],
+      beispiel: {
+        q: m`Beschreibe, wie $C=470\,\mu\text{F}$ mit $U_0=12\,\text{V}$ über $R=10\,\text{k}\Omega$ geladen und danach entladen wird und wie du $U_C$ und $I$ misst. Welche Werte erwartest du?`,
+        steps: [
+          { h: 'Aufbau', t: m`<p>Quelle ($12\,\text{V}$), Umschalter, Kondensator, Widerstand und Amperemeter in einem Zweig hintereinander. Das Voltmeter liegt parallel zum Kondensator.</p>` },
+          { h: 'Laden: Stellung 1', t: m`<p>Die Quelle liegt im Kreis. Anfangsstrom $I_0=\dfrac{U_0}{R}=\dfrac{12\,\text{V}}{10\,000\,\Omega}=1{,}2\,\text{mA}$. Zeitkonstante $\tau=R\cdot C=10\,000\,\Omega\cdot470\cdot10^{-6}\,\text{F}=4{,}7\,\text{s}$, voll nach etwa $5\tau=23{,}5\,\text{s}$.</p>` },
+          { h: 'Entladen: Stellung 2', t: m`<p>Umschalter umlegen: Die Quelle ist abgetrennt, der Kondensator entlädt sich über $R$. $U_C$ startet bei $12\,\text{V}$ und fällt auf 0, der Strom startet bei $-1{,}2\,\text{mA}$ (Gegenrichtung) und geht gegen 0, wieder in etwa $5\tau$.</p>` },
+          { h: 'Gespeicherte Ladung', t: m`<p>$Q_0=C\cdot U_0=470\cdot10^{-6}\,\text{F}\cdot12\,\text{V}=5{,}64\cdot10^{-3}\,\text{C}=5{,}64\,\text{mC}$. Das ist auch die Fläche unter der $I(t)$-Kurve beim Entladen.</p>` },
+          { h: 'Was ändert sich mit größerem R?', t: m`<p>Mit $R=20\,\text{k}\Omega$: $\tau=9{,}4\,\text{s}$ und $I_0=0{,}6\,\text{mA}$. Es dauert doppelt so lang, aber $Q_0$ bleibt $5{,}64\,\text{mC}$.</p>` }
+        ]
+      },
+      fehler: [
+        'Amperemeter parallel oder Voltmeter in Reihe eingezeichnet. Richtig: Amperemeter in Reihe, Voltmeter parallel zum Kondensator.',
+        'Beim Entladen die Quelle im Kreis gelassen. Zum Entladen muss die Quelle abgetrennt sein.',
+        'Quelle abgetrennt, aber die Platten nicht verbunden: Dann kann nichts abfließen, der Kondensator bleibt geladen.',
+        'Den Entladestrom in dieselbe Richtung wie den Ladestrom eingezeichnet. Beim Entladen fließt der Strom durch den Widerstand in die Gegenrichtung.',
+        'Gedacht, ein größerer Widerstand verändert die Ladung. Er verändert nur die Zeit.'
+      ],
+      test: [
+        { q: 'Was muss man tun, damit der geladene Kondensator entladen wird?', a: 'Die Quelle abtrennen und die beiden Platten leitend verbinden (am besten über einen Widerstand), also einen geschlossenen Stromkreis ohne Quelle herstellen.' },
+        { q: m`Wo kommen Amperemeter und Voltmeter hin, wenn $I$ und $U_C$ gemessen werden?`, a: 'Das Amperemeter in Reihe zu Kondensator und Widerstand, das Voltmeter parallel zum Kondensator.' },
+        { q: 'Wie ist der Entladestrom gerichtet im Vergleich zum Ladestrom?', a: m`In die Gegenrichtung. Deshalb steht in der Formel ein Minus: $I(t)=-\dfrac{U_0}{R}e^{-t/\tau}$.` },
+        { q: m`Was passiert beim Entladen, wenn $R$ verdoppelt wird?`, a: m`Die Zeitkonstante verdoppelt sich, der Anfangsstrom halbiert sich. Die abfließende Ladung $Q_0=C\,U_0$ bleibt gleich.` },
+        { q: 'Warum entlädt man nicht ohne Widerstand?', a: 'Der Strom wäre sehr groß und kurz (Funke, Bauteile können Schaden nehmen), und man könnte den Vorgang nicht messen. Beim Blitzgerät ist das gewollt.' }
+      ]
+    },
     // ---------------------------------------------------------------- Ordner: Auf- und Entladen
     {
       id: 'PH8', fach: F, groessen: ['U0', 'UC', 'UR', 'R', 'C', 'I', 'I0', 'tau', 'th', 'euler'], num: 8, min: 18, demo: 'p-rc', demoTitel: 'Schau zuerst: Laden und Entladen live',
