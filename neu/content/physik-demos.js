@@ -427,19 +427,19 @@
     def = def || {};
     const W = 640, H = 300, px = 20, xIn = 100, l = 0.08, d = 0.04, L = 0.15, yc = 150;
     const xOut = xIn + l * 100 * px, xS = xOut + L * 100 * px;
-    const Y = m => yc - m * 100 * px; // m → px (nach oben positiv)
+    const Y = m => yc + m * 100 * px; // m → px (y-Achse zeigt nach unten, wie im Unterricht)
     host.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Elektronenstrahl wird zwischen zwei Platten abgelenkt">${arrowDefs('pdA7')}
-      <rect x="${xIn}" y="${Y(d / 2) - 10}" width="${xOut - xIn}" height="10" rx="2" id="pTop"/><rect x="${xIn}" y="${Y(-d / 2)}" width="${xOut - xIn}" height="10" rx="2" id="pBot"/>
-      <text x="${xIn - 8}" y="${Y(d / 2)}" text-anchor="end" class="big" id="sTop"></text><text x="${xIn - 8}" y="${Y(-d / 2) + 10}" text-anchor="end" class="big" id="sBot"></text>
+      <rect x="${xIn}" y="${Y(-d / 2) - 10}" width="${xOut - xIn}" height="10" rx="2" id="pTop"/><rect x="${xIn}" y="${Y(d / 2)}" width="${xOut - xIn}" height="10" rx="2" id="pBot"/>
+      <text x="${xIn - 8}" y="${Y(-d / 2)}" text-anchor="end" class="big" id="sTop"></text><text x="${xIn - 8}" y="${Y(d / 2) + 10}" text-anchor="end" class="big" id="sBot"></text>
       <line x1="10" x2="${xS}" y1="${yc}" y2="${yc}" class="pd-axis-dash"/>
       <line x1="${xS}" x2="${xS}" y1="14" y2="${H - 14}" class="pd-screen"/>
       <path id="path" class="pd-beam"/><circle id="hit" r="6" class="pd-spot"/>
       <g id="proj"><line x1="${xIn}" x2="${xOut}" y1="${H - 24}" y2="${H - 24}" class="pd-ax"/><circle id="pjx" r="5" class="pd-dot"/><text x="${xOut + 6}" y="${H - 20}">x: gleichförmig</text>
-        <line x1="${xIn - 40}" x2="${xIn - 40}" y1="${Y(d / 2)}" y2="${Y(-d / 2)}" class="pd-ax"/><circle id="pjy" r="5" class="pd-dot"/><text x="${xIn - 48}" y="${Y(-d / 2) + 30}" text-anchor="middle">y: beschleunigt</text></g>
+        <line x1="${xIn - 40}" x2="${xIn - 40}" y1="${Y(d / 2)}" y2="${Y(-d / 2)}" class="pd-ax"/><circle id="pjy" r="5" class="pd-dot"/><text x="${xIn - 48}" y="${Y(d / 2) + 30}" text-anchor="middle">y: beschleunigt</text></g>
       <g id="els"></g>
-      <text x="${(xIn + xOut) / 2}" y="${Y(-d / 2) + 30}" text-anchor="middle">l = 8 cm, d = 4 cm</text><text x="${(xOut + xS) / 2}" y="${H - 6}" text-anchor="middle">Schirm 15 cm hinter den Platten</text></svg>
+      <text x="${(xIn + xOut) / 2}" y="${Y(d / 2) + 30}" text-anchor="middle">l = 8 cm, d = 4 cm</text><text x="${(xOut + xS) / 2}" y="${H - 6}" text-anchor="middle">Schirm 15 cm hinter den Platten</text></svg>
       ${seg('zerl', [['aus', 'Strahl'], ['an', 'Bewegung zerlegen']], def.zerlegen ? 'an' : 'aus')}
-      <div class="pd-ctls">${slider('pdUB7', 'U<sub>B</sub> =', 'V', 500, 3000, 50, def.UB || 1000)}${slider('pdUy', 'U =', 'V', -300, 300, 10, def.U || 150)}</div>
+      <div class="pd-ctls">${slider('pdUB7', 'U<sub>B</sub> =', 'V', 500, 3000, 50, def.UB || 1000)}${slider('pdUy', 'U<sub>A</sub> =', 'V', -300, 300, 10, def.U || 150)}</div>
       <div class="read"><span>v₀ = <b id="rV"></b> m/s</span><span>y am Plattenende = <b id="rY"></b> mm</span><span>Winkel α = <b id="rA"></b>°</span><span>Auftreffpunkt = <b id="rS"></b> cm</span></div>
       <p class="pd-msg" id="msg"></p>`;
     let zerl = !!def.zerlegen, els = [], acc = 0, lead = null, geo = null;
@@ -459,8 +459,8 @@
       if (hits) { hp.setAttribute('cx', xIn + xHit * 100 * px); hp.setAttribute('cy', Y(Math.sign(U) * d / 2)); }
       else { hp.setAttribute('cx', xS); hp.setAttribute('cy', clamp(Y(Ys), 14, H - 14)); }
       const pos = U >= 0;
-      $('#pTop', host).setAttribute('class', pos ? 'pd-plate-p' : 'pd-plate-m'); $('#pBot', host).setAttribute('class', pos ? 'pd-plate-m' : 'pd-plate-p');
-      $('#sTop', host).textContent = U === 0 ? '' : pos ? '+' : '−'; $('#sBot', host).textContent = U === 0 ? '' : pos ? '−' : '+';
+      $('#pTop', host).setAttribute('class', pos ? 'pd-plate-m' : 'pd-plate-p'); $('#pBot', host).setAttribute('class', pos ? 'pd-plate-p' : 'pd-plate-m');
+      $('#sTop', host).textContent = U === 0 ? '' : pos ? '−' : '+'; $('#sBot', host).textContent = U === 0 ? '' : pos ? '+' : '−';
       const v0 = Math.sqrt(2 * E * UB / ME);
       $('#rV', host).innerHTML = num(v0);
       $('#rY', host).textContent = hits ? '–' : fix(yl * 1000, 1);
@@ -468,9 +468,9 @@
       $('#rS', host).textContent = hits ? 'trifft Platte' : (Math.abs(Ys) > 0.07 ? 'außerhalb' : fix(Ys * 100, 2));
       $('#proj', host).style.display = zerl ? '' : 'none';
       $('#msg', host).innerHTML = hits
-        ? `Zu stark abgelenkt: Das Elektron trifft nach ${fix(xHit * 100, 1)} cm die positive Platte. Größere U<sub>B</sub> oder kleinere U hilft.`
+        ? `Zu stark abgelenkt: Das Elektron trifft nach ${fix(xHit * 100, 1)} cm die positive Platte. Größere U<sub>B</sub> oder kleinere U<sub>A</sub> hilft.`
         : zerl ? 'Waagerecht fliegt das Elektron mit konstantem v₀ (gleiche Abstände), senkrecht wird es gleichmäßig beschleunigt (immer größere Abstände). Zusammen ergibt das eine <b>Parabel</b>, wie beim waagerechten Wurf.'
-          : `Im Feld: Parabel <b>y = ½·(e/m)·(U/d)·x²/v₀²</b>. Hinter den Platten wirkt keine Kraft mehr: geradeaus weiter. Doppelte U<sub>B</sub> halbiert die Ablenkung.`;
+          : `Im Feld: Parabel <b>y = ½·(e/m)·(U<sub>A</sub>/d)·x²/v₀²</b>. Hinter den Platten wirkt keine Kraft mehr: geradeaus weiter. Doppelte U<sub>B</sub> halbiert die Ablenkung.`;
       geo = { k, xe, hits, tan, yl, v0 };
     }
     function step(dt) {

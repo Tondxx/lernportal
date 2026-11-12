@@ -43,6 +43,38 @@ ${pfeile}
 <text x="165" y="232" text-anchor="middle" style="fill:var(--info)" font-size="12">${lad ? 'Quelle im Stromkreis' : 'Quelle abgetrennt'}</text>
 </svg>`;
   };
+  // Statisches Schaltbild der Braunschen Röhre mit den drei Spannungen (Lektion 6)
+  const ROEHRENBILD = () => {
+    const txt = 'style="fill:var(--text)" font-size="11"';
+    const dim = 'style="fill:var(--text-2)" font-size="11"';
+    const mk = (x, y, n) => `<circle cx="${x}" cy="${y}" r="8" style="fill:var(--info)"/><text x="${x}" y="${y + 4}" text-anchor="middle" style="fill:#0b0d12" font-size="11" font-weight="700">${n}</text>`;
+    const term = (x, y, z) => `<circle cx="${x}" cy="${y}" r="4" class="pd-res"/><text x="${x + 10}" y="${y + 4}" ${txt}>${z}</text>`;
+    return `<svg viewBox="0 0 460 250" style="width:100%;max-width:560px;height:auto;display:block" role="img" aria-label="Braunsche Röhre: Glühkathode mit Heizspannung, Wehnelt-Zylinder, Ringanode mit Beschleunigungsspannung, Ablenkplatten mit Ablenkspannung, Leuchtschirm, alles im Vakuum">
+<path d="M20 78 H196 L400 28 V212 L196 162 H20 Z" style="fill:none;stroke:var(--text-2);stroke-width:1.6;opacity:.7"/>
+<line x1="400" x2="400" y1="28" y2="212" style="stroke:var(--text);stroke-width:5"/>
+<path d="M96 96 H44 V144 H96" style="fill:none;stroke:var(--warn);stroke-width:3"/>
+<path d="M52 108 l6 6 l-6 6 l6 6 l-6 6" style="fill:none;stroke:var(--bad);stroke-width:2.4"/>
+<line x1="70" x2="70" y1="112" y2="128" class="pd-capl"/>
+<rect x="130" y="84" width="8" height="28" style="fill:var(--info)"/><rect x="130" y="128" width="8" height="28" style="fill:var(--info)"/>
+<line x1="220" x2="300" y1="92" y2="92" class="pd-capl"/><line x1="220" x2="300" y1="148" y2="148" class="pd-capl"/>
+<line x1="72" x2="400" y1="120" y2="120" style="stroke:var(--warn);stroke-width:2;stroke-dasharray:5 5"/>
+<path d="M300 120 Q350 120 400 150" style="fill:none;stroke:var(--warn);stroke-width:1.5;stroke-dasharray:2 4;opacity:.8"/>
+<circle cx="400" cy="120" r="5" style="fill:var(--warn);opacity:.5"/>
+<path d="M52 108 H12 V222 H20 M52 132 H36 V222 H28" class="pd-wire"/>
+<line x1="20" x2="20" y1="212" y2="232" class="pd-bat thick" style="stroke-width:5"/><line x1="28" x2="28" y1="217" y2="227" class="pd-bat thick"/>
+<path d="M56 144 V198 H88 M96 198 H134 V156" class="pd-wire"/>
+<line x1="88" x2="88" y1="192" y2="204" class="pd-bat thick"/><line x1="96" x2="96" y1="186" y2="210" class="pd-bat thick" style="stroke-width:5"/>
+<path d="M70 96 V62 M260 92 V40 M260 148 V214" class="pd-wire"/>
+${term(70, 58, '−')}${term(260, 36, '−')}${term(260, 218, '+')}
+<text x="44" y="190" ${txt}>−</text><text x="142" y="190" ${txt}>+</text>
+<text x="6" y="246" ${txt}>U<tspan baseline-shift="sub" font-size="8">H</tspan> = 6,3 V</text>
+<text x="92" y="226" text-anchor="middle" ${txt}>U<tspan baseline-shift="sub" font-size="8">B</tspan></text>
+<text x="272" y="196" ${txt}>U<tspan baseline-shift="sub" font-size="8">A</tspan></text>
+<text x="92" y="46" ${dim}>Wehnelt-Zylinder</text><text x="62" y="174" ${dim}>Glühkathode</text><text x="142" y="176" ${dim}>Ringanode</text>
+<text x="272" y="80" ${dim}>Ablenkplatten</text><text x="330" y="166" ${dim}>Vakuum</text><text x="392" y="240" text-anchor="middle" ${dim}>Leuchtschirm</text>
+${mk(28, 120, 1)}${mk(100, 84, 2)}${mk(164, 96, 3)}${mk(212, 108, 4)}${mk(424, 120, 5)}${mk(318, 160, 6)}
+</svg>`;
+  };
   const KONST = m`<p class="dim" style="font-size:14px">Konstanten: $e=1{,}602\cdot10^{-19}\,\text{C}$, $m_e=9{,}109\cdot10^{-31}\,\text{kg}$, $\varepsilon_0=8{,}854\cdot10^{-12}\,\tfrac{\text{As}}{\text{Vm}}$</p>`;
 
   // ======================================================================
@@ -242,9 +274,16 @@ ${merke('Merke' + FS('S. 27'), m`$$\text{parallel: } C=C_1+C_2\qquad\text{Reihe:
     {
       id: 'PH6', fach: F, groessen: ['UB', 'e', 'me', 'v0'], num: 6, min: 12, demo: 'p-roehre', demoTitel: 'Schau zuerst: die Röhre in Betrieb',
       title: 'Braunsche Röhre: Elektronen erzeugen und beschleunigen',
-      short: 'Glühelektrischer Effekt, Wehnelt-Zylinder, e·U_B = ½·m·v²',
-      idee: m`<p>Die Braunsche Röhre macht aus einem Draht einen gebündelten, schnellen Elektronenstrahl. Von links nach rechts:</p>
-<ol><li><b>Glühkathode:</b> Ein Draht wird geheizt. Dadurch haben seine Elektronen genug Energie, um das Metall zu verlassen (<b>glühelektrischer Effekt</b>). Kalt tritt fast nichts aus.</li><li><b>Wehnelt-Zylinder:</b> Ein Metallbecher um die Kathode, leicht negativ. Er drückt die Elektronen zur Mitte und bündelt sie.</li><li><b>Anode mit Loch:</b> Sie ist positiv gegenüber der Kathode. Die Spannung $U_B$ zwischen beiden beschleunigt die Elektronen. Durch das Loch fliegen sie weiter.</li><li><b>Danach</b> wirkt keine Kraft mehr: Die Elektronen fliegen mit konstanter Geschwindigkeit $v_0$ bis zum <b>Leuchtschirm</b>.</li><li>Alles im <b>Vakuum</b>: Luftmoleküle würden die Elektronen abbremsen und streuen.</li></ol>
+      short: 'Aufbau mit U_H, U_B, U_A (sechs Klausurpunkte), Wehnelt-Zylinder, e·U_B = ½·m·v²',
+      idee: m`<p>Die Braunsche Röhre macht aus einem Draht einen gebündelten, schnellen Elektronenstrahl. Mit ihr kann man Spannungsverläufe sichtbar machen (Oszilloskop) oder ein Fernsehbild Zeile für Zeile schreiben. <b>Das Funktionsprinzip (sechs Punkte) ist Klausurstoff</b>, die Nummern im Bild gehören zu den Punkten:</p>
+${ROEHRENBILD()}
+<ol><li><b>Glühkathode:</b> Aus einer geheizten Kathode treten durch den <b>glühelektrischen Effekt</b> (Glühemission) Elektronen aus. Kalt tritt fast nichts aus. Die Heizung ist ein eigener Stromkreis mit der <b>Heizspannung $U_H$</b> (hier 6,3 V).</li><li><b>Wehnelt-Zylinder:</b> Ein Metallbecher um die Kathode, der sich <b>gegenüber der Kathode auf negativem Potential</b> befindet. Er stößt die Elektronen ab und <b>fokussiert</b> sie dadurch in der Mitte.</li><li><b>Beschleunigung:</b> Ein starkes elektrisches Feld zwischen Kathode (−) und <b>Ringanode</b> (+), erzeugt von der <b>Beschleunigungsspannung $U_B$</b>, beschleunigt die Elektronen, bevor sie durch das Loch der Anode austreten.</li><li><b>Ablenkung:</b> Mit <b>Kondensatorplatten</b> (oder Spulen) lässt sich der Strahl ablenken. Am Plattenpaar liegt die <b>Ablenkspannung $U_A$</b>.</li><li><b>Leuchtschirm:</b> Die Elektronen fliegen geradeaus bis zum Schirm und regen den Leuchtstoff am Auftreffpunkt zum Leuchten an.</li><li><b>Vakuum:</b> Die ganze Anordnung ist eine Vakuumröhre, damit die Elektronen nicht mit Gasmolekülen der Luft zusammenstoßen und der Strahl nicht abgeschwächt wird.</li></ol>
+<h3>Die drei Spannungen und ihre drei Stromkreise</h3>
+<table><tr><th>Spannung</th><th>Wo?</th><th>Wozu?</th></tr>
+<tr><td>Heizspannung $U_H$ (6,3 V)</td><td>an der Glühwendel (Heizkreis)</td><td>heizt die Kathode, damit Elektronen austreten</td></tr>
+<tr><td>Beschleunigungsspannung $U_B$ (kV)</td><td>Kathode (−) und Ringanode (+)</td><td>gibt den Elektronen die Geschwindigkeit $v_0$</td></tr>
+<tr><td>Ablenkspannung $U_A$ (einige hundert V)</td><td>zwischen den Ablenkplatten</td><td>lenkt den Strahl zur positiven Platte ab (Lektion 7)</td></tr></table>
+<p>Der <b>Heizkreis</b> und der <b>Beschleunigungskreis</b> sind zwei getrennte Stromkreise. Die Ablenkspannung wirkt erst <b>nach</b> der Beschleunigung und ändert $v_0$ nicht.</p>
 <h3>Wie schnell werden die Elektronen?</h3>
 <p>Energieerhaltung: Die elektrische Energie, die das Elektron beim Durchlaufen von $U_B$ bekommt ($E_\text{el}=e\cdot U_B$, siehe Lektion 1), wird komplett zu Bewegungsenergie ($\tfrac12mv^2$):</p>
 ${merke('Energieerhaltung' + FS('Ansatz: S. 17 und S. 24') + FSN('v₀-Formel: herleiten'), m`$$e\cdot U_B=\tfrac12\,m_e\,v_0^2\qquad\Longrightarrow\qquad v_0=\sqrt{\frac{2\,e\,U_B}{m_e}}$$<p>Umstellen: mal 2, durch $m_e$, dann Wurzel ziehen.</p>`)}`,
@@ -253,7 +292,7 @@ ${merke('Energieerhaltung' + FS('Ansatz: S. 17 und S. 24') + FSN('v₀-Formel: h
         m`Ansatz hinschreiben (gibt Punkte!): $e\,U_B=\tfrac12m_ev_0^2$.`,
         m`Nach $v_0$ umstellen: $v_0=\sqrt{2eU_B/m_e}$. $e$ und $m_e$ stehen in der Formelsammlung.`,
         m`Rückwärts, gesucht $U_B$: $U_B=\dfrac{m_ev_0^2}{2e}$.`,
-        'Funktion beschreiben: Glühkathode (Elektronen treten aus) → Wehnelt (bündeln) → Anode mit Loch (beschleunigen) → Schirm; Vakuum.'
+        'Funktion beschreiben (sechs Punkte): 1 Glühkathode (Heizspannung U_H, Elektronen treten aus) → 2 Wehnelt-Zylinder (negativ gegen die Kathode, fokussiert) → 3 Ringanode (Beschleunigungsspannung U_B) → 4 Ablenkplatten (Ablenkspannung U_A) → 5 Leuchtschirm; 6 alles im Vakuum.'
       ],
       beispiel: {
         q: m`Elektronen werden mit $U_B=1{,}5\,\text{kV}$ beschleunigt. Berechne ihre Geschwindigkeit.`,
@@ -266,8 +305,8 @@ ${merke('Energieerhaltung' + FS('Ansatz: S. 17 und S. 24') + FSN('v₀-Formel: h
       },
       extraAfter: m`<p><b>So wird es im Unterricht aufgeschrieben:</b> Formel hinschreiben, dann jede Umformung mit der Rechenoperation rechts. Genau so wird in der Klausur „Gleichung herleiten“ bewertet.</p>
 <p>$$\begin{aligned}E_{kin}&=E_{el}\\\tfrac12\,m\,v^2&=q\cdot U\qquad&&\big|\cdot2\\m\,v^2&=2\,q\,U&&\big|:m\\v^2&=\dfrac{2\,q\,U}{m}&&\big|\sqrt{\ }\\v&=\sqrt{\dfrac{2\,q\,U}{m}}\end{aligned}$$</p>
-<p>Einsetzen für $U_B=3{,}6\,\text{kV}$ (Zahlen immer mit Einheit, $q=e$): $v=\sqrt{\dfrac{2\cdot1{,}602\cdot10^{-19}\,\text{C}\cdot3600\,\text{V}}{9{,}109\cdot10^{-31}\,\text{kg}}}=3{,}57\cdot10^{7}\,\tfrac{\text{m}}{\text{s}}$</p>
-<p><b>Aufbau und Verschaltung (wird gefragt):</b> Glühkathode (Heizspannung $U_H$) → Wehnelt-Zylinder (leicht negativ, bündelt die Elektronen) → Anode mit Loch (Beschleunigungsspannung $U_B$ zwischen Kathode und Anode) → Ablenkplatten → Leuchtschirm, alles im Vakuum. Der <b>Heizkreis</b> und der <b>Beschleunigungskreis</b> sind zwei getrennte Stromkreise.</p>`,
+<p>Einsetzen für $U_B=3{,}6\,\text{kV}$ (Zahlen immer mit Einheit, $q=e$): $v=\sqrt{\dfrac{2\cdot1{,}602\cdot10^{-19}\,\text{C}\cdot3600\,\text{V}}{9{,}109\cdot10^{-31}\,\text{kg}}}=3{,}56\cdot10^{7}\,\tfrac{\text{m}}{\text{s}}$</p>
+<p><b>Aufbau und Verschaltung (wird gefragt):</b> siehe Bild und Tabelle oben. Merke: drei Spannungen, drei Aufgaben. $U_H$ heizt, $U_B$ beschleunigt, $U_A$ lenkt ab.</p>`,
       fehler: [
         m`$v\sim U_B$ angenommen. Richtig ist $v\sim\sqrt{U_B}$.`,
         'Glühelektrischer Effekt mit Photoeffekt verwechselt: Hier liefert die Heizung die Energie, nicht Licht.',
@@ -277,39 +316,41 @@ ${merke('Energieerhaltung' + FS('Ansatz: S. 17 und S. 24') + FSN('v₀-Formel: h
         { q: 'Warum braucht die Braunsche Röhre eine Heizung?', a: 'Glühelektrischer Effekt: Nur aus heißem Metall treten genügend Elektronen aus.' },
         { q: m`Woher kommt die Formel $v_0=\sqrt{2eU_B/m_e}$?`, a: m`Energieerhaltung: elektrische Energie $eU_B$ = Bewegungsenergie $\tfrac12m_ev_0^2$, nach $v_0$ umgestellt.` },
         { q: 'Warum fließt in einer Glühdiode nur in einer Richtung Strom?', a: 'Nur die geheizte Elektrode gibt Elektronen ab. Ist die Gegenelektrode negativ, werden sie zurückgedrängt.' },
-        { q: 'Wozu dient der Wehnelt-Zylinder?', a: 'Er ist negativ gegenüber der Kathode und bündelt den Elektronenstrahl.' }
+        { q: 'Wozu dient der Wehnelt-Zylinder?', a: 'Er ist negativ gegenüber der Kathode, stößt die Elektronen ab und fokussiert den Elektronenstrahl in der Mitte.' },
+        { q: 'Nenne die drei Spannungen der Braunschen Röhre und was jede macht.', a: m`$U_H$ (Heizspannung, 6,3 V) heizt die Kathode, $U_B$ (Beschleunigungsspannung) beschleunigt die Elektronen zwischen Kathode und Ringanode, $U_A$ (Ablenkspannung) lenkt den Strahl an den Platten ab.` },
+        { q: 'Zähle die sechs Punkte des Funktionsprinzips auf.', a: 'Glühemission an der geheizten Kathode, Wehnelt-Zylinder fokussiert, Beschleunigung zwischen Kathode und Anode (durch das Loch), Ablenkung durch Kondensatorplatten (oder Spulen), Leuchtschirm leuchtet am Auftreffpunkt, alles im Vakuum.' }
       ]
     },
     {
       id: 'PH7', fach: F, groessen: ['UB', 'UAbl', 'd', 'l', 'v0', 'a', 'x', 'y', 'alpha', 'L', 'Y'], num: 7, min: 20, demo: 'p-ablenkung', demoTitel: 'Probier es aus: Strahl ablenken',
       title: 'Ablenkung im Querfeld',
-      short: 'Parabelbahn wie beim waagerechten Wurf, y = U·x²/(4·d·U_B)',
-      idee: m`<p>Das Elektron kommt mit der Geschwindigkeit $v_0$ (aus Lektion 6) waagerecht zwischen zwei Platten. An den Platten liegt die Ablenkspannung $U$, oben $+$, unten $-$. Das Feld zieht das Elektron zur positiven Platte. Wir bauen die Bahn in vier Schritten zusammen.</p>
+      short: 'Parabelbahn wie beim waagerechten Wurf, y = U_A·x²/(4·d·U_B)',
+      idee: m`<p>Das Elektron kommt mit der Geschwindigkeit $v_0$ (aus Lektion 6) waagerecht zwischen zwei Platten. An den Platten liegt die <b>Ablenkspannung $U_A$</b> (nicht verwechseln mit der Beschleunigungsspannung $U_B$), oben $-$, unten $+$. Das Feld zieht das Elektron zur positiven Platte, also nach unten. Im Unterricht zeigt die $y$-Achse deshalb nach unten, $s_x$ ist der Weg waagerecht und $s_y$ die Ablenkung (hier schreiben wir kurz $x$ und $y$). Wir bauen die Bahn in vier Schritten zusammen.</p>
 <h3>Schritt 1: Waagerecht passiert nichts Neues</h3>
 <p>Das Feld zieht nur senkrecht, also gibt es waagerecht keine Kraft. Das Elektron fliegt waagerecht gleichmäßig weiter:</p>
 ${merke('waagerecht' + FS('S. 15'), m`$$x=v_0\cdot t$$<p>$x$ = wie weit es schon in den Platten ist, $t$ = Zeit seit dem Eintritt.</p>`)}
 <h3>Schritt 2: Senkrecht wirkt eine konstante Kraft</h3>
-<p>Im Plattenkondensator ist das Feld überall gleich ($E=U/d$), also auch die Kraft $F=e\cdot E=\dfrac{e\,U}{d}$. Konstante Kraft heißt konstante Beschleunigung $a=\dfrac{F}{m_e}$, und dafür gilt wie beim freien Fall:</p>
-${merke('senkrecht' + FS('y = ½at²: S. 15') + FSN('a = eU/(m·d): herleiten'), m`$$a=\frac{e\,U}{m_e\,d}\qquad y=\tfrac12\,a\,t^2$$`)}
+<p>Im Plattenkondensator ist das Feld überall gleich ($E=U_A/d$), also auch die Kraft $F=e\cdot E=\dfrac{e\,U_A}{d}$. Konstante Kraft heißt konstante Beschleunigung $a=\dfrac{F}{m_e}$, und dafür gilt wie beim freien Fall:</p>
+${merke('senkrecht' + FS('y = ½at²: S. 15') + FSN('a = e·U_A/(m·d): herleiten'), m`$$a=\frac{e\,U_A}{m_e\,d}\qquad y=\tfrac12\,a\,t^2$$`)}
 <h3>Schritt 3: Zusammensetzen (Bahngleichung)</h3>
 <p>Wir wollen $y$ abhängig vom Ort $x$, nicht von der Zeit. Also Schritt 1 nach der Zeit umstellen, $t=\dfrac{x}{v_0}$, und in Schritt 2 einsetzen:</p>
-${merke('Bahn im Kondensator: eine Parabel' + FSN('herleiten'), m`$$y(x)=\frac12\cdot\frac{e\,U}{m_e\,d}\cdot\frac{x^2}{v_0^2}$$<p>Setzt man noch $v_0^2=\dfrac{2eU_B}{m_e}$ ein, kürzen sich $e$ und $m_e$ weg:</p>$$y(x)=\frac{U\,x^2}{4\,d\,U_B}$$`)}
+${merke('Bahn im Kondensator: eine Parabel' + FSN('herleiten'), m`$$y(x)=\frac12\cdot\frac{e\,U_A}{m_e\,d}\cdot\frac{x^2}{v_0^2}$$<p>Setzt man noch $v_0^2=\dfrac{2eU_B}{m_e}$ ein, kürzen sich $e$ und $m_e$ weg:</p>$$y(x)=\frac{U_A\,x^2}{4\,d\,U_B}$$`)}
 <h3>Schritt 4: Hinter den Platten geht es geradeaus</h3>
-<p>Am Plattenende ($x=l$) hört die Kraft auf. Das Elektron fliegt schräg geradeaus weiter, mit dem Winkel $\alpha$: $\tan\alpha=\dfrac{v_y}{v_0}=\dfrac{U\,l}{2\,d\,U_B}$. Auf dem Schirm im Abstand $L$ kommt es bei $Y=y(l)+L\cdot\tan\alpha$ an.</p>`,
+<p>Am Plattenende ($x=l$) hört die Kraft auf. Das Elektron fliegt schräg geradeaus weiter, mit dem Winkel $\alpha$: $\tan\alpha=\dfrac{v_y}{v_0}=\dfrac{U_A\,l}{2\,d\,U_B}$. Auf dem Schirm im Abstand $L$ kommt es bei $Y=y(l)+L\cdot\tan\alpha$ an.</p>`,
       bild: m`<p>Genau wie ein Ball, der waagerecht vom Tisch rollt: vorwärts konstant schnell, nach unten immer schneller. Statt der Schwerkraft zieht hier die elektrische Kraft. In der Animation zeigt „Bewegung zerlegen“ beide Bewegungen einzeln.</p>
-${achtung('Wichtig fürs Erläutern', m`<p>In $y=\dfrac{Ux^2}{4dU_B}$ kommt $e/m_e$ nicht mehr vor. Wer nur $U_B$, $U$, $d$ und die Ablenkung misst, kann damit <b>nicht</b> die spezifische Ladung $e/m_e$ bestimmen.</p>`)}`,
+${achtung('Wichtig fürs Erläutern', m`<p>In $y=\dfrac{Ux^2}{4dU_B}$ kommt $e/m_e$ nicht mehr vor. Wer nur $U_B$, $U_A$, $d$ und die Ablenkung misst, kann damit <b>nicht</b> die spezifische Ladung $e/m_e$ bestimmen.</p>`)}`,
       rezept: [
         m`$v_0$ aus der Beschleunigung: $v_0=\sqrt{2eU_B/m_e}$.`,
-        m`Zeit zwischen den Platten: Strecke durch Geschwindigkeit, $t=\dfrac{l}{v_0}$. Beschleunigung: $a=\dfrac{eU}{m_ed}$.`,
-        m`Ablenkung am Plattenende: $y=\tfrac12at^2$, oder direkt $y=\dfrac{Ul^2}{4dU_B}$. Prüfen: Ist $y$ kleiner als $d/2$? Sonst trifft das Elektron die Platte.`,
-        m`Auftreffpunkt: $\tan\alpha=\dfrac{Ul}{2dU_B}$, dann $Y=y+L\cdot\tan\alpha$.`
+        m`Zeit zwischen den Platten: Strecke durch Geschwindigkeit, $t=\dfrac{l}{v_0}$. Beschleunigung: $a=\dfrac{eU_A}{m_ed}$.`,
+        m`Ablenkung am Plattenende: $y=\tfrac12at^2$, oder direkt $y=\dfrac{U_Al^2}{4dU_B}$. Prüfen: Ist $y$ kleiner als $d/2$? Sonst trifft das Elektron die Platte.`,
+        m`Auftreffpunkt: $\tan\alpha=\dfrac{U_Al}{2dU_B}$, dann $Y=y+L\cdot\tan\alpha$.`
       ],
       beispiel: {
-        q: m`$U_B=1000\,\text{V}$, Ablenkspannung $U=200\,\text{V}$, Plattenabstand $d=4{,}0\,\text{cm}$, Plattenlänge $l=8{,}0\,\text{cm}$, Schirm $L=20\,\text{cm}$ hinter den Platten. Wo trifft der Strahl auf?`,
+        q: m`$U_B=1000\,\text{V}$, Ablenkspannung $U_A=200\,\text{V}$, Plattenabstand $d=4{,}0\,\text{cm}$, Plattenlänge $l=8{,}0\,\text{cm}$, Schirm $L=20\,\text{cm}$ hinter den Platten. Wo trifft der Strahl auf?`,
         steps: [
-          { h: 'Gegeben und gesucht, alles in m', t: m`<p>$U_B=1000\,\text{V}$ (beschleunigt), $U=200\,\text{V}$ (lenkt ab), $d=0{,}040\,\text{m}$, $l=0{,}080\,\text{m}$, $L=0{,}20\,\text{m}$. Gesucht: Auftreffpunkt $Y$.</p>` },
-          { h: 'Ablenkung am Plattenende', t: m`<p>Die Formel ohne $e$ und $m_e$ spart Rechnung. Wir setzen $x=l$ ein (Ende der Platten):</p><p>$y=\dfrac{U\,l^2}{4\,d\,U_B}=\dfrac{200\cdot0{,}080^2}{4\cdot0{,}040\cdot1000}\,\text{m}=\dfrac{1{,}28}{160}\,\text{m}=0{,}0080\,\text{m}=8{,}0\,\text{mm}$</p><p>Kontrolle: Die Platte ist $d/2=20\,\text{mm}$ von der Mitte entfernt, $8\,\text{mm}$ ist weniger. Das Elektron kommt durch.</p>` },
-          { h: 'Austrittswinkel', t: m`<p>Wie schräg fliegt es heraus? $\tan\alpha=\dfrac{U\,l}{2\,d\,U_B}=\dfrac{200\cdot0{,}080}{2\cdot0{,}040\cdot1000}=0{,}20$, also $\alpha=11{,}3^\circ$.</p>` },
+          { h: 'Gegeben und gesucht, alles in m', t: m`<p>$U_B=1000\,\text{V}$ (beschleunigt), $U_A=200\,\text{V}$ (lenkt ab), $d=0{,}040\,\text{m}$, $l=0{,}080\,\text{m}$, $L=0{,}20\,\text{m}$. Gesucht: Auftreffpunkt $Y$.</p>` },
+          { h: 'Ablenkung am Plattenende', t: m`<p>Die Formel ohne $e$ und $m_e$ spart Rechnung. Wir setzen $x=l$ ein (Ende der Platten):</p><p>$y=\dfrac{U_A\,l^2}{4\,d\,U_B}=\dfrac{200\cdot0{,}080^2}{4\cdot0{,}040\cdot1000}\,\text{m}=\dfrac{1{,}28}{160}\,\text{m}=0{,}0080\,\text{m}=8{,}0\,\text{mm}$</p><p>Kontrolle: Die Platte ist $d/2=20\,\text{mm}$ von der Mitte entfernt, $8\,\text{mm}$ ist weniger. Das Elektron kommt durch.</p>` },
+          { h: 'Austrittswinkel', t: m`<p>Wie schräg fliegt es heraus? $\tan\alpha=\dfrac{U_A\,l}{2\,d\,U_B}=\dfrac{200\cdot0{,}080}{2\cdot0{,}040\cdot1000}=0{,}20$, also $\alpha=11{,}3^\circ$.</p>` },
           { h: 'Gerade bis zum Schirm', t: m`<p>Auf $L=200\,\text{mm}$ steigt die Gerade um $L\cdot\tan\alpha=200\,\text{mm}\cdot0{,}20=40\,\text{mm}$. Dazu kommen die $8\,\text{mm}$ aus den Platten:</p><p>$Y=8{,}0\,\text{mm}+40\,\text{mm}=48\,\text{mm}=4{,}8\,\text{cm}$ über der Schirmmitte.</p>` }
         ]
       },
@@ -318,16 +359,23 @@ ${achtung('Wichtig fürs Erläutern', m`<p>In $y=\dfrac{Ux^2}{4dU_B}$ kommt $e/m
 <p><b>$y$-Richtung (gleichmäßig beschleunigt):</b> $$\begin{aligned}F&=m\cdot a&&\big|:m\\a&=\dfrac{F}{m}=\dfrac{E\cdot e}{m}=\dfrac{U_A\,e}{d\,m}\end{aligned}$$</p>
 <p><b>Zusammensetzen:</b> $$\begin{aligned}s_y&=\tfrac12\,a\,t^2=\tfrac12\cdot\dfrac{U_A\,e}{d\,m}\cdot\left(\dfrac{s_x}{v}\right)^2&&\big|\ v^2=\dfrac{2\,e\,U_B}{m}\ \text{einsetzen}\\s_y&=\tfrac12\cdot\dfrac{U_A\,e}{d\,m}\cdot s_x^2\cdot\dfrac{m}{2\,e\,U_B}&&\big|\ e,\ m\ \text{kürzen}\\s_y&=\dfrac{U_A}{4\,d\,U_B}\cdot s_x^2\end{aligned}$$</p>
 <p><b>Bis zum Leuchtschirm:</b> Hinter den Platten fliegt das Elektron <b>tangential</b> weiter. Die Steigung der Parabel im Punkt $x=l$ ist $s_y'(l)=\dfrac{U_A\,l}{2\,d\,U_B}$. Bei dem Abstand $b$ bis zum Schirm kommt $s_{y2}=s_y'(l)\cdot b=\dfrac{U_A\,l\,b}{2\,d\,U_B}$ dazu, insgesamt $Y=s_y(l)+s_{y2}$.</p>
-<p>Herleitung der Abi-2006-Art (Elektron trifft gerade den Plattenrand, $s_y=\tfrac d2$): $\tfrac d2=\dfrac{U_C}{4\,d\,U_B}x^2\ \Rightarrow\ U_B=\dfrac{U_C}{2\,d^2}\,x^2$.</p>`,
+<p>Herleitung der Abi-2006-Art (Elektron trifft gerade den Plattenrand, $s_y=\tfrac d2$): $\tfrac d2=\dfrac{U_C}{4\,d\,U_B}x^2\ \Rightarrow\ U_B=\dfrac{U_C}{2\,d^2}\,x^2$.</p>
+<h3>Das ganze Beispiel wie im Unterricht (alle Teilschritte)</h3>
+<p>Gegeben: $U_B=3{,}6\,\text{kV}$, $U_A=700\,\text{V}$, $d=5{,}4\,\text{cm}$, Plattenlänge $l=10\,\text{cm}$. Gesucht: Zeit im Kondensator, Beschleunigung, Ablenkung, Gesamtgeschwindigkeit am Plattenende.</p>
+<p><b>1) Geschwindigkeit beim Eintritt</b> (Ansatz $E_\text{kin}=E_\text{el}$, siehe Lektion 6): $v_0=\sqrt{\dfrac{2\cdot1{,}602\cdot10^{-19}\,\text{C}\cdot3600\,\text{V}}{9{,}109\cdot10^{-31}\,\text{kg}}}=3{,}56\cdot10^{7}\,\tfrac{\text{m}}{\text{s}}$</p>
+<p><b>2a) Zeit im Kondensator</b> (waagerecht gleichförmig, $s_x=l$): $$\begin{aligned}s_x&=v_0\cdot t&&\big|:v_0\\t&=\dfrac{s_x}{v_0}=\dfrac{0{,}10\,\text{m}}{3{,}56\cdot10^{7}\,\text{m/s}}=2{,}81\cdot10^{-9}\,\text{s}\end{aligned}$$</p>
+<p><b>2b) Beschleunigung in $y$-Richtung:</b> $$\begin{aligned}F&=m_e\cdot a&&\big|:m_e\\a&=\dfrac{F}{m_e}=\dfrac{E\cdot e}{m_e}=\dfrac{U_A\,e}{d\,m_e}\\a&=\dfrac{700\,\text{V}\cdot1{,}602\cdot10^{-19}\,\text{C}}{0{,}054\,\text{m}\cdot9{,}109\cdot10^{-31}\,\text{kg}}=2{,}28\cdot10^{15}\,\tfrac{\text{m}}{\text{s}^2}\end{aligned}$$ Einheitenprobe: $\dfrac{\text{V}\cdot\text{C}}{\text{m}\cdot\text{kg}}=\dfrac{\text{J}}{\text{m}\cdot\text{kg}}=\dfrac{\text{N}\cdot\text{m}}{\text{m}\cdot\text{kg}}=\dfrac{\text{m}}{\text{s}^2}$ ✓</p>
+<p><b>2c) Ablenkung am Plattenende:</b> $$\begin{aligned}s_y&=\tfrac12\,a\,t^2=\tfrac12\cdot2{,}28\cdot10^{15}\,\tfrac{\text{m}}{\text{s}^2}\cdot\left(2{,}81\cdot10^{-9}\,\text{s}\right)^2=9{,}0\cdot10^{-3}\,\text{m}=9{,}0\,\text{mm}\end{aligned}$$ Gleiches Ergebnis mit der fertigen Bahngleichung: $s_y=\dfrac{U_A}{4\,d\,U_B}\cdot s_x^2=\dfrac{700\,\text{V}}{4\cdot0{,}054\,\text{m}\cdot3600\,\text{V}}\cdot(0{,}10\,\text{m})^2=9{,}0\cdot10^{-3}\,\text{m}$. Kontrolle: $\tfrac d2=27\,\text{mm}$ ist mehr als $9\,\text{mm}$, das Elektron trifft die Platte nicht.</p>
+<p><b>2d) Gesamtgeschwindigkeit am Plattenende:</b> Die senkrechte Geschwindigkeit ist $v_y=a\cdot t=2{,}28\cdot10^{15}\,\tfrac{\text{m}}{\text{s}^2}\cdot2{,}81\cdot10^{-9}\,\text{s}=6{,}41\cdot10^{6}\,\tfrac{\text{m}}{\text{s}}$. Die beiden Geschwindigkeiten stehen senkrecht aufeinander, also Vektoraddition mit Pythagoras: $$v_\text{ges}=\sqrt{v_0^2+v_y^2}=\sqrt{\left(3{,}56\cdot10^{7}\right)^2+\left(6{,}41\cdot10^{6}\right)^2}\,\tfrac{\text{m}}{\text{s}}=3{,}62\cdot10^{7}\,\tfrac{\text{m}}{\text{s}}$$ Der Winkel gegen die Waagerechte: $\tan\alpha=\dfrac{v_y}{v_0}=0{,}180$, also $\alpha=10{,}2^\circ$.</p>`,
       fehler: [
         'Hinter den Platten weiter mit der Parabel gerechnet. Dort wirkt keine Kraft mehr: Gerade.',
         m`Die waagerechte Geschwindigkeit ändert sich nicht. $v_0$ bleibt, nur $v_y$ kommt hinzu.`,
         m`Vergessen zu prüfen, ob $y<d/2$ ist. Sonst trifft das Elektron die Platte.`,
-        m`$U$ und $U_B$ verwechselt: $U_B$ beschleunigt (steht im Nenner), $U$ lenkt ab (steht im Zähler).`
+        m`$U_A$ und $U_B$ verwechselt: $U_B$ beschleunigt (steht im Nenner), $U_A$ lenkt ab (steht im Zähler).`
       ],
       test: [
         { q: 'Welche Bewegungen überlagern sich im Querfeld?', a: 'Waagerecht gleichförmig (keine Kraft), senkrecht gleichmäßig beschleunigt (konstante Feldkraft), wie beim waagerechten Wurf.' },
-        { q: 'Wie kommt man von x = v₀t und y = ½at² zur Bahngleichung?', a: m`$t=x/v_0$ in $y=\tfrac12at^2$ einsetzen: $y=\tfrac12a\dfrac{x^2}{v_0^2}$ mit $a=\dfrac{eU}{m_ed}$.` },
+        { q: 'Wie kommt man von x = v₀t und y = ½at² zur Bahngleichung?', a: m`$t=x/v_0$ in $y=\tfrac12at^2$ einsetzen: $y=\tfrac12a\dfrac{x^2}{v_0^2}$ mit $a=\dfrac{eU_A}{m_ed}$.` },
         { q: m`Beschleunigungsspannung verdoppelt. Ablenkung am Plattenende?`, a: m`Halbiert, weil $y\sim\dfrac1{U_B}$ (schnellere Elektronen sind kürzer im Feld).` },
         { q: m`Warum kann man mit diesem Aufbau $e/m$ nicht bestimmen?`, a: m`$e/m$ kürzt sich heraus, wenn man $v_0^2=2eU_B/m$ einsetzt.` }
       ]
