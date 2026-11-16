@@ -10,7 +10,7 @@ require('../algo.js');
 require('../plan.js');
 const cal = fs.readFileSync(path.join(__dirname, '..', '..', 'calendar.js'), 'utf8');
 const KLAUSUREN = new Function(cal.replace(/^const /gm, 'var ') + '; return TONDA_KLAUSUREN;')();
-['demo.js', 'demo-algo.js', 'physik.js', 'physik-groessen.js', 'physik-treppe.js', 'informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js', 'informatik-beispiele.js', 'ordner.js', 'plaene.js'].forEach(f => require(path.join(__dirname, '..', 'content', f)));
+['demo.js', 'demo-algo.js', 'physik.js', 'physik-groessen.js', 'physik-treppe.js', 'informatik-algos.js', 'informatik.js', 'informatik-aufgaben.js', 'informatik-beispiele.js', 'politik.js', 'ordner.js', 'plaene.js'].forEach(f => require(path.join(__dirname, '..', 'content', f)));
 
 const D = window.MT_DATA, O = window.LR_ORDNER, PLANS = window.LR_PLANS, TOPICS = window.LR_TOPICS, ALGOS = window.LR_ALGOS;
 const ALL_LESSONS = D.LESSONS.concat(window.LR_LESSONS || []);
@@ -19,7 +19,7 @@ const fachOf = x => x.fach || 'mathe';
 const lessons = new Set(ALL_LESSONS.map(l => l.id));
 const tasks = new Set(ALL_TASKS.map(t => t.id));
 const probes = new Set([D.EXAM1.id].concat((window.LR_PROBES || []).map(p => p.id)));
-const FACH_NAME = { mathe: 'Mathematik', physik: 'Physik', informatik: 'Informatik' };
+const FACH_NAME = { mathe: 'Mathematik', physik: 'Physik', informatik: 'Informatik', politik: 'Politik-Wirtschaft' };
 const klausurIds = new Set(KLAUSUREN.map(k => k.id));
 let n = 0;
 const test = (name, fn) => { fn(); n++; console.log('ok', name); };
@@ -42,7 +42,7 @@ test('Ordner: eindeutige Ids, höchstens 6 Kacheln pro Ebene, höchstens 3 Ebene
 
 test('Themen verweisen auf Vorhandenes; Lektionen liegen genau in einem Ordner', () => {
   const seen = {};
-  ['mathe', 'physik', 'informatik'].forEach(f => walk(O[f], x => (x.themen || []).forEach(it => {
+  ['mathe', 'physik', 'informatik', 'politik'].forEach(f => walk(O[f], x => (x.themen || []).forEach(it => {
     if (it.typ === 'algo') { assert.ok(ALGOS.some(a => a.id === it.ref), `Notation ${it.ref} fehlt`); return; }
     if (it.typ === 'lektion') { assert.ok(lessons.has(it.ref), `Lektion ${it.ref} fehlt`); seen[it.ref] = (seen[it.ref] || 0) + 1; }
     else if (it.typ === 'thema') assert.ok(TOPICS.some(t => t.id === it.ref), `Thema ${it.ref} fehlt`);
@@ -63,7 +63,7 @@ test('Klausur-Vorbelegung nennt nur echte Klausuren des richtigen Fachs', () => 
 
 test('Jede Aufgabe gehört über ihre Lektion zu einem Ordner', () => {
   const inOrdner = new Set();
-  ['mathe', 'physik', 'informatik'].forEach(f => walk(O[f], x => (x.themen || []).forEach(it => it.typ === 'lektion' && inOrdner.add(it.ref))));
+  ['mathe', 'physik', 'informatik', 'politik'].forEach(f => walk(O[f], x => (x.themen || []).forEach(it => it.typ === 'lektion' && inOrdner.add(it.ref))));
   ALL_TASKS.forEach(t => assert.ok(inOrdner.has(t.lesson), `Aufgabe ${t.id} (Lektion ${t.lesson}) liegt in keinem Ordner`));
 });
 
@@ -133,3 +133,16 @@ test('Physik: jede Größe in Lektionen und Aufgaben steht im Lexikon', () => {
 });
 
 console.log(`\n${n} Tests bestanden`);
+
+test('Politik: Plan, Aufgaben, Probeklausur und Spickzettel hängen zusammen', () => {
+  const pl = PLANS.find(p => p.fach === 'politik');
+  assert.ok(pl && pl.klausur === 'k-11', 'Plan für Politik (k-11) fehlt');
+  const L = (window.LR_LESSONS || []).filter(l => l.fach === 'politik'), T = ALL_TASKS.filter(t => t.fach === 'politik'), P = (window.LR_PROBES || []).filter(p => p.fach === 'politik');
+  assert.strictEqual(L.length, 4, 'vier Politik-Lektionen');
+  const have = new Set(pl.items.map(i => i.typ + ':' + i.ref));
+  L.forEach(l => assert.ok(have.has('lektion:' + l.id), `Lektion ${l.id} fehlt im Politik-Plan`));
+  T.forEach(t => { assert.ok(have.has('aufgabe:' + t.id), `Aufgabe ${t.id} fehlt im Politik-Plan`); assert.ok(L.some(l => l.id === t.lesson), `${t.id}: Lektion ${t.lesson} gibt es nicht`); assert.ok(t.parts.every(p => p.sol && p.be > 0), `${t.id}: Teil ohne Lösung/BE`); });
+  P.forEach(p => { assert.ok(have.has('probe:' + p.id)); p.tasks.forEach(id => assert.ok(T.some(t => t.id === id), `Probeklausur ${p.id}: Aufgabe ${id} fehlt`)); });
+  assert.ok(window.LR_SPICK.politik && window.LR_SPICK.politik.length > 200, 'Spickzettel Politik fehlt');
+  L.forEach(l => ['idee', 'rezept', 'beispiel', 'fehler', 'test'].forEach(k => assert.ok(l[k] && (!Array.isArray(l[k]) || l[k].length), `${l.id}: ${k} fehlt`)));
+});

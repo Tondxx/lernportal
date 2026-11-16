@@ -14,6 +14,7 @@
   const K_MATHE = 'k-19'; // Vorabiturklausur Mathematik, 30.04.2027
   const K_PHYSIK = 'k-10'; // Physik Klausur 2 (12.1), 13.11.2026
   const K_INFO = 'k-09'; // Informatik Klausur 2 (12.1), 10.11.2026
+  const K_PW = 'k-11'; // Politik-Wirtschaft Klausur 2 (12.1), 17.11.2026
   const NOT = ref => ({ typ: 'algo', ref }); // Notation: Struktogramm, Pseudocode, Python
   const L = ref => ({ typ: 'lektion', ref });
 
@@ -34,6 +35,12 @@
       { id: 'p-rc', typ: 'ordner', titel: 'Auf- und Entladen', kurz: 'Maschenregel, e-Funktion, Zeit mit solve, C messen, Taschenrechner', klausuren: [K_PHYSIK], themen: ['PH14', 'PH8', 'PH9', 'PH11'].map(L).concat([{ typ: 'thema', ref: 'ph-entladen' }]) },
       { id: 'p-probe', typ: 'probes', titel: 'Probeklausuren', kurz: 'Gemischt aus allen Themen, mit Uhr', klausuren: [K_PHYSIK] },
       { id: 'p-spick', typ: 'seite', ref: 'spick', titel: 'Spickzettel', kurz: 'Alle Formeln auf einer Seite', klausuren: [K_PHYSIK] }
+    ],
+    // Politik-Wirtschaft: Klausur 17.11.2026 (k-11), Thema Medien laut Tonda (16.11.), kein IServ-Material vorhanden.
+    politik: [
+      { id: 'pw-medien', typ: 'ordner', titel: 'Medien in der Demokratie', kurz: 'Nutzung, Funktionen, vierte Gewalt, Agenda-Setting (Podcast), Operatoren', klausuren: [K_PW], themen: ['PW1', 'PW2', 'PW3', 'PW4'].map(L) },
+      { id: 'pw-probe', typ: 'probes', titel: 'Probeklausur', kurz: 'Kurzform mit allen Operatoren, mit Uhr', klausuren: [K_PW] },
+      { id: 'pw-spick', typ: 'seite', ref: 'spick', titel: 'Spickzettel', kurz: 'Alles Wichtige auf einer Seite', klausuren: [K_PW] }
     ],
     // Informatik: Stoff laut IServ „Grundlagen der Algorithmik“ (Sync 08.11.), Klausur 2 am 10.11.2026 (k-09). Stoff von der Lehrkraft nicht bestätigt.
     informatik: [

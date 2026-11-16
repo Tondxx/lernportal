@@ -96,7 +96,7 @@
   const taskMax = t => t.parts.reduce((a, p) => a + (p.be || 0), 0);
   const taskGot = t => t.parts.reduce((a, p) => a + (state.scores[p.id] || 0), 0);
   // Physik u. a.: keine Teil-A/B-Trennung wie in Mathe → „mit Taschenrechner“ / „Grundwissen“
-  const teilText = t => fachOf(t) === 'mathe' ? `Teil ${t.teil}` : fachOf(t) === 'informatik' ? (t.teil === 'A' ? 'Verstehen & Erläutern' : 'Entwickeln & Implementieren') : (t.teil === 'A' ? 'Grundwissen' : 'mit Taschenrechner');
+  const teilText = t => fachOf(t) === 'mathe' ? `Teil ${t.teil}` : fachOf(t) === 'informatik' ? (t.teil === 'A' ? 'Verstehen & Erläutern' : 'Entwickeln & Implementieren') : fachOf(t) === 'politik' ? (t.teil === 'A' ? 'Wiedergeben & Erklären' : 'Erörtern') : (t.teil === 'A' ? 'Grundwissen' : 'mit Taschenrechner');
   const lessonsDone = fid => lessonsOf(fid).filter(l => state.done[l.id]).length;
 
   // ------------------------------------------------------------ UI-Bausteine
@@ -647,7 +647,7 @@
     if (!t) return R.faecher();
     const ms = byId[fachOf(t)] || byId.mathe;
     const blk = taskBlock(t);
-    const html = `<div ${subjStyle(ms)} class="rise"><div class="page-head"><span class="kicker">${teilText(t)} · AFB ${t.afb} · ${taskMax(t)} BE</span><h2 class="h-1">${t.title}</h2><p class="dim" style="font-size:14px">${t.ops} · angelehnt an Zentralabitur-Aufgabenformate, nicht offiziell</p></div>${blk.html}</div>`;
+    const html = `<div ${subjStyle(ms)} class="rise"><div class="page-head"><span class="kicker">${teilText(t)} · AFB ${t.afb} · ${taskMax(t)} BE</span><h2 class="h-1">${t.title}</h2><p class="dim" style="font-size:14px">${t.ops} · ${fachOf(t) === 'politik' ? 'eigene Übungsaufgabe, nicht offiziell' : 'angelehnt an Zentralabitur-Aufgabenformate, nicht offiziell'}</p></div>${blk.html}</div>`;
     return { title: t.title, back: (window.LRStruktur && LRStruktur.backFor('aufgabe', t.id)) || `#/fach/${fachOf(t)}`, nav: 'faecher', focus: true, html, after(root) { blk.bind(root); } };
   };
 

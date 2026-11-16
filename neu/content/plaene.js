@@ -73,6 +73,21 @@
       ]
     },
     {
+      id: 'plan-politik-k11',
+      fach: 'politik',
+      klausur: 'k-11', // Politik-Wirtschaft Klausur 2 (12.1), 17.11.2026
+      titel: 'Politik: Medien (Nutzung, Funktionen, Agenda-Setting)',
+      hinweis: 'Stoff laut Tondas Stichpunkten (16.11.) und dem Podcast aus dem Unterricht; auf IServ gibt es dafür kein Material. Zahlen zur Mediennutzung stehen in der Klausur im Material.',
+      stand: '2026-11-16',
+      items: [
+        L('PW2'), A('PWT2'), A('PWT3'),
+        L('PW3'), A('PWT4'),
+        L('PW1'), A('PWT1'),
+        L('PW4'), A('PWT5'),
+        { typ: 'probe', ref: 'PWP1' }
+      ]
+    },
+    {
       id: 'plan-informatik-k09',
       fach: 'informatik',
       klausur: 'k-09', // Informatik Klausur 2 (12.1), 10.11.2026
