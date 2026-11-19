@@ -195,7 +195,8 @@
     const hasMap = tree.some(n => n.typ === 'ordner' && themenOf(n).length > 1);
     const mapBtn = hasMap ? `<a class="cont plan-go" href="#/karte/${id}" ${A.subjStyle(s)}><div class="cont-ico">${icn('map')}</div><div class="row-main"><span class="row-title" style="font-size:18px">Wissenslandkarte</span><span class="row-sub">Alle Themen als Karte: was sitzt, was wackelt, was als Nächstes kommt</span></div>${icn('right', 'chev')}</a>` : '';
     const skBtn = window.LRSkript && LRSkript.has(id) ? `<a class="cont plan-go" href="#/skript/${id}" ${A.subjStyle(s)}><div class="cont-ico">${icn('book')}</div><div class="row-main"><span class="row-title" style="font-size:18px">Durchgehen</span><span class="row-sub">Alle Themen kompakt auf einer Seite: Idee, Rezept, Beispiel. Druckbar als PDF.</span></div>${icn('right', 'chev')}</a>` : '';
-    return { title: s.name, back: '#/faecher', nav: 'faecher', html: `<div ${A.subjStyle(s)}>${head}${chipsFor(id)}${note}${body}${planBtn}${mapBtn}${skBtn}</div>` };
+    const pjBtn = window.LRProjekt && LRProjekt.has(id) ? LRProjekt.list(id).map(p => `<a class="cont plan-go" href="#/projekt/${p.id}" ${A.subjStyle(s)}><div class="cont-ico">${icn('pencil')}</div><div class="row-main"><span class="row-title" style="font-size:18px">Projekttagebuch: ${A.esc(p.titel)}</span><span class="row-sub">Protokolle, Arbeitsplan, Struktogramme, Reflexion. Export als Word, PDF oder Markdown.</span></div>${icn('right', 'chev')}</a>`).join('') : '';
+    return { title: s.name, back: '#/faecher', nav: 'faecher', html: `<div ${A.subjStyle(s)}>${head}${chipsFor(id)}${note}${pjBtn}${body}${planBtn}${mapBtn}${skBtn}</div>` };
   }
   function planLine(fid) {
     const { pe, items } = currentPlan();
