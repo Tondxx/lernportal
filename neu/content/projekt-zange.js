@@ -103,6 +103,7 @@
     ].map(([id, name, was, stand], i) => ({ id, name, was, stand, ord: i })),
     ki: [
       ['k1', 'Spielidee', 'zusammen mit KI (14.11.)'],
+      ['k7', 'Recherche zu Bibliotheken und Kartendeck', 'Internet und KI (20.11.)'],
       ['k2', 'Raster des Projekttagebuchs', 'KI (laut Vorgaben erlaubt)'],
       ['k3', 'Spiellogik, Rekursion, Wahrscheinlichkeit, Simulation', 'selbst'],
       ['k4', 'Struktogramme', 'selbst'],
@@ -133,7 +134,7 @@
         probleme: 'Es gibt auch eine Bibliothek, die schon komplett für Karten gemacht ist. Da war die Frage, ob ich die nehme.',
         loesung: 'Ich habe sie weggelassen, weil mir das zu einfach gewesen wäre. Das Deck mache ich selbst und nehme random dazu.',
         stand: 'Deck anlegen und Karten vergleichen sind als Struktogramm da. Vom Programm gibt es erst den Anfang, der Rest fehlt noch.',
-        ki: '',
+        ki: 'ja, für die Recherche',
         next: 'Beim Struktogramm vom Programm weitermachen und das Deck in Python anlegen' }
     ]
   };
