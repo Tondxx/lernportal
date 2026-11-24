@@ -40,7 +40,7 @@
       bezug: [
         'Rekursion: Das Programm soll ausrechnen, ob sich Auszahlen oder Weiterziehen mehr lohnt. Nach dem Weiterziehen hat man einen neuen Spielstand, für den man wieder genau dasselbe ausrechnen muss. Deshalb passt Rekursion hier gut.',
         'Datenstrukturen: Das Kartendeck ist ein Stapel und die gezogenen Karten kommen in eine Liste. Spielstände, die schon berechnet wurden, will ich zwischenspeichern.',
-        'Bibliotheken: random zum Mischen und tkinter oder pygame für den Tisch, das steht noch nicht fest. Vielleicht noch matplotlib, um die Simulation auszuwerten.'
+        'Bibliotheken: random zum Mischen (keine fertige Kartenbibliothek) und tkinter oder pygame für den Tisch, das steht noch nicht fest. Vielleicht noch matplotlib, um die Simulation auszuwerten.'
       ].join('\n'),
       werkzeuge: 'Python 3 (Editor noch eintragen), Structorizer für die Struktogramme, KI (Claude) für Ideen und das Aussehen, ein Präsentationsprogramm',
       zielsatz: 'Am 11.12. soll man Zange an einem Kartentisch spielen können. Die Quoten und die beste Strategie werden rekursiv berechnet und mit einer Simulation geprüft.',
@@ -128,9 +128,10 @@
         ki: 'ja, für das Raster vom Projekttagebuch (laut Vorgaben erlaubt)',
         next: 'Deck als Stapel anlegen und Karten prüfen' },
       { id: 'e3', datum: '2026-11-20', art: 'DS',
-        ziel: 'Die Struktogramme für die Basis vom Spiel bauen',
-        geschafft: 'Ich habe die Struktogramme für die Basis gebaut. Eins legt das Kartendeck an, eins vergleicht die Größe der Karten miteinander und beim dritten habe ich den Anfang vom Programm gemacht.',
-        probleme: '', loesung: '',
+        ziel: 'Passende Bibliotheken finden und die Struktogramme für die Basis vom Spiel bauen',
+        geschafft: 'Ich habe im Internet recherchiert, welche Bibliotheken ich am besten nehme. Dabei bin ich auf random gestoßen, damit kann ich Listen mischen. Außerdem habe ich mir ein bis zwei Sachen dazu angeschaut, wie man so ein Kartendeck am besten macht. Die Struktogramme für die Basis habe ich auch gebaut. Eins legt das Kartendeck an, eins vergleicht die Größe der Karten miteinander und beim dritten habe ich den Anfang vom Programm gemacht.',
+        probleme: 'Es gibt auch eine Bibliothek, die schon komplett für Karten gemacht ist. Da war die Frage, ob ich die nehme.',
+        loesung: 'Ich habe sie weggelassen, weil mir das zu einfach gewesen wäre. Das Deck mache ich selbst und nehme random dazu.',
         stand: 'Deck anlegen und Karten vergleichen sind als Struktogramm da. Vom Programm gibt es erst den Anfang, der Rest fehlt noch.',
         ki: '',
         next: 'Beim Struktogramm vom Programm weitermachen und das Deck in Python anlegen' }
