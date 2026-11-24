@@ -15,7 +15,7 @@ const test = (name, fn) => { fn(); n++; console.log('ok', name); };
 
 test('Vorbelegung ohne Ereignisse', () => {
   const M = T.build(P);
-  assert.strictEqual(M.entries.length, 2);
+  assert.strictEqual(M.entries.length, 3);
   assert.strictEqual(M.ziel.length, 9);
   assert.strictEqual(M.plan[M.plan.length - 1].datum, '2026-12-11');
   assert.ok(M.F.beschreibung.includes('Zange'));
@@ -36,9 +36,9 @@ test('neuester Wert gewinnt, Löschen, neue Einträge sortiert', () => {
   const M = T.build(P);
   assert.strictEqual(M.F.thema, 'neu');
   assert.strictEqual(M.bsp.length, 8);
-  assert.deepStrictEqual(M.entries.map(e => e.id), ['e2', 'xa']);
-  assert.strictEqual(M.entries[1].geschafft, 'Stapel');
-  assert.strictEqual(M.entries[1].ziel, '');
+  assert.deepStrictEqual(M.entries.map(e => e.id), ['e2', 'e3', 'xa']);
+  assert.strictEqual(M.entries[2].geschafft, 'Stapel');
+  assert.strictEqual(M.entries[2].ziel, '');
 });
 
 test('Word-Datei ist ein gültiges ZIP mit allen Teilen', () => {
